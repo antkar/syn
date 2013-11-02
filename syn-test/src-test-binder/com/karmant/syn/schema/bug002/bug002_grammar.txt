@@ -1,0 +1,3 @@
+@Bug002Schema : foos=(Bug002Foo)+ ;
+
+Bug002Foo : name=ID ("?" cardinality=<5> | "+" cardinality=<10> | "*" cardinality=<15> )? ";" ;

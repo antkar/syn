@@ -1,0 +1,3 @@
+@Bug001Schema : foo=Bug001Foo ;
+
+Bug001Foo : name=ID (":" type=ID)? ;

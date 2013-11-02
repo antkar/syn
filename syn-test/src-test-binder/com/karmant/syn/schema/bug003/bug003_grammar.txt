@@ -1,0 +1,3 @@
+@Bug003Schema : name=ID number=(INTEGER : ",")+ ;
+
+

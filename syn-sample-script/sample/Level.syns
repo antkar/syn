@@ -1,0 +1,643 @@
+/*
+ * Copyright 2013 Anton Karmanov
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+//Level generator. Generates random level maps.
+//-------------------------------------------------------------------------------------------------
+
+import java.util.*;
+
+//Random numbers generator for a level generation.
+const LEVEL_RND = new Random();
+
+//Level map structure. Contains wall cells map and snake start position information.
+class LevelMap {
+	//Wall cells map. Array of arrays of boolean. A value "true" means that the cell is a wall.
+	var map;
+	//Snake start position coordinates.
+	var startx;
+	var starty;
+	//Snake start direction.
+	var startdx;
+	var startdy;
+}
+
+//Map node - a point located in a corner of a map block.
+//Two adjacent nodes can be linked by a wall.
+class Node {
+	//Vertical link flag. If true, this node (x, y) is linked with the node (x, y+1).
+	var vlink;
+	//Horizontal link flag. If true, this node (x, y) is linked with the node (x+1, y).
+	var hlink;
+	
+	//Nodes are grouped into groups. Two nodes belong to the same group if and only if they are
+	//either directly or indirectly linked.
+	//The head node of the group which this node belongs to.
+	var groupHead;
+	//If this node is a head of a group, this list contains all the nodes of the group.
+	var groupNodes;
+	
+	//Nodes are also grouped into mark groups. Mark groups are temporary and used to check if
+	//adding a wall will create a loop.
+	//The head node of the mark group which this node belongs to.
+	var markHead;
+	//If this node is a head of a mark group, this list contains all the nodes of the mark group.
+	var markNodes;
+	
+	function Node() {
+		hlink = false;
+		vlink = false;
+	}
+}
+
+//Field. Contains a 2D array of nodes.
+class Field {
+	//Width and height of the field. Even numbers, >= 2.
+	var w;
+	var h;
+	
+	//(h+1) by (w+1) nodes.
+	var nodes;
+	
+	function Field(aw, ah) {
+		w = aw;
+		h = ah;
+		
+		//Create nodes table.
+		nodes = new [h+1][w+1];
+		for (var y = 0; y <= h; ++y) {
+			for (var x = 0; x <= w; ++x) {
+				var node = new Node();
+				nodes[y][x] = node;
+				node.groupHead = node;
+				node.groupNodes = new ArrayList();
+				node.groupNodes.add(node);
+				node.markHead = null;
+				node.markNodes = new ArrayList();
+			}
+		}
+	}
+
+	//Special null node.
+	const NULL_NODE = new Node();
+
+	function getNode(x, y) {
+		if (x < 0 || y < 0 || x > w || y > h) return NULL_NODE;
+		return nodes[y][x];
+	}
+	
+	//Checks if there is a link between two adjacent nodes.
+	function isLink(x, y, dx, dy) {
+		var node = getNode(x, y);
+		return dx != 0 ? node.hlink : node.vlink;
+	}
+	
+	//Adds a link between two adjacent nodes.
+	function addLink(x, y, dx, dy) {
+		var node = nodes[y][x];
+		if (dx != 0) {
+			node.hlink = true;
+		} else {
+			node.vlink = true;
+		}
+		addGroup0(x, y, dx, dy);
+	}
+	
+	//Unites groups of two adjacent nodes into one group.
+	function addGroup0(x, y, dx, dy) {
+		var superNode = nodes[y][x];
+		var superGroup = superNode.groupHead;
+		var subNode = nodes[y + dy][x + dx];
+		var subGroup = subNode.groupHead;
+		if (subGroup == superGroup) return;
+		
+		for (var subGroupNode : subGroup.groupNodes) {
+			subGroupNode.groupHead = superGroup;
+			superGroup.groupNodes.add(subGroupNode);
+		}
+		subGroup.groupNodes.clear();
+	}
+}
+
+//Wall. Describes one of possible walls that can be built.
+class Wall {
+	//Start coordinates.
+	var x;
+	var y;
+	//Direction.
+	var dx;
+	var dy;
+	//Length.
+	var len;
+	//Priority: the probability of choosing a wall is proportional to its priority.
+	var priority;
+}
+
+//Mock mirror. Does not modify coordinates.
+class NoneMirror {
+	function getEndX(field) { return field.w; }
+	function getEndY(field) { return field.h; }
+	
+	function getWalls(field, wall) {
+		return [wall];
+	}
+}
+
+//Vertical mirror. Mirrors the left half of a field to its right half.
+class VMirror {
+	var my;
+	
+	function VMirror(amy) {
+		my = amy;
+	}
+
+	function getEndX(field) { return field.w / 2 + 1; }
+	function getEndY(field) { return field.h; }
+	
+	function getWalls(field, wall) {
+		var walls = wallsList(wall);
+		var cx = field.w / 2;
+		mirrorWall(cx, field.h, cx, 0, field.w, field.h, wall, -1, my, walls);
+		return walls;
+	}
+}
+
+//Horizontal mirror. Mirrors the top half of a field to its bottom half.
+class HMirror {
+	var mx;
+	
+	function HMirror(amx) {
+		mx = amx;
+	}
+
+	function getEndX(field) { return field.w; }
+	function getEndY(field) { return field.h / 2 + 1; }
+	
+	function getWalls(field, wall) {
+		var walls = wallsList(wall);
+		var cy = field.h / 2;
+		mirrorWall(field.w, cy, 0, cy, field.w, field.h, wall, mx, -1, walls);
+		return walls;
+	}
+}
+
+//Vertical and horizontal mirror. Mirrors tne top left quarter of a field to all the other quarters.
+class HVMirror {
+	var mx1;
+	var my1;
+	var mx2;
+	var my2;
+	
+	function HVMirror(amx1, amy1, amx2, amy2) {
+		mx1 = amx1;
+		my1 = amy1;
+		mx2 = amx2;
+		my2 = amy2;
+	}
+
+	function getEndX(field) { return field.w / 2 + 1; }
+	function getEndY(field) { return field.h / 2 + 1; }
+	
+	function getWalls(field, wall) {
+		var walls = wallsList(wall);
+		var cx = field.w / 2;
+		var cy = field.h / 2;
+		mirrorWall(cx, cy, 0, cy, field.w, field.h, wall, mx1, my1, walls);
+		mirrorWall(cx, cy, cx, 0, field.w, field.h, wall, mx2, my2, walls);
+		mirrorWall(cx, cy, cx, cy, field.w, field.h, wall, mx1*mx2, my1*my2, walls);
+		return walls;
+	}
+}
+
+//Creates a list containing a single wall.
+function wallsList(wall) {
+	var list = new ArrayList();
+	list.add(wall);
+	return list;
+}
+
+//Mirrors a wall.
+function mirrorWall(endx, endy, x, y, w, h, wall, mx, my, walls) {
+	var wx = mx > 0 ? x + wall.x : x + endx - wall.x - wall.dx * wall.len;
+	var wy = my > 0 ? y + wall.y : y + endy - wall.y - wall.dy * wall.len;
+	if (wx >= w || wy >= h) return;
+	
+	var wall2 = new Wall();
+	wall2.x = wx;
+	wall2.y = wy;
+	wall2.len = wall.len;
+	wall2.dx = wall.dx;
+	wall2.dy = wall.dy;
+	
+	for (var other : walls) if (wallsEqual(other, wall2)) return;
+	walls.add(wall2);
+}
+
+//Checks if two walls are equal (located at the same coordinates).
+function wallsEqual(w1, w2) {
+	return w1.x == w2.x && w1.y == w2.y;
+}
+
+//Checks if two spans overlap.
+function spansOverlap(x1, len1, x2, len2) {
+	return (x2 >= x1 && x2 <= x1 + len1) || (x1 >= x2 && x1 <= x2 + len2);
+}
+
+//Generates a random level map.
+//Parameters:
+//	mapw - the width of the map in blocks.
+//	maph - the height of the map in blocks.
+//	blockw - the width of a block in cells.
+//	blockh - the height of a block in cells.
+//Returns:
+//	a LevelMap object.
+function generateLevelMap(mapw, maph, blockw, blockh, level) {
+	var field = generateField(mapw, maph, level);
+	var startPos = calcStartPos(field);
+	
+	var startx = startPos.x * blockw + blockw / 2;
+	var starty = startPos.y * blockh + blockh / 2;
+	
+	var levelMap = new LevelMap();
+	levelMap.map = fillMap(field, mapw, maph, blockw, blockh);
+	levelMap.startx = startx;
+	levelMap.starty = starty;
+	levelMap.startdx = startPos.dx;
+	levelMap.startdy = startPos.dy;
+	
+	return levelMap;
+}
+
+//Fills level map cells according to links defined between field nodes.
+function fillMap(field, mapw, maph, blockw, blockh) {
+	var gridw = mapw * blockw + 1;
+	var gridh = maph * blockh + 1;
+	
+	//Fill all cells with false.
+	var map = new [gridh][gridw];
+	for (var y = 0; y < gridh; ++y) {
+		for (var x = 0; x < gridw; ++x) {
+			map[y][x] = false;
+		}
+	}
+
+	//Fill cells occupied by walls with true.
+	for (var y = 0; y <= field.h; ++y) {
+		for (var x = 0; x <= field.w; ++x) {
+			fillMapLink(map, blockw, blockh, field, x, y, 1, 0);
+			fillMapLink(map, blockw, blockh, field, x, y, 0, 1);
+		}
+	}
+	
+	return map;
+}
+
+//Fills a single nodes link cells.
+function fillMapLink(map, blockw, blockh, field, x, y, dx, dy) {
+	if (field.isLink(x, y, dx, dy)) {
+		var mx = x * blockw;
+		var my = y * blockh;
+		while (blockw >= 0 && blockh >= 0) {
+			map[my][mx] = true;
+			mx += dx;
+			my += dy;
+			blockw -= dx;
+			blockh -= dy;
+		}
+	}
+}
+
+//Mirrors.
+const MIRRORS = [
+	new NoneMirror(),
+	new VMirror(1),
+	new HMirror(1),
+	new VMirror(-1),
+	new HMirror(-1),
+	new HVMirror(1, 1, 1, 1),
+	new HVMirror(1, -1, -1, 1),
+	new HVMirror(-1, -1, 1, 1),
+	new HVMirror(-1, -1, -1, -1),
+	new HVMirror(1, -1, -1, -1)
+];
+
+//Generates a random field.
+function generateField(mapw, maph, level) {
+	var field = new Field(mapw, maph);
+	
+	//Border wall.
+	for (var x = 0; x < field.w; ++x) {
+		field.addLink(x, 0, 1, 0);
+		field.addLink(x, field.h, 1, 0);
+	}
+	for (var y = 0; y < field.h; ++y) {
+		field.addLink(0, y, 0, 1);
+		field.addLink(field.w, y, 0, 1);
+	}
+
+	//Choose a random mirror.
+	var mirror = MIRRORS[LEVEL_RND.nextInt(MIRRORS.length)];
+
+	//Generate sum number of walls (the higher is the level number - the more walls are generated).
+	var wallCount = level - 1;
+	while (calcWallCount(field) < wallCount) {
+		if (!generateWall(field, mirror)) break;
+	}
+	
+	return field;
+}
+
+//Calculates the number of walls created in a field. If two parallel walls overlap,
+//they are counted as a single wall.
+function calcWallCount(field) {
+	var cnt = 0;
+	for (var y = 1; y < field.h; ++y) {
+		for (var x = 1; x < field.w; ++x) {
+			if (field.isLink(x, y, 1, 0) && !field.isLink(x - 1, y, 1, 0)) ++cnt;
+			if (field.isLink(x, y, 0, 1) && !field.isLink(x, y - 1, 0, 1)) ++cnt;
+		}
+	}
+	return cnt;
+}
+
+//Snake start position.
+class StartPos {
+	var x;
+	var y;
+	var dx;
+	var dy;
+	var len;
+	var dist;
+}
+
+//Calculate a snake start position.
+function calcStartPos(field) {
+	var startPosList = new ArrayList();
+	findHorizontalStartPositions(field, startPosList);
+	findVerticalStartPositions(field, startPosList);
+	var pos = chooseBestStartPosition(field, startPosList);
+	return pos;
+}
+
+//Finds possible horizontal snake start positions.
+function findHorizontalStartPositions(field, startPosList) {
+	for (var y = 0; y < field.h; ++y) {
+		var x = 0;
+		while (x < field.w) {
+			var pos = calcStartPosSpan(field, x, y, 1, 0);
+			startPosList.add(pos);
+			x += pos.len;
+		}
+	}
+}
+
+//Finds possible vertical snake start positions.
+function findVerticalStartPositions(field, startPosList) {
+	for (var x = 0; x < field.w; ++x) {
+		var y = 0;
+		while (y < field.h) {
+			var pos = calcStartPosSpan(field, x, y, 0, 1);
+			startPosList.add(pos);
+			y += pos.len;
+		}
+	}
+}
+
+//Chooses the best snake start position among different possible ones.
+function chooseBestStartPosition(field, startPosList) {
+	var goodxlen = Math.min(6, (int)(field.w / 2));
+	var goodylen = Math.min(6, (int)(field.h / 2));
+	
+	var pos = Collections.max(startPosList, {
+		function compare(a, b) {
+			//If the length of one wall is significantly greater than the length of another -
+			//return the longer wall.
+			if (a.len * 3 / 2 <= b.len) return -1;
+			if (b.len * 3 / 2 <= a.len) return 1;
+			
+			//Otherwise, if one of the walls is shorter than the "good" length, return
+			//the other wall.
+			if (a.len != b.len) {
+				var goodlena = a.dx * goodxlen + a.dy * goodylen;
+				var goodlenb = b.dx * goodxlen + b.dy * goodylen;
+				if (a.len < goodlena || b.len < goodlenb) return a.len - b.len;
+			}
+			
+			//Otherwise, if the distance to the center differs, return the wall which is closer to the center.
+			if (a.dist != b.dist) return b.dist - a.dist;
+			
+			//Return the longer wall.
+			return a.len - b.len;
+		}
+	});
+	
+	return pos;
+}
+
+//Calculates snake start position located at the given point.
+function calcStartPosSpan(field, x, y, dx, dy) {
+	var len = 0;
+	while (x < field.w && y < field.h) {
+		++len;
+		var node = field.nodes[y + dy * len][x + dx * len];
+		var wall = dx != 0 ? node.vlink : node.hlink;
+		if (wall) break;
+	}
+	
+	var cx = field.w / 2;
+	var cy = field.h / 2;
+	var distx = x + dx * len / 2 - cx;
+	var disty = y + dy * len / 2 - cy;
+	var dist = distx * distx + disty * disty;
+	
+	var startPos = new StartPos();
+	startPos.x = x;
+	startPos.y = y;
+	startPos.dx = dx;
+	startPos.dy = dy;
+	startPos.len = len;
+	startPos.dist = dist;
+	
+	return startPos;
+}
+
+//Generates a random wall.
+//Returns true if a wall was generated, and false if there is no space for a wall.
+function generateWall(field, mirror) {
+	//Build the list of all possible walls.
+	var walls = new ArrayList();
+	for (var x = 0, endx = mirror.getEndX(field); x < endx; ++x) {
+		for (var y = 0, endy = mirror.getEndY(field); y < endy; ++y) {
+			generateConcreteWalls(field, mirror, x, y, 1, 0, walls);
+			generateConcreteWalls(field, mirror, x, y, 0, 1, walls);
+		}
+	}
+	
+	//If the list is empty, return false.
+	if (walls.isEmpty()) return false;
+	
+	//Select a random wall from the list.
+	var wall = selectWall(walls);
+	
+	//Build that wall.
+	buildWall(field, mirror, wall);
+	
+	return true;
+}
+
+//Lists all possible walls that can be built at the given point and direction.
+//All the returned walls are located at the same point, but have different lengths.
+function generateConcreteWalls(field, mirror, x, y, dx, dy, walls) {
+	//If the specified origin node is linked to another node, no wall can be generated.
+	if (field.isLink(x, y, dx, dy)) return;
+	if (field.isLink(x - dx, y - dy, dx, dy)) return;
+	
+	//Generate walls, increasing the length one by one, until possible.
+	var tx = x;
+	var ty = y;
+	var endx = mirror.getEndX(field) - dx;
+	var endy = mirror.getEndY(field) - dy;
+	while (tx < endx && ty < endy && !field.isLink(tx, ty, dx, dy) && !field.isLink(tx + dx, ty + dy, dx, dy)) {
+		var len = tx - x + dx + ty - y + dy;
+		var priority = getWallPriority(field, x, y, dx, dy, len);
+		
+		//Create a wall instance.
+		var wall = new Wall();
+		wall.x = x;
+		wall.y = y;
+		wall.dx = dx;
+		wall.dy = dy;
+		wall.len = len;
+		wall.priority = priority;
+		
+		//If this wall creates a loop, decline it.
+		if (isWallLoop(field, mirror, wall)) break;
+		
+		//Add the wall to the list.
+		walls.add(wall);
+		
+		tx += dx;
+		ty += dy;
+	}
+}
+
+//Checks if the specified wall forms a loop in the field. All mirrorred walls are checked.
+function isWallLoop(field, mirror, wall) {
+	//Clear marks.
+	for (var ty = 0; ty <= field.h; ++ty) {
+		for (var tx = 0; tx <= field.w; ++tx) {
+			var node = field.nodes[ty][tx];
+			node.markHead = node.groupHead;
+			node.markNodes.clear();
+			node.markNodes.addAll(node.groupNodes);
+		}
+	}
+	
+	//Check.
+	for (var curWall : mirror.getWalls(field, wall)) {
+		if (isWallLoop0(field, curWall)) return true;
+	}
+	
+	return false;
+}
+
+//Checks if a single walls forms a loop.
+function isWallLoop0(field, wall) {
+	var x = wall.x;
+	var y = wall.y;
+	var dx = wall.dx;
+	var dy = wall.dy;
+	var len = wall.len;
+
+	//Unite all nodes occupied by the wall into a single mark group.
+	for (var i = 0; i < len; ++i) {
+		var node1 = field.nodes[y][x];
+		var node2 = field.nodes[y + dy][x + dx];
+		var group1 = node1.markHead;
+		var group2 = node2.markHead;
+		
+		//Two nodes linked by this wall are already in the same marked group.
+		//This indicates a loop.
+		if (group1 == group2) return true;
+		
+		//Unite two mark groups into one.
+		for (var subNode2 : group2.markNodes) {
+			subNode2.markHead = group1;
+			group1.markNodes.add(subNode2);
+		}
+		group2.markNodes.clear();
+		
+		x += dx;
+		y += dy;
+	}
+	
+	return false;
+}
+
+//Calculates the priority of a wall. The priority depends on the length of the wall
+//and its location.
+function getWallPriority(field, x, y, dx, dy, len) {
+	var maxlen = field.w * dx + field.h * dy;
+	var hmaxlen = maxlen / 2;
+	var plen = len <= hmaxlen ? len : maxlen + 1 - len;
+
+	var hx = field.w / 2;
+	var hy = field.h / 2;
+	var cx = x + len * dx / 2;
+	var cy = y + len * dy / 2;
+	var px = cx <= hx ? cx : field.w - 1 - cx;
+	var py = cy <= hy ? cy : field.h - 1 - cy;
+	
+	return (int)Math.pow(2, plen) + px + py;
+}
+
+//Selects a random wall from the specified list of walls.
+function selectWall(walls) {
+	var prioritySym = 0;
+	for (var wall : walls) prioritySym += wall.priority;
+
+	var r = LEVEL_RND.nextInt(prioritySym);
+	var s = 0;
+	
+	for (var wall : walls) {
+		var p = s;
+		s += wall.priority;
+		if (r >= p && r < s) {
+			walls.remove(wall);
+			return wall;
+		}
+	}
+	
+	return walls[walls.size()-1];
+}
+
+//"Builds" the specified wall in the field, including mirror reflections.
+//Building means adding links between nodes.
+function buildWall(field, mirror, wall) {
+	for (var curWall : mirror.getWalls(field, wall)) {
+		buildWall0(field, curWall);
+	}
+}
+
+//Builds a single wall in the field.
+function buildWall0(field, wall) {
+	var x = wall.x;
+	var y = wall.y;
+	for (var i = 1; i <= wall.len; ++i) {
+		field.addLink(x, y, wall.dx, wall.dy);
+		x += wall.dx;
+		y += wall.dy;
+	}
+}

@@ -1,0 +1,6 @@
+a = 1 + 2 - 3 ;
+b = func(a / 2, "hello", x);
+
+(syntax_error)
+
+c = func2(func3(func4((a + b) * c / 3.14), x), y);

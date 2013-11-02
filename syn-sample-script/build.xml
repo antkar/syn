@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Copyright 2013 Anton Karmanov
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+-->
+
+<project name="SynScript" default="default">
+
+	<property name="bin-dir" value="bld/bin"/>
+	<property name="dst-dir" value="bld/dst"/>
+	
+	<loadproperties srcFile="../syn/build.properties" prefix="build."/>
+	
+    <target name="default" depends="clean,build"/>
+	
+	<target name="clean">
+    	<delete dir="${bin-dir}"/>
+    	<delete dir="${dst-dir}"/>
+	</target>
+
+	<target name="build">
+		<ant dir="../syn" antfile="build.xml" target="build-debug"/>
+
+    	<mkdir dir="${dst-dir}"/>
+		<copy file="../syn/bld/dst/syn-${build.version}.jar" todir="${dst-dir}"/>
+		
+    	<mkdir dir="${bin-dir}"/>
+    	<javac srcdir="." destdir="${bin-dir}" classpath="${dst-dir}/syn-${build.version}.jar" debug="on">
+    		<include name="src/**/*.java"/>
+    	</javac>
+    	
+		<jar destfile="${dst-dir}/synscript-${build.version}.jar">
+			<manifest>
+				<attribute name="Main-Class" value="com.karmant.syn.sample.script.ScriptMain"/>
+				<attribute name="Class-Path" value="syn-${build.version}.jar"/>
+			</manifest>
+			
+			<fileset dir="${bin-dir}"/>
+			
+			<fileset dir="src">
+				<include name="**/*.txt"/>
+			</fileset>
+		</jar>
+		
+		<mkdir dir="${dst-dir}/sample"/>
+		<copy todir="${dst-dir}/sample">
+			<fileset dir="sample" includes="*.syns"/>
+		</copy>
+		
+		<echo file="${dst-dir}/sample.cmd">@echo off
+cd %~dp0
+java -jar synscript-1.0.jar sample/Snake.syns sample/Level.syns sample/World.syns sample/View.syns
+</echo>
+	</target>
+
+</project>

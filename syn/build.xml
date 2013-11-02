@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Copyright 2013 Anton Karmanov
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+-->
+
+<project name="Syn" default="default">
+
+	<property name="release-bin-dir" value="bld/bin-release"/>
+	<property name="debug-bin-dir" value="bld/bin-debug"/>
+	<property name="dst-dir" value="bld/dst"/>
+	
+	<loadproperties srcFile="build.properties" prefix="build."/>
+	
+    <target name="default" depends="clean,build"/>
+	
+	<target name="clean">
+    	<delete dir="${release-bin-dir}"/>
+    	<delete dir="${debug-bin-dir}"/>
+    	<delete dir="${dst-dir}"/>
+	</target>
+
+	<target name="build" depends="build-release,build-debug,source"/>
+
+	<target name="build-release">
+    	<antcall target="build-configuration">
+    		<param name="param-bin-dir" value="${release-bin-dir}"/>
+    		<param name="param-jar-file" value="syn-nodebug"/>
+    		<param name="param-debug" value="no"/>
+    	</antcall>
+	</target>
+
+	<target name="build-debug">
+    	<antcall target="build-configuration">
+    		<param name="param-bin-dir" value="${debug-bin-dir}"/>
+    		<param name="param-jar-file" value="syn"/>
+    		<param name="param-debug" value="yes"/>
+    	</antcall>
+	</target>
+	
+	<target name="build-configuration">
+    	<mkdir dir="${param-bin-dir}"/>
+    	<javac srcdir="." destdir="${param-bin-dir}" debug="${param-debug}">
+    		<include name="src-*/**/*.java"/>
+    	</javac>
+		
+		<copy todir="${param-bin-dir}">
+			<fileset dir=".">
+				<include name="src-*/**/*.dtd"/>
+				<include name="src-*/**/*.xml"/>
+				<include name="src-*/**/*.txt"/>
+			</fileset>
+			
+			<cutdirsmapper dirs="1"/>
+		</copy>
+    	
+    	<mkdir dir="${dst-dir}"/>
+		<jar destfile="${dst-dir}/${param-jar-file}-${build.version}.jar">
+			<fileset dir="${param-bin-dir}"/>
+		</jar>
+	</target>
+	
+	<target name="source">
+    	<mkdir dir="${dst-dir}/src"/>
+		
+		<copy todir="${dst-dir}/src">
+			<fileset dir=".">
+				<include name="src-*/**/*.java"/>
+				<include name="src-*/**/*.dtd"/>
+				<include name="src-*/**/*.xml"/>
+				<include name="src-*/**/*.txt"/>
+			</fileset>
+			
+			<cutdirsmapper dirs="1"/>
+		</copy>
+		
+		<zip basedir="${dst-dir}/src" destfile="${dst-dir}/syn-${build.version}-src.zip"/>
+	</target>
+
+</project>

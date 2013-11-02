@@ -1,0 +1,10 @@
+@file : ( value ) *;
+
+value : object | array | terminal ;
+
+object : "{" ( object_field )+ "}" ;
+object_field : name=ID "=" value=value ";" ;
+
+array : "[" ( value : "," ) * "]" ;
+
+terminal : ID | INTEGER | STRING ;

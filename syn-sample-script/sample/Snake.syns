@@ -1,0 +1,286 @@
+/*
+ * Copyright 2013 Anton Karmanov
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+//Main unit. Contains program entry point and controls levels.
+//-------------------------------------------------------------------------------------------------
+
+//
+//Constants
+//
+
+//Map properties. Map consists of blocks. Each block consists of cells. The purpose of grouping cells into blocks
+//is that in a randomly generated map, walls exist only on block boundaries.
+
+//Width of the map in blocks.
+const MAP_WIDTH = 10;
+//Height of the map in blocks.
+const MAP_HEIGHT = 8;
+//Width of a block in cells.
+const MAP_BLOCK_WIDTH = 5;
+//Height of a block in cells.
+const MAP_BLOCK_HEIGHT = 5;
+
+//Minumum snake length in cells.
+const MIN_SNAKE_LEN = 3;
+//Maximum snake length in cells.
+const MAX_SNAKE_LEN = 3000;
+//Snake speed, cells per second.
+const SNAKE_SPEED_CELL_PER_S = 6;
+//Maximum rendering rate, frames per second.
+const MAX_FRAMES_PER_S = 100;
+//Maximum food weight.
+const MAX_FOOD = 10;
+//Length that is added to a snake for each eaten unit of a food.
+const FOOD_LENGTH = 2.0;
+
+//Name of the auto-save file, where levels are saved.
+const AUTOSAVE_FILE_NAME = "SnakeAutoSave.txt";
+
+//World width in cells.
+const WORLD_WIDTH = MAP_WIDTH * MAP_BLOCK_WIDTH + 1;
+//World height in cells.
+const WORLD_HEIGHT = MAP_HEIGHT * MAP_BLOCK_HEIGHT + 1;
+
+//Snake movement delay per cell, ms.
+const MOVE_DELAY_MS = (int)(1000 / SNAKE_SPEED_CELL_PER_S);
+
+//
+//Main class.
+//
+
+class Snake {
+	//View used for interaction with the user.
+	var view;
+	//Current level number.
+	var level;
+
+	//Starts the game.
+	function Snake() {
+		level = 1;
+		
+		//Create the view.
+		view = new View();
+
+		//Load or create a level.
+		var levelMap = loadLevel();
+		if (levelMap == null) levelMap = createLevel();
+		
+		//Play levels one by one.
+		for (;;) {
+			playLevel(levelMap);
+			++level;
+			levelMap = createLevel();
+		}
+	}
+	
+	//Creates a random level map.
+	function createLevel() {
+		var map = generateLevelMap(MAP_WIDTH, MAP_HEIGHT, MAP_BLOCK_WIDTH, MAP_BLOCK_HEIGHT, level);
+		//Save the generated level, so it can be restored after exiting the game.
+		saveLevel(map);
+		return map;
+	}
+	
+	//Play one level. The map of the level is passed.
+	function playLevel(levelMap) {
+		//Create the world for the level.
+		var world = new World(level, levelMap);
+		
+		//Tell the user about the new level and wait for a key press.
+		SwingUtilities.invokeAndWait({
+			view.setMessage("Level " + level, 100, "Press any key to start");
+			view.paintNewWorld(world);
+		});
+		waitForKey();
+		
+		//Play the world until the user successfully passes the level.
+		while (!playWorld(world)) {
+			//Failure. Create a new world (with the same level map) and try again.
+			world = new World(level, levelMap);
+			SwingUtilities.invokeAndWait({
+				view.paintNewWorld(world);
+			});
+		}
+		
+		//A little delay before exiting the level.
+		Thread.sleep(1000);
+	}
+
+	//Play a single world.
+	function playWorld(world) {
+		//Make moves until the user either passes the level or fails.
+		while (!world.gameOver && !world.levelFinished) {
+			if (!checkControl(world)) return false;
+			world.move();
+			view.paintWorld(world, MOVE_DELAY_MS);
+		}
+		
+		if (!world.gameOver) return true;
+		
+		waitForKeyMsg("Fail", 120, "Press any key to try again");
+		return false;
+	}
+	
+	//Check user input.
+	function checkControl(world) {
+		//Process all keys currently present in the view's keyboard buffer.
+		var key = view.readKey();
+		while (key != -1) {
+			//If the pressed key denotes a snake direction change, pass the new direction to the world.
+			var dir = keyToDirection(key);
+			if (dir != null && world.setDirection(dir)) break;
+			
+			//Check special keys.
+			if (key == KeyEvent.VK_SPACE) {
+				//Space - pause the game.
+				waitForKeyMsg("Pause", 120, "Press any key to continue");
+				break;
+			} else if (key == KeyEvent.VK_ESCAPE) {
+				//Escape - restart the current level on demand.
+				if (askRestart()) return false;
+			}
+			
+			key = view.readKey();
+		}
+		
+		return true;
+	}
+
+	//Ask the user if he/she wants to restart the current level.
+	function askRestart() {
+		return KeyEvent.VK_ENTER == waitForKeyMsg("Restart?", 100, "Press ENTER to restart the level");
+	}
+
+	//Show a message and wait for a key.
+	function waitForKeyMsg(message1, size1, message2) {
+		SwingUtilities.invokeLater({
+			view.setMessage(message1, size1, message2);
+			view.repaintBuffer();
+		});
+		return waitForKey();
+	}
+
+	//Wait for a key.
+	function waitForKey() {
+		var key = view.waitKey();
+		
+		SwingUtilities.invokeLater({
+			view.setMessage(null, 0, null);
+			view.repaintBuffer();
+		});
+		
+		return key;
+	}
+
+	//Convert keyboard key code to a snake direction.
+	function keyToDirection(key) {
+		if (KeyEvent.VK_UP == key) {
+			return World.DIR_UP;
+		} else if (KeyEvent.VK_DOWN == key) {
+			return  World.DIR_DOWN;
+		} else if (KeyEvent.VK_LEFT == key) {
+			return  World.DIR_LEFT;
+		} else if (KeyEvent.VK_RIGHT == key) {
+			return World.DIR_RIGHT;
+		}
+		return null;
+	}
+
+	//Loads a level information from the autosave file.
+	function loadLevel() {
+		try {
+			var in0 = new java.io.FileInputStream(AUTOSAVE_FILE_NAME);
+			try {
+				var in = new java.io.BufferedReader(new java.io.InputStreamReader(in0));
+				
+				//Read the level number.
+				var l = Integer.parseInt(in.readLine());
+				
+				//Read the snake start position.
+				var startPos = in.readLine().split(" ");
+				var startx = Integer.parseInt(startPos[0]);
+				var starty = Integer.parseInt(startPos[1]);
+				var startdx = Integer.parseInt(startPos[2]);
+				var startdy = Integer.parseInt(startPos[3]);
+				
+				//Read the map of the level.
+				var levelMap = new LevelMap();
+				levelMap.map = readMap(in);
+				levelMap.startx = startx;
+				levelMap.starty = starty;
+				levelMap.startdx = startdx;
+				levelMap.startdy = startdy;
+				level = l;
+				
+				return levelMap;
+			} finally {
+				in0.close();
+			}
+		} catch (e) {
+			//ignore.
+		}
+		
+		return null;
+	}
+	
+	//Reads a level map from an input stream.
+	function readMap(in) {
+		var map = new [WORLD_HEIGHT][WORLD_WIDTH];
+						
+		for (var y = 0; y < WORLD_HEIGHT; ++y) {
+			var line = in.readLine();
+			for (var x = 0; x < WORLD_WIDTH; ++x) {
+				var c = line.substring(x, x + 1);
+				map[y][x] = "X".equals(c);
+			}
+		}
+		
+		return map;
+	}
+
+	//Saves the current level information to the auto-save file.
+	function saveLevel(levelMap) {
+		try {
+			var out = new java.io.PrintStream(AUTOSAVE_FILE_NAME);
+			try {
+				out.println(level);
+				out.println(levelMap.startx + " " + levelMap.starty + " " + levelMap.startdx + " " + levelMap.startdy);
+				writeMap(out, levelMap);
+			} finally {
+				out.close();
+			}
+		} catch (e) {
+			//ignore.
+		}
+	}
+	
+	//Writes a level map into an output stream.
+	function writeMap(out, levelMap) {
+		for (var y = 0; y < WORLD_HEIGHT; ++y) {
+			var bld = new StringBuilder();
+			for (var x = 0; x < WORLD_WIDTH; ++x) {
+				bld.append(levelMap.map[y][x] ? "X" : "_");
+			}
+			out.println(bld);
+		}
+	}
+}
+
+//Start the game.
+new Snake();
+
+//Exit.
+System.exit(1);

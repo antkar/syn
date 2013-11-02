@@ -1,0 +1,22 @@
+@file
+	: 	"x"
+		(	"a"
+			(	str=ID
+			|	val=INTEGER
+			)
+		|	"b"
+			(	name=ID
+			|	val=STRING
+			)?
+		)
+		(	"c"
+			(	"e" param=<5>
+			|	"f"
+			)
+		|	"d"
+			(	"g" value=<true>
+			|	"h" value=<false>
+			)?
+		)?
+		"y"
+	;

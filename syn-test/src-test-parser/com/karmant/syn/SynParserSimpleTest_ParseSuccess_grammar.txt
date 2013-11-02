@@ -1,0 +1,7 @@
+@file : ( stmt ) * ;
+stmt : ID "=" expr ";" ;
+expr : expr "+" t | expr "-" t | t ;
+t : t "*" f | t "/" f | f ;
+f : "(" expr ")" | ID | INTEGER | FLOAT | STRING |
+	ID "(" params ")" ;
+params : ( expr : "," ) * ;

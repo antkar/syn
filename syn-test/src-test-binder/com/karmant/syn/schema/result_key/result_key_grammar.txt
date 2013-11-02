@@ -1,0 +1,5 @@
+@ResultKeySchema : obj=ResultKeyFoo ;
+
+ResultKeyFoo : "(" result=ResultKeyBar ")" | name=ID ;
+
+ResultKeyBar : value=INTEGER ;

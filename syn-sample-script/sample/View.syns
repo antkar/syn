@@ -1,0 +1,747 @@
+/*
+ * Copyright 2013 Anton Karmanov
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+//View. Responsible for interaction with the user.
+//-------------------------------------------------------------------------------------------------
+
+import java.awt.*;
+import java.awt.event.*;
+import java.awt.image.*;
+import javax.swing.*;
+
+//View class. Incapsulates a view.
+//
+//Uses java.awt.image.BufferStrategy to render the game world. The world is painted in an off-screen
+//java.awt.image.BufferedImage which is then flushed to the BufferStrategy and becomes visible.
+//
+//The world is rendered from scratch only initially, and then, in every frame, only small areas
+//are updated.
+class View {
+	//Interval in milliseconds for automatic repaint of the window.
+	const AUTO_REPAINT_INTERVAL_MS = 250;
+
+	//** Colors.
+	
+	const COLOR_NONE = Color.BLACK;
+	const COLOR_GRID = Color.DARK_GRAY;
+	const COLOR_WALL = Color.YELLOW.darker();
+	const COLOR_SNAKE = Color.GREEN;
+
+	//** Field size configuration.
+	
+	//Cell size in pixels.
+	var cellWidth;
+	var cellHeight;
+	
+	//Current BufferedImage size.
+	var imageWidth;
+	var imageHeight;
+	
+	//Cross width and height of snake body (i. e. thickness) in pixels.
+	var snakeWidth;
+	var snakeHeight;
+
+	//Distance in pixels from the edge of a cell to snake body.
+	var snakeXDelta;
+	var snakeYDelta;
+	
+	//** GUI-related data.
+	
+	//java.awt.Canvas.
+	var canvas;
+	
+	//java.awt.image.BufferedImage
+	var image;
+	
+	//java.awt.image.BufferStrategy
+	var buffer;
+	
+	//Last time when the display was updated. Used for auto-repaint.
+	var lastPaintTime;
+	
+	//** Misc.
+	
+	//Keyboard buffer. Contains key codes.
+	var keyBuffer = java.util.Collections.synchronizedList(new java.util.ArrayList());
+
+	//Pop-up messages.
+	var popupMessage1;
+	var popupMessageSize1;
+	var popupMessage2;
+
+	//Constructor.
+	function View() {
+		SwingUtilities.invokeAndWait({
+			init();
+		});
+	}
+	
+	//Initializes the view.
+	function init() {
+		popupMessage1 = null;
+		popupMessage2 = null;
+	
+		initKeyboard();
+		var timer = initAutoRepaintTimer();
+		initImageSize();
+		initResolution();
+		initFrame();
+		initScreenBuffer();
+		
+		//Start auto repaint timer.
+		timer.start();
+	}
+	
+	//Initializes keyboard events listener.
+	function initKeyboard() {
+        var awtListener = {
+			function eventDispatched(e) {
+				if (KeyEvent.KEY_PRESSED == e.getID()) keyBuffer.add(e.getKeyCode());
+			}
+		};
+        Toolkit.getDefaultToolkit().addAWTEventListener(awtListener, AWTEvent.KEY_EVENT_MASK);
+	}
+	
+	//Initializes auto-repaint timer task. The purpose is to guarantee that the window
+	//will be repainted peridodically even when the game is paused. This is necessary,
+	//because window image may be lost when, for instance, the window is moved or resized
+	//by the user.
+	function initAutoRepaintTimer() {
+		lastPaintTime = System.currentTimeMillis();
+		return new javax.swing.Timer((int)(AUTO_REPAINT_INTERVAL_MS / 2), {
+			var time = System.currentTimeMillis();
+			if (time - lastPaintTime >= AUTO_REPAINT_INTERVAL_MS) repaintBuffer();
+		});
+	}
+	
+	//Calculates initial image size depending on the size of the screen.
+	function initImageSize() {
+		var screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+		var canvasWidth = (int)(screenSize.getWidth() * 0.8);
+		var canvasHeight = (int)(screenSize.getHeight() * 0.8);
+
+		var aspect = (double)WORLD_WIDTH / WORLD_HEIGHT;
+		var canvasWidthAspect = (int)(canvasHeight * aspect);
+		var canvasHeightAspect = (int)(canvasWidth / aspect);
+
+		if (canvasHeightAspect > canvasHeight) canvasWidth = canvasWidthAspect;
+		if (canvasWidthAspect > canvasWidth) canvasHeight = canvasHeightAspect;
+		
+		imageWidth = canvasWidth;
+		imageHeight = canvasHeight;
+	}
+
+	//Calculates actual cell and snake sizes in pixels depending on the current size
+	//of the image.
+	function initResolution() {
+		image = new BufferedImage(imageWidth, imageHeight, BufferedImage.TYPE_INT_RGB);
+
+		cellWidth = Math.max(8.0, (double)imageWidth / WORLD_WIDTH);
+		cellHeight = Math.max(8.0,(double)imageHeight / WORLD_HEIGHT);
+		snakeWidth = (int)(cellWidth * 2 / 3);
+		snakeHeight = (int)(cellHeight * 2 / 3);
+		snakeXDelta = (int)((cellWidth - snakeWidth) / 2);
+		snakeYDelta = (int)((cellHeight - snakeHeight) / 2);
+	}
+	
+	//Initializes the window.
+	function initFrame() {
+		//Create the canvas.
+		canvas = new Canvas();
+		canvas.setPreferredSize(new Dimension(imageWidth, imageHeight));
+		canvas.setIgnoreRepaint(true);
+
+		var panel = new JPanel(new BorderLayout());
+		panel.add(canvas, BorderLayout.CENTER);
+
+		//Create the frame.
+		var frame = new JFrame("Snake");
+		frame.setIconImage(createWindowIconImage());
+		frame.setContentPane(panel);
+		frame.pack();
+		frame.setLocationRelativeTo(null);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setVisible(true);
+	}
+
+	//Creates an image used as the icon of the game window.
+	function createWindowIconImage() {
+		//Size of the icon.
+		const iconw = 32;
+		const iconh = 32;
+		
+		//Size of a cell in the icon.
+		const iconcw = 6;
+		const iconch = 6;
+	
+		var img = new BufferedImage(iconw, iconh, BufferedImage.TYPE_INT_RGB);
+		var g = img.createGraphics();
+		try {
+			//Background.
+			g.setColor(COLOR_NONE);
+			g.fillRect(0, 0, iconw, iconh);
+			
+			//Grid.
+			g.setColor(COLOR_GRID);
+			for (var x = iconcw; x < iconw; x += iconcw) g.drawLine(x, 0, x, iconh - 1);
+			for (var y = iconch; y < iconh; y += iconch) g.drawLine(0, y, iconw - 1, y);
+			
+			//Snake.
+			g.setColor(COLOR_SNAKE);
+			winIconLine(g, iconcw, iconch, 1, 0, 6, 0);
+			winIconLine(g, iconcw, iconch, 1, 0, 1, 2);
+			winIconLine(g, iconcw, iconch, 1, 2, 3, 2);
+			winIconLine(g, iconcw, iconch, 3, 2, 3, 4);
+			winIconLine(g, iconcw, iconch, -1, 4, 3, 4);
+		} finally {
+			g.dispose();
+		}
+		
+		return img;
+	}
+
+	function winIconLine(g, cw, ch, x1, y1, x2, y2) {
+		g.fillRect(x1*cw+1, y1*cw+1, (x2-x1+1)*cw-2, (y2-y1+1)*ch-2);
+	}
+	
+	//Initializes screen buffer.
+	function initScreenBuffer() {
+		canvas.createBufferStrategy(2);
+		buffer = canvas.getBufferStrategy();
+	}
+	
+	//Reads a key from the keyboard buffer. Returns -1 if the buffer is empty.
+	function readKey() {
+		if (keyBuffer.isEmpty()) return -1;
+		return keyBuffer.remove(0);
+	}
+	
+	//Waits for a key.
+	function waitKey() {
+		keyBuffer.clear();
+		for (;;) {
+			while (keyBuffer.isEmpty()) Thread.sleep(100);
+			var key = keyBuffer.remove(0);
+			if (key != KeyEvent.VK_CONTROL
+				&& key != KeyEvent.VK_SHIFT
+				&& key != KeyEvent.VK_ALT
+				&& key != KeyEvent.VK_ALT_GRAPH) return key;
+		}
+	}
+
+	//Pains a new world from scratch.
+	function paintNewWorld(world) {
+		var g = image.createGraphics();
+		try {
+			drawWorld(g, world);
+		} finally {
+			g.dispose();
+		}
+		repaintBuffer();
+	}
+	
+	//Sets the message to be displayed above the world.
+	function setMessage(message1, size1, message2) {
+		popupMessage1 = message1;
+		popupMessageSize1 = size1;
+		popupMessage2 = message2;
+	}
+
+	//Animates current move for the given time, in milliseconds. This function displays a sequence
+	//of frames, animating snake movement.
+    function paintWorld(world, delayMs) {
+		var nextTime = System.currentTimeMillis() + delayMs;
+		
+		//If the window was resized by the user, size properties must be recalculated,
+		//and the world must be painted from scratch.
+		SwingUtilities.invokeAndWait({
+			if (canvas.getWidth() != imageWidth || canvas.getHeight() != imageHeight) {
+				imageWidth = canvas.getWidth();
+				imageHeight = canvas.getHeight();
+				initResolution();
+				
+				var g = image.createGraphics();
+				try {
+					drawWorld(g, world);
+				} finally {
+					g.dispose();
+				}
+			}
+		});
+		
+		if (world.headMoved || world.tailMoved) {
+			//Snake is moving. Animate it.
+			
+			//Calculate the number of frames to be shown.
+			var pixels = cellPixelCount();
+			var frames = (MAX_FRAMES_PER_S * delayMs + 999) / 1000;
+			var steps = Math.min(pixels, frames);
+			
+			//Paint the first frame.
+			var startTime = System.currentTimeMillis();
+			paintFrame(world, 0.0, true);
+			
+			//Paint the other frames.
+			for (var s = 1; s < steps; ++s) {
+				var frameTime = (long)(startTime + (double)s * delayMs / steps);
+				var currentTime = System.currentTimeMillis();
+				if (currentTime < frameTime) {
+					Thread.sleep(frameTime - currentTime);
+					paintFrame(world, (double)s / steps, false);
+				}
+			}
+			
+			var endTime = startTime + delayMs;
+			var currentTime = System.currentTimeMillis();
+			if (currentTime < endTime) Thread.sleep(endTime - currentTime);
+		} else {
+			//No snake movement - paint only one frame.
+			paintFrame(world, 1.0, true);
+		}
+		
+		//Wait in order to not return the control earlier than was requested.
+		var currentTime = System.currentTimeMillis();
+		if (currentTime < nextTime) Thread.sleep(nextTime - currentTime);
+    }
+	
+	//Paints one snake movement frame.
+	function paintFrame(world, shift, nextStep) {
+		SwingUtilities.invokeAndWait({
+			paintFrameInSwingThread(world, shift, nextStep);
+		});
+	}
+	
+	//Paints one snake movement frame. Must be invoked in the Swing thread.
+	function paintFrameInSwingThread(world, shift, nextStep) {
+		//Update the off-screen image.
+		var g = image.createGraphics();
+		try {
+			drawWorldUpdate(g, world, shift, nextStep);
+		} finally {
+			g.dispose();
+		}
+		
+		//Now draw the image to the screen buffer.
+		repaintBuffer();
+	}
+	
+	//Draws the off-screen image to the screen buffer, and shows it.
+	function repaintBuffer() {
+		updateBuffer();
+		while (buffer.contentsLost()) {
+			updateBuffer();
+		}
+		lastPaintTime = System.currentTimeMillis();
+	}
+	
+	function updateBuffer() {
+		//This loop is necessary according to the BufferStrategy documentation.
+		paintInBuffer();
+		while (buffer.contentsRestored()) {
+			paintInBuffer();
+		}
+		buffer.show();
+	}
+	
+	//Draws the off-screen to the buffer and draws optional messages above it.
+	function paintInBuffer() {
+		var g = buffer.getDrawGraphics();
+		try {
+			//Image.
+			var w = image.getWidth();
+			var h = image.getHeight();
+			var x = (int)((imageWidth - w) / 2);
+			var y = (int)((imageHeight - h) / 2);
+			g.setColor(Color.BLACK);
+			if (x > 0) g.fillRect(0, 0, x, imageHeight);
+			if (y > 0) g.fillRect(0, 0, imageWidth, y);
+			if (x + w < imageWidth) g.fillRect(x + w, 0, imageWidth - x - w, imageHeight);
+			if (y + h < imageHeight) g.fillRect(0, y + h, imageWidth, imageHeight - y - h);
+			g.drawImage(image, x, y, null);
+			
+			//Messages.
+			if (popupMessage1 != null) drawMessage(g, popupMessageSize1, imageWidth, imageHeight, popupMessage1, popupMessage2);
+		} finally {
+			g.dispose();
+		}
+	}
+	
+	//Draws pop-up messages.
+	function drawMessage(g, fontSize, width, height, message1, message2) {
+		drawWithHighQuality(g, {
+			var ybottom = drawMessage1(g, fontSize, width, height, message1);
+			
+			if (message2 != null) {
+				var font = new Font("Monospaced", Font.BOLD, 30);
+				g.setFont(font);
+				var fm = g.getFontMetrics();
+				
+				var stringWidth = fm.stringWidth(message2);
+				var x2 = (int)((width - stringWidth) / 2);
+				var y2 = ybottom + 10 + fm.getAscent();
+				
+				g.setColor(new Color(0, 0, 0, 0x60));
+				g.fillRect(x2 - 10, y2 - fm.getAscent() - 5, stringWidth + 20, fm.getHeight() + 10);
+				g.setColor(Color.WHITE);
+				g.drawString(message2, x2, y2);
+			}
+		});
+	}
+	
+	//Draws the main pop-up message.
+	function drawMessage1(g, fontSize, width, height, message) {
+		var font = new Font("Monospaced", Font.BOLD, fontSize);
+		var textTl = new java.awt.font.TextLayout(message, font, g.getFontRenderContext());
+		var outline = textTl.getOutline(null);
+		var outlineBounds = outline.getBounds();
+		
+		var x = (width - outlineBounds.width) / 2;
+		var y = (height + outlineBounds.height) / 2;
+		
+		g.translate(x, y);
+		g.setColor(Color.BLUE);
+		g.fill(outline);
+		
+		var oldStroke = g.getStroke();
+		g.setColor(Color.WHITE);
+		g.setStroke(new BasicStroke((int)Math.max(1, (int)(fontSize / 30))));
+		g.draw(outline);
+		g.setStroke(oldStroke);
+		g.translate(-x, -y);
+
+		return y + outlineBounds.height / 2;
+	}
+
+	//Information about the previous frame. Used to find what areas of the off-screen image
+	//have to be updated.
+	var lastFoodWeight = 0;
+	var lastFoodPos = new CellPos();
+	var lastHeadMoved = false;
+	var lastTailPosValid = false;
+	var lastTailStartPos = new CellPos();
+	var lastTailEndPos = new CellPos();
+	
+	//Draws world from scratch.
+	function drawWorld(g, world) {
+		//Background.
+		g.setColor(COLOR_NONE);
+		g.fillRect(0, 0, imageWidth, imageHeight);
+		
+		//World.
+		drawGrid(g);
+		drawWalls(g, world);
+		drawFood(g, world);
+       
+        //Snake.
+		drawSnake(g, world);
+		
+		lastFoodWeight = 0;
+	}
+	
+	//Draws the grid.
+	function drawGrid(g) {
+		g.setColor(COLOR_GRID);
+		var gx1 = cellToPixelX(0);
+		var gx2 = cellToPixelX(WORLD_WIDTH);
+		for (var y = 0; y <= WORLD_HEIGHT; ++y) {
+			var cy = cellToPixelY(y);
+			g.drawLine(gx1, cy, gx2, cy);
+		}
+		
+		var gy1 = cellToPixelY(0);
+		var gy2 = cellToPixelY(WORLD_HEIGHT);
+		for (var x = 0; x <= WORLD_WIDTH; ++x) {
+			var cx = cellToPixelX(x);
+			g.drawLine(cx, gy1, cx, gy2);
+		}
+	}
+	
+	//Draws walls.
+	function drawWalls(g, world) {
+		for (var y = 0; y < WORLD_HEIGHT; ++y) {
+			for (var x = 0; x < WORLD_WIDTH; ++x) {
+				var cell = world.cells[y][x];
+				if (cell == World.CELL_WALL) {
+					paintWallCell(g, x, y);
+				}
+			}
+		}
+	}
+	
+	//Draws snake.
+	function drawSnake(g, world) {
+		lastTailPosValid = false;
+		if (world.snakeLen >= 1) {
+			if (world.snakeLen == 1) {
+				drawSnakeElement(g, world, 0, 0, 1.0);
+			} else {
+				for (var i = 1; i < world.snakeLen; ++i) {
+					drawSnakeElement(g, world, i - 1, i, 1.0);
+				}
+			}
+		}
+	}
+	
+	//Updates world image.
+	//If nextStep = true, this is the first frame of the current snake movement.
+	function drawWorldUpdate(g, world, shift, nextStep) {
+		if (nextStep) {
+			//First frame. Update food (this is not necessary for subsequent frames,
+			//since the food cannot change between two frames of the same move).
+			updateFood(g, world);
+			invalidateSnake(g, world);
+		}
+	
+		//Snake.
+		if (world.snakeLen >= 1) {
+			//Head.
+			if (world.snakeLen > 1 && world.headMoved) {
+				drawSnakeElement(g, world, 1, 0, shift);
+			}
+			
+			//Tail.
+			if (world.snakeLen > 1 && world.tailMoved) {
+				updateSnakeTail(g, world, shift, nextStep);
+			}
+			
+			drawSnakeHeadWall(g, world);
+		}
+	}
+	
+	//Updates food image.
+	function updateFood(g, world) {
+		var lastx = lastFoodPos.x;
+		var lasty = lastFoodPos.y;
+		
+		if (world.foodWeight != lastFoodWeight || world.foodPos.x != lastx || world.foodPos.y != lasty) {
+			if (lastFoodWeight != 0) {
+				paintNoneCell(g, lastx, lasty);
+				paintNoneCell(g, lastx + 1, lasty);
+				paintNoneCell(g, lastx, lasty + 1);
+				paintNoneCell(g, lastx + 1, lasty + 1);
+			}
+			
+			drawFood(g, world);
+			
+			lastFoodWeight = world.foodWeight;
+			lastFoodPos.x = world.foodPos.x;
+			lastFoodPos.y = world.foodPos.y;
+		}
+	}
+	
+	//Erases the snake tail painted in previous frame, and draws the snake head.
+	function invalidateSnake(g, world) {
+		//Snake head.
+		if (world.snakeLen > 2 && world.headMoved) {
+			drawSnakeElement(g, world, 1, 2, 1.0);
+		}
+		
+		//Snake tail.
+		if (lastTailPosValid) {
+			paintNoneCell(g, lastTailStartPos.x, lastTailStartPos.y);
+			paintNoneCell(g, lastTailEndPos.x, lastTailEndPos.y);
+			
+			if (world.snakeLen > 1) {
+				drawSnakeElement(g, world, world.snakeLen - 2, world.snakeLen - 1, 1.0);
+			} else if (world.snakeLen == 1) {
+				drawSnakeElement(g, world, world.snakeLen - 1, world.snakeLen - 1, 1.0);
+			}
+		}
+			
+		lastHeadMoved = world.headMoved;
+		lastTailPosValid = false;
+	}
+	
+	function updateSnakeTail(g, world, shift, nextStep) {
+		var tailStartPos = world.getSnakePos(world.snakeLen - 1);
+		var tailEndPos = world.getSnakePos(world.snakeLen);
+
+		paintNoneCell(g, tailStartPos.x, tailStartPos.y);
+		paintNoneCell(g, tailEndPos.x, tailEndPos.y);
+		drawSnakeElement(g, world, world.snakeLen - 1, world.snakeLen, 1.0 - shift);
+		if (world.snakeLen > 2) {
+			drawSnakeElement(g, world, world.snakeLen - 2, world.snakeLen - 1, 1.0);
+		}
+
+		if (nextStep) {
+			lastTailStartPos.x = tailStartPos.x;
+			lastTailStartPos.y = tailStartPos.y;
+			lastTailEndPos.x = tailEndPos.x;
+			lastTailEndPos.y = tailEndPos.y;
+			lastTailPosValid = true;
+		}
+	}
+	
+	//Draws the food.
+	function drawFood(g, world) {
+        if (world.foodWeight > 0) {
+            var cx = cellToPixelX(world.foodPos.x);
+            var cy = cellToPixelY(world.foodPos.y);
+            var cw = cellToPixelX(world.foodPos.x + 2) - cx - 1;
+            var ch = cellToPixelY(world.foodPos.y + 2) - cy - 1;
+
+			drawWithHighQuality(g, {
+				drawFoodCircle(g, cx, cy, cw, ch);
+				drawFoodWeight(g, world, cx, cy, cw, ch);
+			});
+        }
+	}
+	
+	function drawFoodCircle(g, cx, cy, cw, ch) {
+		var oldStroke = g.getStroke();
+		g.setStroke(new BasicStroke(3));
+		g.setColor(Color.RED.darker());
+		g.fillOval(cx + 1, cy + 1, cw - 2, ch - 2);
+		g.setColor(Color.PINK);
+		g.drawOval(cx + 1, cy + 1, cw - 2, ch - 2);
+		g.setStroke(oldStroke);
+	}
+	
+	function drawFoodWeight(g, world, cx, cy, cw, ch) {
+		var s = world.foodWeight + "";
+		
+		var font = getAppropriateFont(g, s, (int)(cw * 3 / 4), (int)(ch * 3 / 4));
+		g.setFont(font);
+		var fm = g.getFontMetrics();
+		var sw = fm.stringWidth(s);
+		var sx = cx + ((cw - sw) / 2);
+		var sy = cy + ((ch + fm.getAscent() - fm.getDescent()) / 2);
+		
+		g.setColor(Color.PINK);
+		g.drawString(s, sx, sy);
+	}
+	
+	//Draws the wall located above the snake's head. This is necessary when the snake
+	//collides with a wall.
+	function drawSnakeHeadWall(g, world) {
+		//Wall above snake's head.
+		var headPos = world.getSnakePos(0);
+		var x = headPos.x;
+		var y = headPos.y;
+		if (world.cells[y][x] == World.CELL_WALL) {
+			paintWallCell(g, x, y);
+		}
+	}
+	
+	//Draws an empty cell (no snake, no wall).
+	function paintNoneCell(g, x, y) {
+		g.setColor(COLOR_NONE);
+		var cx = cellToPixelX(x);
+		var cy = cellToPixelY(y);
+		var cw = cellToPixelX(x + 1) - cx;
+		var ch = cellToPixelY(y + 1) - cy;
+		g.fillRect(cx, cy, cw, ch);
+		g.setColor(COLOR_GRID);
+		g.drawLine(cx, cy, cx, cy + ch - 1);
+		g.drawLine(cx, cy, cx + cw - 1, cy);
+	}
+	
+	//Draws a wall cell.
+	function paintWallCell(g, x, y) {
+		g.setColor(COLOR_WALL);
+		var cx = cellToPixelX(x);
+		var cy = cellToPixelY(y);
+		var cw = cellToPixelX(x + 1) - cx;
+		var ch = cellToPixelY(y + 1) - cy;
+		g.fillRect(cx, cy, cw, ch);
+	}
+	
+	//Finds out the appropriate font size to make a string occupy the specified
+	//rectangle.
+	function getAppropriateFont(g, s, w, h) {
+		var fontsize = 6;
+		var font = new Font("Dialog", Font.BOLD, fontsize);
+		var resfont = font;
+		for (;;) {
+			g.setFont(font);
+			var fm = g.getFontMetrics();
+			var sw = fm.stringWidth(s);
+			var sh = fm.getAscent() + fm.getDescent();
+			if (sw >= w || sh >= h) return resfont;
+			resfont = font;
+			++fontsize;
+			font = new Font("Dialog", Font.BOLD, fontsize);
+		}
+	}
+
+	//Draws snake body element.
+	function drawSnakeElement(g, world, index1, index2, shift) {
+		var pos1 = world.getSnakePos(index1);
+		var pos2 = world.getSnakePos(index2);
+		drawSnakeElement0(g, pos1, pos2, COLOR_SNAKE, shift);
+	}
+	
+	function drawSnakeElement0(g, pos1, pos2, c, shift) {
+		if (shift == 0.0) return;
+	
+		var cx1 = cellToPixelX(pos1.x);
+		var cy1 = cellToPixelY(pos1.y);
+		var cx2 = cellToPixelX(pos2.x);
+		var cy2 = cellToPixelY(pos2.y);
+		
+		if (shift < 1.0) {
+			if (cx1 != cx2) {
+				cx2 = cx1 + (int)((double)(cx2-cx1)*shift);
+			} else {
+				cy2 = cy1 + (int)((double)(cy2-cy1)*shift);
+			}
+		}
+
+		g.setColor(c);
+		drawSnakeElementRectangle(g, cx1, cy1, cx2, cy2);
+	}
+	
+	function drawSnakeElementRectangle(g, sx1, sy1, sx2, sy2) {
+		var tx1 = (int)(Math.min(sx1, sx2) + snakeXDelta);
+		var ty1 = (int)(Math.min(sy1, sy2) + snakeYDelta);
+		var tx2 = (int)(Math.max(sx1, sx2) + cellWidth - snakeXDelta + 1);
+		var ty2 = (int)(Math.max(sy1, sy2) + cellHeight - snakeYDelta + 1);
+		fillRect(g, tx1, ty1, tx2, ty2);
+	}
+	
+	//Configures the Graphics to use high quality rendering and invokes the specified block.
+	//Then restores original Graphics settings.
+	function drawWithHighQuality(g, block) {
+		var oldRenderingValue = g.getRenderingHint(RenderingHints.KEY_RENDERING);
+		var oldAntialiasingValue = g.getRenderingHint(RenderingHints.KEY_ANTIALIASING);
+		var oldTextAntialiasing = g.getRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING);
+		g.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+		g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_LCD_HRGB);
+
+		block();
+		
+		g.setRenderingHint(RenderingHints.KEY_RENDERING, oldRenderingValue);
+		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, oldAntialiasingValue);
+		g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, oldTextAntialiasing);
+	}
+	
+    function fillRect(g, x1, y1, x2, y2) {
+        g.fillRect(x1, y1, x2 - x1, y2 - y1);
+    }
+	
+	function cellPixelCount() {
+		return (int)Math.max(cellWidth, cellHeight);
+	}
+	
+	function cellToPixelX(x) {
+		return (int)(x * cellWidth);
+	}
+	
+	function cellToPixelY(y) {
+		return (int)(y * cellHeight);
+	}
+}

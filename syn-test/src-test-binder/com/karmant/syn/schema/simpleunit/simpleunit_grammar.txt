@@ -1,0 +1,11 @@
+@SimpleUnit
+	: sfEntities=( SimpleEntity ) *
+	;
+
+SimpleEntity
+	: "entity" sfName=ID "{" sfMembers=( SimpleMember )* "}"
+	;
+
+SimpleMember
+	: sfName=ID sfPos=":" sfType=ID ";"
+	;
