@@ -33,14 +33,15 @@ limitations under the License.
 		<ant dir="../syn" antfile="build.xml" target="build-debug"/>
 
     	<mkdir dir="${dst-dir}"/>
-		<copy file="../syn/bld/dst/syn-${build.version}.jar" todir="${dst-dir}"/>
+    	<mkdir dir="${dst-dir}/tmp"/>
+		<copy file="../syn/bld/dst/syn-${build.version}.jar" todir="${dst-dir}/tmp"/>
 		
     	<mkdir dir="${bin-dir}"/>
-    	<javac srcdir="." destdir="${bin-dir}" classpath="${dst-dir}/syn-${build.version}.jar" debug="on">
+    	<javac srcdir="." destdir="${bin-dir}" classpath="${dst-dir}/tmp/syn-${build.version}.jar" debug="on">
     		<include name="src/**/*.java"/>
     	</javac>
     	
-		<jar destfile="${dst-dir}/synscript-${build.version}.jar">
+		<jar destfile="${dst-dir}/tmp/syn-sample-script-${build.version}.jar">
 			<manifest>
 				<attribute name="Main-Class" value="com.karmant.syn.sample.script.ScriptMain"/>
 				<attribute name="Class-Path" value="syn-${build.version}.jar"/>
@@ -53,15 +54,19 @@ limitations under the License.
 			</fileset>
 		</jar>
 		
-		<mkdir dir="${dst-dir}/sample"/>
-		<copy todir="${dst-dir}/sample">
+		<mkdir dir="${dst-dir}/tmp/sample"/>
+		<copy todir="${dst-dir}/tmp/sample">
 			<fileset dir="sample" includes="*.syns"/>
 		</copy>
 		
-		<echo file="${dst-dir}/sample.cmd">@echo off
+		<echo file="${dst-dir}/tmp/sample.cmd">@echo off
 cd %~dp0
-java -jar synscript-1.0.jar sample/Snake.syns sample/Level.syns sample/World.syns sample/View.syns
+java -jar syn-sample-script-1.0.jar sample/Snake.syns sample/Level.syns sample/World.syns sample/View.syns
 </echo>
+		
+		<!-- TODO: sources -->
+		
+		<zip basedir="${dst-dir}/tmp" destfile="${dst-dir}/syn-sample-${build.version}.zip"/>
 	</target>
 
 </project>
