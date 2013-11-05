@@ -7,22 +7,15 @@ Syn - a configurable parser for context-free grammars, written in Java.
 
 Features:
 * Grammar is set at run time, not at compile time.
-* An extended BNF notation is used for the grammar. Example:
-```
-	ListOfIntegers : (INTEGER : ",")+ ;
-```
-	^ matches a comma-separated list of integer numbers.
+* An extended BNF notation is used for the grammar.
 * Generation of an abstract syntax tree (AST) with attributes:
-```
-	VariableDefinition : name=ID "=" value=Expression ;
-```
 * Mapping AST nodes to objects of arbitrary Java classes (see below).
 * Uses GLR parsing algorithm.
 
 ## Getting Started
 
 Consider a fragment of a grammar:
-```
+```Java
 Statement : IfStatement | OtherStatement ;
 IfStatement : "if" "(" expr=Expression ")" tStmt=Statement ("else" fStmt=Statement)? ;
 ```
