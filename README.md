@@ -8,7 +8,7 @@ Syn - a configurable parser for context-free grammars, written in Java.
 Features:
 * Grammar is set at run time, not at compile time.
 * An extended BNF notation is used for the grammar.
-* Generation of an abstract syntax tree (AST) with attributes:
+* Generation of an abstract syntax tree (AST) with attributes.
 * Mapping AST nodes to objects of arbitrary Java classes (see below).
 * Uses GLR parsing algorithm.
 
@@ -54,4 +54,6 @@ Statement statement = binder.parse(text);
 statement.execute();
 ```
 
-See SynBinder and SynParser classes documentation for more details.
+See [SynBinder](http://antkar.github.io/syn/javadoc/com/karmant/syn/SynBinder.html)
+and [SynParser](http://antkar.github.io/syn/javadoc/com/karmant/syn/SynParser.html) classes documentation
+for more details.
