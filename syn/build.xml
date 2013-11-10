@@ -20,6 +20,7 @@ limitations under the License.
 	<property name="release-bin-dir" value="bld/bin-release"/>
 	<property name="debug-bin-dir" value="bld/bin-debug"/>
 	<property name="dst-dir" value="bld/dst"/>
+	<property name="javadoc-dir" value="bld/javadoc"/>
 	
 	<loadproperties srcFile="build.properties" prefix="build."/>
 	
@@ -29,9 +30,10 @@ limitations under the License.
     	<delete dir="${release-bin-dir}"/>
     	<delete dir="${debug-bin-dir}"/>
     	<delete dir="${dst-dir}"/>
+    	<delete dir="${javadoc-dir}"/>
 	</target>
 
-	<target name="build" depends="build-release,build-debug,source"/>
+	<target name="build" depends="build-release,build-debug,source,javadoc"/>
 
 	<target name="build-release">
     	<antcall target="build-configuration">
@@ -88,4 +90,12 @@ limitations under the License.
 		<zip basedir="${dst-dir}/src" destfile="${dst-dir}/syn-${build.version}-src.zip"/>
 	</target>
 
+	<target name="javadoc">
+		<javadoc destdir="${javadoc-dir}">
+			<fileset dir=".">
+				<include name="src-*/**/*.java"/>
+			</fileset>
+		</javadoc>
+	</target>
+	
 </project>

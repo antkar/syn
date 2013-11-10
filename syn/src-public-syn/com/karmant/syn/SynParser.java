@@ -429,7 +429,7 @@ public class SynParser {
 	 * @return the Abstract Syntax Tree.
 	 * @throws SynException if parsing fails.
 	 * 
-	 * @see {@link #parse(String, Reader)}
+	 * @see #parse(String, Reader)
 	 */
 	public SynResult parse(
 			String startNonterminal,

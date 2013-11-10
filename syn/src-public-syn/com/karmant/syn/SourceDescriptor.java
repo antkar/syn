@@ -16,7 +16,7 @@
 package com.karmant.syn;
 
 /**
- * Source code (e. g. input) descriptor. Used in {@link TextPos}.
+ * Source code (input) descriptor. Used in {@link TextPos}.
  * 
  * @see TextPos
  * @see StringSourceDescriptor
