@@ -263,7 +263,7 @@ public class SynBinder<T> {
 	 * @throws SynBinderException if Java objects instantiation or initialization fails.
 	 * @throws SynException if parsing fails.
 	 * 
-	 * @see {@link #parse(Reader)}
+	 * @see #parse(Reader)
 	 */
 	public T parse(Reader textReader, SourceDescriptor textDescriptor) throws SynException {
 		if (textReader == null) {
@@ -390,7 +390,7 @@ public class SynBinder<T> {
 	 * @return the token stream.
 	 * @throws SynException if stream reading fails.
 	 * 
-	 * @see {@link SynParser#createTokenStream(Reader, SourceDescriptor)}
+	 * @see SynParser#createTokenStream(Reader, SourceDescriptor)
 	 */
 	public TokenStream createTokenStream(SourceDescriptor textDescriptor, Reader reader) throws SynException {
 		return synParser.createTokenStream(reader, textDescriptor);

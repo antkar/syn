@@ -27,10 +27,6 @@ import java.util.ListIterator;
  * Implements {@link java.util.List List&lt;SynNode&gt;} for reasons of convenience.
  * Modification attempts cause {@link UnsupportedOperationException}.
  */
-/**
- * @author a.karmanov
- *
- */
 public class ArrayNode extends SynNode implements List<SynNode> {
 	private final List<SynNode> list;
 	
