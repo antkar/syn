@@ -51,7 +51,7 @@ public final class ScriptExecutor {
 	 * @param scope the root scope.
 	 * @param source the script source code.
 	 * @throws SynException if a syntax error occurs.
-	 * @throws SynsException if a script run-time error occurs.
+	 * @throws SynsException if a script runtime error occurs.
 	 */
 	public static void execute(ScriptScope scope, String source) throws SynException, SynsException {
 		Script script = BINDER.parse(source);
@@ -67,7 +67,7 @@ public final class ScriptExecutor {
 	 * @param stdout the stream where to redirect the standard output to.
 	 * @param stderr the stream where to redirect the standard error to.
 	 * @throws SynException if a syntax error occurs.
-	 * @throws SynsException if a script run-time error occurs.
+	 * @throws SynsException if a script runtime error occurs.
 	 */
 	public static void execute(
 			ScriptScope scope,

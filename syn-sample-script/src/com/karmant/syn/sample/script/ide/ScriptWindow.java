@@ -49,7 +49,7 @@ class ScriptWindow {
 		this.ide = ide;
 		
 		//Create components.
-		frame = new JFrame("Binder Sample");
+		frame = new JFrame("Script");
 		sourceCodeEditor = new SourceCodeEditor(scannerFactory);
 		console = new ConsoleComponent();
 		btnExecute = new JButton("Execute");

@@ -66,7 +66,7 @@ public class TryStatement extends Statement {
 			//to be thrown.
 			return handleException(scope, e.getCause(), e);
 		} catch (SynsException e) {
-			//Script run-time exception. Has to be passed to the catch block directly, and thrown,
+			//Script runtime exception. Has to be passed to the catch block directly, and thrown,
 			//if there is no catch block.
 			return handleException(scope, e, e);
 		} catch (RuntimeException | Error e) {

@@ -21,6 +21,7 @@ limitations under the License.
 	<property name="debug-bin-dir" value="bld/bin-debug"/>
 	<property name="dst-dir" value="bld/dst"/>
 	<property name="javadoc-dir" value="bld/javadoc"/>
+	<property name="bld-src-dir" value="bld/src"/>
 	
 	<loadproperties srcFile="build.properties" prefix="build."/>
 	
@@ -53,7 +54,7 @@ limitations under the License.
 	
 	<target name="build-configuration">
     	<mkdir dir="${param-bin-dir}"/>
-    	<javac srcdir="." destdir="${param-bin-dir}" debug="${param-debug}">
+    	<javac srcdir="." destdir="${param-bin-dir}" debug="${param-debug}" includeAntRuntime="no">
     		<include name="src-*/**/*.java"/>
     	</javac>
 		
@@ -74,9 +75,9 @@ limitations under the License.
 	</target>
 	
 	<target name="source">
-    	<mkdir dir="${dst-dir}/src"/>
+    	<mkdir dir="${bld-src-dir}"/>
 		
-		<copy todir="${dst-dir}/src">
+		<copy todir="${bld-src-dir}">
 			<fileset dir=".">
 				<include name="src-*/**/*.java"/>
 				<include name="src-*/**/*.dtd"/>
@@ -87,7 +88,7 @@ limitations under the License.
 			<cutdirsmapper dirs="1"/>
 		</copy>
 		
-		<zip basedir="${dst-dir}/src" destfile="${dst-dir}/syn-${build.version}-src.zip"/>
+		<zip basedir="${bld-src-dir}" destfile="${dst-dir}/syn-${build.version}-src.zip"/>
 	</target>
 
 	<target name="javadoc">
