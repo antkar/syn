@@ -68,10 +68,14 @@ limitations under the License.
 			<cutdirsmapper dirs="1"/>
 		</copy>
     	
-    	<mkdir dir="${dst-dir}"/>
-		<jar destfile="${dst-dir}/${param-jar-file}-${build.version}.jar">
+		<jar destfile="bld/${param-jar-file}-${build.version}.jar">
 			<fileset dir="${param-bin-dir}"/>
 		</jar>
+		
+		<mkdir dir="${dst-dir}"/>
+		<zip destfile="${dst-dir}/${param-jar-file}-${build.version}.zip">
+			<zipfileset file="bld/${param-jar-file}-${build.version}.jar" prefix="syn-${build.version}"/>
+		</zip>
 	</target>
 	
 	<target name="source">
