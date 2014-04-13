@@ -18,6 +18,7 @@ package com.karmant.syn.sample.script.rt.value;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.lang.reflect.Proxy;
 import java.util.Arrays;
 import java.util.Collections;
@@ -87,7 +88,15 @@ final class BlockToJavaAdapter {
 						method);
 			}
 			
-			putMethodToMap(javaInterface, method, map);
+			int modifiers = method.getModifiers();
+			if (Modifier.isAbstract(modifiers)) {
+				//In Java 8, an interface can contain non-abstract methods: static methods and
+				//default methods. For simplicity such methods are ignored, otherwise, for instance,
+				//it is impossible to implement java.util.Comparator, because it has overloaded
+				//static and default methods. (Implementing an interface which has overloaded methods
+				//is not supported for simplicity reasons, too.)
+				putMethodToMap(javaInterface, method, map);
+			}
 		}
 		
 		return map;
