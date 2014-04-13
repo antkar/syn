@@ -53,7 +53,7 @@ public final class IDE {
 	private static final String DEFAULT_SCRIPT =
 			"import javax.swing.JOptionPane.*;\n" +
 			"\n" +
-			"showMessageDialog(null, 'Hello, world!', 'Message', INFORMATION_MESSAGE);\n";
+			"showMessageDialog(null, 'Hello World', 'Message', INFORMATION_MESSAGE);\n";
 
 	private final ScriptWindow window;
 	

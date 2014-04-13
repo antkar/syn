@@ -121,8 +121,8 @@ import java.util.List;
  * <td><code>STRING</code></td>
  * <td>String literal enclosed in single or double quotes. Can contain escape sequences.</td>
  * <td><code>
- * 'Hello, world!'<br/>
- * "Hello, world!\n"
+ * 'Hello World!'<br/>
+ * "Hello World!\n"
  * </code></td>
  * </tr>
  * </table>

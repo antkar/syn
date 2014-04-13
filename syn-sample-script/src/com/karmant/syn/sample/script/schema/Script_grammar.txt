@@ -32,6 +32,10 @@ Import
 	|	"import" synNames=(ID : ".")+ "." "*" synOnDemand=<true> ";"
 	;
 
+//
+//Declarations.
+//
+
 Declaration
 	:	VariableDeclaration
 	|	ConstantDeclaration
@@ -59,7 +63,11 @@ ClassDeclaration
 ClassMemberDeclaration
 	:	synDeclaration=Declaration
 	;
-	
+
+//
+//Statements.
+//
+
 Statement
 	:	VariableDeclarationStatement
 	|	LimitedStatement
@@ -160,6 +168,10 @@ TryStatement
 ThrowStatement
 	:	synPos="throw" synExpression=Expression ";"
 	;
+
+//
+//Expressions.
+//
 
 Expression
 	:	AssignmentExpression
