@@ -6,7 +6,7 @@ Syn
 Syn - a configurable parser for context-free grammars, written in Java.
 
 Features:
-* Grammar is set at run time, not at compile time.
+* Grammar is set at runtime, not at compile time.
 * An extended BNF notation is used for the grammar.
 * Generation of an abstract syntax tree (AST) with attributes.
 * Mapping AST nodes to objects of arbitrary Java classes (see below).
