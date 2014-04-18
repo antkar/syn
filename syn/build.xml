@@ -25,38 +25,38 @@ limitations under the License.
 	
 	<loadproperties srcFile="build.properties" prefix="build."/>
 	
-    <target name="default" depends="clean,build"/>
+	<target name="default" depends="clean,build"/>
 	
 	<target name="clean">
-    	<delete dir="${release-bin-dir}"/>
-    	<delete dir="${debug-bin-dir}"/>
-    	<delete dir="${dst-dir}"/>
-    	<delete dir="${javadoc-dir}"/>
+		<delete dir="${release-bin-dir}"/>
+		<delete dir="${debug-bin-dir}"/>
+		<delete dir="${dst-dir}"/>
+		<delete dir="${javadoc-dir}"/>
 	</target>
 
 	<target name="build" depends="build-release,build-debug,source,javadoc"/>
 
 	<target name="build-release">
-    	<antcall target="build-configuration">
-    		<param name="param-bin-dir" value="${release-bin-dir}"/>
-    		<param name="param-jar-file" value="syn-nodebug"/>
-    		<param name="param-debug" value="no"/>
-    	</antcall>
+		<antcall target="build-configuration">
+			<param name="param-bin-dir" value="${release-bin-dir}"/>
+			<param name="param-jar-file" value="syn-nodebug"/>
+			<param name="param-debug" value="no"/>
+		</antcall>
 	</target>
 
 	<target name="build-debug">
-    	<antcall target="build-configuration">
-    		<param name="param-bin-dir" value="${debug-bin-dir}"/>
-    		<param name="param-jar-file" value="syn"/>
-    		<param name="param-debug" value="yes"/>
-    	</antcall>
+		<antcall target="build-configuration">
+			<param name="param-bin-dir" value="${debug-bin-dir}"/>
+			<param name="param-jar-file" value="syn"/>
+			<param name="param-debug" value="yes"/>
+		</antcall>
 	</target>
 	
 	<target name="build-configuration">
-    	<mkdir dir="${param-bin-dir}"/>
-    	<javac srcdir="." destdir="${param-bin-dir}" debug="${param-debug}" includeAntRuntime="no">
-    		<include name="src-*/**/*.java"/>
-    	</javac>
+		<mkdir dir="${param-bin-dir}"/>
+		<javac srcdir="." destdir="${param-bin-dir}" debug="${param-debug}" includeAntRuntime="no">
+			<include name="src-*/**/*.java"/>
+		</javac>
 		
 		<copy todir="${param-bin-dir}">
 			<fileset dir=".">
@@ -67,7 +67,7 @@ limitations under the License.
 			
 			<cutdirsmapper dirs="1"/>
 		</copy>
-    	
+		
 		<jar destfile="bld/${param-jar-file}-${build.version}.jar">
 			<fileset dir="${param-bin-dir}"/>
 		</jar>
@@ -79,7 +79,7 @@ limitations under the License.
 	</target>
 	
 	<target name="source">
-    	<mkdir dir="${bld-src-dir}"/>
+		<mkdir dir="${bld-src-dir}"/>
 		
 		<copy todir="${bld-src-dir}">
 			<fileset dir=".">
