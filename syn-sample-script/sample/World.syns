@@ -14,193 +14,193 @@
  * limitations under the License.
  */
 
-//World. Responsible for game physics.
-//-------------------------------------------------------------------------------------------------
+// World. Responsible for game physics.
+// -------------------------------------------------------------------------------------------------
 
-//A cell position.
+// A cell position.
 class CellPos {
     var x;
     var y;
 }
 
-//World.
+// World.
 class World {
-	//Types of cells.
+    // Types of cells.
     const CELL_NONE = 0;
     const CELL_WALL = 1;
     const CELL_SNAKE = 2;
     const CELL_FOOD = 3;
 
-	//Snake movement directions.
+    // Snake movement directions.
     const DIR_UP = 0;
     const DIR_DOWN = 1;
     const DIR_LEFT = 2;
     const DIR_RIGHT = 3;
 
-	//Projections of the movement vector to X and Y axes for all directions.
+    // Projections of the movement vector to X and Y axes for all directions.
     const DX = [ 0, 0, -1, 1 ];
     const DY = [ -1, 1, 0, 0 ];
-	
-	//Opposite directions table.
-	const OPP = [ DIR_DOWN, DIR_UP, DIR_RIGHT, DIR_LEFT ];
+    
+    // Opposite directions table.
+    const OPP = [ DIR_DOWN, DIR_UP, DIR_RIGHT, DIR_LEFT ];
 
-	//Current level number.
-	var level;
-	
-	//2D array of world cells. Contains cell types (CELL_??? constants).
+    // Current level number.
+    var level;
+    
+    // 2D array of world cells. Contains cell types (CELL_??? constants).
     var cells;
-	
-	//Array of snake element positions. Elements are organized into a ring.
+    
+    // Array of snake element positions. Elements are organized into a ring.
     var snakePos;
-	//Snake head element offset in the snakePos array.
-	var snakeHeadOfs;
-	//Current snake length in cells.
+    // Snake head element offset in the snakePos array.
+    var snakeHeadOfs;
+    // Current snake length in cells.
     var snakeLen;
-	//Current snake head direction.
+    // Current snake head direction.
     var snakeDir;
-	//Current snake "capacity" - the length which the snake has to grow to. 
+    // Current snake "capacity" - the length which the snake has to grow to. 
     var snakeCapacity;
-	
-	//Current food position.
+    
+    // Current food position.
     var foodPos;
-	//Current food weight.
+    // Current food weight.
     var foodWeight;
-	//java.util.Random for food generation.
-	var foodRnd;
-	
-	//true, if the snake head moved in last move() call.
-	var headMoved;
-	//true, if the snake tail moved in last move() call.
-	var tailMoved;
-	
-	//true, if the snake has collided with a wall.
-	var gameOver;
-	//true, if the snake has eaten the last food portion in the current level.
-	var levelFinished;
-	
+    // java.util.Random for food generation.
+    var foodRnd;
+    
+    // true, if the snake head moved in last move() call.
+    var headMoved;
+    // true, if the snake tail moved in last move() call.
+    var tailMoved;
+    
+    // true, if the snake has collided with a wall.
+    var gameOver;
+    // true, if the snake has eaten the last food portion in the current level.
+    var levelFinished;
+    
     function World(alevel, levelMap) {
-		level = alevel;
-		initCells(levelMap);
-		initSnake(levelMap);
-		
-		foodRnd = new java.util.Random();
+        level = alevel;
+        initCells(levelMap);
+        initSnake(levelMap);
+        
+        foodRnd = new java.util.Random();
         foodPos = new CellPos();
         createFood(1);
-		
-		headMoved = false;
-		tailMoved = false;
-		gameOver = false;
-		levelFinished = false;
+        
+        headMoved = false;
+        tailMoved = false;
+        gameOver = false;
+        levelFinished = false;
     }
-	
-	//Initializes world cells according to the level map.
-	function initCells(levelMap) {
+    
+    // Initializes world cells according to the level map.
+    function initCells(levelMap) {
         cells = new [WORLD_HEIGHT][WORLD_WIDTH];
         for (var y = 0; y < WORLD_HEIGHT; ++y) {
             for (var x = 0; x < WORLD_WIDTH; ++x) {
-				cells[y][x] = levelMap.map[y][x] ? CELL_WALL : CELL_NONE;
+                cells[y][x] = levelMap.wallMatrix[y][x] ? CELL_WALL : CELL_NONE;
             }
         }
-	}
-	
-	//Initializes the snake position.
-	function initSnake(levelMap) {
+    }
+    
+    // Initializes the snake position.
+    function initSnake(levelMap) {
         snakePos = new [MAX_SNAKE_LEN + 1];
         for (var i = 0; i < snakePos.length; ++i) {
             snakePos[i] = new CellPos();
         }
        
-		snakeHeadOfs = 0;
+        snakeHeadOfs = 0;
         snakeLen = 1;
         snakeCapacity = MIN_SNAKE_LEN;
-		snakePos[0].y = levelMap.starty;
-		snakePos[0].x = levelMap.startx;
-        cells[levelMap.starty][levelMap.startx] = CELL_SNAKE;
+        snakePos[0].y = levelMap.startLocation.y;
+        snakePos[0].x = levelMap.startLocation.x;
+        cells[levelMap.startLocation.y][levelMap.startLocation.x] = CELL_SNAKE;
         
-		snakeDir = levelMap.startdx != 0
-			? (levelMap.startdx < 0 ? DIR_LEFT : DIR_RIGHT)
-			: (levelMap.startdy < 0 ? DIR_UP : DIR_DOWN);
-	}
-	
-	//Sets snake head's direction.
-	function setDirection(dir) {
-		if (dir != snakeDir && dir != OPP[snakeDir]) {
-			snakeDir = dir;
-			return true;
-		}
-		return false;
-	}
-	
-	//Single move of a snake. Moves the snake's head by one cell, and moves the tail,
-	//if the snake does not have to grow.
+        snakeDir = levelMap.startDirection.x != 0
+            ? (levelMap.startDirection.x < 0 ? DIR_LEFT : DIR_RIGHT)
+            : (levelMap.startDirection.y < 0 ? DIR_UP : DIR_DOWN);
+    }
+    
+    // Sets snake head's direction.
+    function setDirection(dir) {
+        if (dir != snakeDir && dir != OPP[snakeDir]) {
+            snakeDir = dir;
+            return true;
+        }
+        return false;
+    }
+    
+    // Single move of a snake. Moves the snake's head by one cell, and moves the tail,
+    // if the snake does not have to grow.
     function move() {
-		headMoved = false;
-		tailMoved = false;
-		
+        headMoved = false;
+        tailMoved = false;
+        
         if (snakeLen <= snakeCapacity) {
-			//The snake is not too long, so its head can move.
-			var cell = moveSnakeHead();
+            // The snake is not too long, so its head can move.
+            var cell = moveSnakeHead();
             if (cell == CELL_FOOD) {
-				//Food reached.
-				eatFood();
+                // Food reached.
+                eatFood();
             } else if (cell != CELL_NONE) {
-				//Collision with a wall.
+                // Collision with a wall.
                 gameOver = true;
             }
         }
         
         if (!gameOver && snakeLen > snakeCapacity) {
-			//The snake is not too short, so the tail can move.
-			moveSnakeTail();
+            // The snake is not too short, so the tail can move.
+            moveSnakeTail();
         }
     }
-	
-	//Moves the snake head to an adjacent cell.
-	function moveSnakeHead() {
-		++snakeLen;
-		--snakeHeadOfs;
-		if (snakeHeadOfs < 0) snakeHeadOfs = snakePos.length - 1;
-		
-		var oldHeadPos = getSnakePos(1);
-		var sy = oldHeadPos.y + DY[snakeDir];
-		var sx = oldHeadPos.x + DX[snakeDir];
-		
-		var headPos = getSnakePos(0);
-		headPos.y = sy;
-		headPos.x = sx;
+    
+    // Moves the snake head to an adjacent cell.
+    function moveSnakeHead() {
+        ++snakeLen;
+        --snakeHeadOfs;
+        if (snakeHeadOfs < 0) snakeHeadOfs = snakePos.length - 1;
+        
+        var oldHeadPos = getSnakePos(1);
+        var sy = oldHeadPos.y + DY[snakeDir];
+        var sx = oldHeadPos.x + DX[snakeDir];
+        
+        var headPos = getSnakePos(0);
+        headPos.y = sy;
+        headPos.x = sx;
 
-		var cell = cells[sy][sx];
-		if (cell != CELL_WALL) cells[sy][sx] = CELL_SNAKE;
-		
-		headMoved = true;
-		
-		return cell;
-	}
-	
-	//Moves the snake tail.
-	function moveSnakeTail() {
-		var tailPos = getSnakePos(snakeLen - 1);
-		cells[tailPos.y][tailPos.x] = CELL_NONE;
-		--snakeLen;
-		tailMoved = true;
-	}
-	
-	//Makes the snake eat the food. Increases the snake's capacity and generates a new food,
-	//if it was not the last one in the level.
-	function eatFood() {
-		removeFood();
-		snakeCapacity = Math.min(MAX_SNAKE_LEN, snakeCapacity + (int)(FOOD_LENGTH*foodWeight));
-		
-		var nextWeight = foodWeight + 1;
-		foodWeight = 0;
-		if (nextWeight <= MAX_FOOD) {
-			createFood(nextWeight);
-		} else {
-			levelFinished = true;
-		}
-	}
+        var cell = cells[sy][sx];
+        if (cell != CELL_WALL) cells[sy][sx] = CELL_SNAKE;
+        
+        headMoved = true;
+        
+        return cell;
+    }
+    
+    // Moves the snake tail.
+    function moveSnakeTail() {
+        var tailPos = getSnakePos(snakeLen - 1);
+        cells[tailPos.y][tailPos.x] = CELL_NONE;
+        --snakeLen;
+        tailMoved = true;
+    }
+    
+    // Makes the snake eat the food. Increases the snake's capacity and generates a new food,
+    // if it was not the last one in the level.
+    function eatFood() {
+        removeFood();
+        snakeCapacity = Math.min(MAX_SNAKE_LEN, snakeCapacity + (int)(FOOD_LENGTH*foodWeight));
+        
+        var nextWeight = foodWeight + 1;
+        foodWeight = 0;
+        if (nextWeight <= MAX_FOOD) {
+            createFood(nextWeight);
+        } else {
+            levelFinished = true;
+        }
+    }
 
-	//Creates a food in a random position.
+    // Creates a food in a random position.
     function createFood(weight) {
         for (var i = 0; i < 100; ++i) {
             var y = foodRnd.nextInt(WORLD_HEIGHT - 1);
@@ -222,7 +222,7 @@ class World {
         }
     }
 
-	//Removes the current food from the world.
+    // Removes the current food from the world.
     function removeFood() {
         var fy = foodPos.y;
         var fx = foodPos.x;
@@ -235,12 +235,12 @@ class World {
     function removeFoodAt(y, x) {
         if (cells[y][x] == CELL_FOOD) cells[y][x] = CELL_NONE;
     }
-	
-	//Returns the position of the snake's element at the given offset relative to the
-	//snake's head.
-	function getSnakePos(ofs) {
-		ofs += snakeHeadOfs;
-		if (ofs >= snakePos.length) ofs -= snakePos.length;
-		return snakePos[ofs];
-	}
+    
+    // Returns the position of the snake's element at the given offset relative to the
+    // snake's head.
+    function getSnakePos(ofs) {
+        ofs += snakeHeadOfs;
+        if (ofs >= snakePos.length) ofs -= snakePos.length;
+        return snakePos[ofs];
+    }
 }

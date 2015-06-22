@@ -14,330 +14,330 @@
  * limitations under the License.
  */
  
-/*
- * Script Language grammar for SynBinder.
- */
+//
+// Script Language grammar for SynBinder.
+//
 
 @Script
-	:	synBlock=Block
-	;
+    :    synBlock=Block
+    ;
 
 Block
-	:	synImports=(Import)* synDeclarations=(Declaration)*
-		(synFirstStatement=LimitedStatement synNextStatements=(Statement)*)?
-	;
+    :   synImports=(Import)* synDeclarations=(Declaration)*
+        (synFirstStatement=LimitedStatement synNextStatements=(Statement)*)?
+    ;
 
 Import
-	:	"import" synNames=(ID : ".")+ ";"
-	|	"import" synNames=(ID : ".")+ "." "*" synOnDemand=<true> ";"
-	;
+    :   "import" synNames=(ID : ".")+ ";"
+    |   "import" synNames=(ID : ".")+ "." "*" synOnDemand=<true> ";"
+    ;
 
 //
-//Declarations.
+// Declarations.
 //
 
 Declaration
-	:	VariableDeclaration
-	|	ConstantDeclaration
-	|	FunctionDeclaration
-	|	ClassDeclaration
-	;
+    :   VariableDeclaration
+    |   ConstantDeclaration
+    |   FunctionDeclaration
+    |   ClassDeclaration
+    ;
 
 VariableDeclaration
-	:	synPos="var" synName=ID ("=" synExpression=Expression)? ";"
-	;
-	
+    :   synPos="var" synName=ID ("=" synExpression=Expression)? ";"
+    ;
+    
 ConstantDeclaration
-	:	synPos="const" synName=ID "=" synExpression=Expression ";"
-	;
+    :   synPos="const" synName=ID "=" synExpression=Expression ";"
+    ;
 
 FunctionDeclaration
-	:	synPos="function" synName=ID "(" synParameters=(ID : ",")* ")"
-		"{" synBlock=Block "}"
-	;
-	
+    :   synPos="function" synName=ID "(" synParameters=(ID : ",")* ")"
+        "{" synBlock=Block "}"
+    ;
+    
 ClassDeclaration
-	:	synPos="class" synName=ID "{" synMembers=(ClassMemberDeclaration)* "}"
-	;
-	
+    :   synPos="class" synName=ID "{" synMembers=(ClassMemberDeclaration)* "}"
+    ;
+    
 ClassMemberDeclaration
-	:	synDeclaration=Declaration
-	;
+    :   synDeclaration=Declaration
+    ;
 
 //
-//Statements.
+// Statements.
 //
 
 Statement
-	:	VariableDeclarationStatement
-	|	LimitedStatement
-	;
-	
+    :   VariableDeclarationStatement
+    |   LimitedStatement
+    ;
+    
 LimitedStatement
-	:	EmptyStatement
-	|	ExpressionStatement
-	|	IfStatement
-	|	WhileStatement
-	|	ForStatement
-	|	BlockStatement
-	|	ContinueStatement
-	|	BreakStatement
-	|	ReturnStatement
-	|	TryStatement
-	|	ThrowStatement
-	;
+    :   EmptyStatement
+    |   ExpressionStatement
+    |   IfStatement
+    |   WhileStatement
+    |   ForStatement
+    |   BlockStatement
+    |   ContinueStatement
+    |   BreakStatement
+    |   ReturnStatement
+    |   TryStatement
+    |   ThrowStatement
+    ;
 
 EmptyStatement
-	:	synPos=";"
-	;
+    :   synPos=";"
+    ;
 
 VariableDeclarationStatement
-	:	synDeclaration=VariableDeclaration
-	|	synDeclaration=ConstantDeclaration
-	;
+    :   synDeclaration=VariableDeclaration
+    |   synDeclaration=ConstantDeclaration
+    ;
 
 ExpressionStatement
-	:	synExpression=Expression ";"
-	;
-	
+    :   synExpression=Expression ";"
+    ;
+    
 IfStatement
-	:	synPos="if" "(" synExpression=Expression ")" synTrueStatement=LimitedStatement
-		("else" synFalseStatement=LimitedStatement)?
-	;
+    :   synPos="if" "(" synExpression=Expression ")" synTrueStatement=LimitedStatement
+        ("else" synFalseStatement=LimitedStatement)?
+    ;
 
 WhileStatement
-	:	synPos="while" "(" synExpression=Expression ")" synStatement=LimitedStatement
-	;
-	
+    :   synPos="while" "(" synExpression=Expression ")" synStatement=LimitedStatement
+    ;
+    
 ForStatement
-	:	RegularForStatement
-	|	ForEachStatement
-	;
-	
+    :   RegularForStatement
+    |   ForEachStatement
+    ;
+    
 RegularForStatement
-	:	synPos="for" "(" synInit=(ForInit)? ";" synExpression=(Expression)? ";"
-		synUpdate=(Expression : ",")* ")" synStatement=LimitedStatement
-	;
-	
+    :   synPos="for" "(" synInit=(ForInit)? ";" synExpression=(Expression)? ";"
+        synUpdate=(Expression : ",")* ")" synStatement=LimitedStatement
+    ;
+    
 ForEachStatement
-	:	synPos="for" "(" synNewVariable=("var")? synVariable=ID ":" synExpression=Expression ")"
-		synStatement=LimitedStatement
-	;
+    :   synPos="for" "(" synNewVariable=("var")? synVariable=ID ":" synExpression=Expression ")"
+        synStatement=LimitedStatement
+    ;
 
 ForInit
-	:	VariableForInit
-	|	ExpressionForInit
-	;
-	
+    :   VariableForInit
+    |   ExpressionForInit
+    ;
+    
 VariableForInit
-	:	"var" synVariables=(ForVariableDeclaration : ",")+
-	;
-	
+    :   "var" synVariables=(ForVariableDeclaration : ",")+
+    ;
+    
 ForVariableDeclaration
-	:	synName=ID "=" synExpression=Expression
-	;
-	
+    :   synName=ID "=" synExpression=Expression
+    ;
+    
 ExpressionForInit
-	:	synExpressions=(Expression : ",")+
-	;
+    :   synExpressions=(Expression : ",")+
+    ;
 
 BlockStatement
-	:	synPos="{" synBlock=Block "}"
-	;
+    :   synPos="{" synBlock=Block "}"
+    ;
 
 ContinueStatement
-	:	synPos="continue" ";"
-	;
-	
+    :   synPos="continue" ";"
+    ;
+    
 BreakStatement
-	:	synPos="break" ";"
-	;
-	
+    :   synPos="break" ";"
+    ;
+    
 ReturnStatement
-	:	synPos="return" synReturnValue=(Expression)? ";"
-	;
-	
+    :   synPos="return" synReturnValue=(Expression)? ";"
+    ;
+    
 TryStatement
-	:	synPos="try" synTryStatement=BlockStatement
-		"catch" "(" synCatchVariable=ID ")" synCatchStatement=BlockStatement
-		("finally" synFinallyStatement=BlockStatement)?
-	|	synPos="try" synTryStatement=BlockStatement
-		"finally" synFinallyStatement=BlockStatement
-	;
-	
+    :   synPos="try" synTryStatement=BlockStatement
+        "catch" "(" synCatchVariable=ID ")" synCatchStatement=BlockStatement
+        ("finally" synFinallyStatement=BlockStatement)?
+    |   synPos="try" synTryStatement=BlockStatement
+        "finally" synFinallyStatement=BlockStatement
+    ;
+    
 ThrowStatement
-	:	synPos="throw" synExpression=Expression ";"
-	;
+    :   synPos="throw" synExpression=Expression ";"
+    ;
 
 //
-//Expressions.
+// Expressions.
 //
 
 Expression
-	:	AssignmentExpression
-	;
-	
+    :   AssignmentExpression
+    ;
+    
 AssignmentExpression
-	:	ConditionalExpression
-	|	synLeft=TerminalExpression synOp="=" synRight=AssignmentExpression
-	|	synLeft=TerminalExpression synOp="+=" synRight=AssignmentExpression
-	|	synLeft=TerminalExpression synOp="-=" synRight=AssignmentExpression
-	|	synLeft=TerminalExpression synOp="*=" synRight=AssignmentExpression
-	|	synLeft=TerminalExpression synOp="/=" synRight=AssignmentExpression
-	|	synLeft=TerminalExpression synOp="%=" synRight=AssignmentExpression
-	|	synLeft=TerminalExpression synOp="&=" synRight=AssignmentExpression
-	|	synLeft=TerminalExpression synOp="|=" synRight=AssignmentExpression
-	;
-	
+    :   ConditionalExpression
+    |   synLeft=TerminalExpression synOp="=" synRight=AssignmentExpression
+    |   synLeft=TerminalExpression synOp="+=" synRight=AssignmentExpression
+    |   synLeft=TerminalExpression synOp="-=" synRight=AssignmentExpression
+    |   synLeft=TerminalExpression synOp="*=" synRight=AssignmentExpression
+    |   synLeft=TerminalExpression synOp="/=" synRight=AssignmentExpression
+    |   synLeft=TerminalExpression synOp="%=" synRight=AssignmentExpression
+    |   synLeft=TerminalExpression synOp="&=" synRight=AssignmentExpression
+    |   synLeft=TerminalExpression synOp="|=" synRight=AssignmentExpression
+    ;
+    
 
 ConditionalExpression
-	:	OrExpression
-	|	synCondition=OrExpression
-		"?" synTrueExpression=Expression
-		":" synFalseExpression=ConditionalExpression
-	;
-	
+    :   OrExpression
+    |   synCondition=OrExpression
+        "?" synTrueExpression=Expression
+        ":" synFalseExpression=ConditionalExpression
+    ;
+    
 OrExpression
-	:	AndExpression
-	|	synLeft=OrExpression synOp="||" synRight=AndExpression
-	;
+    :   AndExpression
+    |   synLeft=OrExpression synOp="||" synRight=AndExpression
+    ;
 
 AndExpression
-	:	EqExpression
-	|	synLeft=AndExpression synOp="&&" synRight=EqExpression
-	;
+    :   EqExpression
+    |   synLeft=AndExpression synOp="&&" synRight=EqExpression
+    ;
 
 EqExpression
-	:	RelExpression
-	|	synLeft=EqExpression synOp="==" synRight=RelExpression
-	|	synLeft=EqExpression synOp="!=" synRight=RelExpression
-	;
+    :   RelExpression
+    |   synLeft=EqExpression synOp="==" synRight=RelExpression
+    |   synLeft=EqExpression synOp="!=" synRight=RelExpression
+    ;
 
 RelExpression
-	:	AddExpression
-	|	synLeft=RelExpression synOp="<" synRight=AddExpression
-	|	synLeft=RelExpression synOp=">" synRight=AddExpression
-	|	synLeft=RelExpression synOp="<=" synRight=AddExpression
-	|	synLeft=RelExpression synOp=">=" synRight=AddExpression
-	;
+    :   AddExpression
+    |   synLeft=RelExpression synOp="<" synRight=AddExpression
+    |   synLeft=RelExpression synOp=">" synRight=AddExpression
+    |   synLeft=RelExpression synOp="<=" synRight=AddExpression
+    |   synLeft=RelExpression synOp=">=" synRight=AddExpression
+    ;
 
 AddExpression
-	:	MulExpression
-	|	synLeft=AddExpression synOp="+" synRight=MulExpression
-	|	synLeft=AddExpression synOp="-" synRight=MulExpression
-	;
+    :   MulExpression
+    |   synLeft=AddExpression synOp="+" synRight=MulExpression
+    |   synLeft=AddExpression synOp="-" synRight=MulExpression
+    ;
 
 MulExpression
-	:	PrefixExpression
-	|	synLeft=MulExpression synOp="*" synRight=PrefixExpression
-	|	synLeft=MulExpression synOp="/" synRight=PrefixExpression
-	|	synLeft=MulExpression synOp="%" synRight=PrefixExpression
-	;
-	
+    :   PrefixExpression
+    |   synLeft=MulExpression synOp="*" synRight=PrefixExpression
+    |   synLeft=MulExpression synOp="/" synRight=PrefixExpression
+    |   synLeft=MulExpression synOp="%" synRight=PrefixExpression
+    ;
+    
 PrefixExpression
-	:	PostfixExpression
-	|	ExplicitCastExpression
-	|	synOp="+" synExpression=PostfixExpression
-	|	synOp="-" synExpression=PostfixExpression
-	|	synOp="++" synExpression=PostfixExpression
-	|	synOp="--" synExpression=PostfixExpression
-	|	synOp="!" synExpression=PostfixExpression
-	;
-	
+    :   PostfixExpression
+    |   ExplicitCastExpression
+    |   synOp="+" synExpression=PostfixExpression
+    |   synOp="-" synExpression=PostfixExpression
+    |   synOp="++" synExpression=PostfixExpression
+    |   synOp="--" synExpression=PostfixExpression
+    |   synOp="!" synExpression=PostfixExpression
+    ;
+    
 ExplicitCastExpression
-	:	synPos="(" synType=PrimitiveType ")" synExpression=PostfixExpression
-	; 
-	
+    :   synPos="(" synType=PrimitiveType ")" synExpression=PostfixExpression
+    ; 
+    
 PrimitiveType
-	:	synType="int"
-	|	synType="long"
-	|	synType="double"
-	;
+    :   synType="int"
+    |   synType="long"
+    |   synType="double"
+    ;
 
 PostfixExpression
-	:	TerminalExpression
-	|	synExpression=TerminalExpression synOp="++"
-	|	synExpression=TerminalExpression synOp="--"
-	;
-	
+    :   TerminalExpression
+    |   synExpression=TerminalExpression synOp="++"
+    |   synExpression=TerminalExpression synOp="--"
+    ;
+    
 TerminalExpression
-	:	NameExpression
-	|	SubTerminalExpression
-	;
-	
+    :   NameExpression
+    |   SubTerminalExpression
+    ;
+    
 SubTerminalExpression
-	:	"(" result=Expression ")"
-	|	MemberExpression
-	|	FunctionExpression
-	|	NewClassExpression
-	|	NewArrayExpression
-	|	ArrayExpression
-	|	BlockExpression
-	|	SubscriptExpression
-	|	LiteralExpression
-	;
-	
+    :   "(" result=Expression ")"
+    |   MemberExpression
+    |   FunctionExpression
+    |   NewClassExpression
+    |   NewArrayExpression
+    |   ArrayExpression
+    |   BlockExpression
+    |   SubscriptExpression
+    |   LiteralExpression
+    ;
+    
 MemberExpression
-	:	synObject=SubTerminalExpression "." synName=ID
-	;
-	
+    :   synObject=SubTerminalExpression "." synName=ID
+    ;
+    
 FunctionExpression
-	:	synFunction=TerminalExpression "(" synArguments=(Expression : ",")* ")"
-	;
-	
+    :   synFunction=TerminalExpression "(" synArguments=(Expression : ",")* ")"
+    ;
+    
 NewClassExpression
-	:	synPos="new" synTypeName=(ID : ".")+ "(" synArguments=(Expression : ",")* ")"
-	;
-	
+    :   synPos="new" synTypeName=(ID : ".")+ "(" synArguments=(Expression : ",")* ")"
+    ;
+    
 NewArrayExpression
-	:	synPos="new" synDimensions=(ArrayDimension)+
-	;
-	
+    :   synPos="new" synDimensions=(ArrayDimension)+
+    ;
+    
 ArrayDimension
-	:	"[" synLength=Expression "]"
-	;
+    :   "[" synLength=Expression "]"
+    ;
 
 ArrayExpression
-	:	synPos="[" synExpressions=(Expression : ",")* "]"
-	;
+    :   synPos="[" synExpressions=(Expression : ",")* "]"
+    ;
 
 BlockExpression
-	:	synPos="{" synBlock=Block "}"
-	;
-	
+    :   synPos="{" synBlock=Block "}"
+    ;
+    
 SubscriptExpression
-	:	synArray=TerminalExpression "[" synIndex=Expression "]"
-	;
+    :   synArray=TerminalExpression "[" synIndex=Expression "]"
+    ;
 
 NameExpression
-	:	synNames=(ID : ".")+
-	;
+    :   synNames=(ID : ".")+
+    ;
 
 LiteralExpression
-	:	IntegerLiteralExpression
-	|	FloatingPointLiteralExpression
-	|	StringLiteralExpression
-	|	NullExpression
-	|	BooleanLiteralExpression
-	;
-	
+    :   IntegerLiteralExpression
+    |   FloatingPointLiteralExpression
+    |   StringLiteralExpression
+    |   NullExpression
+    |   BooleanLiteralExpression
+    ;
+    
 IntegerLiteralExpression
-	:	synValue=INTEGER
-	;
-	
+    :   synValue=INTEGER
+    ;
+    
 FloatingPointLiteralExpression
-	:	synValue=FLOAT
-	;
+    :   synValue=FLOAT
+    ;
 
 StringLiteralExpression
-	:	synValue=STRING
-	;
+    :   synValue=STRING
+    ;
 
 NullExpression
-	:	synPos="null"
-	;
-	
+    :   synPos="null"
+    ;
+    
 BooleanLiteralExpression
-	:	synPos="true" synValue=<true>
-	|	synPos="false" synValue=<false>
-	;
+    :   synPos="true" synValue=<true>
+    |   synPos="false" synValue=<false>
+    ;
