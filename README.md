@@ -69,7 +69,7 @@ Features:
 * Access to Java library classes.
 * Possibility to implement Java interfaces.
 
-See the [Syn grammar of the language](https://github.com/antkar/syn/blob/master/syn-sample-script/src/com/karmant/syn/sample/script/schema/Script_grammar.txt).
+See the [Syn grammar of the language](https://github.com/antkar/syn/blob/master/syn-sample-script/src/org/antkar/syn/sample/script/schema/Script_grammar.txt).
 
 ### Code Examples
 
