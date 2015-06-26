@@ -48,7 +48,7 @@ limitations under the License.
         
         <jar destfile="${tmp-dir}/${dst-jar-file}">
             <manifest>
-                <attribute name="Main-Class" value="com.karmant.syn.sample.script.ScriptMain"/>
+                <attribute name="Main-Class" value="org.antkar.syn.sample.script.ScriptMain"/>
                 <attribute name="Class-Path" value="syn-${build.version}.jar"/>
             </manifest>
             
@@ -96,7 +96,7 @@ limitations under the License.
         <echo file="${tmp-dir}/script.${fileExt}">${header}
 java -jar ${runDir}${dst-jar-file} ${allArgs}</echo>
         <echo file="${tmp-dir}/console.${fileExt}">${header}
-java -cp ${runDir}${dst-jar-file} com.karmant.syn.sample.script.ide.IDEMain</echo>
+java -cp ${runDir}${dst-jar-file} org.antkar.syn.sample.script.ide.IDEMain</echo>
         <echo file="${tmp-dir}/snake.${fileExt}">${header}
 ${runDir}script.${fileExt} ${runDir}snake/Snake.syns ${runDir}snake/Level.syns ${runDir}snake/World.syns ${runDir}snake/View.syns</echo>
     </target>
