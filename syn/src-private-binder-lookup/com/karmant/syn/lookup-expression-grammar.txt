@@ -19,15 +19,15 @@
  */
 
 @Expression
-	: relExpressions=(RelExpression : "&&")+
-	;
+    : relExpressions=(RelExpression : "&&")+
+    ;
 
 RelExpression
-	: left=TermExpression op="==" right=TermExpression
-	| left=TermExpression op="!=" right=TermExpression
-	;
+    : left=TermExpression op="==" right=TermExpression
+    | left=TermExpression op="!=" right=TermExpression
+    ;
 
 TermExpression
-	: name=ID type=<"id">
-	| baseExpression=TermExpression "." name=ID type=<"field">
-	;
+    : name=ID type=<"id">
+    | baseExpression=TermExpression "." name=ID type=<"field">
+    ;

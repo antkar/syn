@@ -27,41 +27,41 @@ import com.karmant.syn.sample.script.util.MiscUtil;
  * Script function expression syntax node.
  */
 public class FunctionExpression extends TerminalExpression {
-	/** The expression which has to be treated as a function. */
-	@SynField
-	private Expression synFunction;
-	
-	/** Actual arguments. */
-	@SynField
-	private Expression[] synArguments;
+    /** The expression which has to be treated as a function. */
+    @SynField
+    private Expression synFunction;
+    
+    /** Actual arguments. */
+    @SynField
+    private Expression[] synArguments;
 
-	public FunctionExpression(){}
-	
-	@Override
-	TextPos getStartTextPos() {
-		return synFunction.getStartTextPos();
-	}
+    public FunctionExpression(){}
+    
+    @Override
+    TextPos getStartTextPos() {
+        return synFunction.getStartTextPos();
+    }
 
-	@Override
-	Value evaluate0(ScriptScope scope) throws SynsException {
-		Value functionValue = synFunction.evaluate(scope);
-		
-		RValue[] argumentValues = new RValue[synArguments.length];
-		for (int i = 0; i < argumentValues.length; ++i) {
-			Value argumentValue = synArguments[i].evaluate(scope);
-			argumentValues[i] = argumentValue.toRValue();
-		}
-		
-		return functionValue.call(argumentValues);
-	}
-	
-	@Override
-	public String toString() {
-		StringBuilder bld = new StringBuilder();
-		bld.append(synFunction);
-		bld.append("( ");
-		MiscUtil.appendArray(bld, synArguments, ", ");
-		bld.append(" )");
-		return bld + "";
-	}
+    @Override
+    Value evaluate0(ScriptScope scope) throws SynsException {
+        Value functionValue = synFunction.evaluate(scope);
+        
+        RValue[] argumentValues = new RValue[synArguments.length];
+        for (int i = 0; i < argumentValues.length; ++i) {
+            Value argumentValue = synArguments[i].evaluate(scope);
+            argumentValues[i] = argumentValue.toRValue();
+        }
+        
+        return functionValue.call(argumentValues);
+    }
+    
+    @Override
+    public String toString() {
+        StringBuilder bld = new StringBuilder();
+        bld.append(synFunction);
+        bld.append("( ");
+        MiscUtil.appendArray(bld, synArguments, ", ");
+        bld.append(" )");
+        return bld + "";
+    }
 }

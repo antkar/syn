@@ -22,46 +22,46 @@ import java.util.Map;
  * Scanner configuration. Defines what tokens have to be recognized by a lexical analyzer.
  */
 class ScannerConfiguration {
-	private final boolean floatingPoint;
-	private final Map<String, TokenDescriptor> keywordMap;
-	private final KeycharTreeNode keycharTreeRoot;
-	
-	ScannerConfiguration(
-			boolean floatingPoint,
-			Map<String, TokenDescriptor> keywordMap,
-			KeycharTreeNode keycharTreeRoot) 
-	{
-		assert keywordMap != null;
-		assert keycharTreeRoot != null;
-		
-		//Initialize fields.
-		this.floatingPoint = floatingPoint;
-		this.keywordMap = Collections.unmodifiableMap(keywordMap);
-		this.keycharTreeRoot = keycharTreeRoot;		
-	}
-	
-	/**
-	 * Finds a keyword by its literal.
-	 * @return the keyword token descriptor, or <code>null</code>, if there is no such keyword.
-	 */
-	TokenDescriptor getKeyword(String literal) {
-		assert literal != null;
-		TokenDescriptor tokenDescriptor = keywordMap.get(literal);
-		return tokenDescriptor;
-	}
-	
-	/**
-	 * Returns the root node of the key-character tree.
-	 */
-	KeycharTreeNode getKeycharTreeRoot() {
-		return keycharTreeRoot;
-	}
-	
-	/**
-	 * @return <code>true</code> if floating point literal token is used in the grammar, indicating that
-	 * lexical analyzer must support floating-point numbers.
-	 */
-	boolean isFloatingPoint() {
-		return floatingPoint;
-	}
+    private final boolean floatingPoint;
+    private final Map<String, TokenDescriptor> keywordMap;
+    private final KeycharTreeNode keycharTreeRoot;
+    
+    ScannerConfiguration(
+            boolean floatingPoint,
+            Map<String, TokenDescriptor> keywordMap,
+            KeycharTreeNode keycharTreeRoot) 
+    {
+        assert keywordMap != null;
+        assert keycharTreeRoot != null;
+        
+        //Initialize fields.
+        this.floatingPoint = floatingPoint;
+        this.keywordMap = Collections.unmodifiableMap(keywordMap);
+        this.keycharTreeRoot = keycharTreeRoot;
+    }
+    
+    /**
+     * Finds a keyword by its literal.
+     * @return the keyword token descriptor, or <code>null</code>, if there is no such keyword.
+     */
+    TokenDescriptor getKeyword(String literal) {
+        assert literal != null;
+        TokenDescriptor tokenDescriptor = keywordMap.get(literal);
+        return tokenDescriptor;
+    }
+    
+    /**
+     * Returns the root node of the key-character tree.
+     */
+    KeycharTreeNode getKeycharTreeRoot() {
+        return keycharTreeRoot;
+    }
+    
+    /**
+     * @return <code>true</code> if floating point literal token is used in the grammar, indicating that
+     * lexical analyzer must support floating-point numbers.
+     */
+    boolean isFloatingPoint() {
+        return floatingPoint;
+    }
 }

@@ -22,16 +22,16 @@ package com.karmant.syn;
  * @param <T> the type of the value returned by processing methods.
  */
 interface EbnfElementProcessor<T> {
-	
-	T processValueElement(EbnfValueElement element) throws SynException;
+    
+    T processValueElement(EbnfValueElement element) throws SynException;
 
-	T processNonterminalElement(EbnfNonterminalElement element) throws SynException;
+    T processNonterminalElement(EbnfNonterminalElement element) throws SynException;
 
-	T processTerminalElement(EbnfTerminalElement element) throws SynException;
+    T processTerminalElement(EbnfTerminalElement element) throws SynException;
 
-	T processOptionalElement(EbnfOptionalElement element) throws SynException;
+    T processOptionalElement(EbnfOptionalElement element) throws SynException;
 
-	T processNestedElement(EbnfNestedElement element) throws SynException;
+    T processNestedElement(EbnfNestedElement element) throws SynException;
 
-	T processRepetitionElement(EbnfRepetitionElement element) throws SynException;
+    T processRepetitionElement(EbnfRepetitionElement element) throws SynException;
 }

@@ -19,20 +19,20 @@ package com.karmant.syn;
  * {@link StringToken} bound type.
  */
 class StringTokenBoundType extends AbstractBoundType {
-	private final BoundType innerType;
+    private final BoundType innerType;
 
-	StringTokenBoundType(BoundType innerType) {
-		super(StringToken.class);
-		this.innerType = innerType;
-	}
+    StringTokenBoundType(BoundType innerType) {
+        super(StringToken.class);
+        this.innerType = innerType;
+    }
 
-	@Override
-	Object convertNode(BinderEngine<?> engine, SynNode synNode, BoundObject bObjOwner, String key)
-			throws SynBinderException
-	{
-		TextPos pos = ((TerminalNode)synNode).getPos();
-		String str = (String)innerType.convertNode(engine, synNode, bObjOwner, key);
-		StringToken token = new StringToken(pos, str);
-		return token;
-	}
+    @Override
+    Object convertNode(BinderEngine<?> engine, SynNode synNode, BoundObject bObjOwner, String key)
+            throws SynBinderException
+    {
+        TextPos pos = ((TerminalNode)synNode).getPos();
+        String str = (String)innerType.convertNode(engine, synNode, bObjOwner, key);
+        StringToken token = new StringToken(pos, str);
+        return token;
+    }
 }

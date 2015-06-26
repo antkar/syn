@@ -22,41 +22,41 @@ import java.lang.reflect.InvocationTargetException;
  * Wraps a Java {@link Constructor}.
  */
 class JavaConstructor extends JavaAbstractMethod {
-	private final Constructor<?> constructor;
-	
-	JavaConstructor(Constructor<?> constructor) {
-		this.constructor = constructor;
-	}
+    private final Constructor<?> constructor;
+    
+    JavaConstructor(Constructor<?> constructor) {
+        this.constructor = constructor;
+    }
 
-	@Override
-	boolean isVarArgs() {
-		return constructor.isVarArgs();
-	}
+    @Override
+    boolean isVarArgs() {
+        return constructor.isVarArgs();
+    }
 
-	@Override
-	boolean isStatic() {
-		return true;
-	}
-	
-	@Override
-	boolean isVoid() {
-		return false;
-	}
+    @Override
+    boolean isStatic() {
+        return true;
+    }
+    
+    @Override
+    boolean isVoid() {
+        return false;
+    }
 
-	@Override
-	Class<?>[] getParameterTypes() {
-		return constructor.getParameterTypes();
-	}
+    @Override
+    Class<?>[] getParameterTypes() {
+        return constructor.getParameterTypes();
+    }
 
-	@Override
-	Object invokeJava(Object obj, Object[] arguments)
-			throws InvocationTargetException, InstantiationException, IllegalAccessException
-	{
-		return constructor.newInstance(arguments);
-	}
-	
-	@Override
-	public String toString() {
-		return constructor + "";
-	}
+    @Override
+    Object invokeJava(Object obj, Object[] arguments)
+            throws InvocationTargetException, InstantiationException, IllegalAccessException
+    {
+        return constructor.newInstance(arguments);
+    }
+    
+    @Override
+    public String toString() {
+        return constructor + "";
+    }
 }

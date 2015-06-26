@@ -24,9 +24,9 @@ import org.junit.runners.Suite.SuiteClasses;
  */
 @RunWith(Suite.class)
 @SuiteClasses({
-	LightSuite.class,
-	SynParserJdkTest.class
+    LightSuite.class,
+    SynParserJdkTest.class
 })
 public class SynSuite {
-	private SynSuite(){}
+    private SynSuite(){}
 }

@@ -20,22 +20,22 @@ package com.karmant.syn;
  */
 class LookupEqExpression extends LookupRelExpression {
 
-	LookupEqExpression(
-			LookupEqualityChecker equalityChecker,
-			LookupTermExpression left,
-			LookupTermExpression right)
-	{
-		super(equalityChecker, left, right);
-	}
+    LookupEqExpression(
+            LookupEqualityChecker equalityChecker,
+            LookupTermExpression left,
+            LookupTermExpression right)
+    {
+        super(equalityChecker, left, right);
+    }
 
-	@Override
-	boolean calcResult(boolean equal) {
-		return equal;
-	}
-	
-	@Override
-	public String toString() {
-		return getLeft() + " == " + getRight();
-	}
-	
+    @Override
+    boolean calcResult(boolean equal) {
+        return equal;
+    }
+    
+    @Override
+    public String toString() {
+        return getLeft() + " == " + getRight();
+    }
+    
 }

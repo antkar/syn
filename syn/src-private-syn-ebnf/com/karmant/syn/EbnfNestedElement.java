@@ -20,20 +20,20 @@ package com.karmant.syn;
  * Nested EBNF element. Simply a set of productions enclosed in parentheses.
  */
 class EbnfNestedElement extends EbnfEmbeddedElement {
-	EbnfNestedElement(String key, TextPos keyPos, EbnfProductions body) {
-		super(key, keyPos, body);
-	}
+    EbnfNestedElement(String key, TextPos keyPos, EbnfProductions body) {
+        super(key, keyPos, body);
+    }
 
-	@Override
-	BnfElement convert(EbnfToBnfConverter converter, String currentNt) throws SynException {
-		boolean hasEmbeddedObject = hasEmbeddedObject();
-		BnfNonterminal bNonterminal = converter.convertProductionsToNonterminal(
-				currentNt, getBody().asList(), hasEmbeddedObject);
-		return bNonterminal;
-	}
+    @Override
+    BnfElement convert(EbnfToBnfConverter converter, String currentNt) throws SynException {
+        boolean hasEmbeddedObject = hasEmbeddedObject();
+        BnfNonterminal bNonterminal = converter.convertProductionsToNonterminal(
+                currentNt, getBody().asList(), hasEmbeddedObject);
+        return bNonterminal;
+    }
 
-	@Override
-	<T> T invokeProcessor(EbnfElementProcessor<T> processor) throws SynException {
-		return processor.processNestedElement(this);
-	}
+    @Override
+    <T> T invokeProcessor(EbnfElementProcessor<T> processor) throws SynException {
+        return processor.processNestedElement(this);
+    }
 }

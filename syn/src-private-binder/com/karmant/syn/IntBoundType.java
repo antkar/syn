@@ -21,41 +21,41 @@ import java.lang.reflect.Field;
  * Primitive <code>int</code> bound type.
  */
 class IntBoundType extends BoundType {
-	static final BoundType INSTANCE = new IntBoundType();
-	
-	private IntBoundType(){}
+    static final BoundType INSTANCE = new IntBoundType();
+    
+    private IntBoundType(){}
 
-	@Override
-	Object convertNode(BinderEngine<?> engine, SynNode synNode, BoundObject bObjOwner, String key)
-			throws SynBinderException
-	{
-		int value = extractValue(synNode);
-		return value;
-	}
+    @Override
+    Object convertNode(BinderEngine<?> engine, SynNode synNode, BoundObject bObjOwner, String key)
+            throws SynBinderException
+    {
+        int value = extractValue(synNode);
+        return value;
+    }
 
-	@Override
-	BoundType getArrayType(Field field) throws SynBinderException {
-		return IntArrayBoundType.INSTANCE;
-	}
+    @Override
+    BoundType getArrayType(Field field) throws SynBinderException {
+        return IntArrayBoundType.INSTANCE;
+    }
 
-	static int extractValue(SynNode synNode) throws SynBinderException {
-		ValueNode valueNode = (ValueNode) synNode;
-		if (valueNode == null) {
-			throw new SynBinderException("Cannot bind null value to an int field");
-		}
-		
-		int value = extractValue0(valueNode);
-		return value;
-	}
+    static int extractValue(SynNode synNode) throws SynBinderException {
+        ValueNode valueNode = (ValueNode) synNode;
+        if (valueNode == null) {
+            throw new SynBinderException("Cannot bind null value to an int field");
+        }
+        
+        int value = extractValue0(valueNode);
+        return value;
+    }
 
-	static int extractValue0(ValueNode valueNode) throws SynBinderException {
-		long lValue = valueNode.getLong();
-		
-		if (lValue < Integer.MIN_VALUE || lValue > Integer.MAX_VALUE) {
-			throw new SynBinderException(String.format("Cannot bind value %d to an int field", lValue));
-		}
-		
-		int value = (int) lValue;
-		return value;
-	}
+    static int extractValue0(ValueNode valueNode) throws SynBinderException {
+        long lValue = valueNode.getLong();
+        
+        if (lValue < Integer.MIN_VALUE || lValue > Integer.MAX_VALUE) {
+            throw new SynBinderException(String.format("Cannot bind value %d to an int field", lValue));
+        }
+        
+        int value = (int) lValue;
+        return value;
+    }
 }

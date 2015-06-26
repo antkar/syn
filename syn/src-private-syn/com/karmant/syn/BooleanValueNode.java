@@ -19,54 +19,54 @@ package com.karmant.syn;
  * Boolean value node. Contains a value of type <code>boolean</code>.
  */
 class BooleanValueNode extends ValueNode {
-	/**
-	 * <code>true</code> value.
-	 */
-	static final BooleanValueNode TRUE = new BooleanValueNode(true);
-	
-	/**
-	 * <code>false</code> value.
-	 */
-	static final BooleanValueNode FALSE = new BooleanValueNode(false);
-	
-	/**
-	 * The value. Not <code>null</code>. A wrapper type is used in order to avoid boxing in the
-	 * {@link #getValue()} method.
-	 */
-	private final Boolean value;
+    /**
+     * <code>true</code> value.
+     */
+    static final BooleanValueNode TRUE = new BooleanValueNode(true);
+    
+    /**
+     * <code>false</code> value.
+     */
+    static final BooleanValueNode FALSE = new BooleanValueNode(false);
+    
+    /**
+     * The value. Not <code>null</code>. A wrapper type is used in order to avoid boxing in the
+     * {@link #getValue()} method.
+     */
+    private final Boolean value;
 
-	private BooleanValueNode(boolean value) {
-		super(null);
-		this.value = value;
-	}
-	
-	/**
-	 * Returns the instance for the specified <code>boolean</code> value.
-	 * 
-	 * @param value the <code>boolean</code> value.
-	 * @return the instance.
-	 */
-	static BooleanValueNode getInstance(boolean value) {
-		return value ? TRUE : FALSE;
-	}
-	
-	@Override
-	public boolean getBoolean() {
-		return value;
-	}
-	
-	@Override
-	public SynValueType getValueType() {
-		return SynValueType.BOOLEAN;
-	}
+    private BooleanValueNode(boolean value) {
+        super(null);
+        this.value = value;
+    }
+    
+    /**
+     * Returns the instance for the specified <code>boolean</code> value.
+     * 
+     * @param value the <code>boolean</code> value.
+     * @return the instance.
+     */
+    static BooleanValueNode getInstance(boolean value) {
+        return value ? TRUE : FALSE;
+    }
+    
+    @Override
+    public boolean getBoolean() {
+        return value;
+    }
+    
+    @Override
+    public SynValueType getValueType() {
+        return SynValueType.BOOLEAN;
+    }
 
-	@Override
-	public Object getValue() {
-		return value;
-	}
+    @Override
+    public Object getValue() {
+        return value;
+    }
 
-	@Override
-	public TokenDescriptor getTokenDescriptor() {
-		return null;
-	}
+    @Override
+    public TokenDescriptor getTokenDescriptor() {
+        return null;
+    }
 }

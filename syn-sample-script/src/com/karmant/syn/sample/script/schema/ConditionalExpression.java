@@ -25,35 +25,35 @@ import com.karmant.syn.sample.script.rt.value.Value;
  * Conditional (ternary) expression syntax node.
  */
 public class ConditionalExpression extends Expression {
-	/** The condition sub-expression. */
-	@SynField
-	private Expression synCondition;
-	
-	/** The expression which is evaluated if the condition is <code>true</code>. */
-	@SynField
-	private Expression synTrueExpression;
-	
-	/** The expression which is evaluated if the condition is <code>false</code>. */
-	@SynField
-	private Expression synFalseExpression;
-	
-	public ConditionalExpression(){}
-	
-	@Override
-	TextPos getStartTextPos() {
-		return synCondition.getStartTextPos();
-	}
+    /** The condition sub-expression. */
+    @SynField
+    private Expression synCondition;
+    
+    /** The expression which is evaluated if the condition is <code>true</code>. */
+    @SynField
+    private Expression synTrueExpression;
+    
+    /** The expression which is evaluated if the condition is <code>false</code>. */
+    @SynField
+    private Expression synFalseExpression;
+    
+    public ConditionalExpression(){}
+    
+    @Override
+    TextPos getStartTextPos() {
+        return synCondition.getStartTextPos();
+    }
 
-	@Override
-	Value evaluate0(ScriptScope scope) throws SynsException {
-		Value condition = synCondition.evaluate(scope);
-		boolean b = condition.toOperand().booleanValue();
-		Value result = (b ? synTrueExpression : synFalseExpression).evaluate(scope);
-		return result;
-	}
-	
-	@Override
-	public String toString() {
-		return String.format("(%s ? %s : %s)", synCondition, synTrueExpression, synFalseExpression);
-	}
+    @Override
+    Value evaluate0(ScriptScope scope) throws SynsException {
+        Value condition = synCondition.evaluate(scope);
+        boolean b = condition.toOperand().booleanValue();
+        Value result = (b ? synTrueExpression : synFalseExpression).evaluate(scope);
+        return result;
+    }
+    
+    @Override
+    public String toString() {
+        return String.format("(%s ? %s : %s)", synCondition, synTrueExpression, synFalseExpression);
+    }
 }

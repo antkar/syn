@@ -25,31 +25,31 @@ import com.karmant.syn.sample.script.rt.value.Value;
  * An expression syntax node.
  */
 public abstract class Expression {
-	public Expression(){}
-	
-	/**
-	 * Returns the text position of the first element of this expression. Used for error reporting.
-	 */
-	abstract TextPos getStartTextPos();
-	
-	/**
-	 * Evaluates the expression in the specified scope. Takes care about exceptions, adding the text
-	 * position.
-	 */
-	final Value evaluate(ScriptScope scope) throws SynsException {
-		try {
-			return evaluate0(scope);
-		} catch (TextSynsException e) {
-			throw e;
-		} catch (SynsException e) {
-			throw new TextSynsException(e, getStartTextPos());
-		} catch (Throwable e) {
-			throw new TextSynsException(e, getStartTextPos());
-		}
-	}
+    public Expression(){}
+    
+    /**
+     * Returns the text position of the first element of this expression. Used for error reporting.
+     */
+    abstract TextPos getStartTextPos();
+    
+    /**
+     * Evaluates the expression in the specified scope. Takes care about exceptions, adding the text
+     * position.
+     */
+    final Value evaluate(ScriptScope scope) throws SynsException {
+        try {
+            return evaluate0(scope);
+        } catch (TextSynsException e) {
+            throw e;
+        } catch (SynsException e) {
+            throw new TextSynsException(e, getStartTextPos());
+        } catch (Throwable e) {
+            throw new TextSynsException(e, getStartTextPos());
+        }
+    }
 
-	/**
-	 * Evaluates the expression in the specified scope. Must not be called directly.
-	 */
-	abstract Value evaluate0(ScriptScope scope) throws SynsException;
+    /**
+     * Evaluates the expression in the specified scope. Must not be called directly.
+     */
+    abstract Value evaluate0(ScriptScope scope) throws SynsException;
 }

@@ -19,12 +19,12 @@ package com.karmant.syn;
  * Identifier value node. Contains a value of type {@link String}.
  */
 class IdentifierValueNode extends BasicStringValueNode {
-	IdentifierValueNode(PosBuffer pos, String value) {
-		super(pos, value);
-	}
+    IdentifierValueNode(PosBuffer pos, String value) {
+        super(pos, value);
+    }
 
-	@Override
-	public TokenDescriptor getTokenDescriptor() {
-		return TokenDescriptor.ID;
-	}
+    @Override
+    public TokenDescriptor getTokenDescriptor() {
+        return TokenDescriptor.ID;
+    }
 }

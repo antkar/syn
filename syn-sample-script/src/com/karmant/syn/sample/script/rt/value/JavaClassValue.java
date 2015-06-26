@@ -22,29 +22,29 @@ import com.karmant.syn.sample.script.rt.javacls.JavaClass;
  * Java class value. Allows to create instances of a Java class and access its static members.
  */
 class JavaClassValue extends Value {
-	private final JavaClass cls;
-	
-	JavaClassValue(JavaClass cls) {
-		this.cls = cls;
-	}
-	
-	@Override
-	public ValueType getValueType() {
-		return ValueType.JAVACLASS;
-	}
+    private final JavaClass cls;
+    
+    JavaClassValue(JavaClass cls) {
+        this.cls = cls;
+    }
+    
+    @Override
+    public ValueType getValueType() {
+        return ValueType.JAVACLASS;
+    }
 
-	@Override
-	public String getTypeMessage() {
-		return getCompoundTypeMessage(cls.getJavaClass().getCanonicalName());
-	}
-	
-	@Override
-	public Value getMemberOpt(String name) throws SynsException {
-		return cls.getStaticMemberOpt(name);
-	}
-	
-	@Override
-	public Value newObject(RValue[] arguments) throws SynsException {
-		return cls.newInstance(arguments);
-	}
+    @Override
+    public String getTypeMessage() {
+        return getCompoundTypeMessage(cls.getJavaClass().getCanonicalName());
+    }
+    
+    @Override
+    public Value getMemberOpt(String name) throws SynsException {
+        return cls.getStaticMemberOpt(name);
+    }
+    
+    @Override
+    public Value newObject(RValue[] arguments) throws SynsException {
+        return cls.newInstance(arguments);
+    }
 }

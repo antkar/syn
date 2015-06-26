@@ -17,15 +17,15 @@ package com.karmant.syn.schema.simpleunit;
 
 import com.karmant.syn.SynField;
 
-public class SimpleUnit {	
-	@SynField
-	private SimpleEntity[] sfEntities;
-	
-	public SimpleUnit() {
-		super();
-	}
-	
-	public SimpleEntity[] getEntities() {
-		return sfEntities;
-	}
+public class SimpleUnit {
+    @SynField
+    private SimpleEntity[] sfEntities;
+    
+    public SimpleUnit() {
+        super();
+    }
+    
+    public SimpleEntity[] getEntities() {
+        return sfEntities;
+    }
 }

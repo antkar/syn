@@ -22,32 +22,32 @@ import com.karmant.syn.sample.script.rt.op.operand.Operand;
  * An l-value - a value which actual value is variable and can be changed.
  */
 public abstract class LValue extends Value {
-	LValue(){}
+    LValue(){}
 
-	@Override
-	public final LValue toLValue() {
-		return this;
-	}
-	
-	@Override
-	public Operand toOperand() throws SynsException {
-		return toRValue().toOperand();
-	}
-	
-	@Override
-	public final Value getMemberOpt(String name) throws SynsException {
-		RValue rvalue = toRValue();;
-		return rvalue.getMemberOpt(name);
-	}
-	
-	@Override
-	public final Value call(RValue[] arguments) throws SynsException {
-		RValue rvalue = toRValue();;
-		return rvalue.call(arguments);
-	}
+    @Override
+    public final LValue toLValue() {
+        return this;
+    }
+    
+    @Override
+    public Operand toOperand() throws SynsException {
+        return toRValue().toOperand();
+    }
+    
+    @Override
+    public final Value getMemberOpt(String name) throws SynsException {
+        RValue rvalue = toRValue();;
+        return rvalue.getMemberOpt(name);
+    }
+    
+    @Override
+    public final Value call(RValue[] arguments) throws SynsException {
+        RValue rvalue = toRValue();;
+        return rvalue.call(arguments);
+    }
 
-	/**
-	 * Assigns a new actual value to this value.
-	 */
-	public abstract void assign(RValue value) throws SynsException;
+    /**
+     * Assigns a new actual value to this value.
+     */
+    public abstract void assign(RValue value) throws SynsException;
 }

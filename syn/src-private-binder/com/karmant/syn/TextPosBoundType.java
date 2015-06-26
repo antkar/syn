@@ -19,16 +19,16 @@ package com.karmant.syn;
  * {@link TextPos} bound type.
  */
 class TextPosBoundType extends AbstractBoundType {
-	static final BoundType INSTANCE = new TextPosBoundType();
+    static final BoundType INSTANCE = new TextPosBoundType();
 
-	private TextPosBoundType() {
-		super(TextPos.class);
-	}
+    private TextPosBoundType() {
+        super(TextPos.class);
+    }
 
-	@Override
-	Object convertNode(BinderEngine<?> engine, SynNode synNode, BoundObject bObjOwner, String key) {
-		TerminalNode terminalNode = (TerminalNode) synNode;
-		TextPos pos = terminalNode.getPos();
-		return pos;
-	}
+    @Override
+    Object convertNode(BinderEngine<?> engine, SynNode synNode, BoundObject bObjOwner, String key) {
+        TerminalNode terminalNode = (TerminalNode) synNode;
+        TextPos pos = terminalNode.getPos();
+        return pos;
+    }
 }

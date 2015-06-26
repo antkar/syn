@@ -21,10 +21,10 @@ import com.karmant.syn.sample.script.rt.value.Value;
  * Provides names resolution for the Script Language on-demand import feature.
  */
 abstract class OnDemandImport {
-	OnDemandImport(){}
-	
-	/**
-	 * Looks for a name imported on-demand. Returns <code>null</code> if the name is not found.
-	 */
-	abstract Value getValueOpt(String name) throws SynsException;
+    OnDemandImport(){}
+    
+    /**
+     * Looks for a name imported on-demand. Returns <code>null</code> if the name is not found.
+     */
+    abstract Value getValueOpt(String name) throws SynsException;
 }

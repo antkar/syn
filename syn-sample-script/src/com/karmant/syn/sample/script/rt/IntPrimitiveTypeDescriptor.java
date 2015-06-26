@@ -23,18 +23,18 @@ import com.karmant.syn.sample.script.rt.value.Value;
  * Type descriptor for <code>int</code> type.
  */
 public final class IntPrimitiveTypeDescriptor extends PrimitiveTypeDescriptor {
-	public static final PrimitiveTypeDescriptor INSTANCE = new IntPrimitiveTypeDescriptor();
-	
-	private IntPrimitiveTypeDescriptor(){}
+    public static final PrimitiveTypeDescriptor INSTANCE = new IntPrimitiveTypeDescriptor();
+    
+    private IntPrimitiveTypeDescriptor(){}
 
-	@Override
-	public RValue cast(Operand operand) throws SynsException {
-		int result = operand.castToInt();
-		return Value.forInt(result);
-	}
-	
-	@Override
-	public String toString() {
-		return "int";
-	}
+    @Override
+    public RValue cast(Operand operand) throws SynsException {
+        int result = operand.castToInt();
+        return Value.forInt(result);
+    }
+    
+    @Override
+    public String toString() {
+        return "int";
+    }
 }

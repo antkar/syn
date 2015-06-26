@@ -24,20 +24,20 @@ import com.karmant.syn.sample.script.rt.value.Value;
  * Script Language <code>&amp;&amp;</code> operator.
  */
 class AndBinaryOperator extends BinaryOperator {
-	AndBinaryOperator() {
-		super("&&");
-	}
+    AndBinaryOperator() {
+        super("&&");
+    }
 
-	@Override
-	public RValue evaluate(Operand left) throws SynsException {
-		if (left.booleanValue()) {
-			return null;
-		}
-		return Value.forBoolean(false);
-	}
+    @Override
+    public RValue evaluate(Operand left) throws SynsException {
+        if (left.booleanValue()) {
+            return null;
+        }
+        return Value.forBoolean(false);
+    }
 
-	@Override
-	RValue evaluate(boolean left, boolean right) {
-		return Value.forBoolean(left && right);
-	}
+    @Override
+    RValue evaluate(boolean left, boolean right) {
+        return Value.forBoolean(left && right);
+    }
 }

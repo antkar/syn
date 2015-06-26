@@ -18,189 +18,189 @@ limitations under the License.
 <!-- Grammar of Grammar. -->
 <grammar>
 
-	<nonterminal name="Grammar" start="true">
-		<rule>
-			<rep nullable="false">
-				<nt name="Nonterminal"/>
-			</rep>
-		</rule>
-	</nonterminal>
+    <nonterminal name="Grammar" start="true">
+        <rule>
+            <rep nullable="false">
+                <nt name="Nonterminal"/>
+            </rep>
+        </rule>
+    </nonterminal>
 
-	<nonterminal name="Nonterminal">
-		<rule>
-			<opt key="start">
-				<tk lex="@"/>
-			</opt>
-			<tk key="name" name="ID"/>
-			<tk lex=":"/>
-			<nt key="rules" name="Rules"/>
-			<tk lex=";"/>
-		</rule>
-	</nonterminal>
+    <nonterminal name="Nonterminal">
+        <rule>
+            <opt key="start">
+                <tk lex="@"/>
+            </opt>
+            <tk key="name" name="ID"/>
+            <tk lex=":"/>
+            <nt key="rules" name="Rules"/>
+            <tk lex=";"/>
+        </rule>
+    </nonterminal>
 
-	<nonterminal name="Rules">
-		<rule>
-			<rep nullable="false">
-				<nt name="Rule"/>
-				<separator>
-					<tk lex="|"/>
-				</separator>
-			</rep>
-		</rule>
-	</nonterminal>
+    <nonterminal name="Rules">
+        <rule>
+            <rep nullable="false">
+                <nt name="Rule"/>
+                <separator>
+                    <tk lex="|"/>
+                </separator>
+            </rep>
+        </rule>
+    </nonterminal>
 
-	<nonterminal name="Rule">
-		<rule>
-			<rep nullable="true">
-				<nt name="Element"/>
-			</rep>
-		</rule>
-	</nonterminal>
+    <nonterminal name="Rule">
+        <rule>
+            <rep nullable="true">
+                <nt name="Element"/>
+            </rep>
+        </rule>
+    </nonterminal>
 
-	<nonterminal name="Element">
-		<rule>
-			<opt key="key">
-				<tk name="ID"/>
-				<tk lex="="/>
-			</opt>
-			<nt key="element" name="SubElement"/>
-		</rule>
-	</nonterminal>
+    <nonterminal name="Element">
+        <rule>
+            <opt key="key">
+                <tk name="ID"/>
+                <tk lex="="/>
+            </opt>
+            <nt key="element" name="SubElement"/>
+        </rule>
+    </nonterminal>
 
-	<nonterminal name="SubElement">
-		<rule>
-			<nt name="SyntaxElement"/>
-		</rule>
-		<rule>
-			<nt name="ValueElement"/>
-		</rule>
-	</nonterminal>
+    <nonterminal name="SubElement">
+        <rule>
+            <nt name="SyntaxElement"/>
+        </rule>
+        <rule>
+            <nt name="ValueElement"/>
+        </rule>
+    </nonterminal>
 
-	<nonterminal name="ValueElement">
-		<rule>
-			<vl key="type" value="value"/>
-			<tk lex="&lt;"/>
-			<nt key="value" name="Value"/>
-			<tk lex="&gt;"/>
-		</rule>
-	</nonterminal>
+    <nonterminal name="ValueElement">
+        <rule>
+            <vl key="type" value="value"/>
+            <tk lex="&lt;"/>
+            <nt key="value" name="Value"/>
+            <tk lex="&gt;"/>
+        </rule>
+    </nonterminal>
 
-	<nonterminal name="Value">
-		<rule>
-			<tk key="value" name="STRING"/>
-		</rule>
-		<rule>
-			<opt key="minus">
-				<tk lex="-"/>
-			</opt>
-			<tk key="value" name="INTEGER"/>
-		</rule>
-		<rule>
-			<opt key="minus">
-				<tk lex="-"/>
-			</opt>
-			<tk key="value" name="FLOAT"/>
-		</rule>
-		<rule>
-			<tk lex="true"/>
-			<vl key="value" value="true"/>
-		</rule>
-		<rule>
-			<tk lex="false"/>
-			<vl key="value" value="false"/>
-		</rule>
-		<rule>
-			<tk lex="null"/>
-			<vl key="value" value="null"/>
-		</rule>
-		<rule>
-			<nt key="value" name="NativeValue"/>
-		</rule>
-	</nonterminal>
-	
-	<nonterminal name="NativeValue">
-		<rule>
-			<rep key="className" nullable="false">
-				<tk name="ID"/>
-				<separator>
-					<tk lex="."/>
-				</separator>
-			</rep>
-			<tk lex="."/>
-			<tk key="fieldName" name="ID"/>
-		</rule>
-	</nonterminal>
+    <nonterminal name="Value">
+        <rule>
+            <tk key="value" name="STRING"/>
+        </rule>
+        <rule>
+            <opt key="minus">
+                <tk lex="-"/>
+            </opt>
+            <tk key="value" name="INTEGER"/>
+        </rule>
+        <rule>
+            <opt key="minus">
+                <tk lex="-"/>
+            </opt>
+            <tk key="value" name="FLOAT"/>
+        </rule>
+        <rule>
+            <tk lex="true"/>
+            <vl key="value" value="true"/>
+        </rule>
+        <rule>
+            <tk lex="false"/>
+            <vl key="value" value="false"/>
+        </rule>
+        <rule>
+            <tk lex="null"/>
+            <vl key="value" value="null"/>
+        </rule>
+        <rule>
+            <nt key="value" name="NativeValue"/>
+        </rule>
+    </nonterminal>
+    
+    <nonterminal name="NativeValue">
+        <rule>
+            <rep key="className" nullable="false">
+                <tk name="ID"/>
+                <separator>
+                    <tk lex="."/>
+                </separator>
+            </rep>
+            <tk lex="."/>
+            <tk key="fieldName" name="ID"/>
+        </rule>
+    </nonterminal>
 
-	<nonterminal name="SyntaxElement">
-		<rule>
-			<nt name="CharElement"/>
-		</rule>
-		<rule>
-			<nt name="NestedElement"/>
-		</rule>
-		<rule>
-			<nt name="OptionalElement"/>
-		</rule>
-		<rule>
-			<nt name="RepeatingElement"/>
-		</rule>
-	</nonterminal>
+    <nonterminal name="SyntaxElement">
+        <rule>
+            <nt name="CharElement"/>
+        </rule>
+        <rule>
+            <nt name="NestedElement"/>
+        </rule>
+        <rule>
+            <nt name="OptionalElement"/>
+        </rule>
+        <rule>
+            <nt name="RepeatingElement"/>
+        </rule>
+    </nonterminal>
 
-	<nonterminal name="CharElement">
-		<rule>
-			<vl key="type" value="identifier"/>
-			<tk key="value" name="ID"/>
-		</rule>
-		<rule>
-			<vl key="type" value="lex"/>
-			<tk key="value" name="STRING"/>
-		</rule>
-	</nonterminal>
+    <nonterminal name="CharElement">
+        <rule>
+            <vl key="type" value="identifier"/>
+            <tk key="value" name="ID"/>
+        </rule>
+        <rule>
+            <vl key="type" value="lex"/>
+            <tk key="value" name="STRING"/>
+        </rule>
+    </nonterminal>
 
-	<nonterminal name="NestedElement">
-		<rule>
-			<vl key="type" value="nested"/>
-			<tk lex="("/>
-			<nt key="rules" name="Rules"/>
-			<tk lex=")"/>
-		</rule>
-	</nonterminal>
+    <nonterminal name="NestedElement">
+        <rule>
+            <vl key="type" value="nested"/>
+            <tk lex="("/>
+            <nt key="rules" name="Rules"/>
+            <tk lex=")"/>
+        </rule>
+    </nonterminal>
 
-	<nonterminal name="OptionalElement">
-		<rule>
-			<vl key="type" value="optional"/>
-			<tk lex="("/>
-			<nt key="rules" name="Rules"/>
-			<tk lex=")"/>
-			<tk lex="?"/>
-		</rule>
-	</nonterminal>
+    <nonterminal name="OptionalElement">
+        <rule>
+            <vl key="type" value="optional"/>
+            <tk lex="("/>
+            <nt key="rules" name="Rules"/>
+            <tk lex=")"/>
+            <tk lex="?"/>
+        </rule>
+    </nonterminal>
 
-	<nonterminal name="RepeatingElement">
-		<rule>
-			<vl key="type" value="repeat"/>
-			<vl key="nullable" value="false"/>
-			<tk lex="("/>
-			<nt key="body" name="Rules"/>
-			<opt key="separator">
-				<tk lex=":"/>
-				<nt name="Rules"/>
-			</opt>
-			<tk lex=")"/>
-			<tk lex="+"/>
-		</rule>
-		<rule>
-			<vl key="type" value="repeat"/>
-			<vl key="nullable" value="true"/>
-			<tk lex="("/>
-			<nt key="body" name="Rules"/>
-			<opt key="separator">
-				<tk lex=":"/>
-				<nt name="Rules"/>
-			</opt>
-			<tk lex=")"/>
-			<tk lex="*"/>
-		</rule>
-	</nonterminal>
+    <nonterminal name="RepeatingElement">
+        <rule>
+            <vl key="type" value="repeat"/>
+            <vl key="nullable" value="false"/>
+            <tk lex="("/>
+            <nt key="body" name="Rules"/>
+            <opt key="separator">
+                <tk lex=":"/>
+                <nt name="Rules"/>
+            </opt>
+            <tk lex=")"/>
+            <tk lex="+"/>
+        </rule>
+        <rule>
+            <vl key="type" value="repeat"/>
+            <vl key="nullable" value="true"/>
+            <tk lex="("/>
+            <nt key="body" name="Rules"/>
+            <opt key="separator">
+                <tk lex=":"/>
+                <nt name="Rules"/>
+            </opt>
+            <tk lex=")"/>
+            <tk lex="*"/>
+        </rule>
+    </nonterminal>
 
 </grammar>

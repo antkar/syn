@@ -24,77 +24,77 @@ import java.util.List;
  * BNF nonterminal element.
  */
 class BnfNonterminal extends BnfElement {
-	private final int index;
-	private final String name;
-	private List<BnfProduction> productions;
+    private final int index;
+    private final String name;
+    private List<BnfProduction> productions;
 
-	/**
-	 * Creates a nonterminal, leaving the productions uninitialized. Productions must be set by
-	 * {@link #setProductions(List)} method later, since dependencies between nonterminals can be cyclic.
-	 */
-	BnfNonterminal(int elementIndex, int index, String name) {
-		super(elementIndex);
-		assert index >= 0;
-		assert name != null;
-		assert name.length() > 0;
-		this.index = index;
-		this.name = name;
-		
-		productions = null;
-	}
-	
-	/**
-	 * Sets productions of this nonterminal. Must be called one and only one time.
-	 */
-	void setProductions(List<BnfProduction> productions) {
-		assert productions != null;
-		assert productions.size() > 0;
-		assert this.productions == null;
-		
-		this.productions = Collections.unmodifiableList(new ArrayList<>(productions));
-		for (BnfProduction production : this.productions) {
-			production.setNonterminal(this);
-		}
-	}
-	
-	/**
-	 * Returns the index of this nonterminal in the grammar.
-	 */
-	int getIndex() {
-		return index;
-	}
-	
-	/**
-	 * Returns the list of productions. Productions must have been set before.
-	 */
-	List<BnfProduction> getProductions() {
-		assert productions != null;
-		return productions;
-	}
-	
-	/**
-	 * Returns the name of this nonterminal.
-	 */
-	String getName() {
-		return name;
-	}
-	
-	/**
-	 * Prints the definition of this nonterminal to the specified print stream. Used for debug purposes.
-	 */
-	void print(PrintStream out) {
-		out.println(name);
-		String sep = ":";
-		for (BnfProduction production : productions) {
-			String s = production.toString();
-			out.printf("\t%s %s%n", sep, s);
-			sep = "|";
-		}
-		out.println("\t;");
-	}
-	
-	@Override
-	public String toString() {
-		return name;
-	}
+    /**
+     * Creates a nonterminal, leaving the productions uninitialized. Productions must be set by
+     * {@link #setProductions(List)} method later, since dependencies between nonterminals can be cyclic.
+     */
+    BnfNonterminal(int elementIndex, int index, String name) {
+        super(elementIndex);
+        assert index >= 0;
+        assert name != null;
+        assert name.length() > 0;
+        this.index = index;
+        this.name = name;
+        
+        productions = null;
+    }
+    
+    /**
+     * Sets productions of this nonterminal. Must be called one and only one time.
+     */
+    void setProductions(List<BnfProduction> productions) {
+        assert productions != null;
+        assert productions.size() > 0;
+        assert this.productions == null;
+        
+        this.productions = Collections.unmodifiableList(new ArrayList<>(productions));
+        for (BnfProduction production : this.productions) {
+            production.setNonterminal(this);
+        }
+    }
+    
+    /**
+     * Returns the index of this nonterminal in the grammar.
+     */
+    int getIndex() {
+        return index;
+    }
+    
+    /**
+     * Returns the list of productions. Productions must have been set before.
+     */
+    List<BnfProduction> getProductions() {
+        assert productions != null;
+        return productions;
+    }
+    
+    /**
+     * Returns the name of this nonterminal.
+     */
+    String getName() {
+        return name;
+    }
+    
+    /**
+     * Prints the definition of this nonterminal to the specified print stream. Used for debug purposes.
+     */
+    void print(PrintStream out) {
+        out.println(name);
+        String sep = ":";
+        for (BnfProduction production : productions) {
+            String s = production.toString();
+            out.printf("\t%s %s%n", sep, s);
+            sep = "|";
+        }
+        out.println("\t;");
+    }
+    
+    @Override
+    public String toString() {
+        return name;
+    }
 }

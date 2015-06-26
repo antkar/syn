@@ -19,20 +19,20 @@ package com.karmant.syn.sample.script.rt.op.operand;
  * Operand type enumeration.
  */
 public enum OperandType {
-	BOOLEAN("boolean"),
-	LONG("long"),
-	DOUBLE("double"),
-	NULL("null"),
-	OBJECT("Object"),
-	STRING("String");
-	
-	private final String descriptiveName;
+    BOOLEAN("boolean"),
+    LONG("long"),
+    DOUBLE("double"),
+    NULL("null"),
+    OBJECT("Object"),
+    STRING("String");
+    
+    private final String descriptiveName;
 
-	private OperandType(String description) {
-		this.descriptiveName = description;
-	}
-	
-	public String getDescriptiveName() {
-		return descriptiveName;
-	}
+    private OperandType(String description) {
+        this.descriptiveName = description;
+    }
+    
+    public String getDescriptiveName() {
+        return descriptiveName;
+    }
 }

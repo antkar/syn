@@ -21,29 +21,29 @@ import java.lang.reflect.Field;
  * Primitive <code>boolean</code> bound type.
  */
 class BooleanBoundType extends BoundType {
-	static final BoundType INSTANCE = new BooleanBoundType();
-	
-	private BooleanBoundType(){}
+    static final BoundType INSTANCE = new BooleanBoundType();
+    
+    private BooleanBoundType(){}
 
-	@Override
-	Object convertNode(BinderEngine<?> engine, SynNode synNode, BoundObject bObjOwner, String key)
-			throws SynBinderException
-	{
-		boolean value = extractValue(synNode);
-		return value;
-	}
+    @Override
+    Object convertNode(BinderEngine<?> engine, SynNode synNode, BoundObject bObjOwner, String key)
+            throws SynBinderException
+    {
+        boolean value = extractValue(synNode);
+        return value;
+    }
 
-	@Override
-	BoundType getArrayType(Field field) throws SynBinderException {
-		return BooleanArrayBoundType.INSTANCE;
-	}
+    @Override
+    BoundType getArrayType(Field field) throws SynBinderException {
+        return BooleanArrayBoundType.INSTANCE;
+    }
 
-	static boolean extractValue(SynNode synNode) throws SynBinderException {
-		ValueNode valueNode = (ValueNode) synNode;
-		if (valueNode == null) {
-			throw new SynBinderException("Cannot bind null value to a boolean field");
-		}
-		boolean value = valueNode.getBoolean();
-		return value;
-	}
+    static boolean extractValue(SynNode synNode) throws SynBinderException {
+        ValueNode valueNode = (ValueNode) synNode;
+        if (valueNode == null) {
+            throw new SynBinderException("Cannot bind null value to a boolean field");
+        }
+        boolean value = valueNode.getBoolean();
+        return value;
+    }
 }

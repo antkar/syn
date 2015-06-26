@@ -19,19 +19,19 @@ package com.karmant.syn;
  * Used by {@link SynBinder} to represent a pair of a text position and a value of a token of a particular type.
  */
 public abstract class AbstractToken {
-	private final TextPos pos;
-	
-	AbstractToken(TextPos pos) {
-		this.pos = pos;
-	}
-	
-	/**
-	 * Returns the text position associated with this value. If this value was produced by a constant
-	 * grammar element, the position is <code>null</code>. Terminal symbol grammar elements produce values with
-	 * non-<code>null</code> positions.
-	 * @return the text position.
-	 */
-	public TextPos getPos() {
-		return pos;
-	}
+    private final TextPos pos;
+    
+    AbstractToken(TextPos pos) {
+        this.pos = pos;
+    }
+    
+    /**
+     * Returns the text position associated with this value. If this value was produced by a constant
+     * grammar element, the position is <code>null</code>. Terminal symbol grammar elements produce values with
+     * non-<code>null</code> positions.
+     * @return the text position.
+     */
+    public TextPos getPos() {
+        return pos;
+    }
 }

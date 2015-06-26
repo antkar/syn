@@ -6,16 +6,16 @@ Element : name=( ID "=" )? element=SubElement ;
 SubElement : SyntaxElement | ValueElement ;
 ValueElement : "<" Value ">" ;
 Value : STRING | INTEGER | FLOAT | "true" <true> | "false" <false> | 
-	"null" <null> ;
-	
-	
-	@syntax_error@
-	
-	
+    "null" <null> ;
+    
+    
+    @syntax_error@
+    
+    
 SyntaxElement : CharElement | NestedElement | OptionalElement | RepeatingElement ;
 CharElement : value=ID type=<"id"> | value=STRING type=<"str"> ;
 NestedElement : "(" value=Rules ")" type=<"nested"> ; 
 OptionalElement : "[" value=Rules "]" type=<"opt"> ;
 RepeatingElement 
-	: "(" body=Rules ( ":" separator=Rules )? ")" "*" nullable=<true> type=<"repeat">
-	| "(" body=Rules ( ":" separator=Rules )? ")" "+" nullable=<false> type=<"repeat">
+    : "(" body=Rules ( ":" separator=Rules )? ")" "*" nullable=<true> type=<"repeat">
+    | "(" body=Rules ( ":" separator=Rules )? ")" "+" nullable=<false> type=<"repeat">

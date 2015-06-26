@@ -19,26 +19,26 @@ package com.karmant.syn;
  * Primitive <code>long</code> array bound type.
  */
 class LongArrayBoundType extends ArrayBoundType {
-	static final BoundType INSTANCE = new LongArrayBoundType();
+    static final BoundType INSTANCE = new LongArrayBoundType();
 
-	private LongArrayBoundType(){}
+    private LongArrayBoundType(){}
 
-	@Override
-	Object convertArray(
-			BinderEngine<?> engine,
-			BoundObject bObjOwner,
-			String key,
-			ArrayNode arrayNode,
-			int size) throws SynBinderException
-	{
-		long[] array = new long[size];
-		
-		for (int i = 0; i < size; ++i) {
-			SynNode synElementNode = arrayNode.get(i);
-			long value = LongBoundType.extractValue(synElementNode);
-			array[i] = value;
-		}
-		
-		return array;
-	}
+    @Override
+    Object convertArray(
+            BinderEngine<?> engine,
+            BoundObject bObjOwner,
+            String key,
+            ArrayNode arrayNode,
+            int size) throws SynBinderException
+    {
+        long[] array = new long[size];
+        
+        for (int i = 0; i < size; ++i) {
+            SynNode synElementNode = arrayNode.get(i);
+            long value = LongBoundType.extractValue(synElementNode);
+            array[i] = value;
+        }
+        
+        return array;
+    }
 }

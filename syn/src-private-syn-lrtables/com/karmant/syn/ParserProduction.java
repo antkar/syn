@@ -19,34 +19,34 @@ package com.karmant.syn;
  * Parser production descriptor.
  */
 class ParserProduction {
-	private final ParserNonterminal nonterminal;
-	private final int length;
-	private final IParserAction action;
+    private final ParserNonterminal nonterminal;
+    private final int length;
+    private final IParserAction action;
 
-	ParserProduction(ParserNonterminal nonterminal, int length, IParserAction action) {
-		assert nonterminal != null;
-		assert length >= 0;
-		assert action != null;
-		
-		this.nonterminal = nonterminal;
-		this.length = length;
-		this.action = action;
-	}
-	
-	ParserNonterminal getNonterminal() {
-		return nonterminal;
-	}
-	
-	int getLength() {
-		return length;
-	}
-	
-	IParserAction getAction() {
-		return action;
-	}
-	
-	@Override
-	public String toString() {
-		return nonterminal + "[" + length + "]{ " + action + " }";
-	}
+    ParserProduction(ParserNonterminal nonterminal, int length, IParserAction action) {
+        assert nonterminal != null;
+        assert length >= 0;
+        assert action != null;
+        
+        this.nonterminal = nonterminal;
+        this.length = length;
+        this.action = action;
+    }
+    
+    ParserNonterminal getNonterminal() {
+        return nonterminal;
+    }
+    
+    int getLength() {
+        return length;
+    }
+    
+    IParserAction getAction() {
+        return action;
+    }
+    
+    @Override
+    public String toString() {
+        return nonterminal + "[" + length + "]{ " + action + " }";
+    }
 }

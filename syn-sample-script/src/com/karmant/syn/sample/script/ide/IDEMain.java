@@ -19,9 +19,9 @@ package com.karmant.syn.sample.script.ide;
  * IDE application entry point.
  */
 public final class IDEMain {
-	private IDEMain(){}
-	
-	public static void main(String[] args) throws Exception {
-		IDE.start();
-	}
+    private IDEMain(){}
+    
+    public static void main(String[] args) throws Exception {
+        IDE.start();
+    }
 }

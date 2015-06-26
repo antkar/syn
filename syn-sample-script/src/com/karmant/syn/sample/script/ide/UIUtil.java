@@ -30,31 +30,31 @@ import javax.swing.text.StyleConstants;
  * UI utility methods.
  */
 final class UIUtil {
-	private UIUtil(){}
-	
-	/**
-	 * Creates a default scroll pane for a text pane.
-	 */
-	static JScrollPane createTextPaneScrollPane(JTextPane textPane) {
-		JPanel noWrapPanel = new JPanel(new BorderLayout());
-		noWrapPanel.add(textPane);
-		JScrollPane scrollPane = new JScrollPane(noWrapPanel);
-		scrollPane.getVerticalScrollBar().setUnitIncrement(textPane.getFont().getSize() * 2);
-		return scrollPane;
-	}
-	
-	/**
-	 * Creates text style attributes with the specified properties.
-	 */
-	static AttributeSet createTextAttributes(Font baseFont, Color color, boolean bold, boolean italic) {
-		SimpleAttributeSet attrs = new SimpleAttributeSet();
-		if (baseFont != null) {
-			StyleConstants.setFontFamily(attrs, baseFont.getFamily());
-			StyleConstants.setFontSize(attrs, baseFont.getSize());
-		}
-		StyleConstants.setForeground(attrs, color);
-		StyleConstants.setBold(attrs, bold);
-		StyleConstants.setItalic(attrs, italic);
-		return attrs;
-	}	
+    private UIUtil(){}
+    
+    /**
+     * Creates a default scroll pane for a text pane.
+     */
+    static JScrollPane createTextPaneScrollPane(JTextPane textPane) {
+        JPanel noWrapPanel = new JPanel(new BorderLayout());
+        noWrapPanel.add(textPane);
+        JScrollPane scrollPane = new JScrollPane(noWrapPanel);
+        scrollPane.getVerticalScrollBar().setUnitIncrement(textPane.getFont().getSize() * 2);
+        return scrollPane;
+    }
+    
+    /**
+     * Creates text style attributes with the specified properties.
+     */
+    static AttributeSet createTextAttributes(Font baseFont, Color color, boolean bold, boolean italic) {
+        SimpleAttributeSet attrs = new SimpleAttributeSet();
+        if (baseFont != null) {
+            StyleConstants.setFontFamily(attrs, baseFont.getFamily());
+            StyleConstants.setFontSize(attrs, baseFont.getSize());
+        }
+        StyleConstants.setForeground(attrs, color);
+        StyleConstants.setBold(attrs, bold);
+        StyleConstants.setItalic(attrs, italic);
+        return attrs;
+    }
 }

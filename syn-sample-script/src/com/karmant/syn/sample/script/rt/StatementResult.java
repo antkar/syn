@@ -23,104 +23,104 @@ import com.karmant.syn.sample.script.rt.value.Value;
  * or none.
  */
 public class StatementResult {
-	
-	public static final StatementResult NONE = new StatementResult();
-	public static final StatementResult BREAK = new BreakStatementResult();
-	public static final StatementResult CONTINUE = new ContinueStatementResult();
+    
+    public static final StatementResult NONE = new StatementResult();
+    public static final StatementResult BREAK = new BreakStatementResult();
+    public static final StatementResult CONTINUE = new ContinueStatementResult();
 
-	private StatementResult(){}
-	
-	/**
-	 * Returns <code>true</code> if this is a <code>continue</code> result.
-	 */
-	public boolean isContinue() {
-		return false;
-	}
+    private StatementResult(){}
+    
+    /**
+     * Returns <code>true</code> if this is a <code>continue</code> result.
+     */
+    public boolean isContinue() {
+        return false;
+    }
 
-	/**
-	 * Returns <code>true</code> if this is a <code>break</code> result.
-	 */
-	public boolean isBreak() {
-		return false;
-	}
-	
-	/**
-	 * Returns <code>true</code> if this is a <code>return</code> result.
-	 */
-	public boolean isReturn() {
-		return false;
-	}
-	
-	/**
-	 * Returns the return value. Throws an exception if this is not a <code>return</code> result.
-	 */
-	public Value getReturnValue() {
-		throw new IllegalStateException();
-	}
-	
-	@Override
-	public String toString() {
-		return "<none>";
-	}
-	
-	/**
-	 * Creates a <code>return</code> statement result object.
-	 * @param returnValue the return value (can be a void value, but not <code>null</code>).
-	 * @return the result object.
-	 */
-	public static StatementResult forReturn(Value returnValue) {
-		assert returnValue != null;
-		return new ReturnStatementResult(returnValue);
-	}
-	
-	private static final class BreakStatementResult extends StatementResult {
-		BreakStatementResult(){}
-		
-		@Override
-		public boolean isBreak() {
-			return true;
-		}
-		
-		@Override
-		public String toString() {
-			return "break";
-		}
-	}
-	
-	private static final class ContinueStatementResult extends StatementResult {
-		ContinueStatementResult(){}
-		
-		@Override
-		public boolean isContinue() {
-			return true;
-		}
-		
-		@Override
-		public String toString() {
-			return "continue";
-		}
-	}
-	
-	private static final class ReturnStatementResult extends StatementResult {
-		private final Value value;
-		
-		ReturnStatementResult(Value value) {
-			this.value = value;
-		}
-		
-		@Override
-		public boolean isReturn() {
-			return true;
-		}
-		
-		@Override
-		public Value getReturnValue() {
-			return value;
-		}
-		
-		@Override
-		public String toString() {
-			return "return " + value;
-		}
-	}
+    /**
+     * Returns <code>true</code> if this is a <code>break</code> result.
+     */
+    public boolean isBreak() {
+        return false;
+    }
+    
+    /**
+     * Returns <code>true</code> if this is a <code>return</code> result.
+     */
+    public boolean isReturn() {
+        return false;
+    }
+    
+    /**
+     * Returns the return value. Throws an exception if this is not a <code>return</code> result.
+     */
+    public Value getReturnValue() {
+        throw new IllegalStateException();
+    }
+    
+    @Override
+    public String toString() {
+        return "<none>";
+    }
+    
+    /**
+     * Creates a <code>return</code> statement result object.
+     * @param returnValue the return value (can be a void value, but not <code>null</code>).
+     * @return the result object.
+     */
+    public static StatementResult forReturn(Value returnValue) {
+        assert returnValue != null;
+        return new ReturnStatementResult(returnValue);
+    }
+    
+    private static final class BreakStatementResult extends StatementResult {
+        BreakStatementResult(){}
+        
+        @Override
+        public boolean isBreak() {
+            return true;
+        }
+        
+        @Override
+        public String toString() {
+            return "break";
+        }
+    }
+    
+    private static final class ContinueStatementResult extends StatementResult {
+        ContinueStatementResult(){}
+        
+        @Override
+        public boolean isContinue() {
+            return true;
+        }
+        
+        @Override
+        public String toString() {
+            return "continue";
+        }
+    }
+    
+    private static final class ReturnStatementResult extends StatementResult {
+        private final Value value;
+        
+        ReturnStatementResult(Value value) {
+            this.value = value;
+        }
+        
+        @Override
+        public boolean isReturn() {
+            return true;
+        }
+        
+        @Override
+        public Value getReturnValue() {
+            return value;
+        }
+        
+        @Override
+        public String toString() {
+            return "return " + value;
+        }
+    }
 }

@@ -23,48 +23,48 @@ import com.karmant.syn.sample.script.rt.javacls.TypeMatchPrecision;
  * A Java field value. Allows reading and writing fields of Java objects.
  */
 abstract class JavaFieldValue extends LValue {
-	private final JavaField field;
+    private final JavaField field;
 
-	JavaFieldValue(JavaField field) {
-		this.field = field;
-	}
-	
-	/**
-	 * Returns the associated Java field.
-	 */
-	final JavaField getField() {
-		return field;
-	}
-	
-	@Override
-	public ValueType getValueType() {
-		return ValueType.JAVAFIELD;
-	}
-	
-	@Override
-	public String getTypeMessage() {
-		return getCompoundTypeMessage(getField() + "");
-	}
+    JavaFieldValue(JavaField field) {
+        this.field = field;
+    }
+    
+    /**
+     * Returns the associated Java field.
+     */
+    final JavaField getField() {
+        return field;
+    }
+    
+    @Override
+    public ValueType getValueType() {
+        return ValueType.JAVAFIELD;
+    }
+    
+    @Override
+    public String getTypeMessage() {
+        return getCompoundTypeMessage(getField() + "");
+    }
 
-	@Override
-	public void assign(RValue value) throws SynsException {
-		Object object = value.toJava(field.getType(), TypeMatchPrecision.NULL);
-		setFieldValue(object);
-	}
+    @Override
+    public void assign(RValue value) throws SynsException {
+        Object object = value.toJava(field.getType(), TypeMatchPrecision.NULL);
+        setFieldValue(object);
+    }
 
-	@Override
-	public RValue toRValue() throws SynsException {
-		Object javaValue = getFieldValue();
-		return Value.forJavaObject(javaValue);
-	}
-	
-	/**
-	 * Reads the value of the Java field.
-	 */
-	abstract Object getFieldValue() throws SynsException;
-	
-	/**
-	 * Writes the value of the Java field.
-	 */
-	abstract void setFieldValue(Object value) throws SynsException;
+    @Override
+    public RValue toRValue() throws SynsException {
+        Object javaValue = getFieldValue();
+        return Value.forJavaObject(javaValue);
+    }
+    
+    /**
+     * Reads the value of the Java field.
+     */
+    abstract Object getFieldValue() throws SynsException;
+    
+    /**
+     * Writes the value of the Java field.
+     */
+    abstract void setFieldValue(Object value) throws SynsException;
 }

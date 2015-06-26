@@ -19,19 +19,19 @@ package com.karmant.syn;
  * GOTO transition - a transition from one LR state to another by a nonterminal.
  */
 class ParserGoto {
-	final ParserNonterminal nonterminal;
-	final ParserState state;
-	
-	ParserGoto(ParserNonterminal nonterminal, ParserState state) {
-		assert nonterminal != null;
-		assert state != null;
+    final ParserNonterminal nonterminal;
+    final ParserState state;
+    
+    ParserGoto(ParserNonterminal nonterminal, ParserState state) {
+        assert nonterminal != null;
+        assert state != null;
 
-		this.nonterminal = nonterminal;
-		this.state = state;
-	}
-	
-	@Override
-	public String toString() {
-		return nonterminal + " -> " + state.getIndex();
-	}
+        this.nonterminal = nonterminal;
+        this.state = state;
+    }
+    
+    @Override
+    public String toString() {
+        return nonterminal + " -> " + state.getIndex();
+    }
 }

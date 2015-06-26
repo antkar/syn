@@ -19,23 +19,23 @@ package com.karmant.syn;
  * Token value of type <code>int</code>.
  */
 public class IntToken extends AbstractToken {
-	private final int value;
+    private final int value;
 
-	IntToken(TextPos pos, int value) {
-		super(pos);
-		this.value = value;
-	}
-	
-	/**
-	 * Returns the <code>int</code> value of this object.
-	 * @return the value.
-	 */
-	public int getValue() {
-		return value;
-	}
-	
-	@Override
-	public String toString() {
-		return value + "";
-	}
+    IntToken(TextPos pos, int value) {
+        super(pos);
+        this.value = value;
+    }
+    
+    /**
+     * Returns the <code>int</code> value of this object.
+     * @return the value.
+     */
+    public int getValue() {
+        return value;
+    }
+    
+    @Override
+    public String toString() {
+        return value + "";
+    }
 }

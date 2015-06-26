@@ -26,29 +26,29 @@ import com.karmant.syn.sample.script.rt.value.Value;
  * Script constant declaration syntax node.
  */
 public class ConstantDeclaration extends Declaration {
-	/** The value of the constant. */
-	@SynField
-	private Expression synExpression;
-	
-	public ConstantDeclaration(){}
+    /** The value of the constant. */
+    @SynField
+    private Expression synExpression;
+    
+    public ConstantDeclaration(){}
 
-	@Override
-	Value evaluateValue(ScriptScope scope) throws SynsException {
-		Value value = synExpression.evaluate(scope);
-		return value.toRValue();
-	}
-	
-	@Override
-	void classify(
-			List<ConstantDeclaration> constants,
-			List<VariableDeclaration> variables,
-			List<FunctionDeclaration> functions)
-	{
-		constants.add(this);
-	}
-	
-	@Override
-	public String toString() {
-		return "const " + getName() + " = " + synExpression;
-	}
+    @Override
+    Value evaluateValue(ScriptScope scope) throws SynsException {
+        Value value = synExpression.evaluate(scope);
+        return value.toRValue();
+    }
+    
+    @Override
+    void classify(
+            List<ConstantDeclaration> constants,
+            List<VariableDeclaration> variables,
+            List<FunctionDeclaration> functions)
+    {
+        constants.add(this);
+    }
+    
+    @Override
+    public String toString() {
+        return "const " + getName() + " = " + synExpression;
+    }
 }

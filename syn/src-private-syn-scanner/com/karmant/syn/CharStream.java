@@ -23,48 +23,48 @@ import java.io.Reader;
  * numbers).
  */
 class CharStream {
-	private final Reader reader;
-	
-	private boolean eof;
-	private int line;
-	private int column;
-	private int offset;
-	
-	CharStream(Reader reader) {
-		assert reader != null;
-		this.reader = reader;
-	}
+    private final Reader reader;
+    
+    private boolean eof;
+    private int line;
+    private int column;
+    private int offset;
+    
+    CharStream(Reader reader) {
+        assert reader != null;
+        this.reader = reader;
+    }
 
-	/**
-	 * Reads the next character from the input. Returns the character itself and its position.
-	 * 
-	 * @param pos the character position object where to write the position to.
-	 * @return the code of the character, or <code>-1</code> in case of end-of-file.
-	 * @throws IOException
-	 */
-	int read(CharPos pos) throws IOException {
-		//Set the position before reading the character.
-		pos.set(line, column, offset);
-		
-		if (eof) {
-			return -1;
-		}
-		
-		//Read the character from the input.
-		int k = reader.read();
-		if (k == -1) {
-			return -1;
-		}
-		
-		//Calculate the position of the character following the one having been read.
-		if (k == '\n') {
-			column = 0;
-			++line;
-		} else {
-			++column;
-		}
-		++offset;
-		
-		return k;
-	}
+    /**
+     * Reads the next character from the input. Returns the character itself and its position.
+     * 
+     * @param pos the character position object where to write the position to.
+     * @return the code of the character, or <code>-1</code> in case of end-of-file.
+     * @throws IOException
+     */
+    int read(CharPos pos) throws IOException {
+        //Set the position before reading the character.
+        pos.set(line, column, offset);
+        
+        if (eof) {
+            return -1;
+        }
+        
+        //Read the character from the input.
+        int k = reader.read();
+        if (k == -1) {
+            return -1;
+        }
+        
+        //Calculate the position of the character following the one having been read.
+        if (k == '\n') {
+            column = 0;
+            ++line;
+        } else {
+            ++column;
+        }
+        ++offset;
+        
+        return k;
+    }
 }

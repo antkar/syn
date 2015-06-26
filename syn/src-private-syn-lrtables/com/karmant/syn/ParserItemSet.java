@@ -22,53 +22,53 @@ import java.util.Comparator;
  * Set of LR items.
  */
 class ParserItemSet {
-	/** Sorted array of items. */
-	private final ParserItem[] items;
+    /** Sorted array of items. */
+    private final ParserItem[] items;
 
-	ParserItemSet(ParserItem[] items) {
-		this.items = items.clone();
-		Arrays.sort(items, ITEM_COMPARATOR);
-	}
-	
-	ParserItem[] getItems() {
-		return items;
-	}
-	
-	@Override
-	public int hashCode() {
-		int result = 0;
-		for (ParserItem item : items) {
-			result = result * 31 + item.getIndex();
-		}
-		return result;
-	}
-	
-	@Override
-	public boolean equals(Object obj) {
-		if (obj instanceof ParserItemSet) {
-			ParserItemSet iSet = (ParserItemSet) obj;
-			if (iSet.items.length == items.length) {
-				for (int i = 0, n = items.length; i < n; ++i) {
-					if (items[i].getIndex() != iSet.items[i].getIndex()) {
-						return false;
-					}
-				}
-				return true;
-			}
-		}
-		
-		return false;
-	}
-	
-	@Override
-	public String toString() {
-		return Arrays.toString(items);
-	}
-	
-	private static final Comparator<ParserItem> ITEM_COMPARATOR = new Comparator<ParserItem>() {
-		@Override
-		public int compare(ParserItem o1, ParserItem o2) {
-			return o1.getIndex() - o2.getIndex();
-		}
-	};
+    ParserItemSet(ParserItem[] items) {
+        this.items = items.clone();
+        Arrays.sort(items, ITEM_COMPARATOR);
+    }
+    
+    ParserItem[] getItems() {
+        return items;
+    }
+    
+    @Override
+    public int hashCode() {
+        int result = 0;
+        for (ParserItem item : items) {
+            result = result * 31 + item.getIndex();
+        }
+        return result;
+    }
+    
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof ParserItemSet) {
+            ParserItemSet iSet = (ParserItemSet) obj;
+            if (iSet.items.length == items.length) {
+                for (int i = 0, n = items.length; i < n; ++i) {
+                    if (items[i].getIndex() != iSet.items[i].getIndex()) {
+                        return false;
+                    }
+                }
+                return true;
+            }
+        }
+        
+        return false;
+    }
+    
+    @Override
+    public String toString() {
+        return Arrays.toString(items);
+    }
+    
+    private static final Comparator<ParserItem> ITEM_COMPARATOR = new Comparator<ParserItem>() {
+        @Override
+        public int compare(ParserItem o1, ParserItem o2) {
+            return o1.getIndex() - o2.getIndex();
+        }
+    };
 }

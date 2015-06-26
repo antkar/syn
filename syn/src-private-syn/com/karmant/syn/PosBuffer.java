@@ -22,39 +22,39 @@ package com.karmant.syn;
  */
 class PosBuffer {
 
-	private SourceDescriptor source;
-	private int offset;
-	private int line;
-	private int column;
-	private int length;
+    private SourceDescriptor source;
+    private int offset;
+    private int line;
+    private int column;
+    private int length;
 
-	PosBuffer(){}
-	
-	void set(CharPos pos, SourceDescriptor sourceDescriptor, int endOffset) {
-		source = sourceDescriptor;
-		offset = pos.offset;
-		line = pos.line + 1;
-		column = pos.column + 1;
-		length = endOffset - offset;
-	}
+    PosBuffer(){}
+    
+    void set(CharPos pos, SourceDescriptor sourceDescriptor, int endOffset) {
+        source = sourceDescriptor;
+        offset = pos.offset;
+        line = pos.line + 1;
+        column = pos.column + 1;
+        length = endOffset - offset;
+    }
 
-	SourceDescriptor getSource() {
-		return source;
-	}
+    SourceDescriptor getSource() {
+        return source;
+    }
 
-	int getOffset() {
-		return offset;
-	}
+    int getOffset() {
+        return offset;
+    }
 
-	int getLine() {
-		return line;
-	}
+    int getLine() {
+        return line;
+    }
 
-	int getColumn() {
-		return column;
-	}
+    int getColumn() {
+        return column;
+    }
 
-	int getLength() {
-		return length;
-	}
+    int getLength() {
+        return length;
+    }
 }

@@ -23,46 +23,46 @@ import java.util.List;
  * Object binder. Describes how to bind attributes of an AST node to fields of a Java object.
  */
 class ObjectBinder {
-	
-	private final Class<?> classToBind;
-	private final List<FieldBinder> fieldBinders;
+    
+    private final Class<?> classToBind;
+    private final List<FieldBinder> fieldBinders;
 
-	ObjectBinder(Class<?> classToBind, List<FieldBinder> fieldBinders) {
-		this.classToBind = classToBind;
-		this.fieldBinders = Collections.unmodifiableList(new ArrayList<>(fieldBinders));
-	}
+    ObjectBinder(Class<?> classToBind, List<FieldBinder> fieldBinders) {
+        this.classToBind = classToBind;
+        this.fieldBinders = Collections.unmodifiableList(new ArrayList<>(fieldBinders));
+    }
 
-	/**
-	 * Creates a Java object and binds the attributes of the given AST node to its fields.
-	 */
-	BoundObject bindNode(BinderEngine<?> engine, ObjectNode synNode) throws SynBinderException {
-		Object obj = createObjectInstance();
-		
-		BoundObject bObj = new BoundObject(obj);
-		for (FieldBinder fieldBinder : fieldBinders) {
-			fieldBinder.bind(engine, synNode, bObj);
-		}
-		
-		engine.addBObj(bObj);
-		
-		return bObj;
-	}
+    /**
+     * Creates a Java object and binds the attributes of the given AST node to its fields.
+     */
+    BoundObject bindNode(BinderEngine<?> engine, ObjectNode synNode) throws SynBinderException {
+        Object obj = createObjectInstance();
+        
+        BoundObject bObj = new BoundObject(obj);
+        for (FieldBinder fieldBinder : fieldBinders) {
+            fieldBinder.bind(engine, synNode, bObj);
+        }
+        
+        engine.addBObj(bObj);
+        
+        return bObj;
+    }
 
-	/**
-	 * Creates a new Java object instance.
-	 */
-	private Object createObjectInstance() throws SynBinderException {
-		try {
-			return classToBind.newInstance();
-		} catch (InstantiationException | IllegalAccessException e) {
-			throw new SynBinderException(String.format(
-					"Unable to create an object of class %s",
-					classToBind.getCanonicalName()), e);
-		}
-	}
-	
-	@Override
-	public String toString() {
-		return classToBind + "";
-	}	
+    /**
+     * Creates a new Java object instance.
+     */
+    private Object createObjectInstance() throws SynBinderException {
+        try {
+            return classToBind.newInstance();
+        } catch (InstantiationException | IllegalAccessException e) {
+            throw new SynBinderException(String.format(
+                    "Unable to create an object of class %s",
+                    classToBind.getCanonicalName()), e);
+        }
+    }
+    
+    @Override
+    public String toString() {
+        return classToBind + "";
+    }
 }

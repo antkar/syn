@@ -20,8 +20,8 @@ package com.karmant.syn;
  * Abstract Syntax Tree. {@link IParserNode} is mutable, while AST nodes are not.
  */
 interface IParserNode {
-	/**
-	 * Creates an AST node which will be returned to the user.
-	 */
-	SynNode createUserNode();
+    /**
+     * Creates an AST node which will be returned to the user.
+     */
+    SynNode createUserNode();
 }

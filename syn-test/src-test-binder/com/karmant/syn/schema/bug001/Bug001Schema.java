@@ -18,14 +18,14 @@ package com.karmant.syn.schema.bug001;
 import com.karmant.syn.SynField;
 
 public class Bug001Schema {
-	@SynField
-	private Bug001Foo foo;
-	
-	public Bug001Schema() {
-		super();
-	}
+    @SynField
+    private Bug001Foo foo;
+    
+    public Bug001Schema() {
+        super();
+    }
 
-	public Bug001Foo getFoo() {
-		return foo;
-	}
+    public Bug001Foo getFoo() {
+        return foo;
+    }
 }

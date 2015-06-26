@@ -27,34 +27,34 @@ import com.karmant.syn.sample.script.rt.value.Value;
  * Script <code>throw</code> statement syntax node.
  */
 public class ThrowStatement extends Statement {
-	/** The text position of the first token. */
-	@SynField
-	private TextPos synPos;
-	
-	/** The expression returning the exception to be thrown. */
-	@SynField
-	private Expression synExpression;
-	
-	public ThrowStatement(){}
+    /** The text position of the first token. */
+    @SynField
+    private TextPos synPos;
+    
+    /** The expression returning the exception to be thrown. */
+    @SynField
+    private Expression synExpression;
+    
+    public ThrowStatement(){}
 
-	@Override
-	TextPos getStartTextPos() {
-		return synPos;
-	}
+    @Override
+    TextPos getStartTextPos() {
+        return synPos;
+    }
 
-	@Override
-	StatementResult execute0(ScriptScope scope) throws SynsException {
-		Value value = synExpression.evaluate(scope);
-		Object obj = value.toOperand().objectValue();
-		
-		//Throw statement is implemented by throwing a ThrowSynsException. Maybe this is not the
-		//best design, but it is simple and it works.
-		Throwable throwable = (Throwable)obj;
-		throw new ThrowSynsException(throwable, synPos);
-	}
-	
-	@Override
-	public String toString() {
-		return "throw " + synExpression;
-	}
+    @Override
+    StatementResult execute0(ScriptScope scope) throws SynsException {
+        Value value = synExpression.evaluate(scope);
+        Object obj = value.toOperand().objectValue();
+        
+        //Throw statement is implemented by throwing a ThrowSynsException. Maybe this is not the
+        //best design, but it is simple and it works.
+        Throwable throwable = (Throwable)obj;
+        throw new ThrowSynsException(throwable, synPos);
+    }
+    
+    @Override
+    public String toString() {
+        return "throw " + synExpression;
+    }
 }

@@ -23,28 +23,28 @@ import java.util.List;
  * EBNF grammar.
  */
 class EbnfGrammar {
-	private final List<EbnfNonterminal> startNonterminals;
-	private final List<EbnfTerminalElement> terminals;
+    private final List<EbnfNonterminal> startNonterminals;
+    private final List<EbnfTerminalElement> terminals;
 
-	EbnfGrammar(List<EbnfNonterminal> startNonterminals, List<EbnfTerminalElement> terminals) {
-		assert startNonterminals != null;
-		assert !startNonterminals.isEmpty();
-		
-		this.startNonterminals = Collections.unmodifiableList(new ArrayList<>(startNonterminals));
-		this.terminals = Collections.unmodifiableList(new ArrayList<>(terminals));
-	}
-	
-	/**
-	 * Returns the list of start nonterminals defined in the grammar.
-	 */
-	List<EbnfNonterminal> getStartNonterminals() {
-		return startNonterminals;
-	}
-	
-	/**
-	 * Returns the list of terminal elements defined in the grammar.
-	 */
-	List<EbnfTerminalElement> getTerminals() {
-		return terminals;
-	}
+    EbnfGrammar(List<EbnfNonterminal> startNonterminals, List<EbnfTerminalElement> terminals) {
+        assert startNonterminals != null;
+        assert !startNonterminals.isEmpty();
+        
+        this.startNonterminals = Collections.unmodifiableList(new ArrayList<>(startNonterminals));
+        this.terminals = Collections.unmodifiableList(new ArrayList<>(terminals));
+    }
+    
+    /**
+     * Returns the list of start nonterminals defined in the grammar.
+     */
+    List<EbnfNonterminal> getStartNonterminals() {
+        return startNonterminals;
+    }
+    
+    /**
+     * Returns the list of terminal elements defined in the grammar.
+     */
+    List<EbnfTerminalElement> getTerminals() {
+        return terminals;
+    }
 }

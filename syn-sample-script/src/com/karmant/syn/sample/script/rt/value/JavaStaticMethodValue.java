@@ -22,12 +22,12 @@ import com.karmant.syn.sample.script.rt.javacls.JavaMethodSet;
  * Java static method value.
  */
 public class JavaStaticMethodValue extends JavaMethodValue {
-	public JavaStaticMethodValue(JavaMethodSet methods) {
-		super(methods);
-	}
+    public JavaStaticMethodValue(JavaMethodSet methods) {
+        super(methods);
+    }
 
-	@Override
-	public Value call(RValue[] arguments) throws SynsException {
-		return getMethods().callStatic(arguments);
-	}
+    @Override
+    public Value call(RValue[] arguments) throws SynsException {
+        return getMethods().callStatic(arguments);
+    }
 }

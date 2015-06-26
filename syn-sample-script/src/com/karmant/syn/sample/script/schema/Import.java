@@ -26,29 +26,29 @@ import com.karmant.syn.sample.script.rt.SynsException;
  * Import declaration syntax node.
  */
 public class Import {
-	/** The chain of names to be imported. */
-	@SynField
-	private StringToken[] synNames;
-	
-	/** <code>true</code> if this is an on-demand import. */
-	@SynField
-	private boolean synOnDemand;
+    /** The chain of names to be imported. */
+    @SynField
+    private StringToken[] synNames;
+    
+    /** <code>true</code> if this is an on-demand import. */
+    @SynField
+    private boolean synOnDemand;
 
-	public Import(){}
-	
-	/**
-	 * Adds this import to the specified scope.
-	 */
-	void addToScope(ScriptScope scope) throws SynsException {
-		if (synOnDemand) {
-			scope.addOnDemandImport(synNames);
-		} else {
-			scope.addSingleImport(synNames);
-		}
-	}
-	
-	@Override
-	public String toString() {
-		return "import " + Arrays.toString(synNames);
-	}
+    public Import(){}
+    
+    /**
+     * Adds this import to the specified scope.
+     */
+    void addToScope(ScriptScope scope) throws SynsException {
+        if (synOnDemand) {
+            scope.addOnDemandImport(synNames);
+        } else {
+            scope.addSingleImport(synNames);
+        }
+    }
+    
+    @Override
+    public String toString() {
+        return "import " + Arrays.toString(synNames);
+    }
 }

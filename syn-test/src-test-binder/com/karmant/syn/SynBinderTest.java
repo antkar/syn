@@ -41,125 +41,125 @@ import com.karmant.syn.schema.result_key.ResultKeySchema;
  */
 public class SynBinderTest extends TestCase {
 
-	@Test
-	public void testResultKeyPresentInGrammar() throws SynException, IOException {
-		String text = "Hello";
-		ResultKeySchema schema = parse(ResultKeySchema.class, "result_key_grammar.txt", text);
-		ResultKeyObj obj = schema.getObj();
-		assertNotNull(obj);
-		ResultKeyFoo foo = (ResultKeyFoo) obj;
-		assertEquals("Hello", foo.getName());
-	}
+    @Test
+    public void testResultKeyPresentInGrammar() throws SynException, IOException {
+        String text = "Hello";
+        ResultKeySchema schema = parse(ResultKeySchema.class, "result_key_grammar.txt", text);
+        ResultKeyObj obj = schema.getObj();
+        assertNotNull(obj);
+        ResultKeyFoo foo = (ResultKeyFoo) obj;
+        assertEquals("Hello", foo.getName());
+    }
 
-	@Test
-	public void testResultKeyRuleUsedInText() throws SynException, IOException {
-		String text = "(12345)";
-		ResultKeySchema schema = parse(ResultKeySchema.class, "result_key_grammar.txt", text);
-		ResultKeyObj obj = schema.getObj();
-		assertNotNull(obj);
-		ResultKeyBar bar = (ResultKeyBar) obj;
-		assertEquals(12345, bar.getValue());
-	}
+    @Test
+    public void testResultKeyRuleUsedInText() throws SynException, IOException {
+        String text = "(12345)";
+        ResultKeySchema schema = parse(ResultKeySchema.class, "result_key_grammar.txt", text);
+        ResultKeyObj obj = schema.getObj();
+        assertNotNull(obj);
+        ResultKeyBar bar = (ResultKeyBar) obj;
+        assertEquals(12345, bar.getValue());
+    }
 
-	@Test
-	public void testResultKeyInChildElement() throws SynException {
-		String grammar =
-				"@Object : ID ( result=String | ID ); " +
-				"String : \"aaa\"; ";
-		try {
-			createBinderStr(Object.class, grammar);
-			fail();
-		} catch (SynBinderException e) {
-			assertEquals("Special name 'result' cannot be used as an attribute", e.getMessage());
-		}
-	}
-	
-	@Test
-	public void testFieldIsBoundInEmbeddedElementOnly() throws SynException, IOException {
-		SynBinder<Bug001Schema> binder = createBinder(Bug001Schema.class, "bug001_grammar.txt");
-		
-		Bug001Schema schema = parseStr(binder, "aaa : bbb");
-		Bug001Foo foo = schema.getFoo();
-		assertEquals("aaa", foo.getName());
-		assertEquals("bbb", foo.getType());
-	}
+    @Test
+    public void testResultKeyInChildElement() throws SynException {
+        String grammar =
+                "@Object : ID ( result=String | ID ); " +
+                "String : \"aaa\"; ";
+        try {
+            createBinderStr(Object.class, grammar);
+            fail();
+        } catch (SynBinderException e) {
+            assertEquals("Special name 'result' cannot be used as an attribute", e.getMessage());
+        }
+    }
+    
+    @Test
+    public void testFieldIsBoundInEmbeddedElementOnly() throws SynException, IOException {
+        SynBinder<Bug001Schema> binder = createBinder(Bug001Schema.class, "bug001_grammar.txt");
+        
+        Bug001Schema schema = parseStr(binder, "aaa : bbb");
+        Bug001Foo foo = schema.getFoo();
+        assertEquals("aaa", foo.getName());
+        assertEquals("bbb", foo.getType());
+    }
 
-	@Test
-	public void testFieldIsBoundInEmbeddedElementOnlyButNotSet() throws SynException, IOException {
-		SynBinder<Bug001Schema> binder = createBinder(Bug001Schema.class, "bug001_grammar.txt");
-		
-		Bug001Schema schema = parseStr(binder, "aaa");
-		Bug001Foo foo = schema.getFoo();
-		assertEquals("aaa", foo.getName());
-		assertEquals(null, foo.getType());
-	}
+    @Test
+    public void testFieldIsBoundInEmbeddedElementOnlyButNotSet() throws SynException, IOException {
+        SynBinder<Bug001Schema> binder = createBinder(Bug001Schema.class, "bug001_grammar.txt");
+        
+        Bug001Schema schema = parseStr(binder, "aaa");
+        Bug001Foo foo = schema.getFoo();
+        assertEquals("aaa", foo.getName());
+        assertEquals(null, foo.getType());
+    }
 
-	@Test
-	public void testValuesInEmbeddedElement() throws SynException, IOException {
-		SynBinder<Bug002Schema> binder = createBinder(Bug002Schema.class, "bug002_grammar.txt");
-		
-		Bug002Schema schema = parseStr(binder, "aaa ; bbb? ; ccc+ ; ddd* ;");
-		
-		Bug002Foo[] foos = schema.getFoos();
-		assertEquals(4, foos.length);
-		
-		Bug002Foo foo0 = foos[0];
-		assertEquals("aaa", foo0.getName());
-		assertEquals(0, foo0.getCardinality());
+    @Test
+    public void testValuesInEmbeddedElement() throws SynException, IOException {
+        SynBinder<Bug002Schema> binder = createBinder(Bug002Schema.class, "bug002_grammar.txt");
+        
+        Bug002Schema schema = parseStr(binder, "aaa ; bbb? ; ccc+ ; ddd* ;");
+        
+        Bug002Foo[] foos = schema.getFoos();
+        assertEquals(4, foos.length);
+        
+        Bug002Foo foo0 = foos[0];
+        assertEquals("aaa", foo0.getName());
+        assertEquals(0, foo0.getCardinality());
 
-		Bug002Foo foo1 = foos[1];
-		assertEquals("bbb", foo1.getName());
-		assertEquals(5, foo1.getCardinality());
+        Bug002Foo foo1 = foos[1];
+        assertEquals("bbb", foo1.getName());
+        assertEquals(5, foo1.getCardinality());
 
-		Bug002Foo foo2 = foos[2];
-		assertEquals("ccc", foo2.getName());
-		assertEquals(10, foo2.getCardinality());
-		
-		Bug002Foo foo3 = foos[3];
-		assertEquals("ddd", foo3.getName());
-		assertEquals(15, foo3.getCardinality());
-	}
-	
-	@Test
-	public void testIntegerInRepetitionElement() throws SynException, IOException {
-		SynBinder<Bug003Schema> binder = createBinder(Bug003Schema.class, "bug003_grammar.txt");
-	
-		Bug003Schema schema = parseStr(binder, "Foo 1,2,3,4,5");
-		int[] number = schema.getNumber();
-		assertEquals("[1, 2, 3, 4, 5]", Arrays.toString(number));
-	}
+        Bug002Foo foo2 = foos[2];
+        assertEquals("ccc", foo2.getName());
+        assertEquals(10, foo2.getCardinality());
+        
+        Bug002Foo foo3 = foos[3];
+        assertEquals("ddd", foo3.getName());
+        assertEquals(15, foo3.getCardinality());
+    }
+    
+    @Test
+    public void testIntegerInRepetitionElement() throws SynException, IOException {
+        SynBinder<Bug003Schema> binder = createBinder(Bug003Schema.class, "bug003_grammar.txt");
+    
+        Bug003Schema schema = parseStr(binder, "Foo 1,2,3,4,5");
+        int[] number = schema.getNumber();
+        assertEquals("[1, 2, 3, 4, 5]", Arrays.toString(number));
+    }
 
-	static <T> T parse(Class<T> cls, String grammarFile, String text)
-			throws SynException, IOException
-	{
-		SynBinder<T> binder = createBinder(cls, grammarFile);
-		StringReader reader = new StringReader(text);
-		SourceDescriptor sourceDescriptor = new StringSourceDescriptor("text");
-		T result = binder.parse(reader, sourceDescriptor);
-		return result;
-	}
-	
-	static <T> SynBinder<T> createBinder(Class<T> cls, String grammarPath)
-			throws IOException, SynException
-	{
-		try (
-				InputStream in = cls.getResourceAsStream(grammarPath);
-				Reader reader = new InputStreamReader(in))
-		{
-			SynBinder<T> binder = new SynBinder<>(cls, reader);
-			return binder;
-		}
-	}
-	
-	private static <T> SynBinder<T> createBinderStr(Class<T> cls, String grammarStr)
-			throws SynException
-	{
-		Reader reader = new StringReader(grammarStr);
-		return new SynBinder<>(cls, reader);
-	}
-	
-	private static <T> T parseStr(SynBinder<T> binder, String textStr) throws SynException {
-		Reader reader = new StringReader(textStr);
-		return binder.parse(reader);
-	}
+    static <T> T parse(Class<T> cls, String grammarFile, String text)
+            throws SynException, IOException
+    {
+        SynBinder<T> binder = createBinder(cls, grammarFile);
+        StringReader reader = new StringReader(text);
+        SourceDescriptor sourceDescriptor = new StringSourceDescriptor("text");
+        T result = binder.parse(reader, sourceDescriptor);
+        return result;
+    }
+    
+    static <T> SynBinder<T> createBinder(Class<T> cls, String grammarPath)
+            throws IOException, SynException
+    {
+        try (
+                InputStream in = cls.getResourceAsStream(grammarPath);
+                Reader reader = new InputStreamReader(in))
+        {
+            SynBinder<T> binder = new SynBinder<>(cls, reader);
+            return binder;
+        }
+    }
+    
+    private static <T> SynBinder<T> createBinderStr(Class<T> cls, String grammarStr)
+            throws SynException
+    {
+        Reader reader = new StringReader(grammarStr);
+        return new SynBinder<>(cls, reader);
+    }
+    
+    private static <T> T parseStr(SynBinder<T> binder, String textStr) throws SynException {
+        Reader reader = new StringReader(textStr);
+        return binder.parse(reader);
+    }
 }

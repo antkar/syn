@@ -22,19 +22,19 @@ import com.karmant.syn.TextPos;
  * Script <code>for</code> statement syntax node.
  */
 public abstract class ForStatement extends Statement {
-	/** The text position of the first token. */
-	@SynField
-	private TextPos synPos;
+    /** The text position of the first token. */
+    @SynField
+    private TextPos synPos;
 
-	public ForStatement(){}
+    public ForStatement(){}
 
-	@Override
-	TextPos getStartTextPos() {
-		return synPos;
-	}
-	
-	@Override
-	public String toString() {
-		return "for (...)";
-	}
+    @Override
+    TextPos getStartTextPos() {
+        return synPos;
+    }
+    
+    @Override
+    public String toString() {
+        return "for (...)";
+    }
 }

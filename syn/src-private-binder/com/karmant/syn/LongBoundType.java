@@ -21,30 +21,30 @@ import java.lang.reflect.Field;
  * Primitive <code>long</code> bound type.
  */
 class LongBoundType extends BoundType {
-	static final BoundType INSTANCE = new LongBoundType();
+    static final BoundType INSTANCE = new LongBoundType();
 
-	private LongBoundType(){}
+    private LongBoundType(){}
 
-	@Override
-	Object convertNode(BinderEngine<?> engine, SynNode synNode, BoundObject bObjOwner, String key)
-			throws SynBinderException
-	{
-		long value = extractValue(synNode);
-		return value;
-	}
+    @Override
+    Object convertNode(BinderEngine<?> engine, SynNode synNode, BoundObject bObjOwner, String key)
+            throws SynBinderException
+    {
+        long value = extractValue(synNode);
+        return value;
+    }
 
-	@Override
-	BoundType getArrayType(Field field) throws SynBinderException {
-		return LongArrayBoundType.INSTANCE;
-	}
+    @Override
+    BoundType getArrayType(Field field) throws SynBinderException {
+        return LongArrayBoundType.INSTANCE;
+    }
 
-	static long extractValue(SynNode synNode) throws SynBinderException {
-		ValueNode valueNode = (ValueNode) synNode;
-		if (valueNode == null) {
-			throw new SynBinderException("Cannot bind null value to a long field");
-		}
-		
-		long value = valueNode.getLong();
-		return value;
-	}
+    static long extractValue(SynNode synNode) throws SynBinderException {
+        ValueNode valueNode = (ValueNode) synNode;
+        if (valueNode == null) {
+            throw new SynBinderException("Cannot bind null value to a long field");
+        }
+        
+        long value = valueNode.getLong();
+        return value;
+    }
 }

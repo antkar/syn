@@ -25,13 +25,13 @@ import org.junit.Test;
  * Unit tests for {@link ParserConfigurator}.
  */
 public class ParserConfiguratorTest extends TestCase {
-	@Test
-	public void testSuccess() throws Exception {
-		URL url = getClass().getResource("syn_grammar.xml");
-		EbnfGrammar eGrammar = XmlGrammarParser.parseGrammar(url);
-		BnfGrammar bGrammar = EbnfToBnfConverter.convert(eGrammar);
-		
-		ParserConfiguration config = ParserConfigurator.makeConfiguration(bGrammar);
-		assertNotNull(config);
-	}
+    @Test
+    public void testSuccess() throws Exception {
+        URL url = getClass().getResource("syn_grammar.xml");
+        EbnfGrammar eGrammar = XmlGrammarParser.parseGrammar(url);
+        BnfGrammar bGrammar = EbnfToBnfConverter.convert(eGrammar);
+        
+        ParserConfiguration config = ParserConfigurator.makeConfiguration(bGrammar);
+        assertNotNull(config);
+    }
 }

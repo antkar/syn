@@ -19,18 +19,18 @@ package com.karmant.syn;
  * A bound type that returns a {@link TokenNode}'s literal.
  */
 class LiteralBoundType extends AbstractBoundType {
-	static final BoundType INSTANCE = new LiteralBoundType();
-	static final BoundType STRING_TOKEN_INSTANCE = new StringTokenBoundType(INSTANCE);
+    static final BoundType INSTANCE = new LiteralBoundType();
+    static final BoundType STRING_TOKEN_INSTANCE = new StringTokenBoundType(INSTANCE);
 
-	private LiteralBoundType() {
-		super(String.class);
-	}
+    private LiteralBoundType() {
+        super(String.class);
+    }
 
-	@Override
-	Object convertNode(BinderEngine<?> engine, SynNode synNode, BoundObject bObjOwner, String key) {
-		TokenNode tokenNode = (TokenNode) synNode;
-		TokenDescriptor tokenDesc = tokenNode.getTokenDescriptor();
-		String string = tokenDesc.getLiteral();
-		return string;
-	}
+    @Override
+    Object convertNode(BinderEngine<?> engine, SynNode synNode, BoundObject bObjOwner, String key) {
+        TokenNode tokenNode = (TokenNode) synNode;
+        TokenDescriptor tokenDesc = tokenNode.getTokenDescriptor();
+        String string = tokenDesc.getLiteral();
+        return string;
+    }
 }

@@ -19,18 +19,18 @@ package com.karmant.syn;
  * Null parser action. Always returns <code>null</code>.
  */
 class ParserNullAction implements IParserAction {
-	static final ParserNullAction INSTANCE = new ParserNullAction();
-	
-	private ParserNullAction() {
-	}
+    static final ParserNullAction INSTANCE = new ParserNullAction();
+    
+    private ParserNullAction() {
+    }
 
-	@Override
-	public IParserNode execute(ParserStackElement stack) {
-		return null;
-	}
-	
-	@Override
-	public String toString() {
-		return "$$ = null";
-	}
+    @Override
+    public IParserNode execute(ParserStackElement stack) {
+        return null;
+    }
+    
+    @Override
+    public String toString() {
+        return "$$ = null";
+    }
 }

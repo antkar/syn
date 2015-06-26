@@ -21,34 +21,34 @@ import java.util.List;
  * EBNF optional element.
  */
 class EbnfOptionalElement extends EbnfEmbeddedElement {
-	EbnfOptionalElement(String key, TextPos keyPos, EbnfProductions body) {
-		super(key, keyPos, body);
-	}
+    EbnfOptionalElement(String key, TextPos keyPos, EbnfProductions body) {
+        super(key, keyPos, body);
+    }
 
-	@Override
-	BnfElement convert(EbnfToBnfConverter converter, String currentNt) throws SynException {
-		//Convert productions.
-		boolean hasEmbeddedObject = hasEmbeddedObject();
-		List<BnfProduction> bProductions =
-				converter.convertProductions(currentNt, getBody().asList(), hasEmbeddedObject);
-		
-		//Add empty production.
-		IParserAction nullAction = hasEmbeddedObject ? ParserObjectAction.NULL : ParserNullAction.INSTANCE;
-		BnfProduction bEmptyProduction = converter.createProduction(nullAction);
-		bProductions.add(bEmptyProduction);
-		
-		//Create an new anonymous nonterminal.
-		BnfNonterminal bNonterminal = converter.createAnonymousNonterminal(currentNt, bProductions);
-		return bNonterminal;
-	}
+    @Override
+    BnfElement convert(EbnfToBnfConverter converter, String currentNt) throws SynException {
+        //Convert productions.
+        boolean hasEmbeddedObject = hasEmbeddedObject();
+        List<BnfProduction> bProductions =
+                converter.convertProductions(currentNt, getBody().asList(), hasEmbeddedObject);
+        
+        //Add empty production.
+        IParserAction nullAction = hasEmbeddedObject ? ParserObjectAction.NULL : ParserNullAction.INSTANCE;
+        BnfProduction bEmptyProduction = converter.createProduction(nullAction);
+        bProductions.add(bEmptyProduction);
+        
+        //Create an new anonymous nonterminal.
+        BnfNonterminal bNonterminal = converter.createAnonymousNonterminal(currentNt, bProductions);
+        return bNonterminal;
+    }
 
-	@Override
-	<T> T invokeProcessor(EbnfElementProcessor<T> processor) throws SynException {
-		return processor.processOptionalElement(this);
-	}
-	
-	@Override
-	public String toString() {
-		return "(" + getBody() + ")?";
-	}
+    @Override
+    <T> T invokeProcessor(EbnfElementProcessor<T> processor) throws SynException {
+        return processor.processOptionalElement(this);
+    }
+    
+    @Override
+    public String toString() {
+        return "(" + getBody() + ")?";
+    }
 }

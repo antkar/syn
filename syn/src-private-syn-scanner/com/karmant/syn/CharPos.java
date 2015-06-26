@@ -20,25 +20,25 @@ package com.karmant.syn;
  * of the input.
  */
 class CharPos {
-	int line;
-	int column;
-	int offset;
-	
-	CharPos(){}
+    int line;
+    int column;
+    int offset;
+    
+    CharPos(){}
 
-	void set(int aLine, int aColumn, int aOffset) {
-		line = aLine;
-		column = aColumn;
-		offset = aOffset;
-	}
-	
-	void set(CharPos pos) {
-		line = pos.line;
-		column = pos.column;
-		offset = pos.offset;
-	}
-	
-	TextPos toTextPos(SourceDescriptor sourceDescriptor, int endOffset) {
-		return new TextPos(sourceDescriptor, offset, line + 1, column + 1, endOffset - offset);
-	}
+    void set(int aLine, int aColumn, int aOffset) {
+        line = aLine;
+        column = aColumn;
+        offset = aOffset;
+    }
+    
+    void set(CharPos pos) {
+        line = pos.line;
+        column = pos.column;
+        offset = pos.offset;
+    }
+    
+    TextPos toTextPos(SourceDescriptor sourceDescriptor, int endOffset) {
+        return new TextPos(sourceDescriptor, offset, line + 1, column + 1, endOffset - offset);
+    }
 }

@@ -21,24 +21,24 @@ import com.karmant.syn.sample.script.rt.SynsException;
  * An {@link Object} operand.
  */
 class ObjectOperand extends Operand {
-	private final Object value;
+    private final Object value;
 
-	ObjectOperand(Object value) {
-		this.value = value;
-	}
+    ObjectOperand(Object value) {
+        this.value = value;
+    }
 
-	@Override
-	public OperandType getType() {
-		return OperandType.OBJECT;
-	}
-	
-	@Override
-	public String stringValue() throws SynsException {
-		return value + "";
-	}
-	
-	@Override
-	public Object objectValue() throws SynsException {
-		return value;
-	}
+    @Override
+    public OperandType getType() {
+        return OperandType.OBJECT;
+    }
+    
+    @Override
+    public String stringValue() throws SynsException {
+        return value + "";
+    }
+    
+    @Override
+    public Object objectValue() throws SynsException {
+        return value;
+    }
 }

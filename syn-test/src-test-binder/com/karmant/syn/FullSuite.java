@@ -29,10 +29,10 @@ import com.karmant.syn.sample.script.ScriptSuite;
  */
 @RunWith(Suite.class)
 @SuiteClasses({
-	SynSuite.class,
-	BinderSuite.class,
-	ScriptSuite.class,
+    SynSuite.class,
+    BinderSuite.class,
+    ScriptSuite.class,
 })
 public class FullSuite {
-	private FullSuite(){}
+    private FullSuite(){}
 }

@@ -19,9 +19,9 @@ package com.karmant.syn;
  * Signals an error in lexical analysis. 
  */
 public class SynLexicalException extends SynTextException {
-	private static final long serialVersionUID = 5805411760327872543L;
+    private static final long serialVersionUID = 5805411760327872543L;
 
-	SynLexicalException(TextPos textPos, String message) {
-		super(textPos, message);
-	}
+    SynLexicalException(TextPos textPos, String message) {
+        super(textPos, message);
+    }
 }

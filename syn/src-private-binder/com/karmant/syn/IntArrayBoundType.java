@@ -19,26 +19,26 @@ package com.karmant.syn;
  * Primitive <code>int</code> array bound type.
  */
 class IntArrayBoundType extends ArrayBoundType {
-	static final BoundType INSTANCE = new IntArrayBoundType();
+    static final BoundType INSTANCE = new IntArrayBoundType();
 
-	private IntArrayBoundType(){}
+    private IntArrayBoundType(){}
 
-	@Override
-	Object convertArray(
-			BinderEngine<?> engine,
-			BoundObject bObjOwner,
-			String key,
-			ArrayNode arrayNode,
-			int size) throws SynBinderException
-	{
-		int[] array = new int[size];
-		
-		for (int i = 0; i < size; ++i) {
-			SynNode synElementNode = arrayNode.get(i);
-			int value = IntBoundType.extractValue(synElementNode);
-			array[i] = value;
-		}
-		
-		return array;
-	}
+    @Override
+    Object convertArray(
+            BinderEngine<?> engine,
+            BoundObject bObjOwner,
+            String key,
+            ArrayNode arrayNode,
+            int size) throws SynBinderException
+    {
+        int[] array = new int[size];
+        
+        for (int i = 0; i < size; ++i) {
+            SynNode synElementNode = arrayNode.get(i);
+            int value = IntBoundType.extractValue(synElementNode);
+            array[i] = value;
+        }
+        
+        return array;
+    }
 }

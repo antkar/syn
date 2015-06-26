@@ -25,29 +25,29 @@ import com.karmant.syn.sample.script.rt.SynsException;
  * Block statement syntax node.
  */
 public class BlockStatement extends Statement {
-	/** The text position of the first token of the block. */
-	@SynField
-	private TextPos synPos;
+    /** The text position of the first token of the block. */
+    @SynField
+    private TextPos synPos;
 
-	/** The block. */
-	@SynField
-	private Block synBlock;
+    /** The block. */
+    @SynField
+    private Block synBlock;
 
-	public BlockStatement(){}
-	
-	@Override
-	TextPos getStartTextPos() {
-		return synPos;
-	}
+    public BlockStatement(){}
+    
+    @Override
+    TextPos getStartTextPos() {
+        return synPos;
+    }
 
-	@Override
-	StatementResult execute0(ScriptScope scope) throws SynsException {
-		ScriptScope subScope = scope.deriveNestedScope("block");
-		return synBlock.execute(subScope);
-	}
-	
-	@Override
-	public String toString() {
-		return synBlock + "";
-	}
+    @Override
+    StatementResult execute0(ScriptScope scope) throws SynsException {
+        ScriptScope subScope = scope.deriveNestedScope("block");
+        return synBlock.execute(subScope);
+    }
+    
+    @Override
+    public String toString() {
+        return synBlock + "";
+    }
 }

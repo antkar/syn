@@ -19,35 +19,35 @@ package com.karmant.syn;
  * Floating-point value node. Contains a value of type <code>double</code>.
  */
 class FloatValueNode extends ValueNode {
-	private final double value;
-	
-	FloatValueNode(PosBuffer pos, double value) {
-		super(pos);
-		this.value = value;
-	}
+    private final double value;
+    
+    FloatValueNode(PosBuffer pos, double value) {
+        super(pos);
+        this.value = value;
+    }
 
-	@Override
-	public SynValueType getValueType() {
-		return SynValueType.FLOAT;
-	}
-	
-	@Override
-	public double getFloat() {
-		return value;
-	}
+    @Override
+    public SynValueType getValueType() {
+        return SynValueType.FLOAT;
+    }
+    
+    @Override
+    public double getFloat() {
+        return value;
+    }
 
-	@Override
-	public Object getValue() {
-		return value;
-	}
+    @Override
+    public Object getValue() {
+        return value;
+    }
 
-	@Override
-	public TokenDescriptor getTokenDescriptor() {
-		return TokenDescriptor.FLOAT;
-	}
-	
-	@Override
-	public String toString() {
-		return getTokenDescriptor() + "(" + getFloat() + ")";
-	}
+    @Override
+    public TokenDescriptor getTokenDescriptor() {
+        return TokenDescriptor.FLOAT;
+    }
+    
+    @Override
+    public String toString() {
+        return getTokenDescriptor() + "(" + getFloat() + ")";
+    }
 }

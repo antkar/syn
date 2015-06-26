@@ -19,23 +19,23 @@ package com.karmant.syn;
  * Token value of type <code>float</code>.
  */
 public class FloatToken extends AbstractToken {
-	private final float value;
+    private final float value;
 
-	FloatToken(TextPos pos, float value) {
-		super(pos);
-		this.value = value;
-	}
-	
-	/**
-	 * Returns the <code>float</code> value of this object.
-	 * @return the value.
-	 */
-	public float getValue() {
-		return value;
-	}
-	
-	@Override
-	public String toString() {
-		return value + "";
-	}
+    FloatToken(TextPos pos, float value) {
+        super(pos);
+        this.value = value;
+    }
+    
+    /**
+     * Returns the <code>float</code> value of this object.
+     * @return the value.
+     */
+    public float getValue() {
+        return value;
+    }
+    
+    @Override
+    public String toString() {
+        return value + "";
+    }
 }

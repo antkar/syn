@@ -27,37 +27,37 @@ import com.karmant.syn.sample.script.util.MiscUtil;
  * New object instantiation expression syntax node.
  */
 public class NewClassExpression extends NewExpression {
-	/** The name of the type of the object. */
-	@SynField
-	private StringToken[] synTypeName;
-	
-	/** Constructor actual arguments. */
-	@SynField
-	private Expression[] synArguments;
+    /** The name of the type of the object. */
+    @SynField
+    private StringToken[] synTypeName;
+    
+    /** Constructor actual arguments. */
+    @SynField
+    private Expression[] synArguments;
 
-	public NewClassExpression(){}
+    public NewClassExpression(){}
 
-	@Override
-	Value evaluate0(ScriptScope scope) throws SynsException {
-		Value value = scope.getValue(synTypeName);
-		
-		RValue[] arguments = new RValue[synArguments.length];
-		for (int i = 0; i < arguments.length; ++i) {
-			Value argument = synArguments[i].evaluate(scope);
-			arguments[i] = argument.toRValue();
-		}
-		
-		return value.newObject(arguments);
-	}
-	
-	@Override
-	public String toString() {
-		StringBuilder bld = new StringBuilder();
-		bld.append("new ");
-		MiscUtil.appendArray(bld, synTypeName, ".");
-		bld.append("( ");
-		MiscUtil.appendArray(bld, synArguments, ", ");
-		bld.append(" )");
-		return bld + "";
-	}
+    @Override
+    Value evaluate0(ScriptScope scope) throws SynsException {
+        Value value = scope.getValue(synTypeName);
+        
+        RValue[] arguments = new RValue[synArguments.length];
+        for (int i = 0; i < arguments.length; ++i) {
+            Value argument = synArguments[i].evaluate(scope);
+            arguments[i] = argument.toRValue();
+        }
+        
+        return value.newObject(arguments);
+    }
+    
+    @Override
+    public String toString() {
+        StringBuilder bld = new StringBuilder();
+        bld.append("new ");
+        MiscUtil.appendArray(bld, synTypeName, ".");
+        bld.append("( ");
+        MiscUtil.appendArray(bld, synArguments, ", ");
+        bld.append(" )");
+        return bld + "";
+    }
 }

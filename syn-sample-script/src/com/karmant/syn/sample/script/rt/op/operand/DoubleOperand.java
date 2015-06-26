@@ -21,44 +21,44 @@ import com.karmant.syn.sample.script.rt.SynsException;
  * Operand of type <code>double</code>.
  */
 class DoubleOperand extends Operand {
-	private final double value;
+    private final double value;
 
-	DoubleOperand(double value) {
-		this.value = value;
-	}
+    DoubleOperand(double value) {
+        this.value = value;
+    }
 
-	@Override
-	public OperandType getType() {
-		return OperandType.DOUBLE;
-	}
+    @Override
+    public OperandType getType() {
+        return OperandType.DOUBLE;
+    }
 
-	@Override
-	public double doubleValue() throws SynsException {
-		return value;
-	}
-	
-	@Override
-	public String stringValue() throws SynsException {
-		return value + "";
-	}
-	
-	@Override
-	public Object objectValue() throws SynsException {
-		return value;
-	}
+    @Override
+    public double doubleValue() throws SynsException {
+        return value;
+    }
+    
+    @Override
+    public String stringValue() throws SynsException {
+        return value + "";
+    }
+    
+    @Override
+    public Object objectValue() throws SynsException {
+        return value;
+    }
 
-	@Override
-	public int castToInt() throws SynsException {
-		return (int)value;
-	}
+    @Override
+    public int castToInt() throws SynsException {
+        return (int)value;
+    }
 
-	@Override
-	public long castToLong() throws SynsException {
-		return (long)value;
-	}
+    @Override
+    public long castToLong() throws SynsException {
+        return (long)value;
+    }
 
-	@Override
-	public double castToDouble() throws SynsException {
-		return value;
-	}
+    @Override
+    public double castToDouble() throws SynsException {
+        return value;
+    }
 }

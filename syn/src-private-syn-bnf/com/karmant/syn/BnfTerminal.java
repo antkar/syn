@@ -19,23 +19,23 @@ package com.karmant.syn;
  * Terminal BNF element.
  */
 class BnfTerminal extends BnfElement {
-	private final TokenDescriptor tokenDescriptor;
+    private final TokenDescriptor tokenDescriptor;
 
-	BnfTerminal(int elementIndex, TokenDescriptor descriptor) {
-		super(elementIndex);
-		assert descriptor != null;
-		tokenDescriptor = descriptor;
-	}
+    BnfTerminal(int elementIndex, TokenDescriptor descriptor) {
+        super(elementIndex);
+        assert descriptor != null;
+        tokenDescriptor = descriptor;
+    }
 
-	/**
-	 * Returns the token descriptor associated with this terminal.
-	 */
-	TokenDescriptor getTokenDescriptor() {
-		return tokenDescriptor;
-	}
-	
-	@Override
-	public String toString() {
-		return tokenDescriptor.toString();
-	}
+    /**
+     * Returns the token descriptor associated with this terminal.
+     */
+    TokenDescriptor getTokenDescriptor() {
+        return tokenDescriptor;
+    }
+    
+    @Override
+    public String toString() {
+        return tokenDescriptor.toString();
+    }
 }

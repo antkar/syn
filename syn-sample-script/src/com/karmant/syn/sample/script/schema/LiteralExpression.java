@@ -19,5 +19,5 @@ package com.karmant.syn.sample.script.schema;
  * A literal expression syntax node.
  */
 public abstract class LiteralExpression extends TerminalExpression {
-	public LiteralExpression(){}
+    public LiteralExpression(){}
 }

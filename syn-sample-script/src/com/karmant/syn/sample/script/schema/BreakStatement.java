@@ -25,27 +25,27 @@ import com.karmant.syn.sample.script.rt.SynsException;
  * Script <code>break</code> statement syntax node.
  */
 public class BreakStatement extends Statement {
-	/** The text position. */
-	@SynField
-	private TextPos synPos;
+    /** The text position. */
+    @SynField
+    private TextPos synPos;
 
-	public BreakStatement(){}
+    public BreakStatement(){}
 
-	@Override
-	TextPos getStartTextPos() {
-		return synPos;
-	}
-	
-	@Override
-	StatementResult execute0(ScriptScope scope) throws SynsException {
-		if (!scope.isLoop()) {
-			throw new SynsException("Break without a loop");
-		}
-		return StatementResult.BREAK;
-	}
-	
-	@Override
-	public String toString() {
-		return "break";
-	}
+    @Override
+    TextPos getStartTextPos() {
+        return synPos;
+    }
+    
+    @Override
+    StatementResult execute0(ScriptScope scope) throws SynsException {
+        if (!scope.isLoop()) {
+            throw new SynsException("Break without a loop");
+        }
+        return StatementResult.BREAK;
+    }
+    
+    @Override
+    public String toString() {
+        return "break";
+    }
 }

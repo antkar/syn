@@ -21,29 +21,29 @@ import java.lang.reflect.Field;
  * Primitive <code>double</code> bound type.
  */
 class DoubleBoundType extends BoundType {
-	static final BoundType INSTANCE = new DoubleBoundType();
+    static final BoundType INSTANCE = new DoubleBoundType();
 
-	private DoubleBoundType(){}
+    private DoubleBoundType(){}
 
-	@Override
-	Object convertNode(BinderEngine<?> engine, SynNode synNode, BoundObject bObjOwner, String key)
-			throws SynBinderException
-	{
-		double value = extractValue(synNode);
-		return value;
-	}
+    @Override
+    Object convertNode(BinderEngine<?> engine, SynNode synNode, BoundObject bObjOwner, String key)
+            throws SynBinderException
+    {
+        double value = extractValue(synNode);
+        return value;
+    }
 
-	@Override
-	BoundType getArrayType(Field field) throws SynBinderException {
-		return DoubleArrayBoundType.INSTANCE;
-	}
+    @Override
+    BoundType getArrayType(Field field) throws SynBinderException {
+        return DoubleArrayBoundType.INSTANCE;
+    }
 
-	static double extractValue(SynNode synNode) throws SynBinderException {
-		ValueNode valueNode = (ValueNode) synNode;
-		if (valueNode == null) {
-			throw new SynBinderException("Cannot bind null value to a double field");
-		}
-		double value = valueNode.getFloat();
-		return value;
-	}
+    static double extractValue(SynNode synNode) throws SynBinderException {
+        ValueNode valueNode = (ValueNode) synNode;
+        if (valueNode == null) {
+            throw new SynBinderException("Cannot bind null value to a double field");
+        }
+        double value = valueNode.getFloat();
+        return value;
+    }
 }

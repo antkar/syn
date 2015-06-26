@@ -220,398 +220,398 @@ import java.util.List;
  * </table>
  */
 public class SynParser {
-	
-	private ParserConfiguration parserConfig;
-	private ScannerConfiguration scannerConfig;
-	private boolean failOnAmbiguity = false;
-	
-	/**
-	 * Constructs a parser, reading the grammar from the specified {@link Reader}.
-	 * 
-	 * @param grammarReader the grammar reader.
-	 * @throws SynException if grammar processing fails.
-	 * 
-	 * @see #SynParser(Reader, SourceDescriptor)
-	 */
-	public SynParser(Reader grammarReader) throws SynException {
-		this(grammarReader, null);
-	}
-	
-	/**
-	 * Constructs a parser, reading the grammar from the specified {@link Reader}.
-	 * Grammar source descriptor is specified. 
-	 * 
-	 * @param grammarReader the grammar reader.
-	 * @param grammarDescriptor the grammar descriptor. Can be <code>null</code>.
-	 * @throws SynException if grammar processing fails.
-	 */
-	public SynParser(Reader grammarReader, SourceDescriptor grammarDescriptor) throws SynException {
-		if (grammarReader == null) {
-			throw new NullPointerException("grammarReader");
-		}
-		
-		grammarDescriptor = CommonUtil.getSourceDescriptor("<grammar>", grammarDescriptor);
-		init(grammarDescriptor, grammarReader);
-	}
-	
-	/**
-	 * Constructs a parser, reading the grammar from the specified {@link File}.
-	 * 
-	 * @param grammarFile the grammar file.
-	 * @throws SynException if grammar processing fails.
-	 * @see #SynParser(Reader, SourceDescriptor)
-	 */
-	public SynParser(File grammarFile) throws SynException {
-		this(grammarFile, null);
-	}
+    
+    private ParserConfiguration parserConfig;
+    private ScannerConfiguration scannerConfig;
+    private boolean failOnAmbiguity = false;
+    
+    /**
+     * Constructs a parser, reading the grammar from the specified {@link Reader}.
+     * 
+     * @param grammarReader the grammar reader.
+     * @throws SynException if grammar processing fails.
+     * 
+     * @see #SynParser(Reader, SourceDescriptor)
+     */
+    public SynParser(Reader grammarReader) throws SynException {
+        this(grammarReader, null);
+    }
+    
+    /**
+     * Constructs a parser, reading the grammar from the specified {@link Reader}.
+     * Grammar source descriptor is specified. 
+     * 
+     * @param grammarReader the grammar reader.
+     * @param grammarDescriptor the grammar descriptor. Can be <code>null</code>.
+     * @throws SynException if grammar processing fails.
+     */
+    public SynParser(Reader grammarReader, SourceDescriptor grammarDescriptor) throws SynException {
+        if (grammarReader == null) {
+            throw new NullPointerException("grammarReader");
+        }
+        
+        grammarDescriptor = CommonUtil.getSourceDescriptor("<grammar>", grammarDescriptor);
+        init(grammarDescriptor, grammarReader);
+    }
+    
+    /**
+     * Constructs a parser, reading the grammar from the specified {@link File}.
+     * 
+     * @param grammarFile the grammar file.
+     * @throws SynException if grammar processing fails.
+     * @see #SynParser(Reader, SourceDescriptor)
+     */
+    public SynParser(File grammarFile) throws SynException {
+        this(grammarFile, null);
+    }
 
-	/**
-	 * Constructs a parser, reading the grammar from the specified {@link File}.
-	 * Grammar source descriptor is specified.
-	 * 
-	 * @param grammarFile the grammar file.
-	 * @param grammarDescriptor the grammar descriptor.
-	 * @throws SynException if grammar processing fails.
-	 * @see #SynParser(Reader, SourceDescriptor)
-	 */
-	public SynParser(File grammarFile, SourceDescriptor grammarDescriptor) throws SynException
-	{
-		if (grammarFile == null) {
-			throw new NullPointerException("grammarFile");
-		}
-		
-		grammarDescriptor = CommonUtil.getSourceDescriptor(grammarFile, grammarDescriptor);
-		try {
-			try (Reader reader = CommonUtil.openFileReader(grammarFile)) {
-				init(grammarDescriptor, reader);
-			}
-		} catch (IOException e) {
-			throw new SynException(e);
-		}
-	}
+    /**
+     * Constructs a parser, reading the grammar from the specified {@link File}.
+     * Grammar source descriptor is specified.
+     * 
+     * @param grammarFile the grammar file.
+     * @param grammarDescriptor the grammar descriptor.
+     * @throws SynException if grammar processing fails.
+     * @see #SynParser(Reader, SourceDescriptor)
+     */
+    public SynParser(File grammarFile, SourceDescriptor grammarDescriptor) throws SynException
+    {
+        if (grammarFile == null) {
+            throw new NullPointerException("grammarFile");
+        }
+        
+        grammarDescriptor = CommonUtil.getSourceDescriptor(grammarFile, grammarDescriptor);
+        try {
+            try (Reader reader = CommonUtil.openFileReader(grammarFile)) {
+                init(grammarDescriptor, reader);
+            }
+        } catch (IOException e) {
+            throw new SynException(e);
+        }
+    }
 
-	/**
-	 * Constructs a parser, reading the grammar from the specified class loader resource.
-	 *
-	 * @param resourceOrigin the class which the specified resource path is relative to.
-	 * @param grammarResourcePath the path to the grammar resource.
-	 * @throws SynException if grammar processing fails.
-	 * @see #SynParser(Reader, SourceDescriptor)
-	 */
-	public SynParser(Class<?> resourceOrigin, String grammarResourcePath) throws SynException {
-		this(resourceOrigin, grammarResourcePath, null);
-	}
-	
-	/**
-	 * Constructs a parser, reading the grammar from the specified class loader resource.
-	 * Grammar source descriptor is specified.
-	 *
-	 * @param resourceOrigin the class which the specified resource path is relative to.
-	 * @param grammarResourcePath the path to the grammar resource.
-	 * @param grammarDescriptor the grammar descriptor.
-	 * @throws SynException if grammar processing fails.
-	 * @see #SynParser(Reader, SourceDescriptor)
-	 */
-	public SynParser(
-			Class<?> resourceOrigin,
-			String grammarResourcePath,
-			SourceDescriptor grammarDescriptor) throws SynException
-	{
-		if (resourceOrigin == null) {
-			throw new NullPointerException("resourceOrigin");
-		}
-		if (grammarResourcePath == null) {
-			throw new NullPointerException("grammarResourcePath");
-		}
-		
-		grammarDescriptor = CommonUtil.getSourceDescriptor(grammarResourcePath, grammarDescriptor);
-		try {
-			try (Reader reader = CommonUtil.openResourceReader(resourceOrigin, grammarResourcePath)) {
-				init(grammarDescriptor, reader);
-			}
-		} catch (IOException e) {
-			throw new SynException(e);
-		}
-	}
+    /**
+     * Constructs a parser, reading the grammar from the specified class loader resource.
+     *
+     * @param resourceOrigin the class which the specified resource path is relative to.
+     * @param grammarResourcePath the path to the grammar resource.
+     * @throws SynException if grammar processing fails.
+     * @see #SynParser(Reader, SourceDescriptor)
+     */
+    public SynParser(Class<?> resourceOrigin, String grammarResourcePath) throws SynException {
+        this(resourceOrigin, grammarResourcePath, null);
+    }
+    
+    /**
+     * Constructs a parser, reading the grammar from the specified class loader resource.
+     * Grammar source descriptor is specified.
+     *
+     * @param resourceOrigin the class which the specified resource path is relative to.
+     * @param grammarResourcePath the path to the grammar resource.
+     * @param grammarDescriptor the grammar descriptor.
+     * @throws SynException if grammar processing fails.
+     * @see #SynParser(Reader, SourceDescriptor)
+     */
+    public SynParser(
+            Class<?> resourceOrigin,
+            String grammarResourcePath,
+            SourceDescriptor grammarDescriptor) throws SynException
+    {
+        if (resourceOrigin == null) {
+            throw new NullPointerException("resourceOrigin");
+        }
+        if (grammarResourcePath == null) {
+            throw new NullPointerException("grammarResourcePath");
+        }
+        
+        grammarDescriptor = CommonUtil.getSourceDescriptor(grammarResourcePath, grammarDescriptor);
+        try {
+            try (Reader reader = CommonUtil.openResourceReader(resourceOrigin, grammarResourcePath)) {
+                init(grammarDescriptor, reader);
+            }
+        } catch (IOException e) {
+            throw new SynException(e);
+        }
+    }
 
-	/**
-	 * Constructs a parser, reading the grammar from the specified {@link String}.
-	 *
-	 * @param grammar the grammar.
-	 * @throws SynException if grammar processing fails.
-	 * @see #SynParser(Reader, SourceDescriptor)
-	 */
-	public SynParser(String grammar) throws SynException {
-		this(grammar, null);
-	}
+    /**
+     * Constructs a parser, reading the grammar from the specified {@link String}.
+     *
+     * @param grammar the grammar.
+     * @throws SynException if grammar processing fails.
+     * @see #SynParser(Reader, SourceDescriptor)
+     */
+    public SynParser(String grammar) throws SynException {
+        this(grammar, null);
+    }
 
-	/**
-	 * Constructs a parser, reading the grammar from the specified {@link String}.
-	 * Grammar source descriptor is specified.
-	 *
-	 * @param grammar the grammar.
-	 * @param grammarDescriptor the grammar descriptor.
-	 * @throws SynException if grammar processing fails.
-	 * @see #SynParser(Reader, SourceDescriptor)
-	 */
-	public SynParser(String grammar, SourceDescriptor grammarDescriptor) throws SynException {
-		if (grammar == null) {
-			throw new NullPointerException("grammar");
-		}
-		
-		grammarDescriptor = CommonUtil.getSourceDescriptor("<grammar>", grammarDescriptor);
-		
-		Reader reader = new StringReader(grammar);
-		init(grammarDescriptor, reader);
-	}
-	
-	/**
-	 * Constructs a parser for a grammar passed in form of {@link EbnfGrammar}.
-	 * 
-	 * @param eGrammar the EBNF grammar.
-	 * @throws SynException if grammar processing fails.
-	 */
-	SynParser(EbnfGrammar eGrammar) throws SynException {
-		initEBNF(eGrammar);
-	}
+    /**
+     * Constructs a parser, reading the grammar from the specified {@link String}.
+     * Grammar source descriptor is specified.
+     *
+     * @param grammar the grammar.
+     * @param grammarDescriptor the grammar descriptor.
+     * @throws SynException if grammar processing fails.
+     * @see #SynParser(Reader, SourceDescriptor)
+     */
+    public SynParser(String grammar, SourceDescriptor grammarDescriptor) throws SynException {
+        if (grammar == null) {
+            throw new NullPointerException("grammar");
+        }
+        
+        grammarDescriptor = CommonUtil.getSourceDescriptor("<grammar>", grammarDescriptor);
+        
+        Reader reader = new StringReader(grammar);
+        init(grammarDescriptor, reader);
+    }
+    
+    /**
+     * Constructs a parser for a grammar passed in form of {@link EbnfGrammar}.
+     * 
+     * @param eGrammar the EBNF grammar.
+     * @throws SynException if grammar processing fails.
+     */
+    SynParser(EbnfGrammar eGrammar) throws SynException {
+        initEBNF(eGrammar);
+    }
 
-	/**
-	 * Initializes the parser, reading the grammar from the specified reader.
-	 */
-	private void init(SourceDescriptor grammarDescriptor, Reader grammarReader) throws SynException {
-		EbnfGrammar eGrammar = SynGrammarParser.parseGrammar(grammarReader, grammarDescriptor);
-		initEBNF(eGrammar);
-	}
+    /**
+     * Initializes the parser, reading the grammar from the specified reader.
+     */
+    private void init(SourceDescriptor grammarDescriptor, Reader grammarReader) throws SynException {
+        EbnfGrammar eGrammar = SynGrammarParser.parseGrammar(grammarReader, grammarDescriptor);
+        initEBNF(eGrammar);
+    }
 
-	/**
-	 * Initializes the parser by the specified EBNF grammar.
-	 */
-	private void initEBNF(EbnfGrammar eGrammar) throws SynException {
-		BnfGrammar bGrammar = EbnfToBnfConverter.convert(eGrammar);
-		
-		parserConfig = ParserConfigurator.makeConfiguration(bGrammar);
-		List<TokenDescriptor> tokenDescriptors = parserConfig.getTokenDescriptors();
-		scannerConfig = ScannerConfigurator.makeConfiguration(tokenDescriptors);
-	}
+    /**
+     * Initializes the parser by the specified EBNF grammar.
+     */
+    private void initEBNF(EbnfGrammar eGrammar) throws SynException {
+        BnfGrammar bGrammar = EbnfToBnfConverter.convert(eGrammar);
+        
+        parserConfig = ParserConfigurator.makeConfiguration(bGrammar);
+        List<TokenDescriptor> tokenDescriptors = parserConfig.getTokenDescriptors();
+        scannerConfig = ScannerConfigurator.makeConfiguration(tokenDescriptors);
+    }
 
-	/**
-	 * <p>Parses the specified text starting with the specified nonterminal. The text is read from
-	 * the specified {@link Reader}.</p>
-	 * 
-	 * <p>This method is thread-safe, meaning that different inputs can be safely parsed concurrently
-	 * by the same parser instance. However, this method should not be called concurrently with
-	 * {@link #setFailOnAmbiguity(boolean)}; in such case it is undefined whether the parser will take
-	 * the option into account.</p>
-	 * 
-	 * <p>If an ambiguity is detected and the fail-on-ambiguity option is turned on,
-	 * {@link SynAmbiguityException} is thrown. Otherwise, the parser chooses one of conflicting syntax trees
-	 * and declines the others. The survivor tree is chosen in a way that correctly solves the dangling-else
-	 * ambiguity, though the exact algorithm of choosing a tree is left undocumented.</p>
-	 * 
-	 * @param startNonterminal the name of the start nonterminal. The nonterminal must be defined in the
-	 * grammar with a "<code>@</code>" mark.
-	 * @param textReader the text reader.
-	 * @return the Abstract Syntax Tree.
-	 * @throws SynAmbiguityException if ambiguity is detected, while the fail-on-ambiguity option is on.
-	 * @throws SynException if parsing fails.
-	 */
-	public SynResult parse(String startNonterminal, Reader textReader) throws SynException {
-		return parse(startNonterminal, textReader, null);
-	}
+    /**
+     * <p>Parses the specified text starting with the specified nonterminal. The text is read from
+     * the specified {@link Reader}.</p>
+     * 
+     * <p>This method is thread-safe, meaning that different inputs can be safely parsed concurrently
+     * by the same parser instance. However, this method should not be called concurrently with
+     * {@link #setFailOnAmbiguity(boolean)}; in such case it is undefined whether the parser will take
+     * the option into account.</p>
+     * 
+     * <p>If an ambiguity is detected and the fail-on-ambiguity option is turned on,
+     * {@link SynAmbiguityException} is thrown. Otherwise, the parser chooses one of conflicting syntax trees
+     * and declines the others. The survivor tree is chosen in a way that correctly solves the dangling-else
+     * ambiguity, though the exact algorithm of choosing a tree is left undocumented.</p>
+     * 
+     * @param startNonterminal the name of the start nonterminal. The nonterminal must be defined in the
+     * grammar with a "<code>@</code>" mark.
+     * @param textReader the text reader.
+     * @return the Abstract Syntax Tree.
+     * @throws SynAmbiguityException if ambiguity is detected, while the fail-on-ambiguity option is on.
+     * @throws SynException if parsing fails.
+     */
+    public SynResult parse(String startNonterminal, Reader textReader) throws SynException {
+        return parse(startNonterminal, textReader, null);
+    }
 
-	/**
-	 * Parses the specified text starting with the specified nonterminal. The text is read from
-	 * the specified {@link Reader}. Text source descriptor is specified..
-	 * 
-	 * @param startNonterminal the name of the start nonterminal.
-	 * @param textReader the text reader.
-	 * @param textDescriptor the text descriptor. Can be <code>null</code>.
-	 * @return the Abstract Syntax Tree.
-	 * @throws SynException if parsing fails.
-	 * 
-	 * @see #parse(String, Reader)
-	 */
-	public SynResult parse(
-			String startNonterminal,
-			Reader textReader,
-			SourceDescriptor textDescriptor) throws SynException
-	{
-		if (textReader == null) {
-			throw new NullPointerException("textReader");
-		}
-		if (startNonterminal == null) {
-			throw new NullPointerException("startNonterminal");
-		}
-		
-		ParserState startState = parserConfig.getStartState(startNonterminal);
-		if (startState == null) {
-			throw new SynException("Unknown start nonterminal: " + startNonterminal);
-		}
-		
-		DefaultTokenStream tokenStream = createTokenStream(textReader, textDescriptor);
+    /**
+     * Parses the specified text starting with the specified nonterminal. The text is read from
+     * the specified {@link Reader}. Text source descriptor is specified..
+     * 
+     * @param startNonterminal the name of the start nonterminal.
+     * @param textReader the text reader.
+     * @param textDescriptor the text descriptor. Can be <code>null</code>.
+     * @return the Abstract Syntax Tree.
+     * @throws SynException if parsing fails.
+     * 
+     * @see #parse(String, Reader)
+     */
+    public SynResult parse(
+            String startNonterminal,
+            Reader textReader,
+            SourceDescriptor textDescriptor) throws SynException
+    {
+        if (textReader == null) {
+            throw new NullPointerException("textReader");
+        }
+        if (startNonterminal == null) {
+            throw new NullPointerException("startNonterminal");
+        }
+        
+        ParserState startState = parserConfig.getStartState(startNonterminal);
+        if (startState == null) {
+            throw new SynException("Unknown start nonterminal: " + startNonterminal);
+        }
+        
+        DefaultTokenStream tokenStream = createTokenStream(textReader, textDescriptor);
 
-		ParserEngine parserEngine = new ParserEngine(tokenStream, parserConfig, startState, failOnAmbiguity);
-		SynResult result = parserEngine.parse();
-		return result;
-	}
-	
-	/**
-	 * Parses the text read from the specified class loader resource.
-	 * 
-	 * @param startNonterminal the start nonterminal name.
-	 * @param resourceOrigin the class which the specified resource path is relative to.
-	 * @param textResourcePath the text resource path.
-	 * @return the Abstract Syntax Tree.
-	 * @throws SynException if parsing fails.
-	 * 
-	 * @see #parse(String, Reader)
-	 */
-	public SynResult parse(String startNonterminal, Class<?> resourceOrigin, String textResourcePath)
-			throws SynException
-	{
-		return parse(startNonterminal, resourceOrigin, textResourcePath, null);
-	}
+        ParserEngine parserEngine = new ParserEngine(tokenStream, parserConfig, startState, failOnAmbiguity);
+        SynResult result = parserEngine.parse();
+        return result;
+    }
+    
+    /**
+     * Parses the text read from the specified class loader resource.
+     * 
+     * @param startNonterminal the start nonterminal name.
+     * @param resourceOrigin the class which the specified resource path is relative to.
+     * @param textResourcePath the text resource path.
+     * @return the Abstract Syntax Tree.
+     * @throws SynException if parsing fails.
+     * 
+     * @see #parse(String, Reader)
+     */
+    public SynResult parse(String startNonterminal, Class<?> resourceOrigin, String textResourcePath)
+            throws SynException
+    {
+        return parse(startNonterminal, resourceOrigin, textResourcePath, null);
+    }
 
-	/**
-	 * Parses the text read from the specified class loader resource.
-	 * Text source descriptor is specified.
-	 * 
-	 * @param startNonterminal the start nonterminal name.
-	 * @param resourceOrigin the class which the specified resource path is relative to.
-	 * @param textResourcePath the text resource path.
-	 * @param sourceDescriptor the text source descriptor.
-	 * @return the Abstract Syntax Tree.
-	 * @throws SynException if parsing fails.
-	 * 
-	 * @see #parse(String, Reader)
-	 */
-	public SynResult parse(
-			String startNonterminal,
-			Class<?> resourceOrigin,
-			String textResourcePath,
-			SourceDescriptor sourceDescriptor) throws SynException
-	{
-		if (resourceOrigin == null) {
-			throw new NullPointerException("resourceOrigin");
-		}
-		if (textResourcePath == null) {
-			throw new NullPointerException("textResourcePath");
-		}
-		
-		sourceDescriptor = CommonUtil.getSourceDescriptor(textResourcePath, sourceDescriptor);
-		try {
-			try (Reader reader = CommonUtil.openResourceReader(resourceOrigin, textResourcePath)) {
-				return parse(startNonterminal, reader, sourceDescriptor);
-			}
-		} catch (IOException e) {
-			throw new SynException(e);
-		}
-	}
-	
-	/**
-	 * Parses the text read from the specified {@link File}.
-	 * 
-	 * @param startNonterminal the start nonterminal name.
-	 * @param file the file to read the text from.
-	 * @return the Abstract Syntax Tree.
-	 * @throws SynException if parsing fails.
-	 * 
-	 * @see #parse(String, Reader)
-	 */
-	public SynResult parse(String startNonterminal, File file) throws SynException {
-		return parse(startNonterminal, file, null);
-	}
-	
-	/**
-	 * Parses the text read from the specified {@link File}.
-	 * Text source descriptor is specified.
-	 * 
-	 * @param startNonterminal the start nonterminal name.
-	 * @param file the file to read the text from.
-	 * @param sourceDescriptor the text source descriptor.
-	 * @return the Abstract Syntax Tree.
-	 * @throws SynException if parsing fails.
-	 * 
-	 * @see #parse(String, Reader)
-	 */
-	public SynResult parse(String startNonterminal, File file, SourceDescriptor sourceDescriptor)
-			throws SynException
-	{
-		if (file == null) {
-			throw new NullPointerException("file");
-		}
-		
-		sourceDescriptor = CommonUtil.getSourceDescriptor(file, sourceDescriptor);
-		try {
-			try (Reader reader = CommonUtil.openFileReader(file)) {
-				return parse(startNonterminal, reader, sourceDescriptor);
-			}
-		} catch (IOException e) {
-			throw new SynException(e);
-		}
-	}
-	
-	/**
-	 * Parses the text passed as a {@link String}.
-	 * 
-	 * @param startNonterminal the start nonterminal name.
-	 * @param text the text.
-	 * @return the Abstract Syntax Tree.
-	 * @throws SynException if parsing fails.
-	 * 
-	 * @see #parse(String, Reader)
-	 */
-	public SynResult parse(String startNonterminal, String text) throws SynException {
-		return parse(startNonterminal, text, null);
-	}
-	
-	/**
-	 * Parses the text passed as a {@link String}.
-	 * 
-	 * @param startNonterminal the start nonterminal name.
-	 * @param text the text.
-	 * @param sourceDescriptor the text source descriptor.
-	 * @return the Abstract Syntax Tree.
-	 * @throws SynException if parsing fails.
-	 * 
-	 * @see #parse(String, Reader)
-	 */
-	public SynResult parse(
-			String startNonterminal,
-			String text,
-			SourceDescriptor sourceDescriptor) throws SynException
-	{
-		if (text == null) {
-			throw new NullPointerException("text");
-		}
-		
-		sourceDescriptor = CommonUtil.getSourceDescriptor("<text>", sourceDescriptor);
-		Reader reader = new StringReader(text);
-		return parse(startNonterminal, reader, sourceDescriptor);
-	}
-	
-	/**
-	 * Sets the fail-on-ambiguity option. When the value is <code>true</code>, the parser throws
-	 * {@link SynAmbiguityException} if it detects an ambiguity. The option is <code>false</code> by default.
-	 * 
-	 * @param failOnAmbiguity the value of the option.
-	 */
-	public void setFailOnAmbiguity(boolean failOnAmbiguity) {
-		this.failOnAmbiguity = failOnAmbiguity;
-	}
-	
-	/**
-	 * Creates a token stream for the specified input. Except syntax analysis, the returned stream may be useful
-	 * also for such tasks as syntax coloring, since it can recognize keywords and key-characters defined in the
-	 * grammar.
-	 * 
-	 * @param textDescriptor the text descriptor. Can be <code>null</code>.
-	 * @param reader the text reader.
-	 * @return the token stream.
-	 * @throws SynException if stream reading fails.
-	 */
-	public DefaultTokenStream createTokenStream(Reader reader, SourceDescriptor textDescriptor) throws SynException {
-		textDescriptor = CommonUtil.getSourceDescriptor("<text>", textDescriptor);
-		return new DefaultTokenStream(textDescriptor, scannerConfig, reader);
-	}
+    /**
+     * Parses the text read from the specified class loader resource.
+     * Text source descriptor is specified.
+     * 
+     * @param startNonterminal the start nonterminal name.
+     * @param resourceOrigin the class which the specified resource path is relative to.
+     * @param textResourcePath the text resource path.
+     * @param sourceDescriptor the text source descriptor.
+     * @return the Abstract Syntax Tree.
+     * @throws SynException if parsing fails.
+     * 
+     * @see #parse(String, Reader)
+     */
+    public SynResult parse(
+            String startNonterminal,
+            Class<?> resourceOrigin,
+            String textResourcePath,
+            SourceDescriptor sourceDescriptor) throws SynException
+    {
+        if (resourceOrigin == null) {
+            throw new NullPointerException("resourceOrigin");
+        }
+        if (textResourcePath == null) {
+            throw new NullPointerException("textResourcePath");
+        }
+        
+        sourceDescriptor = CommonUtil.getSourceDescriptor(textResourcePath, sourceDescriptor);
+        try {
+            try (Reader reader = CommonUtil.openResourceReader(resourceOrigin, textResourcePath)) {
+                return parse(startNonterminal, reader, sourceDescriptor);
+            }
+        } catch (IOException e) {
+            throw new SynException(e);
+        }
+    }
+    
+    /**
+     * Parses the text read from the specified {@link File}.
+     * 
+     * @param startNonterminal the start nonterminal name.
+     * @param file the file to read the text from.
+     * @return the Abstract Syntax Tree.
+     * @throws SynException if parsing fails.
+     * 
+     * @see #parse(String, Reader)
+     */
+    public SynResult parse(String startNonterminal, File file) throws SynException {
+        return parse(startNonterminal, file, null);
+    }
+    
+    /**
+     * Parses the text read from the specified {@link File}.
+     * Text source descriptor is specified.
+     * 
+     * @param startNonterminal the start nonterminal name.
+     * @param file the file to read the text from.
+     * @param sourceDescriptor the text source descriptor.
+     * @return the Abstract Syntax Tree.
+     * @throws SynException if parsing fails.
+     * 
+     * @see #parse(String, Reader)
+     */
+    public SynResult parse(String startNonterminal, File file, SourceDescriptor sourceDescriptor)
+            throws SynException
+    {
+        if (file == null) {
+            throw new NullPointerException("file");
+        }
+        
+        sourceDescriptor = CommonUtil.getSourceDescriptor(file, sourceDescriptor);
+        try {
+            try (Reader reader = CommonUtil.openFileReader(file)) {
+                return parse(startNonterminal, reader, sourceDescriptor);
+            }
+        } catch (IOException e) {
+            throw new SynException(e);
+        }
+    }
+    
+    /**
+     * Parses the text passed as a {@link String}.
+     * 
+     * @param startNonterminal the start nonterminal name.
+     * @param text the text.
+     * @return the Abstract Syntax Tree.
+     * @throws SynException if parsing fails.
+     * 
+     * @see #parse(String, Reader)
+     */
+    public SynResult parse(String startNonterminal, String text) throws SynException {
+        return parse(startNonterminal, text, null);
+    }
+    
+    /**
+     * Parses the text passed as a {@link String}.
+     * 
+     * @param startNonterminal the start nonterminal name.
+     * @param text the text.
+     * @param sourceDescriptor the text source descriptor.
+     * @return the Abstract Syntax Tree.
+     * @throws SynException if parsing fails.
+     * 
+     * @see #parse(String, Reader)
+     */
+    public SynResult parse(
+            String startNonterminal,
+            String text,
+            SourceDescriptor sourceDescriptor) throws SynException
+    {
+        if (text == null) {
+            throw new NullPointerException("text");
+        }
+        
+        sourceDescriptor = CommonUtil.getSourceDescriptor("<text>", sourceDescriptor);
+        Reader reader = new StringReader(text);
+        return parse(startNonterminal, reader, sourceDescriptor);
+    }
+    
+    /**
+     * Sets the fail-on-ambiguity option. When the value is <code>true</code>, the parser throws
+     * {@link SynAmbiguityException} if it detects an ambiguity. The option is <code>false</code> by default.
+     * 
+     * @param failOnAmbiguity the value of the option.
+     */
+    public void setFailOnAmbiguity(boolean failOnAmbiguity) {
+        this.failOnAmbiguity = failOnAmbiguity;
+    }
+    
+    /**
+     * Creates a token stream for the specified input. Except syntax analysis, the returned stream may be useful
+     * also for such tasks as syntax coloring, since it can recognize keywords and key-characters defined in the
+     * grammar.
+     * 
+     * @param textDescriptor the text descriptor. Can be <code>null</code>.
+     * @param reader the text reader.
+     * @return the token stream.
+     * @throws SynException if stream reading fails.
+     */
+    public DefaultTokenStream createTokenStream(Reader reader, SourceDescriptor textDescriptor) throws SynException {
+        textDescriptor = CommonUtil.getSourceDescriptor("<text>", textDescriptor);
+        return new DefaultTokenStream(textDescriptor, scannerConfig, reader);
+    }
 }

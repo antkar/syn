@@ -19,5 +19,5 @@ package com.karmant.syn.sample.script.schema;
  * Relational expression syntax node.
  */
 public class RelExpression extends ArithmeticalBinaryExpression {
-	public RelExpression(){}
+    public RelExpression(){}
 }

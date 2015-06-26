@@ -22,17 +22,17 @@ import com.karmant.syn.sample.script.rt.value.Value;
  * Script Language <code>&lt;=</code> operator.
  */
 class LeBinaryOperator extends BinaryOperator {
-	LeBinaryOperator() {
-		super("<=");
-	}
+    LeBinaryOperator() {
+        super("<=");
+    }
 
-	@Override
-	RValue evaluate(long left, long right) {
-		return Value.forBoolean(left <= right);
-	}
+    @Override
+    RValue evaluate(long left, long right) {
+        return Value.forBoolean(left <= right);
+    }
 
-	@Override
-	RValue evaluate(double left, double right) {
-		return Value.forBoolean(left <= right);
-	}
+    @Override
+    RValue evaluate(double left, double right) {
+        return Value.forBoolean(left <= right);
+    }
 }

@@ -21,26 +21,26 @@ import java.io.File;
  * Source descriptor representing a {@link java.io.File}.
  */
 public class FileSourceDescriptor implements SourceDescriptor {
-	private final File file;
-	
-	public FileSourceDescriptor(File file) {
-		if (file == null) {
-			throw new NullPointerException("file");
-		}
-		this.file = file;
-	}
+    private final File file;
+    
+    public FileSourceDescriptor(File file) {
+        if (file == null) {
+            throw new NullPointerException("file");
+        }
+        this.file = file;
+    }
 
-	@Override
-	public String getName() {
-		return file.getPath();
-	}
-	
-	public File getFile() {
-		return file;
-	}
-	
-	@Override
-	public String toString() {
-		return file.toString();
-	}
+    @Override
+    public String getName() {
+        return file.getPath();
+    }
+    
+    public File getFile() {
+        return file;
+    }
+    
+    @Override
+    public String toString() {
+        return file.toString();
+    }
 }

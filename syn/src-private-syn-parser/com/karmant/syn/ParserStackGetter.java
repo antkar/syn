@@ -19,26 +19,26 @@ package com.karmant.syn;
  * A getter that returns values from a parser stack.
  */
 class ParserStackGetter implements IParserGetter {
-	private final int offset;
-	
-	ParserStackGetter(int offset) {
-		assert offset >= 0;
-		this.offset = offset;
-	}
+    private final int offset;
+    
+    ParserStackGetter(int offset) {
+        assert offset >= 0;
+        this.offset = offset;
+    }
 
-	@Override
-	public IParserNode get(ParserStackElement stack) {
-		IParserNode parserNode = stack.createParserNode();
-		return parserNode;
-	}
-	
-	@Override
-	public int offset() {
-		return offset;
-	}
-	
-	@Override
-	public String toString() {
-		return "$" + offset;
-	}
+    @Override
+    public IParserNode get(ParserStackElement stack) {
+        IParserNode parserNode = stack.createParserNode();
+        return parserNode;
+    }
+    
+    @Override
+    public int offset() {
+        return offset;
+    }
+    
+    @Override
+    public String toString() {
+        return "$" + offset;
+    }
 }

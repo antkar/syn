@@ -18,37 +18,37 @@ limitations under the License.
 
 <!ELEMENT nonterminal (rule+)>
 <!ATTLIST nonterminal
-	name ID #REQUIRED
-	start (true) #IMPLIED
+    name ID #REQUIRED
+    start (true) #IMPLIED
 >
 
 <!ELEMENT rule ((tk | vl | nt | opt | rep)*)>
 
 <!ATTLIST tk
-	key ID #IMPLIED
-	lex CDATA #IMPLIED
-	name ID #IMPLIED
+    key ID #IMPLIED
+    lex CDATA #IMPLIED
+    name ID #IMPLIED
 >
 
 <!ATTLIST nt
-	name ID #REQUIRED
-	key ID #IMPLIED
+    name ID #REQUIRED
+    key ID #IMPLIED
 >
 
 <!ATTLIST vl
-	value CDATA #REQUIRED
-	key ID #IMPLIED
+    value CDATA #REQUIRED
+    key ID #IMPLIED
 >
 
 <!ELEMENT opt ((tk | vl | nt | opt | rep)*)>
 <!ATTLIST opt
-	key ID #IMPLIED
+    key ID #IMPLIED
 >
 
 <!ELEMENT rep ((tk | vl | nt | opt | rep)*, separator?)>
 <!ATTLIST rep
-	nullable (true | false) #REQUIRED
-	key ID #IMPLIED
+    nullable (true | false) #REQUIRED
+    key ID #IMPLIED
 >
 
 <!ELEMENT separator ((tk | vl | nt | opt | rep)*)>

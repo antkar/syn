@@ -20,38 +20,38 @@ package com.karmant.syn;
  */
 class LookupReferenceExpression extends LookupComplexTermExpression {
 
-	private final String fieldName;
-	
-	LookupReferenceExpression(
-			Class<?> clsOfValue,
-			LookupTermExpression baseExpression,
-			String fieldName)
-	{
-		super(clsOfValue, baseExpression);
-		this.fieldName = fieldName;
-	}
+    private final String fieldName;
+    
+    LookupReferenceExpression(
+            Class<?> clsOfValue,
+            LookupTermExpression baseExpression,
+            String fieldName)
+    {
+        super(clsOfValue, baseExpression);
+        this.fieldName = fieldName;
+    }
 
-	@Override
-	Object eval(LookupEnv env) throws SynBinderException {
-		LookupTermExpression baseExpression = getBaseExpression();
-		Object eval = baseExpression.eval(env);
-		
-		Object result;
-		if (eval == null || eval == UNDEFINED) {
-			result = UNDEFINED;
-		} else {
-			BoundObject bEval = (BoundObject) eval;
-			result = bEval.getReferencedObject(fieldName);
-		}
-		
-		return result;
-	}
+    @Override
+    Object eval(LookupEnv env) throws SynBinderException {
+        LookupTermExpression baseExpression = getBaseExpression();
+        Object eval = baseExpression.eval(env);
+        
+        Object result;
+        if (eval == null || eval == UNDEFINED) {
+            result = UNDEFINED;
+        } else {
+            BoundObject bEval = (BoundObject) eval;
+            result = bEval.getReferencedObject(fieldName);
+        }
+        
+        return result;
+    }
 
-	@Override
-	String toSourceString() {
-		LookupTermExpression baseExpression = getBaseExpression();
-		String baseSourceString = baseExpression.toSourceString();
-		String string = baseSourceString + "." + fieldName;
-		return string;
-	}
+    @Override
+    String toSourceString() {
+        LookupTermExpression baseExpression = getBaseExpression();
+        String baseSourceString = baseExpression.toSourceString();
+        String string = baseSourceString + "." + fieldName;
+        return string;
+    }
 }

@@ -21,26 +21,26 @@ import com.karmant.syn.TextPos;
  * A script error associated with a source code position.
  */
 public class TextSynsException extends SynsException {
-	private static final long serialVersionUID = 6304936443784708827L;
-	
-	private final TextPos textPos;
+    private static final long serialVersionUID = 6304936443784708827L;
+    
+    private final TextPos textPos;
 
-	public TextSynsException(String message, TextPos textPos) {
-		super(textPos + ": " + message);
-		this.textPos = textPos;
-	}
+    public TextSynsException(String message, TextPos textPos) {
+        super(textPos + ": " + message);
+        this.textPos = textPos;
+    }
 
-	public TextSynsException(Throwable cause, TextPos textPos) {
-		super(textPos + ": " + cause.getMessage(), cause);
-		this.textPos = textPos;
-	}
+    public TextSynsException(Throwable cause, TextPos textPos) {
+        super(textPos + ": " + cause.getMessage(), cause);
+        this.textPos = textPos;
+    }
 
-	public TextSynsException(String message, Throwable cause, TextPos textPos) {
-		super(textPos + ": " + message, cause);
-		this.textPos = textPos;
-	}
+    public TextSynsException(String message, Throwable cause, TextPos textPos) {
+        super(textPos + ": " + message, cause);
+        this.textPos = textPos;
+    }
 
-	public TextPos getTextPos() {
-		return textPos;
-	}
+    public TextPos getTextPos() {
+        return textPos;
+    }
 }

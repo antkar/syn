@@ -19,5 +19,5 @@ package com.karmant.syn.sample.script.schema;
  * Multiplicative expression syntax node. 
  */
 public class MulExpression extends ArithmeticalBinaryExpression {
-	public MulExpression(){}
+    public MulExpression(){}
 }

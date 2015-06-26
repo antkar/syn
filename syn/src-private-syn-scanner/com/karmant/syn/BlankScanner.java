@@ -20,21 +20,21 @@ package com.karmant.syn;
  * method.
  */
 class BlankScanner implements IPrimitiveScanner {
-	BlankScanner(){}
-	
-	@Override
-	public IPrimitiveResult scan(PrimitiveContext context) throws SynException {
-		if (!Character.isWhitespace(context.current)) {
-			//No white spaces at all - return null.
-			return null;
-		}
-		
-		//Skip white spaces.
-		context.next();
-		while (Character.isWhitespace(context.current)) {
-			context.next();
-		}
-		
-		return NonePrimitiveResult.INSTANCE;
-	}
+    BlankScanner(){}
+    
+    @Override
+    public IPrimitiveResult scan(PrimitiveContext context) throws SynException {
+        if (!Character.isWhitespace(context.current)) {
+            //No white spaces at all - return null.
+            return null;
+        }
+        
+        //Skip white spaces.
+        context.next();
+        while (Character.isWhitespace(context.current)) {
+            context.next();
+        }
+        
+        return NonePrimitiveResult.INSTANCE;
+    }
 }

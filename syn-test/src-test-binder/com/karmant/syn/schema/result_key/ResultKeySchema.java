@@ -18,14 +18,14 @@ package com.karmant.syn.schema.result_key;
 import com.karmant.syn.SynField;
 
 public class ResultKeySchema {
-	@SynField
-	private ResultKeyObj obj;
-	
-	public ResultKeySchema() {
-		super();
-	}
-	
-	public ResultKeyObj getObj() {
-		return obj;
-	}
+    @SynField
+    private ResultKeyObj obj;
+    
+    public ResultKeySchema() {
+        super();
+    }
+    
+    public ResultKeyObj getObj() {
+        return obj;
+    }
 }

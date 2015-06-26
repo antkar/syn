@@ -34,6 +34,6 @@ import java.lang.annotation.Target;
 @Target({ElementType.FIELD})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface SynField {
-	/** An optional name of the bound grammar attribute. */
-	String value() default "";
+    /** An optional name of the bound grammar attribute. */
+    String value() default "";
 }

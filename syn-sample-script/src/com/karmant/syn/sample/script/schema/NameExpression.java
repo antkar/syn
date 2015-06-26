@@ -27,24 +27,24 @@ import com.karmant.syn.sample.script.util.MiscUtil;
  * Name expression syntax node.
  */
 public class NameExpression extends TerminalExpression {
-	/** The chain of names. */
-	@SynField
-	private StringToken[] synNames;
+    /** The chain of names. */
+    @SynField
+    private StringToken[] synNames;
 
-	public NameExpression(){}
+    public NameExpression(){}
 
-	@Override
-	TextPos getStartTextPos() {
-		return synNames[0].getPos();
-	}
+    @Override
+    TextPos getStartTextPos() {
+        return synNames[0].getPos();
+    }
 
-	@Override
-	Value evaluate0(ScriptScope scope) throws SynsException {
-		return scope.getValue(synNames);
-	}
-	
-	@Override
-	public String toString() {
-		return MiscUtil.arrayToString(synNames, ".");
-	}
+    @Override
+    Value evaluate0(ScriptScope scope) throws SynsException {
+        return scope.getValue(synNames);
+    }
+    
+    @Override
+    public String toString() {
+        return MiscUtil.arrayToString(synNames, ".");
+    }
 }

@@ -19,35 +19,35 @@ package com.karmant.syn.sample.script.rt.value;
  * Type of a value.
  */
 public enum ValueType {
-	VOID("void"),
-	NULL("null"),
-	BOOLEAN("boolean"),
-	INT("int"),
-	LONG("long"),
-	DOUBLE("double"),
-	STRING("String"),
-	ARRAY("array"),
-	ARRAY_ELEMENT("array_element"),
-	VARIABLE("variable"),
-	BLOCK("block"),
-	FUNCTION("function"),
-	CLASS("class"),
-	OBJECT("object"),
-	JAVACLASS("javaclass"),
-	JAVAOBJECT("javaobject"),
-	JAVAFIELD("javafield"),
-	JAVAMETHOD("javamethod");
-	
-	private final String typeName;
+    VOID("void"),
+    NULL("null"),
+    BOOLEAN("boolean"),
+    INT("int"),
+    LONG("long"),
+    DOUBLE("double"),
+    STRING("String"),
+    ARRAY("array"),
+    ARRAY_ELEMENT("array_element"),
+    VARIABLE("variable"),
+    BLOCK("block"),
+    FUNCTION("function"),
+    CLASS("class"),
+    OBJECT("object"),
+    JAVACLASS("javaclass"),
+    JAVAOBJECT("javaobject"),
+    JAVAFIELD("javafield"),
+    JAVAMETHOD("javamethod");
+    
+    private final String typeName;
 
-	private ValueType(String descriptiveName) {
-		this.typeName = descriptiveName;
-	}
-	
-	/**
-	 * Returns a human-readable name of this type. Used in exception messages.
-	 */
-	public String getTypeName() {
-		return typeName;
-	}
+    private ValueType(String descriptiveName) {
+        this.typeName = descriptiveName;
+    }
+    
+    /**
+     * Returns a human-readable name of this type. Used in exception messages.
+     */
+    public String getTypeName() {
+        return typeName;
+    }
 }

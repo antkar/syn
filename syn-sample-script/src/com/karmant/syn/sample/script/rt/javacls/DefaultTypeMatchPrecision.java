@@ -19,19 +19,19 @@ package com.karmant.syn.sample.script.rt.javacls;
  * A type match precision that tracks a precision as an integer number.
  */
 final class DefaultTypeMatchPrecision implements TypeMatchPrecision {
-	private int precision;
-	
-	public DefaultTypeMatchPrecision(){}
+    private int precision;
+    
+    public DefaultTypeMatchPrecision(){}
 
-	@Override
-	public void increment(int value) {
-		precision += value;
-	}
-	
-	/**
-	 * Returns the precision.
-	 */
-	int getPrecision() {
-		return precision;
-	}
+    @Override
+    public void increment(int value) {
+        precision += value;
+    }
+    
+    /**
+     * Returns the precision.
+     */
+    int getPrecision() {
+        return precision;
+    }
 }

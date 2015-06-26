@@ -28,68 +28,68 @@ import java.util.Set;
  * Some helper methods.
  */
 final class ParserEngineHelper {
-	private ParserEngineHelper(){}
-	
-	/**
-	 * Returns the collection of tokens which are allowed by the specified parser stacks. Used to construct a
-	 * {@link SynSyntaxException}.
-	 */
-	static Collection<TokenDescriptor> getExpectedTokens(List<ParserStack> stacks) {
-		Set<TokenDescriptor> result = new HashSet<>();
-		for (ParserStack stack : stacks) {
-			ParserState state = stack.getTop().getState();
-			for (ParserShift shift : state.getShifts()) {
-				TokenDescriptor descriptor = shift.tokenDescriptor;
-				result.add(descriptor);
-			}
-		}
-		return result;
-	}
-	
-	/**
-	 * Creates an instance of {@link SynAmbiguityException}. The message of the created exception contains
-	 * the dump of parser trees that were in a conflict.
-	 */
-	static SynAmbiguityException createAmbiguityException(TextPos textPos, ParserStack stack1, ParserStack stack2) {
-		final String charset = "UTF-8";
-		ByteArrayOutputStream byteOut = new ByteArrayOutputStream();
-		PrintStream out;
-		try {
-			out = new PrintStream(byteOut, false, charset);
-		} catch (UnsupportedEncodingException e) {
-			throw new IllegalStateException(e);
-		}
+    private ParserEngineHelper(){}
+    
+    /**
+     * Returns the collection of tokens which are allowed by the specified parser stacks. Used to construct a
+     * {@link SynSyntaxException}.
+     */
+    static Collection<TokenDescriptor> getExpectedTokens(List<ParserStack> stacks) {
+        Set<TokenDescriptor> result = new HashSet<>();
+        for (ParserStack stack : stacks) {
+            ParserState state = stack.getTop().getState();
+            for (ParserShift shift : state.getShifts()) {
+                TokenDescriptor descriptor = shift.tokenDescriptor;
+                result.add(descriptor);
+            }
+        }
+        return result;
+    }
+    
+    /**
+     * Creates an instance of {@link SynAmbiguityException}. The message of the created exception contains
+     * the dump of parser trees that were in a conflict.
+     */
+    static SynAmbiguityException createAmbiguityException(TextPos textPos, ParserStack stack1, ParserStack stack2) {
+        final String charset = "UTF-8";
+        ByteArrayOutputStream byteOut = new ByteArrayOutputStream();
+        PrintStream out;
+        try {
+            out = new PrintStream(byteOut, false, charset);
+        } catch (UnsupportedEncodingException e) {
+            throw new IllegalStateException(e);
+        }
 
-		printAmbiguityMessage(stack1, stack2, out);
-		
-		out.flush();
-		byte[] data = byteOut.toByteArray();
-		String message = new String(data, Charset.forName(charset));
-		
-		return new SynAmbiguityException(textPos, message);
-	}
+        printAmbiguityMessage(stack1, stack2, out);
+        
+        out.flush();
+        byte[] data = byteOut.toByteArray();
+        String message = new String(data, Charset.forName(charset));
+        
+        return new SynAmbiguityException(textPos, message);
+    }
 
-	private static void printAmbiguityMessage(ParserStack stack1, ParserStack stack2, PrintStream out) {
-		out.println("Ambiguity detected");
-		out.println("Tree 1:");
-		printStackDiff(out, stack1, stack2);
-		out.println("Tree 2:");
-		printStackDiff(out, stack2, stack1);
-	}
-	
-	/**
-	 * Prints trees of differing stack elements.
-	 */
-	private static void printStackDiff(PrintStream out, ParserStack stack1, ParserStack stack2) {
-		ParserStackElement top1 = stack1.getTop();
-		ParserStackElement top2 = stack2.getTop();
-		
-		assert top1.getDepth() == top2.getDepth();
-		
-		while (top1 != top2) {
-			top1.print(out, 1);
-			top1 = top1.getPrev();
-			top2 = top2.getPrev();
-		}
-	}
+    private static void printAmbiguityMessage(ParserStack stack1, ParserStack stack2, PrintStream out) {
+        out.println("Ambiguity detected");
+        out.println("Tree 1:");
+        printStackDiff(out, stack1, stack2);
+        out.println("Tree 2:");
+        printStackDiff(out, stack2, stack1);
+    }
+    
+    /**
+     * Prints trees of differing stack elements.
+     */
+    private static void printStackDiff(PrintStream out, ParserStack stack1, ParserStack stack2) {
+        ParserStackElement top1 = stack1.getTop();
+        ParserStackElement top2 = stack2.getTop();
+        
+        assert top1.getDepth() == top2.getDepth();
+        
+        while (top1 != top2) {
+            top1.print(out, 1);
+            top1 = top1.getPrev();
+            top2 = top2.getPrev();
+        }
+    }
 }

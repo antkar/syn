@@ -22,53 +22,53 @@ package com.karmant.syn;
  * that link to the next node, recognizing a token thereby.
  */
 class KeycharTreeNode {
-	private final TokenDescriptor token;
-	private final KeycharTreeLink[] gotos;
-	
-	KeycharTreeNode(TokenDescriptor token, KeycharTreeLink[] gotos) {
-		assert gotos != null;
-		this.token = token;
-		this.gotos = gotos;
-	}
-	
-	/**
-	 * Returns the token associated with this node. If not <code>null</code>, reaching this node means that
-	 * the token has been recognized.
-	 */
-	TokenDescriptor getToken() {
-		return token;
-	}
-	
-	/**
-	 * Returns the node linked to this one by the specified character. Can return <code>null</code>.
-	 */
-	KeycharTreeNode getLinkedNode(char ch) {
-		KeycharTreeNode result = null;
-		for (int i = 0; i < gotos.length; ++i) {
-			if (gotos[i].getCh() == ch) {
-				result = gotos[i].getDestinationNode();
-				break;
-			}
-		}
-		return result;
-	}
-	
-	@Override
-	public String toString() {
-		StringBuilder bld = new StringBuilder();
-		
-		if (token != null) {
-			bld.append(token);
-		}
-		bld.append("(");
-		String sep = "";
-		for (KeycharTreeLink scannerGoto : gotos) {
-			bld.append(sep);
-			bld.append(scannerGoto);
-			sep = " | ";
-		}
-		bld.append(")");
-		
-		return bld.toString();
-	}
+    private final TokenDescriptor token;
+    private final KeycharTreeLink[] gotos;
+    
+    KeycharTreeNode(TokenDescriptor token, KeycharTreeLink[] gotos) {
+        assert gotos != null;
+        this.token = token;
+        this.gotos = gotos;
+    }
+    
+    /**
+     * Returns the token associated with this node. If not <code>null</code>, reaching this node means that
+     * the token has been recognized.
+     */
+    TokenDescriptor getToken() {
+        return token;
+    }
+    
+    /**
+     * Returns the node linked to this one by the specified character. Can return <code>null</code>.
+     */
+    KeycharTreeNode getLinkedNode(char ch) {
+        KeycharTreeNode result = null;
+        for (int i = 0; i < gotos.length; ++i) {
+            if (gotos[i].getCh() == ch) {
+                result = gotos[i].getDestinationNode();
+                break;
+            }
+        }
+        return result;
+    }
+    
+    @Override
+    public String toString() {
+        StringBuilder bld = new StringBuilder();
+        
+        if (token != null) {
+            bld.append(token);
+        }
+        bld.append("(");
+        String sep = "";
+        for (KeycharTreeLink scannerGoto : gotos) {
+            bld.append(sep);
+            bld.append(scannerGoto);
+            sep = " | ";
+        }
+        bld.append(")");
+        
+        return bld.toString();
+    }
 }

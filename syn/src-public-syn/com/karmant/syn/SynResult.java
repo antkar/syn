@@ -20,59 +20,59 @@ package com.karmant.syn;
  * such as total line and character count.
  */
 public class SynResult {
-	private final SourceDescriptor sourceDescriptor;
-	private final int lineCount;
-	private final int charCount;
-	private final SynNode rootNode;
-	
-	/**
-	 * Initializing constructor.
-	 */
-	SynResult(SourceDescriptor sourceDescriptor, SynNode rootNode, int lineCount, int charCount) {
-		assert sourceDescriptor != null;
-		assert lineCount >= 0;
-		assert charCount >= 0;
-		
-		this.sourceDescriptor = sourceDescriptor;
-		this.rootNode = rootNode;
-		this.lineCount = lineCount;
-		this.charCount = charCount;
-	}
+    private final SourceDescriptor sourceDescriptor;
+    private final int lineCount;
+    private final int charCount;
+    private final SynNode rootNode;
+    
+    /**
+     * Initializing constructor.
+     */
+    SynResult(SourceDescriptor sourceDescriptor, SynNode rootNode, int lineCount, int charCount) {
+        assert sourceDescriptor != null;
+        assert lineCount >= 0;
+        assert charCount >= 0;
+        
+        this.sourceDescriptor = sourceDescriptor;
+        this.rootNode = rootNode;
+        this.lineCount = lineCount;
+        this.charCount = charCount;
+    }
 
-	/**
-	 * Returns the number of characters in the parsed input. 
-	 * @return the number of characters.
-	 */
-	public int getCharCount() {
-		return charCount;
-	}
+    /**
+     * Returns the number of characters in the parsed input. 
+     * @return the number of characters.
+     */
+    public int getCharCount() {
+        return charCount;
+    }
 
-	/**
-	 * Returns the number of lines in the parsed input.
-	 * @return the number of lines.
-	 */
-	public int getLineCount() {
-		return lineCount;
-	}
+    /**
+     * Returns the number of lines in the parsed input.
+     * @return the number of lines.
+     */
+    public int getLineCount() {
+        return lineCount;
+    }
 
-	/**
-	 * Returns the root node of the Abstract Syntax Tree - the node returned by the start nonterminal symbol.
-	 * @return the root node. Can be <code>null</code> if the start nonterminal returned <code>null</code>. 
-	 */
-	public SynNode getRootNode() {
-		return rootNode;
-	}
+    /**
+     * Returns the root node of the Abstract Syntax Tree - the node returned by the start nonterminal symbol.
+     * @return the root node. Can be <code>null</code> if the start nonterminal returned <code>null</code>. 
+     */
+    public SynNode getRootNode() {
+        return rootNode;
+    }
 
-	/**
-	 * Returns the source descriptor of the parsed input.
-	 * @return the source descriptor of the input.
-	 */
-	public SourceDescriptor getSourceDescriptor() {
-		return sourceDescriptor;
-	}
-	
-	@Override
-	public String toString() {
-		return rootNode + "";
-	}
+    /**
+     * Returns the source descriptor of the parsed input.
+     * @return the source descriptor of the input.
+     */
+    public SourceDescriptor getSourceDescriptor() {
+        return sourceDescriptor;
+    }
+    
+    @Override
+    public String toString() {
+        return rootNode + "";
+    }
 }

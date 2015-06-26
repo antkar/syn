@@ -26,32 +26,32 @@ import com.karmant.syn.sample.script.rt.value.Value;
  * Integer literal expression syntax node.
  */
 public class IntegerLiteralExpression extends LiteralExpression {
-	/** The value of the literal. */
-	@SynField
-	private LongToken synValue;
-	
-	/** The script representation of the value. */
-	private Value value;
+    /** The value of the literal. */
+    @SynField
+    private LongToken synValue;
+    
+    /** The script representation of the value. */
+    private Value value;
 
-	public IntegerLiteralExpression(){}
-	
-	@SynInit
-	private void init() {
-		value = Value.forLong(synValue.getValue());
-	}
+    public IntegerLiteralExpression(){}
+    
+    @SynInit
+    private void init() {
+        value = Value.forLong(synValue.getValue());
+    }
 
-	@Override
-	TextPos getStartTextPos() {
-		return synValue.getPos();
-	}
+    @Override
+    TextPos getStartTextPos() {
+        return synValue.getPos();
+    }
 
-	@Override
-	Value evaluate0(ScriptScope scope) {
-		return value;
-	}
-	
-	@Override
-	public String toString() {
-		return value + "";
-	}
+    @Override
+    Value evaluate0(ScriptScope scope) {
+        return value;
+    }
+    
+    @Override
+    public String toString() {
+        return value + "";
+    }
 }

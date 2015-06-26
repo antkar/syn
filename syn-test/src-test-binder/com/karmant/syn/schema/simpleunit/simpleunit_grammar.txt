@@ -1,11 +1,11 @@
 @SimpleUnit
-	: sfEntities=( SimpleEntity ) *
-	;
+    : sfEntities=( SimpleEntity ) *
+    ;
 
 SimpleEntity
-	: "entity" sfName=ID "{" sfMembers=( SimpleMember )* "}"
-	;
+    : "entity" sfName=ID "{" sfMembers=( SimpleMember )* "}"
+    ;
 
 SimpleMember
-	: sfName=ID sfPos=":" sfType=ID ";"
-	;
+    : sfName=ID sfPos=":" sfType=ID ";"
+    ;

@@ -28,37 +28,37 @@ import com.karmant.syn.sample.script.rt.value.Value;
  * Explicit type cast expression syntax node.
  */
 public class ExplicitCastExpression extends Expression {
-	/** The position of the first token. */
-	@SynField
-	private TextPos synPos;
-	
-	/** The type to be casted to. */
-	@SynField
-	private PrimitiveType synType;
-	
-	/** The value to be casted. */
-	@SynField
-	private Expression synExpression;
-	
-	public ExplicitCastExpression(){}
-	
-	@Override
-	TextPos getStartTextPos() {
-		return synPos;
-	}
-	
-	@Override
-	Value evaluate0(ScriptScope scope) throws SynsException {
-		PrimitiveTypeDescriptor type = synType.getType();
-		
-		Value value = synExpression.evaluate(scope);
-		Operand operand = value.toOperand();
-		RValue result = type.cast(operand);
-		return result;
-	}
-	
-	@Override
-	public String toString() {
-		return String.format("((%s) %s)", synType, synExpression);
-	}
+    /** The position of the first token. */
+    @SynField
+    private TextPos synPos;
+    
+    /** The type to be casted to. */
+    @SynField
+    private PrimitiveType synType;
+    
+    /** The value to be casted. */
+    @SynField
+    private Expression synExpression;
+    
+    public ExplicitCastExpression(){}
+    
+    @Override
+    TextPos getStartTextPos() {
+        return synPos;
+    }
+    
+    @Override
+    Value evaluate0(ScriptScope scope) throws SynsException {
+        PrimitiveTypeDescriptor type = synType.getType();
+        
+        Value value = synExpression.evaluate(scope);
+        Operand operand = value.toOperand();
+        RValue result = type.cast(operand);
+        return result;
+    }
+    
+    @Override
+    public String toString() {
+        return String.format("((%s) %s)", synType, synExpression);
+    }
 }

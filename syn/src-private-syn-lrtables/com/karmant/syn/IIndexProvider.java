@@ -21,6 +21,6 @@ package com.karmant.syn;
  * @param <T> the type of the element.
  */
 interface IIndexProvider<T> {
-	/** Returns the index of the specified element. */
-	int getIndex(T t);
+    /** Returns the index of the specified element. */
+    int getIndex(T t);
 }

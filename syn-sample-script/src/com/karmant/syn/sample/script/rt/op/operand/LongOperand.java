@@ -21,49 +21,49 @@ import com.karmant.syn.sample.script.rt.SynsException;
  * Operand of type <code>long</code>.
  */
 class LongOperand extends Operand {
-	private final long value;
+    private final long value;
 
-	LongOperand(long value) {
-		this.value = value;
-	}
+    LongOperand(long value) {
+        this.value = value;
+    }
 
-	@Override
-	public OperandType getType() {
-		return OperandType.LONG;
-	}
+    @Override
+    public OperandType getType() {
+        return OperandType.LONG;
+    }
 
-	@Override
-	public long longValue() throws SynsException {
-		return value;
-	}
-	
-	@Override
-	public double doubleValue() throws SynsException {
-		return value;
-	}
-	
-	@Override
-	public String stringValue() throws SynsException {
-		return value + "";
-	}
-	
-	@Override
-	public Object objectValue() throws SynsException {
-		return value;
-	}
+    @Override
+    public long longValue() throws SynsException {
+        return value;
+    }
+    
+    @Override
+    public double doubleValue() throws SynsException {
+        return value;
+    }
+    
+    @Override
+    public String stringValue() throws SynsException {
+        return value + "";
+    }
+    
+    @Override
+    public Object objectValue() throws SynsException {
+        return value;
+    }
 
-	@Override
-	public int castToInt() throws SynsException {
-		return (int)value;
-	}
+    @Override
+    public int castToInt() throws SynsException {
+        return (int)value;
+    }
 
-	@Override
-	public long castToLong() throws SynsException {
-		return value;
-	}
+    @Override
+    public long castToLong() throws SynsException {
+        return value;
+    }
 
-	@Override
-	public double castToDouble() throws SynsException {
-		return value;
-	}
+    @Override
+    public double castToDouble() throws SynsException {
+        return value;
+    }
 }

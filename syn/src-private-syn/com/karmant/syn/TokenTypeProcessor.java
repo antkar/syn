@@ -22,18 +22,18 @@ package com.karmant.syn;
  */
 interface TokenTypeProcessor<T> {
 
-	T processEndOfFile() throws SynException;
+    T processEndOfFile() throws SynException;
 
-	T processIdentifier() throws SynException;
+    T processIdentifier() throws SynException;
 
-	T processIntegerLiteral() throws SynException;
+    T processIntegerLiteral() throws SynException;
 
-	T processFloatingPointLiteral() throws SynException;
+    T processFloatingPointLiteral() throws SynException;
 
-	T processStringLiteral() throws SynException;
+    T processStringLiteral() throws SynException;
 
-	T processKeyword() throws SynException;
+    T processKeyword() throws SynException;
 
-	T processKeyChar() throws SynException;
+    T processKeyChar() throws SynException;
 
 }

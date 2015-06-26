@@ -25,27 +25,27 @@ import com.karmant.syn.sample.script.rt.SynsException;
  * Script <code>continue</code> statement syntax node.
  */
 public class ContinueStatement extends Statement {
-	/** The text position. */
-	@SynField
-	private TextPos synPos;
+    /** The text position. */
+    @SynField
+    private TextPos synPos;
 
-	public ContinueStatement(){}
+    public ContinueStatement(){}
 
-	@Override
-	TextPos getStartTextPos() {
-		return synPos;
-	}
+    @Override
+    TextPos getStartTextPos() {
+        return synPos;
+    }
 
-	@Override
-	StatementResult execute0(ScriptScope scope) throws SynsException {
-		if (!scope.isLoop()) {
-			throw new SynsException("Continue without a loop");
-		}
-		return StatementResult.CONTINUE;
-	}
-	
-	@Override
-	public String toString() {
-		return "continue";
-	}
+    @Override
+    StatementResult execute0(ScriptScope scope) throws SynsException {
+        if (!scope.isLoop()) {
+            throw new SynsException("Continue without a loop");
+        }
+        return StatementResult.CONTINUE;
+    }
+    
+    @Override
+    public String toString() {
+        return "continue";
+    }
 }

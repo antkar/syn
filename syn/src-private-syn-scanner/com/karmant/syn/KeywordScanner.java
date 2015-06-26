@@ -19,25 +19,25 @@ package com.karmant.syn;
  * Keyword scanner. Extends an identifier scanner and translates identifiers into keywords.
  */
 class KeywordScanner extends IdScanner {
-	private final ScannerConfiguration config;
-	private final TokenNodePrimitiveResult primitiveResult;
-	
-	KeywordScanner(ScannerConfiguration config) {
-		this.config = config;
-		primitiveResult = new TokenNodePrimitiveResult(null);
-	}
+    private final ScannerConfiguration config;
+    private final TokenNodePrimitiveResult primitiveResult;
+    
+    KeywordScanner(ScannerConfiguration config) {
+        this.config = config;
+        primitiveResult = new TokenNodePrimitiveResult(null);
+    }
 
-	@Override
-	IPrimitiveResult getResult(String literal) {
-		//Lookup a keyword.
-		TokenDescriptor tokenDescriptor = config.getKeyword(literal);
-		if (tokenDescriptor != null) {
-			//Keyword found. Return that keyword.
-			primitiveResult.setTokenDescriptor(tokenDescriptor);
-			return primitiveResult;
-		}
-		
-		//The identifier is not a keyword. Return the identifier token.
-		return super.getResult(literal);
-	}
+    @Override
+    IPrimitiveResult getResult(String literal) {
+        //Lookup a keyword.
+        TokenDescriptor tokenDescriptor = config.getKeyword(literal);
+        if (tokenDescriptor != null) {
+            //Keyword found. Return that keyword.
+            primitiveResult.setTokenDescriptor(tokenDescriptor);
+            return primitiveResult;
+        }
+        
+        //The identifier is not a keyword. Return the identifier token.
+        return super.getResult(literal);
+    }
 }

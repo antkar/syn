@@ -19,22 +19,22 @@ package com.karmant.syn.sample.script.rt.op.operand;
  * A <code>null</code> operand.
  */
 class NullOperand extends Operand {
-	static final Operand INSTANCE = new NullOperand();
-	
-	private NullOperand() {}
+    static final Operand INSTANCE = new NullOperand();
+    
+    private NullOperand() {}
 
-	@Override
-	public OperandType getType() {
-		return OperandType.NULL;
-	}
-	
-	@Override
-	public String stringValue() {
-		return null + "";
-	}
-	
-	@Override
-	public Object objectValue() {
-		return null;
-	}
+    @Override
+    public OperandType getType() {
+        return OperandType.NULL;
+    }
+    
+    @Override
+    public String stringValue() {
+        return null + "";
+    }
+    
+    @Override
+    public Object objectValue() {
+        return null;
+    }
 }

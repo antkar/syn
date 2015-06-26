@@ -25,43 +25,43 @@ import com.karmant.syn.sample.script.rt.op.operand.Operand;
  * Script object value.
  */
 class ObjectValue extends RValue {
-	private final ClassValue classValue;
-	private final Map<String, Value> memberValues;
-	
-	ObjectValue(ClassValue classValue, Map<String, Value> memberValues) {
-		this.classValue = classValue;
-		this.memberValues = memberValues;
-	}
-	
-	@Override
-	public Operand toOperand() throws SynsException {
-		return Operand.forObject(this);
-	}
-	
-	@Override
-	public ValueType getValueType() {
-		return ValueType.OBJECT;
-	}
+    private final ClassValue classValue;
+    private final Map<String, Value> memberValues;
+    
+    ObjectValue(ClassValue classValue, Map<String, Value> memberValues) {
+        this.classValue = classValue;
+        this.memberValues = memberValues;
+    }
+    
+    @Override
+    public Operand toOperand() throws SynsException {
+        return Operand.forObject(this);
+    }
+    
+    @Override
+    public ValueType getValueType() {
+        return ValueType.OBJECT;
+    }
 
-	@Override
-	public String getTypeMessage() {
-		return getCompoundTypeMessage(classValue.getClassName());
-	}
+    @Override
+    public String getTypeMessage() {
+        return getCompoundTypeMessage(classValue.getClassName());
+    }
 
-	@Override
-	public Value getMemberOpt(String name) {
-		Value value = memberValues.get(name);
-		if (value == null) {
-			value = classValue.getMemberOpt(name);
-		}
-		return value;
-	}
-	
-	@Override
-	public Object toJava(Class<?> type, TypeMatchPrecision precision) {
-		if (!type.equals(Object.class)) {
-			return INVALID;
-		}
-		return this;
-	}
+    @Override
+    public Value getMemberOpt(String name) {
+        Value value = memberValues.get(name);
+        if (value == null) {
+            value = classValue.getMemberOpt(name);
+        }
+        return value;
+    }
+    
+    @Override
+    public Object toJava(Class<?> type, TypeMatchPrecision precision) {
+        if (!type.equals(Object.class)) {
+            return INVALID;
+        }
+        return this;
+    }
 }

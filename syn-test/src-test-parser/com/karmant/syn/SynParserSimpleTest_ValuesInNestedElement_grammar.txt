@@ -3,9 +3,9 @@
 Member : Field | Assert ;
 
 Field : "field" name=ID ":" type=ID
-	(	"?" cardinality=<0> optional=<true>
-	|	"+" cardinality=<1> many=<true>
-	|	"*" cardinality=<2> many=<true>
-	) ";" ;
+    (   "?" cardinality=<0> optional=<true>
+    |   "+" cardinality=<1> many=<true>
+    |   "*" cardinality=<2> many=<true>
+    ) ";" ;
 
 Assert : "assert" name1=ID op=("!=" | "==" | "<" | ">") name2=ID ";" ;

@@ -23,34 +23,34 @@ import com.karmant.syn.sample.script.rt.op.operand.Operand;
  * A value of type <code>long</code>.
  */
 class LongValue extends RValue {
-	private final long value;
+    private final long value;
 
-	LongValue(long value) {
-		this.value = value;
-	}
-	
-	@Override
-	public Operand toOperand() throws SynsException {
-		return Operand.forLong(value);
-	}
-	
-	@Override
-	public ValueType getValueType() {
-		return ValueType.LONG;
-	}
+    LongValue(long value) {
+        this.value = value;
+    }
+    
+    @Override
+    public Operand toOperand() throws SynsException {
+        return Operand.forLong(value);
+    }
+    
+    @Override
+    public ValueType getValueType() {
+        return ValueType.LONG;
+    }
 
-	@Override
-	public Object toJava(Class<?> type, TypeMatchPrecision precision) {
-		if (long.class.equals(type)) {
-			precision.increment(2);
-			return Long.valueOf(value);
-		} else if (float.class.equals(type)) {
-			return Float.valueOf(value);
-		} else if (double.class.equals(type)) {
-			return Double.valueOf(value);
-		} else if (type.isAssignableFrom(Long.class)) {
-			return value;
-		}
-		return INVALID;
-	}
+    @Override
+    public Object toJava(Class<?> type, TypeMatchPrecision precision) {
+        if (long.class.equals(type)) {
+            precision.increment(2);
+            return Long.valueOf(value);
+        } else if (float.class.equals(type)) {
+            return Float.valueOf(value);
+        } else if (double.class.equals(type)) {
+            return Double.valueOf(value);
+        } else if (type.isAssignableFrom(Long.class)) {
+            return value;
+        }
+        return INVALID;
+    }
 }

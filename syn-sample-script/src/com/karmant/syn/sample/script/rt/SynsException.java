@@ -19,26 +19,26 @@ package com.karmant.syn.sample.script.rt;
  * An error in script execution.
  */
 public class SynsException extends Exception {
-	private static final long serialVersionUID = 2396092981958222183L;
+    private static final long serialVersionUID = 2396092981958222183L;
 
-	public SynsException() {
-		super();
-	}
+    public SynsException() {
+        super();
+    }
 
-	public SynsException(String message, Throwable cause) {
-		super(message, cause);
-	}
+    public SynsException(String message, Throwable cause) {
+        super(message, cause);
+    }
 
-	public SynsException(String message) {
-		super(message);
-	}
+    public SynsException(String message) {
+        super(message);
+    }
 
-	public SynsException(Throwable cause) {
-		super(cause);
-	}
-	
-	public static SynsException format(String format, Object... params) {
-		String message = String.format(format, params);
-		return new SynsException(message);
-	}
+    public SynsException(Throwable cause) {
+        super(cause);
+    }
+    
+    public static SynsException format(String format, Object... params) {
+        String message = String.format(format, params);
+        return new SynsException(message);
+    }
 }

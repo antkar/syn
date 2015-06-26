@@ -19,26 +19,26 @@ package com.karmant.syn;
  * Primitive <code>boolean</code> array bound type.
  */
 class BooleanArrayBoundType extends ArrayBoundType {
-	static final BoundType INSTANCE = new BooleanArrayBoundType();
-	
-	private BooleanArrayBoundType(){}
+    static final BoundType INSTANCE = new BooleanArrayBoundType();
+    
+    private BooleanArrayBoundType(){}
 
-	@Override
-	Object convertArray(
-			BinderEngine<?> engine,
-			BoundObject bObjOwner,
-			String key,
-			ArrayNode arrayNode,
-			int size) throws SynBinderException
-	{
-		boolean[] array = new boolean[size];
-		
-		for (int i = 0; i < size; ++i) {
-			SynNode synElementNode = arrayNode.get(i);
-			boolean value = BooleanBoundType.extractValue(synElementNode);
-			array[i] = value;
-		}
-		
-		return array;
-	}
+    @Override
+    Object convertArray(
+            BinderEngine<?> engine,
+            BoundObject bObjOwner,
+            String key,
+            ArrayNode arrayNode,
+            int size) throws SynBinderException
+    {
+        boolean[] array = new boolean[size];
+        
+        for (int i = 0; i < size; ++i) {
+            SynNode synElementNode = arrayNode.get(i);
+            boolean value = BooleanBoundType.extractValue(synElementNode);
+            array[i] = value;
+        }
+        
+        return array;
+    }
 }

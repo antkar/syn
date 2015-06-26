@@ -21,29 +21,29 @@ import java.lang.reflect.Field;
  * Common superclass for primitive array bound types.
  */
 abstract class ArrayBoundType extends BoundType {
-	ArrayBoundType(){}
+    ArrayBoundType(){}
 
-	@Override
-	final BoundType getArrayType(Field field) throws SynBinderException {
-		throw new SynBinderException(String.format("Multidimensional arrays are not supported (%s)", field));
-	}
+    @Override
+    final BoundType getArrayType(Field field) throws SynBinderException {
+        throw new SynBinderException(String.format("Multidimensional arrays are not supported (%s)", field));
+    }
 
-	@Override
-	final Object convertNode(BinderEngine<?> engine, SynNode synNode, BoundObject bObjOwner, String key)
-			throws SynBinderException
-	{
-		ArrayNode arrayNode = (ArrayNode) synNode;
-		int size = arrayNode.size();
-		return convertArray(engine, bObjOwner, key, arrayNode, size);
-	}
-	
-	/**
-	 * Converts an array node to a Java array value.
-	 */
-	abstract Object convertArray(
-			BinderEngine<?> engine,
-			BoundObject bObjOwner,
-			String key,
-			ArrayNode arrayNode,
-			int size) throws SynBinderException;
+    @Override
+    final Object convertNode(BinderEngine<?> engine, SynNode synNode, BoundObject bObjOwner, String key)
+            throws SynBinderException
+    {
+        ArrayNode arrayNode = (ArrayNode) synNode;
+        int size = arrayNode.size();
+        return convertArray(engine, bObjOwner, key, arrayNode, size);
+    }
+    
+    /**
+     * Converts an array node to a Java array value.
+     */
+    abstract Object convertArray(
+            BinderEngine<?> engine,
+            BoundObject bObjOwner,
+            String key,
+            ArrayNode arrayNode,
+            int size) throws SynBinderException;
 }

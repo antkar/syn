@@ -19,23 +19,23 @@ package com.karmant.syn;
  * Token value of type {@link String}.
  */
 public class StringToken extends AbstractToken {
-	private final String value;
+    private final String value;
 
-	public StringToken(TextPos pos, String value) {
-		super(pos);
-		this.value = value;
-	}
-	
-	/**
-	 * Returns the {@link String} value of this object.
-	 * @return the value.
-	 */
-	public String getValue() {
-		return value;
-	}
-	
-	@Override
-	public String toString() {
-		return value;
-	}
+    public StringToken(TextPos pos, String value) {
+        super(pos);
+        this.value = value;
+    }
+    
+    /**
+     * Returns the {@link String} value of this object.
+     * @return the value.
+     */
+    public String getValue() {
+        return value;
+    }
+    
+    @Override
+    public String toString() {
+        return value;
+    }
 }

@@ -19,34 +19,34 @@ package com.karmant.syn.sample.script.rt.value;
  * Variable value. Contains a mutable reference to an {@link RValue}.
  */
 class VariableValue extends LValue {
-	private RValue value;
-	
-	VariableValue(RValue initialValue) {
-		value = initialValue;
-	}
-	
-	@Override
-	public ValueType getValueType() {
-		return ValueType.VARIABLE;
-	}
-	
-	@Override
-	public String getTypeMessage() {
-		return getCompoundTypeMessage(value.getTypeMessage());
-	}
-	
-	@Override
-	public RValue toRValue() {
-		return value;
-	}
-	
-	@Override
-	public void assign(RValue rvalue) {
-		this.value = rvalue;
-	}
-	
-	@Override
-	public String toString() {
-		return "var[" + value + "]";
-	}
+    private RValue value;
+    
+    VariableValue(RValue initialValue) {
+        value = initialValue;
+    }
+    
+    @Override
+    public ValueType getValueType() {
+        return ValueType.VARIABLE;
+    }
+    
+    @Override
+    public String getTypeMessage() {
+        return getCompoundTypeMessage(value.getTypeMessage());
+    }
+    
+    @Override
+    public RValue toRValue() {
+        return value;
+    }
+    
+    @Override
+    public void assign(RValue rvalue) {
+        this.value = rvalue;
+    }
+    
+    @Override
+    public String toString() {
+        return "var[" + value + "]";
+    }
 }

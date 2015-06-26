@@ -24,34 +24,34 @@ import com.karmant.syn.sample.script.schema.FunctionDeclaration;
  * Script function value.
  */
 class FunctionValue extends RValue {
-	/** The scope where the function was declared. The function will be executed in that scope. */
-	private final ScriptScope scope;
-	
-	/** The function declaration. */
-	private final FunctionDeclaration function;
-	
-	FunctionValue(ScriptScope scope, FunctionDeclaration function) {
-		this.scope = scope;
-		this.function = function;
-	}
-	
-	@Override
-	public Value call(RValue[] arguments) throws SynsException {
-		return function.call(scope, arguments);
-	}
-	
-	@Override
-	public Operand toOperand() throws SynsException {
-		return Operand.forObject(function);
-	}
-	
-	@Override
-	public ValueType getValueType() {
-		return ValueType.FUNCTION;
-	}
-	
-	@Override
-	public String getTypeMessage() {
-		return getCompoundTypeMessage(function.getName());
-	}
+    /** The scope where the function was declared. The function will be executed in that scope. */
+    private final ScriptScope scope;
+    
+    /** The function declaration. */
+    private final FunctionDeclaration function;
+    
+    FunctionValue(ScriptScope scope, FunctionDeclaration function) {
+        this.scope = scope;
+        this.function = function;
+    }
+    
+    @Override
+    public Value call(RValue[] arguments) throws SynsException {
+        return function.call(scope, arguments);
+    }
+    
+    @Override
+    public Operand toOperand() throws SynsException {
+        return Operand.forObject(function);
+    }
+    
+    @Override
+    public ValueType getValueType() {
+        return ValueType.FUNCTION;
+    }
+    
+    @Override
+    public String getTypeMessage() {
+        return getCompoundTypeMessage(function.getName());
+    }
 }

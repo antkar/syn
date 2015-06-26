@@ -22,9 +22,9 @@ import com.karmant.syn.TextPos;
  * executed.
  */
 public class ThrowSynsException extends TextSynsException {
-	private static final long serialVersionUID = -9033015625799555584L;
+    private static final long serialVersionUID = -9033015625799555584L;
 
-	public ThrowSynsException(Throwable cause, TextPos textPos) {
-		super(cause.getMessage(), cause, textPos);
-	}
+    public ThrowSynsException(Throwable cause, TextPos textPos) {
+        super(cause.getMessage(), cause, textPos);
+    }
 }

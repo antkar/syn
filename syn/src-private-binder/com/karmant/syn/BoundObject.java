@@ -23,56 +23,56 @@ import java.util.Map;
  * referenced by this one. Used by {@link SynLookup} functionality.
  */
 class BoundObject {
-	
-	private final Object javaObject;
-	private BoundObject owner;
-	private Map<String, BoundObject> references;
-	
-	BoundObject(Object javaObject) {
-		this.javaObject = javaObject;
-	}
+    
+    private final Object javaObject;
+    private BoundObject owner;
+    private Map<String, BoundObject> references;
+    
+    BoundObject(Object javaObject) {
+        this.javaObject = javaObject;
+    }
 
-	/**
-	 * Returns the owner object. An owner object is the one opposite to a referenced object.
-	 */
-	BoundObject getOwner() {
-		return owner;
-	}
-	
-	/**
-	 * Returns the Java object associated with this object.
-	 */
-	Object getJavaObject() {
-		return javaObject;
-	}
-	
-	/**
-	 * Returns the object referenced by the given Java field name.
-	 */
-	BoundObject getReferencedObject(String fieldName) {
-		BoundObject boundObject = references.get(fieldName);
-		return boundObject;
-	}
-	
-	/**
-	 * Initializes the owner object.
-	 */
-	void setOwner(BoundObject owner) {
-		this.owner = owner;
-	}
-	
-	/**
-	 * Adds a referenced object.
-	 */
-	void addReference(String fieldName, BoundObject bObj) {
-		if (references == null) {
-			references = new HashMap<>();
-		}
-		references.put(fieldName, bObj);
-	}
-	
-	@Override
-	public String toString() {
-		return getClass().getSimpleName() + ":" + javaObject;
-	}
+    /**
+     * Returns the owner object. An owner object is the one opposite to a referenced object.
+     */
+    BoundObject getOwner() {
+        return owner;
+    }
+    
+    /**
+     * Returns the Java object associated with this object.
+     */
+    Object getJavaObject() {
+        return javaObject;
+    }
+    
+    /**
+     * Returns the object referenced by the given Java field name.
+     */
+    BoundObject getReferencedObject(String fieldName) {
+        BoundObject boundObject = references.get(fieldName);
+        return boundObject;
+    }
+    
+    /**
+     * Initializes the owner object.
+     */
+    void setOwner(BoundObject owner) {
+        this.owner = owner;
+    }
+    
+    /**
+     * Adds a referenced object.
+     */
+    void addReference(String fieldName, BoundObject bObj) {
+        if (references == null) {
+            references = new HashMap<>();
+        }
+        references.put(fieldName, bObj);
+    }
+    
+    @Override
+    public String toString() {
+        return getClass().getSimpleName() + ":" + javaObject;
+    }
 }

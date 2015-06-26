@@ -26,34 +26,34 @@ import com.karmant.syn.sample.script.rt.PrimitiveTypeDescriptor;
  * Primitive type name syntax node. Used in an explicit type cast expression.
  */
 public class PrimitiveType {
-	/** The name of the primitive type. */
-	@SynField
-	private String synType;
-	
-	/** The descriptor of the specified primitive type. */
-	private PrimitiveTypeDescriptor type;
-	
-	public PrimitiveType(){}
+    /** The name of the primitive type. */
+    @SynField
+    private String synType;
+    
+    /** The descriptor of the specified primitive type. */
+    private PrimitiveTypeDescriptor type;
+    
+    public PrimitiveType(){}
 
-	@SynInit
-	private void init() {
-		if ("int".equals(synType)) {
-			type = IntPrimitiveTypeDescriptor.INSTANCE;
-		} else if ("long".equals(synType)) {
-			type = LongPrimitiveTypeDescriptor.INSTANCE;
-		} else if ("double".equals(synType)) {
-			type = DoublePrimitiveTypeDescriptor.INSTANCE;
-		} else {
-			throw new IllegalStateException(synType);
-		}
-	}
-	
-	public PrimitiveTypeDescriptor getType() {
-		return type;
-	}
-	
-	@Override
-	public String toString() {
-		return type + "";
-	}
+    @SynInit
+    private void init() {
+        if ("int".equals(synType)) {
+            type = IntPrimitiveTypeDescriptor.INSTANCE;
+        } else if ("long".equals(synType)) {
+            type = LongPrimitiveTypeDescriptor.INSTANCE;
+        } else if ("double".equals(synType)) {
+            type = DoublePrimitiveTypeDescriptor.INSTANCE;
+        } else {
+            throw new IllegalStateException(synType);
+        }
+    }
+    
+    public PrimitiveTypeDescriptor getType() {
+        return type;
+    }
+    
+    @Override
+    public String toString() {
+        return type + "";
+    }
 }

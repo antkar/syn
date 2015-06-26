@@ -25,25 +25,25 @@ import com.karmant.syn.sample.script.rt.SynsException;
  * Variable declaration statement syntax node.
  */
 public class VariableDeclarationStatement extends Statement {
-	/** The underlying declaration. Can be either a constant, or a variable declaration. */
-	@SynField
-	private Declaration synDeclaration;
+    /** The underlying declaration. Can be either a constant, or a variable declaration. */
+    @SynField
+    private Declaration synDeclaration;
 
-	public VariableDeclarationStatement(){}
+    public VariableDeclarationStatement(){}
 
-	@Override
-	TextPos getStartTextPos() {
-		return synDeclaration.getStartTextPos();
-	}
+    @Override
+    TextPos getStartTextPos() {
+        return synDeclaration.getStartTextPos();
+    }
 
-	@Override
-	StatementResult execute0(ScriptScope scope) throws SynsException {
-		synDeclaration.addToScope(scope);
-		return StatementResult.NONE;
-	}
-	
-	@Override
-	public String toString() {
-		return synDeclaration + "";
-	}
+    @Override
+    StatementResult execute0(ScriptScope scope) throws SynsException {
+        synDeclaration.addToScope(scope);
+        return StatementResult.NONE;
+    }
+    
+    @Override
+    public String toString() {
+        return synDeclaration + "";
+    }
 }

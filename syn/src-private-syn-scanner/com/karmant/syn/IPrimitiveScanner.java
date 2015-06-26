@@ -24,13 +24,13 @@ package com.karmant.syn;
  * character from a {@link LookaheadCharStream}, so it is not necessary to roll back the input.</p>
  */
 interface IPrimitiveScanner {
-	/**
-	 * Scans the next token from the input.
-	 * 
-	 * @param context the lexical analyzer context.
-	 * @return the token information, or <code>null</code> if the input does not match the token
-	 * supported by this primitive scanner.
-	 * @throws SynException if the input is incorrect or an I/O error occurs.
-	 */
-	IPrimitiveResult scan(PrimitiveContext context) throws SynException;
+    /**
+     * Scans the next token from the input.
+     * 
+     * @param context the lexical analyzer context.
+     * @return the token information, or <code>null</code> if the input does not match the token
+     * supported by this primitive scanner.
+     * @throws SynException if the input is incorrect or an I/O error occurs.
+     */
+    IPrimitiveResult scan(PrimitiveContext context) throws SynException;
 }

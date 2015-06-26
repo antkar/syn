@@ -19,12 +19,12 @@ package com.karmant.syn.sample.script.ide;
  * Output stream that sends a text to {@link ScriptWindow#writeErr(String)} method. 
  */
 class ErrWindowOutputStream extends WindowOutputStream {
-	ErrWindowOutputStream(ScriptWindow window) {
-		super(window);
-	}
+    ErrWindowOutputStream(ScriptWindow window) {
+        super(window);
+    }
 
-	@Override
-	void append(ScriptWindow window, String str) {
-		window.writeErr(str);
-	}
+    @Override
+    void append(ScriptWindow window, String str) {
+        window.writeErr(str);
+    }
 }

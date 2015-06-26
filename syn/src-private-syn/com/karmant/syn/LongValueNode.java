@@ -19,41 +19,41 @@ package com.karmant.syn;
  * Integer value node. Contains a value of type <code>long</code>. The value is out of <code>int</code> range.
  */
 class LongValueNode extends ValueNode {
-	private final long value;
-	
-	LongValueNode(PosBuffer pos, long value) {
-		super(pos);
-		assert value > Integer.MAX_VALUE || value < Integer.MIN_VALUE : value;
-		this.value = value;
-	}
+    private final long value;
+    
+    LongValueNode(PosBuffer pos, long value) {
+        super(pos);
+        assert value > Integer.MAX_VALUE || value < Integer.MIN_VALUE : value;
+        this.value = value;
+    }
 
-	@Override
-	public SynValueType getValueType() {
-		return SynValueType.INTEGER;
-	}
-	
-	@Override
-	public int getInt() {
-		throw new IllegalStateException(String.valueOf(value));
-	}
-	
-	@Override
-	public long getLong() {
-		return value;
-	}
+    @Override
+    public SynValueType getValueType() {
+        return SynValueType.INTEGER;
+    }
+    
+    @Override
+    public int getInt() {
+        throw new IllegalStateException(String.valueOf(value));
+    }
+    
+    @Override
+    public long getLong() {
+        return value;
+    }
 
-	@Override
-	public Object getValue() {
-		return value;
-	}
+    @Override
+    public Object getValue() {
+        return value;
+    }
 
-	@Override
-	public TokenDescriptor getTokenDescriptor() {
-		return TokenDescriptor.INTEGER;
-	}
-	
-	@Override
-	public String toString() {
-		return getTokenDescriptor() + "(" + getLong() + ")";
-	}
+    @Override
+    public TokenDescriptor getTokenDescriptor() {
+        return TokenDescriptor.INTEGER;
+    }
+    
+    @Override
+    public String toString() {
+        return getTokenDescriptor() + "(" + getLong() + ")";
+    }
 }

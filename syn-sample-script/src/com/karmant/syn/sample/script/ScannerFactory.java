@@ -21,8 +21,8 @@ import com.karmant.syn.TokenStream;
  * Scanner factory. Used to create a token stream for the Script Language grammar in a transparent way.
  */
 public interface ScannerFactory {
-	/**
-	 * Creates a script token stream for the specified source code.
-	 */
-	TokenStream createTokenStream(String string);
+    /**
+     * Creates a script token stream for the specified source code.
+     */
+    TokenStream createTokenStream(String string);
 }

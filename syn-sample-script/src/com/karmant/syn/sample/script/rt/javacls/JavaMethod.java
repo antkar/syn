@@ -23,41 +23,41 @@ import java.lang.reflect.Modifier;
  * Wraps a Java {@link Method}.
  */
 class JavaMethod extends JavaAbstractMethod {
-	private final Method method;
-	
-	JavaMethod(Method method) {
-		this.method = method;
-	}
-	
-	@Override
-	boolean isVarArgs() {
-		return method.isVarArgs();
-	}
-	
-	@Override
-	boolean isStatic() {
-		return Modifier.isStatic(method.getModifiers());
-	}
-	
-	@Override
-	boolean isVoid() {
-		return void.class.equals(method.getReturnType());
-	}
-	
-	@Override
-	Class<?>[] getParameterTypes() {
-		return method.getParameterTypes();
-	}
+    private final Method method;
+    
+    JavaMethod(Method method) {
+        this.method = method;
+    }
+    
+    @Override
+    boolean isVarArgs() {
+        return method.isVarArgs();
+    }
+    
+    @Override
+    boolean isStatic() {
+        return Modifier.isStatic(method.getModifiers());
+    }
+    
+    @Override
+    boolean isVoid() {
+        return void.class.equals(method.getReturnType());
+    }
+    
+    @Override
+    Class<?>[] getParameterTypes() {
+        return method.getParameterTypes();
+    }
 
-	@Override
-	Object invokeJava(Object obj, Object[] arguments)
-			throws IllegalAccessException, InvocationTargetException
-	{
-		return method.invoke(obj, arguments);
-	}
+    @Override
+    Object invokeJava(Object obj, Object[] arguments)
+            throws IllegalAccessException, InvocationTargetException
+    {
+        return method.invoke(obj, arguments);
+    }
 
-	@Override
-	public String toString() {
-		return method.toString();
-	}
+    @Override
+    public String toString() {
+        return method.toString();
+    }
 }

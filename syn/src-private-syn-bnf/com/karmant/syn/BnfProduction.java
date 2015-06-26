@@ -23,86 +23,86 @@ import java.util.List;
  * BNF production.
  */
 class BnfProduction {
-	private final int index;
-	private BnfNonterminal nonterminal;
-	private final List<BnfElement> elements;
-	private final IParserAction parserAction;
+    private final int index;
+    private BnfNonterminal nonterminal;
+    private final List<BnfElement> elements;
+    private final IParserAction parserAction;
 
-	BnfProduction(int index, List<BnfElement> elements, IParserAction parserAction) {
-		assert index >= 0;
-		assert elements != null;
-		assert parserAction != null;
-		
-		this.index = index;
-		this.elements = Collections.unmodifiableList(new ArrayList<>(elements));
-		this.parserAction = parserAction;
-		
-		nonterminal = null;
-	}
-	
-	/**
-	 * Sets the nonterminal which this production belongs to. This cannot be done in the constructor, because
-	 * there can be circular dependencies between nonterminals.
-	 */
-	void setNonterminal(BnfNonterminal nonterminal) {
-		assert nonterminal != null;
-		assert this.nonterminal == null;
-		this.nonterminal = nonterminal;
-	}
-	
-	/**
-	 * Returns the unique index of this production in the grammar.
-	 */
-	int getIndex() {
-		return index;
-	}
-	
-	/**
-	 * Returns the nonterminal which this production belongs to.
-	 */
-	BnfNonterminal getNonterminal() {
-		assert nonterminal != null;
-		return nonterminal;
-	}
+    BnfProduction(int index, List<BnfElement> elements, IParserAction parserAction) {
+        assert index >= 0;
+        assert elements != null;
+        assert parserAction != null;
+        
+        this.index = index;
+        this.elements = Collections.unmodifiableList(new ArrayList<>(elements));
+        this.parserAction = parserAction;
+        
+        nonterminal = null;
+    }
+    
+    /**
+     * Sets the nonterminal which this production belongs to. This cannot be done in the constructor, because
+     * there can be circular dependencies between nonterminals.
+     */
+    void setNonterminal(BnfNonterminal nonterminal) {
+        assert nonterminal != null;
+        assert this.nonterminal == null;
+        this.nonterminal = nonterminal;
+    }
+    
+    /**
+     * Returns the unique index of this production in the grammar.
+     */
+    int getIndex() {
+        return index;
+    }
+    
+    /**
+     * Returns the nonterminal which this production belongs to.
+     */
+    BnfNonterminal getNonterminal() {
+        assert nonterminal != null;
+        return nonterminal;
+    }
 
-	/**
-	 * Returns the elements of the production.
-	 */
-	List<BnfElement> getElements() {
-		return elements;
-	}
-	
-	/**
-	 * Returns the action associated with the production.
-	 */
-	IParserAction getParserAction() {
-		return parserAction;
-	}
-	
-	@Override
-	public String toString() {
-		StringBuilder bld = new StringBuilder();
-		
-		//Append elements.
-		for (BnfElement e : elements) {
-			if (bld.length() > 0) {
-				bld.append(" ");
-			}
-			String es = e.toString();
-			bld.append(es);
-		}
-		
-		//Append action.
-		if (parserAction != null) {
-			if (bld.length() > 0) {
-				bld.append(" ");
-			}
-			bld.append("{ ");
-			bld.append(parserAction.toString());
-			bld.append(" }");
-		}
-		
-		String result = bld.toString();
-		return result;
-	}
+    /**
+     * Returns the elements of the production.
+     */
+    List<BnfElement> getElements() {
+        return elements;
+    }
+    
+    /**
+     * Returns the action associated with the production.
+     */
+    IParserAction getParserAction() {
+        return parserAction;
+    }
+    
+    @Override
+    public String toString() {
+        StringBuilder bld = new StringBuilder();
+        
+        //Append elements.
+        for (BnfElement e : elements) {
+            if (bld.length() > 0) {
+                bld.append(" ");
+            }
+            String es = e.toString();
+            bld.append(es);
+        }
+        
+        //Append action.
+        if (parserAction != null) {
+            if (bld.length() > 0) {
+                bld.append(" ");
+            }
+            bld.append("{ ");
+            bld.append(parserAction.toString());
+            bld.append(" }");
+        }
+        
+        String result = bld.toString();
+        return result;
+    }
 }

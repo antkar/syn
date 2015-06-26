@@ -21,19 +21,19 @@ import com.karmant.syn.sample.script.rt.value.Value;
  * An on-demand import using an arbitrary {@link Value} for looking for names.
  */
 class ValueOnDemandImport extends OnDemandImport {
-	private final Value value;
-	
-	ValueOnDemandImport(Value value) {
-		this.value = value;
-	}
+    private final Value value;
+    
+    ValueOnDemandImport(Value value) {
+        this.value = value;
+    }
 
-	@Override
-	Value getValueOpt(String name) throws SynsException {
-		return value.getMemberOpt(name);
-	}
-	
-	@Override
-	public String toString() {
-		return "value:" + value;
-	}
+    @Override
+    Value getValueOpt(String name) throws SynsException {
+        return value.getMemberOpt(name);
+    }
+    
+    @Override
+    public String toString() {
+        return "value:" + value;
+    }
 }

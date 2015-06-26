@@ -19,12 +19,12 @@ package com.karmant.syn.sample.script.rt.op;
  * Script Language <code>!</code> operator.
  */
 class LogicalNotUnaryOperator extends ArithmeticalUnaryOperator {
-	LogicalNotUnaryOperator() {
-		super("!");
-	}
+    LogicalNotUnaryOperator() {
+        super("!");
+    }
 
-	@Override
-	boolean evaluate(boolean value) {
-		return !value;
-	}
+    @Override
+    boolean evaluate(boolean value) {
+        return !value;
+    }
 }

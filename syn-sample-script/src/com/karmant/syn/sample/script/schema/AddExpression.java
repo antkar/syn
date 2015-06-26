@@ -19,5 +19,5 @@ package com.karmant.syn.sample.script.schema;
  * Addition expression syntax node.
  */
 public class AddExpression extends ArithmeticalBinaryExpression {
-	public AddExpression(){}
+    public AddExpression(){}
 }

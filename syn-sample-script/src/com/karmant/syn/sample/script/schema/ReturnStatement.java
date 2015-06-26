@@ -26,33 +26,33 @@ import com.karmant.syn.sample.script.rt.value.Value;
  * Script <code>return</code> statement syntax node.
  */
 public class ReturnStatement extends Statement {
-	/** The text position of the first token. */
-	@SynField
-	private TextPos synPos;
+    /** The text position of the first token. */
+    @SynField
+    private TextPos synPos;
 
-	/** The return value expression, if any. */
-	@SynField
-	private Expression synReturnValue;
-	
-	public ReturnStatement(){}
+    /** The return value expression, if any. */
+    @SynField
+    private Expression synReturnValue;
+    
+    public ReturnStatement(){}
 
-	@Override
-	TextPos getStartTextPos() {
-		return synPos;
-	}
+    @Override
+    TextPos getStartTextPos() {
+        return synPos;
+    }
 
-	@Override
-	StatementResult execute0(ScriptScope scope) throws SynsException {
-		if (!scope.isFunction()) {
-			throw new SynsException("Return without a function");
-		}
-		
-		Value value = synReturnValue == null ? Value.forNull() : synReturnValue.evaluate(scope);
-		return StatementResult.forReturn(value);
-	}
-	
-	@Override
-	public String toString() {
-		return synReturnValue == null ? "return" : "return " + synReturnValue;
-	}
+    @Override
+    StatementResult execute0(ScriptScope scope) throws SynsException {
+        if (!scope.isFunction()) {
+            throw new SynsException("Return without a function");
+        }
+        
+        Value value = synReturnValue == null ? Value.forNull() : synReturnValue.evaluate(scope);
+        return StatementResult.forReturn(value);
+    }
+    
+    @Override
+    public String toString() {
+        return synReturnValue == null ? "return" : "return " + synReturnValue;
+    }
 }

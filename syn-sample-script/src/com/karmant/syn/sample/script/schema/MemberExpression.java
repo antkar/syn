@@ -26,29 +26,29 @@ import com.karmant.syn.sample.script.rt.value.Value;
  * Member access expression syntax node.
  */
 public class MemberExpression extends TerminalExpression {
-	/** The expression denoting the object to look for a member in. */
-	@SynField
-	private Expression synObject;
-	
-	/** The name of the member. */
-	@SynField
-	private StringToken synName;
+    /** The expression denoting the object to look for a member in. */
+    @SynField
+    private Expression synObject;
+    
+    /** The name of the member. */
+    @SynField
+    private StringToken synName;
 
-	public MemberExpression(){}
-	
-	@Override
-	TextPos getStartTextPos() {
-		return synObject.getStartTextPos();
-	}
+    public MemberExpression(){}
+    
+    @Override
+    TextPos getStartTextPos() {
+        return synObject.getStartTextPos();
+    }
 
-	@Override
-	Value evaluate0(ScriptScope scope) throws SynsException {
-		Value object = synObject.evaluate(scope);
-		return object.getMember(synName);
-	}
-	
-	@Override
-	public String toString() {
-		return synObject + "." + synName;
-	}
+    @Override
+    Value evaluate0(ScriptScope scope) throws SynsException {
+        Value object = synObject.evaluate(scope);
+        return object.getMember(synName);
+    }
+    
+    @Override
+    public String toString() {
+        return synObject + "." + synName;
+    }
 }

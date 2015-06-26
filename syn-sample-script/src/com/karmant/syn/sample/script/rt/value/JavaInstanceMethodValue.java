@@ -22,15 +22,15 @@ import com.karmant.syn.sample.script.rt.javacls.JavaMethodSet;
  * Instance (not static) Java method value.
  */
 public class JavaInstanceMethodValue extends JavaMethodValue {
-	private final Object obj;
+    private final Object obj;
 
-	public JavaInstanceMethodValue(JavaMethodSet methods, Object obj) {
-		super(methods);
-		this.obj = obj;
-	}
+    public JavaInstanceMethodValue(JavaMethodSet methods, Object obj) {
+        super(methods);
+        this.obj = obj;
+    }
 
-	@Override
-	public Value call(RValue[] arguments) throws SynsException {
-		return getMethods().callInstance(obj, arguments);
-	}
+    @Override
+    public Value call(RValue[] arguments) throws SynsException {
+        return getMethods().callInstance(obj, arguments);
+    }
 }

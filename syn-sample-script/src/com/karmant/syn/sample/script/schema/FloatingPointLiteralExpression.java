@@ -26,32 +26,32 @@ import com.karmant.syn.sample.script.rt.value.Value;
  * Floating-point literal expression syntax node.
  */
 public class FloatingPointLiteralExpression extends LiteralExpression {
-	/** The value of the literal. */
-	@SynField
-	private DoubleToken synValue;
-	
-	/** The script representation of the value. */
-	private Value value;
+    /** The value of the literal. */
+    @SynField
+    private DoubleToken synValue;
+    
+    /** The script representation of the value. */
+    private Value value;
 
-	public FloatingPointLiteralExpression(){}
-	
-	@SynInit
-	private void init() {
-		value = Value.forDouble(synValue.getValue());
-	}
-	
-	@Override
-	TextPos getStartTextPos() {
-		return synValue.getPos();
-	}
+    public FloatingPointLiteralExpression(){}
+    
+    @SynInit
+    private void init() {
+        value = Value.forDouble(synValue.getValue());
+    }
+    
+    @Override
+    TextPos getStartTextPos() {
+        return synValue.getPos();
+    }
 
-	@Override
-	Value evaluate0(ScriptScope scope) {
-		return value;
-	}
-	
-	@Override
-	public String toString() {
-		return value + "";
-	}
+    @Override
+    Value evaluate0(ScriptScope scope) {
+        return value;
+    }
+    
+    @Override
+    public String toString() {
+        return value + "";
+    }
 }

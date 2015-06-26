@@ -19,21 +19,21 @@ package com.karmant.syn;
  * Common superclass for all SYN exception types.
  */
 public class SynException extends Exception {
-	private static final long serialVersionUID = 6627708705706922752L;
+    private static final long serialVersionUID = 6627708705706922752L;
 
-	public SynException() {
-		super();
-	}
+    public SynException() {
+        super();
+    }
 
-	public SynException(String message, Throwable cause) {
-		super(message, cause);
-	}
+    public SynException(String message, Throwable cause) {
+        super(message, cause);
+    }
 
-	public SynException(String message) {
-		super(message);
-	}
+    public SynException(String message) {
+        super(message);
+    }
 
-	public SynException(Throwable cause) {
-		super(cause);
-	}
+    public SynException(Throwable cause) {
+        super(cause);
+    }
 }

@@ -28,37 +28,37 @@ import org.junit.Test;
  * Unit test for {@link EbnfToBnfConverter}.
  */
 public class EbnfToBnfConverterTest extends TestCase {
-	@Test
-	public void testConvertSuccess() throws Exception {
-		URL url = getClass().getResource("syn_grammar.xml");
-		EbnfGrammar eGrammar = XmlGrammarParser.parseGrammar(url);
-		BnfGrammar bGrammar = EbnfToBnfConverter.convert(eGrammar);
-		assertNotNull(bGrammar);
-	}
-	
-	@Test
-	public void testUnreferencedKeywordsAreKept() throws SynException {
-		Reader grammarReader = new StringReader("@goal : ; foo : 'aaa' | 'bbb' ;");
-		EbnfGrammar eGrammar =
-				SynGrammarParser.parseGrammar(grammarReader, new StringSourceDescriptor("<grammar>"));
-		BnfGrammar bGrammar = EbnfToBnfConverter.convert(eGrammar);
-		
-		List<TokenDescriptor> tokens = bGrammar.getTokens();
-		assertEquals(2, tokens.size());
-		assertEquals("aaa", tokens.get(0).getLiteral());
-		assertEquals("bbb", tokens.get(1).getLiteral());
-	}
-	
-	@Test
-	public void testUnreferencedKeycharsAreKept() throws SynException {
-		Reader grammarReader = new StringReader("@goal : ; foo : '+' | '-' ;");
-		EbnfGrammar eGrammar =
-				SynGrammarParser.parseGrammar(grammarReader, new StringSourceDescriptor("<grammar>"));
-		BnfGrammar bGrammar = EbnfToBnfConverter.convert(eGrammar);
-		
-		List<TokenDescriptor> tokens = bGrammar.getTokens();
-		assertEquals(2, tokens.size());
-		assertEquals("+", tokens.get(0).getLiteral());
-		assertEquals("-", tokens.get(1).getLiteral());
-	}
+    @Test
+    public void testConvertSuccess() throws Exception {
+        URL url = getClass().getResource("syn_grammar.xml");
+        EbnfGrammar eGrammar = XmlGrammarParser.parseGrammar(url);
+        BnfGrammar bGrammar = EbnfToBnfConverter.convert(eGrammar);
+        assertNotNull(bGrammar);
+    }
+    
+    @Test
+    public void testUnreferencedKeywordsAreKept() throws SynException {
+        Reader grammarReader = new StringReader("@goal : ; foo : 'aaa' | 'bbb' ;");
+        EbnfGrammar eGrammar =
+                SynGrammarParser.parseGrammar(grammarReader, new StringSourceDescriptor("<grammar>"));
+        BnfGrammar bGrammar = EbnfToBnfConverter.convert(eGrammar);
+        
+        List<TokenDescriptor> tokens = bGrammar.getTokens();
+        assertEquals(2, tokens.size());
+        assertEquals("aaa", tokens.get(0).getLiteral());
+        assertEquals("bbb", tokens.get(1).getLiteral());
+    }
+    
+    @Test
+    public void testUnreferencedKeycharsAreKept() throws SynException {
+        Reader grammarReader = new StringReader("@goal : ; foo : '+' | '-' ;");
+        EbnfGrammar eGrammar =
+                SynGrammarParser.parseGrammar(grammarReader, new StringSourceDescriptor("<grammar>"));
+        BnfGrammar bGrammar = EbnfToBnfConverter.convert(eGrammar);
+        
+        List<TokenDescriptor> tokens = bGrammar.getTokens();
+        assertEquals(2, tokens.size());
+        assertEquals("+", tokens.get(0).getLiteral());
+        assertEquals("-", tokens.get(1).getLiteral());
+    }
 }

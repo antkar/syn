@@ -175,7 +175,7 @@ class Snake {
                 
                 levelNo = no;
                 
-                return new LevelMap(wallMatrix, new java.awt.Point(startx, starty), new java.awt.Point(startdx, startdy));;
+                return new LevelMap(wallMatrix, new java.awt.Point(startx, starty), new java.awt.Point(startdx, startdy));
             } finally {
                 in0.close();
             }

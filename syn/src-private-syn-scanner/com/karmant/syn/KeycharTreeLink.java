@@ -19,46 +19,46 @@ package com.karmant.syn;
  * A link between two key-character tree nodes.
  */
 class KeycharTreeLink {
-	private final char ch;
-	private final KeycharTreeNode state;
-	
-	KeycharTreeLink(char ch, KeycharTreeNode state) {
-		assert state != null;
-		this.ch = ch;
-		this.state = state;
-	}
-	
-	/**
-	 * Returns the character associated with this link.
-	 */
-	char getCh() {
-		return ch;
-	}
-	
-	/**
-	 * Returns the destination node.
-	 */
-	KeycharTreeNode getDestinationNode() {
-		return state;
-	}
-	
-	@Override
-	public String toString() {
-		StringBuilder bld = new StringBuilder();
-		bld.append("'");
-		if (ch == '\'' || ch == '\\') {
-			bld.append('\\');
-			bld.append(ch);
-		} else if (ch >= 0x20 && ch < 0x80) {
-			bld.append(ch);
-		} else {
-			bld.append("\\u");
-			bld.append(String.format("%04x", (int)ch));
-		}
-		bld.append("'");
-		bld.append(" -> ");
-		bld.append(state);
-		return bld.toString();
-	}
-	
+    private final char ch;
+    private final KeycharTreeNode state;
+    
+    KeycharTreeLink(char ch, KeycharTreeNode state) {
+        assert state != null;
+        this.ch = ch;
+        this.state = state;
+    }
+    
+    /**
+     * Returns the character associated with this link.
+     */
+    char getCh() {
+        return ch;
+    }
+    
+    /**
+     * Returns the destination node.
+     */
+    KeycharTreeNode getDestinationNode() {
+        return state;
+    }
+    
+    @Override
+    public String toString() {
+        StringBuilder bld = new StringBuilder();
+        bld.append("'");
+        if (ch == '\'' || ch == '\\') {
+            bld.append('\\');
+            bld.append(ch);
+        } else if (ch >= 0x20 && ch < 0x80) {
+            bld.append(ch);
+        } else {
+            bld.append("\\u");
+            bld.append(String.format("%04x", (int)ch));
+        }
+        bld.append("'");
+        bld.append(" -> ");
+        bld.append(state);
+        return bld.toString();
+    }
+    
 }

@@ -26,44 +26,44 @@ import com.karmant.syn.sample.script.rt.value.Value;
  * Script <code>if</code> statement syntax node.
  */
 public class IfStatement extends Statement {
-	/** The text position of the first token. */
-	@SynField
-	private TextPos synPos;
+    /** The text position of the first token. */
+    @SynField
+    private TextPos synPos;
 
-	/** The condition expression. */
-	@SynField
-	private Expression synExpression;
-	
-	/** The statement which has to be executed if the condition is <code>true</code>. */
-	@SynField
-	private Statement synTrueStatement;
-	
-	/** The statement which has to be executed if the condition is <code>false</code>.
-	 * Can be <code>null</code>. */
-	@SynField
-	private Statement synFalseStatement;
+    /** The condition expression. */
+    @SynField
+    private Expression synExpression;
+    
+    /** The statement which has to be executed if the condition is <code>true</code>. */
+    @SynField
+    private Statement synTrueStatement;
+    
+    /** The statement which has to be executed if the condition is <code>false</code>.
+     * Can be <code>null</code>. */
+    @SynField
+    private Statement synFalseStatement;
 
-	public IfStatement(){}
+    public IfStatement(){}
 
-	@Override
-	TextPos getStartTextPos() {
-		return synPos;
-	}
+    @Override
+    TextPos getStartTextPos() {
+        return synPos;
+    }
 
-	@Override
-	StatementResult execute0(ScriptScope scope) throws SynsException {
-		Value value = synExpression.evaluate(scope);
-		if (value.toOperand().booleanValue()) {
-			return synTrueStatement.execute(scope);
-		} else if (synFalseStatement != null) {
-			return synFalseStatement.execute(scope);
-		} else {
-			return StatementResult.NONE;
-		}
-	}
-	
-	@Override
-	public String toString() {
-		return "if (...)";
-	}
+    @Override
+    StatementResult execute0(ScriptScope scope) throws SynsException {
+        Value value = synExpression.evaluate(scope);
+        if (value.toOperand().booleanValue()) {
+            return synTrueStatement.execute(scope);
+        } else if (synFalseStatement != null) {
+            return synFalseStatement.execute(scope);
+        } else {
+            return StatementResult.NONE;
+        }
+    }
+    
+    @Override
+    public String toString() {
+        return "if (...)";
+    }
 }

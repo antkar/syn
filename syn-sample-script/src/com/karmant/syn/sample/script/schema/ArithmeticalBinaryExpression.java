@@ -27,32 +27,32 @@ import com.karmant.syn.sample.script.rt.value.Value;
  * Arithmetical binary expression syntax node.
  */
 public abstract class ArithmeticalBinaryExpression extends BinaryExpression {
-	/** The operator used in this expression. */
-	private BinaryOperator op;
-	
-	public ArithmeticalBinaryExpression(){}
-	
-	@SynInit
-	private void init() {
-		op = BinaryOperator.forLiteral(getOp());
-	}
+    /** The operator used in this expression. */
+    private BinaryOperator op;
+    
+    public ArithmeticalBinaryExpression(){}
+    
+    @SynInit
+    private void init() {
+        op = BinaryOperator.forLiteral(getOp());
+    }
 
-	@Override
-	final Value evaluate0(ScriptScope scope) throws SynsException {
-		//Calculate the left operand.
-		Value left = getLeft().evaluate(scope);
-		Operand leftOperand = left.toOperand();
-		
-		//Try a short-circuit evaluation first.
-		RValue result = op.evaluate(leftOperand);
-		
-		if (result == null) {
-			//Now calculate the right operand and run a normal evaluation.
-			Value right = getRight().evaluate(scope);
-			Operand rightOperand = right.toOperand();
-			result = op.evaluate(leftOperand, rightOperand);
-		}
-		
-		return result;
-	}
+    @Override
+    final Value evaluate0(ScriptScope scope) throws SynsException {
+        //Calculate the left operand.
+        Value left = getLeft().evaluate(scope);
+        Operand leftOperand = left.toOperand();
+        
+        //Try a short-circuit evaluation first.
+        RValue result = op.evaluate(leftOperand);
+        
+        if (result == null) {
+            //Now calculate the right operand and run a normal evaluation.
+            Value right = getRight().evaluate(scope);
+            Operand rightOperand = right.toOperand();
+            result = op.evaluate(leftOperand, rightOperand);
+        }
+        
+        return result;
+    }
 }

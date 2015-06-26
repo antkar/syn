@@ -22,20 +22,20 @@ import com.karmant.syn.sample.script.rt.op.UnaryOperator;
  * Script prefix unary expression syntax node.
  */
 public class PrefixExpression extends UnaryExpression {
-	public PrefixExpression(){}
-	
-	@Override
-	TextPos getStartTextPos() {
-		return getOp().getPos();
-	}
-	
-	@Override
-	UnaryOperator getOperator(String literal) {
-		return UnaryOperator.forPrefixLiteral(literal);
-	}
-	
-	@Override
-	public String toString() {
-		return String.format("(%s%s)", getOp(), getExpression());
-	}
+    public PrefixExpression(){}
+    
+    @Override
+    TextPos getStartTextPos() {
+        return getOp().getPos();
+    }
+    
+    @Override
+    UnaryOperator getOperator(String literal) {
+        return UnaryOperator.forPrefixLiteral(literal);
+    }
+    
+    @Override
+    public String toString() {
+        return String.format("(%s%s)", getOp(), getExpression());
+    }
 }

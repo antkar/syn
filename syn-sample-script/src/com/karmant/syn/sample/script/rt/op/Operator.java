@@ -22,37 +22,37 @@ import com.karmant.syn.sample.script.rt.op.operand.OperandType;
  * Implements a particular Script Language expression operator.
  */
 public abstract class Operator {
-	/** The literal of the operator. */
-	private final String opLiteral;
-	
-	Operator(String opLiteral) {
-		this.opLiteral = opLiteral;
-	}
-	
-	/**
-	 * Creates and throws an operand type mismatch exception for a single operand.
-	 */
-	SynsException errOperandTypeMissmatch(OperandType type) throws SynsException {
-		throw SynsException.format(
-				"Operator '%s' is undefined for type %s",
-				opLiteral,
-				type.getDescriptiveName());
-	}
-	
-	/**
-	 * Creates and throws an operand type mismatch exception for two operands.
-	 */
-	SynsException errOperandTypeMissmatch(OperandType leftType, OperandType rightType)
-			throws SynsException
-	{
-		throw SynsException.format(
-				"Operator '%s' is undefined for types %s, %s", opLiteral,
-				leftType.getDescriptiveName(),
-				rightType.getDescriptiveName());
-	}
-	
-	@Override
-	public String toString() {
-		return opLiteral;
-	}
+    /** The literal of the operator. */
+    private final String opLiteral;
+    
+    Operator(String opLiteral) {
+        this.opLiteral = opLiteral;
+    }
+    
+    /**
+     * Creates and throws an operand type mismatch exception for a single operand.
+     */
+    SynsException errOperandTypeMissmatch(OperandType type) throws SynsException {
+        throw SynsException.format(
+                "Operator '%s' is undefined for type %s",
+                opLiteral,
+                type.getDescriptiveName());
+    }
+    
+    /**
+     * Creates and throws an operand type mismatch exception for two operands.
+     */
+    SynsException errOperandTypeMissmatch(OperandType leftType, OperandType rightType)
+            throws SynsException
+    {
+        throw SynsException.format(
+                "Operator '%s' is undefined for types %s, %s", opLiteral,
+                leftType.getDescriptiveName(),
+                rightType.getDescriptiveName());
+    }
+    
+    @Override
+    public String toString() {
+        return opLiteral;
+    }
 }

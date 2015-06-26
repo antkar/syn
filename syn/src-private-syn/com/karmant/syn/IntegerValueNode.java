@@ -19,40 +19,40 @@ package com.karmant.syn;
  * Integer value node. Contains a value of type <code>int</code>.
  */
 class IntegerValueNode extends ValueNode {
-	private final int value;
-	
-	IntegerValueNode(PosBuffer pos, int value) {
-		super(pos);
-		this.value = value;
-	}
+    private final int value;
+    
+    IntegerValueNode(PosBuffer pos, int value) {
+        super(pos);
+        this.value = value;
+    }
 
-	@Override
-	public SynValueType getValueType() {
-		return SynValueType.INTEGER;
-	}
-	
-	@Override
-	public int getInt() {
-		return value;
-	}
-	
-	@Override
-	public long getLong() {
-		return value;
-	}
+    @Override
+    public SynValueType getValueType() {
+        return SynValueType.INTEGER;
+    }
+    
+    @Override
+    public int getInt() {
+        return value;
+    }
+    
+    @Override
+    public long getLong() {
+        return value;
+    }
 
-	@Override
-	public Object getValue() {
-		return value;
-	}
+    @Override
+    public Object getValue() {
+        return value;
+    }
 
-	@Override
-	public TokenDescriptor getTokenDescriptor() {
-		return TokenDescriptor.INTEGER;
-	}
-	
-	@Override
-	public String toString() {
-		return getTokenDescriptor() + "(" + getInt() + ")";
-	}
+    @Override
+    public TokenDescriptor getTokenDescriptor() {
+        return TokenDescriptor.INTEGER;
+    }
+    
+    @Override
+    public String toString() {
+        return getTokenDescriptor() + "(" + getInt() + ")";
+    }
 }

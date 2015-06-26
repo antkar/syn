@@ -22,50 +22,50 @@ import java.lang.reflect.Method;
  * Describes a {@link SynInit} method.
  */
 class InitMethod {
-	
-	private final Method method;
-	
-	InitMethod(Method method) {
-		this.method = method;
-	}
+    
+    private final Method method;
+    
+    InitMethod(Method method) {
+        this.method = method;
+    }
 
-	/**
-	 * Invokes the associated initialization method on the passed object.
-	 */
-	void invoke(Object obj) throws SynBinderException {
-		boolean accessible = method.isAccessible();
-		method.setAccessible(true);
-		try {
-			invokeMethod(obj);
-		} finally {
-			method.setAccessible(accessible);
-		}
-	}
+    /**
+     * Invokes the associated initialization method on the passed object.
+     */
+    void invoke(Object obj) throws SynBinderException {
+        boolean accessible = method.isAccessible();
+        method.setAccessible(true);
+        try {
+            invokeMethod(obj);
+        } finally {
+            method.setAccessible(accessible);
+        }
+    }
 
-	/**
-	 * Invokes the method, wrapping Java reflection API exceptions.
-	 */
-	private void invokeMethod(Object obj) throws SynBinderException {
-		try {
-			method.invoke(obj);
-		} catch (IllegalAccessException e) {
-			throw new SynBinderException(String.format(
-					"Ivocation of method %s failed", method), e);
-		} catch (InvocationTargetException e) {
-			Throwable targetException = e.getTargetException();
-			if (targetException instanceof RuntimeException) {
-				throw (RuntimeException) targetException;
-			} else if (targetException instanceof SynBinderException) {
-				throw (SynBinderException) targetException;
-			} else {
-				throw new SynBinderException(String.format(
-						"Ivocation of method %s failed", method), targetException);
-			}
-		}
-	}
-	
-	@Override
-	public String toString() {
-		return method + "";
-	}
+    /**
+     * Invokes the method, wrapping Java reflection API exceptions.
+     */
+    private void invokeMethod(Object obj) throws SynBinderException {
+        try {
+            method.invoke(obj);
+        } catch (IllegalAccessException e) {
+            throw new SynBinderException(String.format(
+                    "Ivocation of method %s failed", method), e);
+        } catch (InvocationTargetException e) {
+            Throwable targetException = e.getTargetException();
+            if (targetException instanceof RuntimeException) {
+                throw (RuntimeException) targetException;
+            } else if (targetException instanceof SynBinderException) {
+                throw (SynBinderException) targetException;
+            } else {
+                throw new SynBinderException(String.format(
+                        "Ivocation of method %s failed", method), targetException);
+            }
+        }
+    }
+    
+    @Override
+    public String toString() {
+        return method + "";
+    }
 }

@@ -20,23 +20,23 @@ package com.karmant.syn;
  */
 abstract class LookupTermExpression {
 
-	static final Object UNDEFINED = new Object();
-	
-	private final Class<?> clsOfValue;
-	
-	LookupTermExpression(Class<?> clsOfValue) {
-		this.clsOfValue = clsOfValue;
-	}
+    static final Object UNDEFINED = new Object();
+    
+    private final Class<?> clsOfValue;
+    
+    LookupTermExpression(Class<?> clsOfValue) {
+        this.clsOfValue = clsOfValue;
+    }
 
-	abstract Object eval(LookupEnv env) throws SynBinderException;
-	abstract String toSourceString();
+    abstract Object eval(LookupEnv env) throws SynBinderException;
+    abstract String toSourceString();
 
-	Class<?> getClassOfValue() {
-		return clsOfValue;
-	}
-	
-	@Override
-	public String toString() {
-		return toSourceString();
-	}
+    Class<?> getClassOfValue() {
+        return clsOfValue;
+    }
+    
+    @Override
+    public String toString() {
+        return toSourceString();
+    }
 }

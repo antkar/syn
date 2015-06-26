@@ -7,1100 +7,1100 @@
  */
 
 @goal
-	:	CompilationUnit
-	;
+    :   CompilationUnit
+    ;
 
 //Chapter 4
 
 Type
-	:	PrimitiveType
-	|	ReferenceType
-	;
+    :   PrimitiveType
+    |   ReferenceType
+    ;
 
 PrimitiveType
-	:	NumericType
-	|	"boolean"
-	;
+    :   NumericType
+    |   "boolean"
+    ;
 
 NumericType
-	:	IntegralType
-	|	FloatingPointType
-	;
+    :   IntegralType
+    |   FloatingPointType
+    ;
 
 IntegralType
-	:	"byte"
-	|	"short"
-	|	"int"
-	|	"long"
-	|	"char"
-	;
+    :   "byte"
+    |   "short"
+    |   "int"
+    |   "long"
+    |   "char"
+    ;
 
 FloatingPointType
-	:	"float"
-	|	"double"
-	;
+    :   "float"
+    |   "double"
+    ;
 
 ReferenceType
-	:	ClassOrInterfaceType
-//	|	TypeVariable
-	|	ArrayType
-	;
+    :   ClassOrInterfaceType
+//  |   TypeVariable
+    |   ArrayType
+    ;
 
 ClassOrInterfaceType
-	:	ClassType
-//	|	InterfaceType
-	;
+    :   ClassType
+//  |   InterfaceType
+    ;
 
 //TypeDeclSpecifier
-//	:	TypeName
-//	|	ClassOrInterfaceType "." Identifier
-//	;
+//  :   TypeName
+//  |   ClassOrInterfaceType "." Identifier
+//  ;
 
 TypeVariable
-	:	Identifier
-	;
+    :   Identifier
+    ;
 
 ArrayType
-	:	Type "[" "]"
-	;
+    :   Type "[" "]"
+    ;
 
 TypeParameter
-	:	TypeVariable (TypeBound)?
-	;
+    :   TypeVariable (TypeBound)?
+    ;
 
 TypeBound
-	:	"extends" ClassOrInterfaceType (AdditionalBoundList)?
-//	|	"extends" TypeVariable
-	;
+    :   "extends" ClassOrInterfaceType (AdditionalBoundList)?
+//  |   "extends" TypeVariable
+    ;
 
 AdditionalBoundList
-	:	AdditionalBound AdditionalBoundList
-	|	AdditionalBound
-	;
+    :   AdditionalBound AdditionalBoundList
+    |   AdditionalBound
+    ;
 
 AdditionalBound
-	:	"&" InterfaceType
-	;
+    :   "&" InterfaceType
+    ;
 
 TypeArguments
-	:	"<" TypeArgumentList ">"
-	;
+    :   "<" TypeArgumentList ">"
+    ;
 
 TypeArgumentList
-	:	TypeArgument
-	|	TypeArgumentList "," TypeArgument
-	;
+    :   TypeArgument
+    |   TypeArgumentList "," TypeArgument
+    ;
 
 TypeArgument
-	:	ReferenceType
-	|	Wildcard
-	;
+    :   ReferenceType
+    |   Wildcard
+    ;
 
 Wildcard
-	:	"?" (WildcardBounds)?
-	;
+    :   "?" (WildcardBounds)?
+    ;
 
 WildcardBounds
-	:	"extends" ReferenceType
-	|	"super" ReferenceType
-	;
+    :   "extends" ReferenceType
+    |   "super" ReferenceType
+    ;
 
 //Chapter 6
 
 PackageName
-	:	Identifier
-	|	PackageName "." Identifier
-	;
+    :   Identifier
+    |   PackageName "." Identifier
+    ;
 
 TypeName
-	:	Identifier
-//	|	PackageOrTypeName "." Identifier
-	|	TypeName "." Identifier
-	;
+    :   Identifier
+//  |   PackageOrTypeName "." Identifier
+    |   TypeName "." Identifier
+    ;
 
 ExpressionName
-	:	Identifier
-	|	AmbiguousName "." Identifier
-	;
+    :   Identifier
+    |   AmbiguousName "." Identifier
+    ;
 
 MethodName
-	:	Identifier
-	|	AmbiguousName "." Identifier
-	;
+    :   Identifier
+    |   AmbiguousName "." Identifier
+    ;
 
 PackageOrTypeName
-	:	Identifier
-	|	PackageOrTypeName "." Identifier
-	;
+    :   Identifier
+    |   PackageOrTypeName "." Identifier
+    ;
 
 AmbiguousName
-	:	Identifier
-	|	AmbiguousName "." Identifier
-	;
+    :   Identifier
+    |   AmbiguousName "." Identifier
+    ;
 
 //Chapter 7
 
 CompilationUnit
-	:	(PackageDeclaration)? (ImportDeclarations)? (TypeDeclarations)?
-	;
+    :   (PackageDeclaration)? (ImportDeclarations)? (TypeDeclarations)?
+    ;
 
 ImportDeclarations
-	:	ImportDeclaration
-	|	ImportDeclarations ImportDeclaration
-	;
+    :   ImportDeclaration
+    |   ImportDeclarations ImportDeclaration
+    ;
 
 TypeDeclarations
-	:	TypeDeclaration
-	|	TypeDeclarations TypeDeclaration
-	;
+    :   TypeDeclaration
+    |   TypeDeclarations TypeDeclaration
+    ;
 
 PackageDeclaration
-	:	(Annotations)? "package" PackageName ";"
-	;
+    :   (Annotations)? "package" PackageName ";"
+    ;
 
 ImportDeclaration
-	:	SingleTypeImportDeclaration
-	|	TypeImportOnDemandDeclaration
-	|	SingleStaticImportDeclaration
-	|	StaticImportOnDemandDeclaration
-	;
+    :   SingleTypeImportDeclaration
+    |   TypeImportOnDemandDeclaration
+    |   SingleStaticImportDeclaration
+    |   StaticImportOnDemandDeclaration
+    ;
 
 SingleTypeImportDeclaration
-	:	"import" TypeName ";"
-	;
+    :   "import" TypeName ";"
+    ;
 
 TypeImportOnDemandDeclaration
-	:	"import" PackageOrTypeName "." "*" ";"
-	;
+    :   "import" PackageOrTypeName "." "*" ";"
+    ;
 
 SingleStaticImportDeclaration
-	:	"import" "static" TypeName "." Identifier ";"
-	;
+    :   "import" "static" TypeName "." Identifier ";"
+    ;
 
 StaticImportOnDemandDeclaration
-	:	"import" "static" TypeName "." "*" ";"
-	;
+    :   "import" "static" TypeName "." "*" ";"
+    ;
 
 TypeDeclaration
-	:	ClassDeclaration
-	|	InterfaceDeclaration
-	|	";"
-	;
+    :   ClassDeclaration
+    |   InterfaceDeclaration
+    |   ";"
+    ;
 
 //Chapter 8
 
 ClassDeclaration
-	:	NormalClassDeclaration
-	|	EnumDeclaration
-	;
+    :   NormalClassDeclaration
+    |   EnumDeclaration
+    ;
 
 NormalClassDeclaration
-	:	(ClassModifiers)? "class" Identifier (TypeParameters)? (Super)? (Interfaces)? ClassBody
-	;
+    :   (ClassModifiers)? "class" Identifier (TypeParameters)? (Super)? (Interfaces)? ClassBody
+    ;
 
 ClassModifiers
-	:	ClassModifier
-	|	ClassModifiers ClassModifier
-	;
+    :   ClassModifier
+    |   ClassModifiers ClassModifier
+    ;
 
 ClassModifier
-	:	Annotation
-	|	"public"
-	|	"protected"
-	|	"private"
-	|	"abstract"
-	|	"static"
-	|	"final"
-	|	"strictfp"
-	;
+    :   Annotation
+    |   "public"
+    |   "protected"
+    |   "private"
+    |   "abstract"
+    |   "static"
+    |   "final"
+    |   "strictfp"
+    ;
 
 TypeParameters
-	:	"<" TypeParameterList ">"
-	;
+    :   "<" TypeParameterList ">"
+    ;
 
 TypeParameterList
-	:	TypeParameterList "," TypeParameter
-	|	TypeParameter
-	;
+    :   TypeParameterList "," TypeParameter
+    |   TypeParameter
+    ;
 
 Super
-	:	"extends" ClassType
-	;
+    :   "extends" ClassType
+    ;
 
 Interfaces
-	:	"implements" InterfaceTypeList
-	;
+    :   "implements" InterfaceTypeList
+    ;
 
 InterfaceTypeList
-	:	InterfaceType
-	|	InterfaceTypeList "," InterfaceType
-	;
+    :   InterfaceType
+    |   InterfaceTypeList "," InterfaceType
+    ;
 
 ClassType
-	:	/*TypeDeclSpecifier*/TypeName (TypeArguments)?
-	;
+    :   /*TypeDeclSpecifier*/TypeName (TypeArguments)?
+    ;
 
 ClassBody
-	:	"{" (ClassBodyDeclarations)? "}"
-	;
+    :   "{" (ClassBodyDeclarations)? "}"
+    ;
 
 ClassBodyDeclarations
-	:	ClassBodyDeclaration
-	|	ClassBodyDeclarations ClassBodyDeclaration
-	;
+    :   ClassBodyDeclaration
+    |   ClassBodyDeclarations ClassBodyDeclaration
+    ;
 
 ClassBodyDeclaration
-	:	ClassMemberDeclaration
-	|	InstanceInitializer
-	|	StaticInitializer
-	|	ConstructorDeclaration
-	;
+    :   ClassMemberDeclaration
+    |   InstanceInitializer
+    |   StaticInitializer
+    |   ConstructorDeclaration
+    ;
 
 ClassMemberDeclaration
-	:	FieldDeclaration
-	|	MethodDeclaration
-	|	ClassDeclaration
-	|	InterfaceDeclaration
-	|	";"
-	;
+    :   FieldDeclaration
+    |   MethodDeclaration
+    |   ClassDeclaration
+    |   InterfaceDeclaration
+    |   ";"
+    ;
 
 FieldDeclaration
-	:	(FieldModifiers)? Type VariableDeclarators ";"
-	;
+    :   (FieldModifiers)? Type VariableDeclarators ";"
+    ;
 
 FieldModifiers
-	:	FieldModifier
-	|	FieldModifiers FieldModifier
-	;
+    :   FieldModifier
+    |   FieldModifiers FieldModifier
+    ;
 
 FieldModifier
-	:	Annotation
-	|	"public"
-	|	"protected"
-	|	"private"
-	|	"static"
-	|	"final"
-	|	"transient"
-	|	"volatile"
-	;
+    :   Annotation
+    |   "public"
+    |   "protected"
+    |   "private"
+    |   "static"
+    |   "final"
+    |   "transient"
+    |   "volatile"
+    ;
 
 MethodDeclaration
-	:	MethodHeader MethodBody
-	;
+    :   MethodHeader MethodBody
+    ;
 
 MethodHeader
-	:	(MethodModifiers)? (TypeParameters)? Result MethodDeclarator (Throws)?
-	;
+    :   (MethodModifiers)? (TypeParameters)? Result MethodDeclarator (Throws)?
+    ;
 
 MethodDeclarator
-	:	Identifier "(" (FormalParameterList)? ")"
-	|	MethodDeclarator "[" "]"
-	;
+    :   Identifier "(" (FormalParameterList)? ")"
+    |   MethodDeclarator "[" "]"
+    ;
 
 FormalParameterList
-	:	LastFormalParameter
-	|	FormalParameters "," LastFormalParameter
-	;
+    :   LastFormalParameter
+    |   FormalParameters "," LastFormalParameter
+    ;
 
 FormalParameters
-	:	FormalParameter
-	|	FormalParameters "," FormalParameter
-	;
+    :   FormalParameter
+    |   FormalParameters "," FormalParameter
+    ;
 
 FormalParameter
-	:	(VariableModifiers)? Type VariableDeclaratorId
-	;
+    :   (VariableModifiers)? Type VariableDeclaratorId
+    ;
 
 LastFormalParameter
-	:	(VariableModifiers)? Type"..." VariableDeclaratorId
-	|	FormalParameter
-	;
+    :   (VariableModifiers)? Type"..." VariableDeclaratorId
+    |   FormalParameter
+    ;
 
 MethodModifiers
-	:	MethodModifier
-	|	MethodModifiers MethodModifier
-	;
+    :   MethodModifier
+    |   MethodModifiers MethodModifier
+    ;
 
 MethodModifier
-	:	Annotation
-	|	"public"
-	|	"protected"
-	|	"private"
-	|	"abstract"
-	|	"static"
-	|	"final"
-	|	"synchronized"
-	|	"native"
-	|	"strictfp"
-	;
+    :   Annotation
+    |   "public"
+    |   "protected"
+    |   "private"
+    |   "abstract"
+    |   "static"
+    |   "final"
+    |   "synchronized"
+    |   "native"
+    |   "strictfp"
+    ;
 
 Result
-	:	Type
-	|	"void"
-	;
+    :   Type
+    |   "void"
+    ;
 
 Throws
-	:	"throws" ExceptionTypeList
-	;
+    :   "throws" ExceptionTypeList
+    ;
 
 ExceptionTypeList
-	:	ExceptionType
-	|	ExceptionTypeList "," ExceptionType
-	;
+    :   ExceptionType
+    |   ExceptionTypeList "," ExceptionType
+    ;
 
 ExceptionType
-	:	TypeName
-//	|	TypeVariable
-	;
+    :   TypeName
+//  |   TypeVariable
+    ;
 
 MethodBody
-	:	Block
-	|	";"
-	;
+    :   Block
+    |   ";"
+    ;
 
 InstanceInitializer
-	:	Block
-	;
+    :   Block
+    ;
 
 StaticInitializer
-	:	"static" Block
-	;
+    :   "static" Block
+    ;
 
 ConstructorDeclaration
-	:	(ConstructorModifiers)? ConstructorDeclarator (Throws)? ConstructorBody
-	;
+    :   (ConstructorModifiers)? ConstructorDeclarator (Throws)? ConstructorBody
+    ;
 
 ConstructorDeclarator
-	:	(TypeParameters)? Identifier "(" (FormalParameterList)? ")"
-	;
+    :   (TypeParameters)? Identifier "(" (FormalParameterList)? ")"
+    ;
 
 ConstructorModifiers
-	:	ConstructorModifier
-	|	ConstructorModifiers ConstructorModifier
-	;
+    :   ConstructorModifier
+    |   ConstructorModifiers ConstructorModifier
+    ;
 
 ConstructorModifier
-	:	Annotation
-	|	"public"
-	|	"protected"
-	|	"private"
-	;
+    :   Annotation
+    |   "public"
+    |   "protected"
+    |   "private"
+    ;
 
 ConstructorBody
-	:	"{" (ExplicitConstructorInvocation)? (BlockStatements)? "}"
-	;
+    :   "{" (ExplicitConstructorInvocation)? (BlockStatements)? "}"
+    ;
 
 ExplicitConstructorInvocation
-	:	(NonWildTypeArguments)? "this" "(" (ArgumentList)? ")" ";"
-	|	(NonWildTypeArguments)? "super" "(" (ArgumentList)? ")" ";"
-	|	Primary "." (NonWildTypeArguments)? "super" "(" (ArgumentList)? ")" ";"
-	;
+    :   (NonWildTypeArguments)? "this" "(" (ArgumentList)? ")" ";"
+    |   (NonWildTypeArguments)? "super" "(" (ArgumentList)? ")" ";"
+    |   Primary "." (NonWildTypeArguments)? "super" "(" (ArgumentList)? ")" ";"
+    ;
 
 NonWildTypeArguments
-	:	"<" ReferenceTypeList ">"
-	;
+    :   "<" ReferenceTypeList ">"
+    ;
 
 ReferenceTypeList
-	:	ReferenceType
-	|	ReferenceTypeList "," ReferenceType
-	;
+    :   ReferenceType
+    |   ReferenceTypeList "," ReferenceType
+    ;
 
 EnumDeclaration
-	:	(ClassModifiers)? "enum" Identifier (Interfaces)? EnumBody
-	;
+    :   (ClassModifiers)? "enum" Identifier (Interfaces)? EnumBody
+    ;
 
 EnumBody
-	:	"{" (EnumConstants)? (",")? (EnumBodyDeclarations)? "}"
-	;
+    :   "{" (EnumConstants)? (",")? (EnumBodyDeclarations)? "}"
+    ;
 
 EnumConstants
-	:	EnumConstant
-	|	EnumConstants "," EnumConstant
-	;
+    :   EnumConstant
+    |   EnumConstants "," EnumConstant
+    ;
 
 EnumConstant
-	:	(Annotations)? Identifier (Arguments)? (ClassBody)?
-	;
+    :   (Annotations)? Identifier (Arguments)? (ClassBody)?
+    ;
 
 Arguments
-	:	"(" (ArgumentList)? ")"
-	;
+    :   "(" (ArgumentList)? ")"
+    ;
 
 EnumBodyDeclarations
-	:	";" (ClassBodyDeclarations)?
-	;
+    :   ";" (ClassBodyDeclarations)?
+    ;
 
 //Chapter 9
 
 InterfaceDeclaration
-	:	NormalInterfaceDeclaration
-	|	AnnotationTypeDeclaration
-	;
+    :   NormalInterfaceDeclaration
+    |   AnnotationTypeDeclaration
+    ;
 
 NormalInterfaceDeclaration
-	:	(InterfaceModifiers)? "interface" Identifier (TypeParameters)? (ExtendsInterfaces)? InterfaceBody
-	;
+    :   (InterfaceModifiers)? "interface" Identifier (TypeParameters)? (ExtendsInterfaces)? InterfaceBody
+    ;
 
 InterfaceModifiers
-	:	InterfaceModifier
-	|	InterfaceModifiers InterfaceModifier
-	;
+    :   InterfaceModifier
+    |   InterfaceModifiers InterfaceModifier
+    ;
 
 InterfaceModifier
-	:	Annotation
-	|	"public"
-	|	"protected"
-	|	"private"
-	|	"abstract"
-	|	"static"
-	|	"strictfp"
-	;
+    :   Annotation
+    |   "public"
+    |   "protected"
+    |   "private"
+    |   "abstract"
+    |   "static"
+    |   "strictfp"
+    ;
 
 ExtendsInterfaces
-	:	"extends" InterfaceTypeList
-	;
+    :   "extends" InterfaceTypeList
+    ;
 
 InterfaceType
-	:	/*TypeDeclSpecifier*/TypeName (TypeArguments)?
-	;
+    :   /*TypeDeclSpecifier*/TypeName (TypeArguments)?
+    ;
 
 InterfaceBody
-	:	"{" (InterfaceMemberDeclarations)? "}"
-	;
+    :   "{" (InterfaceMemberDeclarations)? "}"
+    ;
 
 InterfaceMemberDeclarations
-	:	InterfaceMemberDeclaration
-	|	InterfaceMemberDeclarations InterfaceMemberDeclaration
-	;
+    :   InterfaceMemberDeclaration
+    |   InterfaceMemberDeclarations InterfaceMemberDeclaration
+    ;
 
 InterfaceMemberDeclaration
-	:	ConstantDeclaration
-	|	AbstractMethodDeclaration
-	|	ClassDeclaration
-	|	InterfaceDeclaration
-	|	";"
-	;
+    :   ConstantDeclaration
+    |   AbstractMethodDeclaration
+    |   ClassDeclaration
+    |   InterfaceDeclaration
+    |   ";"
+    ;
 
 ConstantDeclaration
-	:	(ConstantModifiers)? Type VariableDeclarators ";"
-	;
+    :   (ConstantModifiers)? Type VariableDeclarators ";"
+    ;
 
 ConstantModifiers
-	:	ConstantModifier
-	|	ConstantModifier ConstantModifiers
-	;
+    :   ConstantModifier
+    |   ConstantModifier ConstantModifiers
+    ;
 
 ConstantModifier
-	:	Annotation
-	|	"public"
-	|	"static"
-	|	"final"
-	;
+    :   Annotation
+    |   "public"
+    |   "static"
+    |   "final"
+    ;
 
 AbstractMethodDeclaration
-	:	(AbstractMethodModifiers)? (TypeParameters)? Result MethodDeclarator (Throws)? ";"
-	;
+    :   (AbstractMethodModifiers)? (TypeParameters)? Result MethodDeclarator (Throws)? ";"
+    ;
 
 AbstractMethodModifiers
-	:	AbstractMethodModifier
-	|	AbstractMethodModifiers AbstractMethodModifier
-	;
+    :   AbstractMethodModifier
+    |   AbstractMethodModifiers AbstractMethodModifier
+    ;
 
 AbstractMethodModifier
-	:	Annotation
-	|	"public"
-	|	"abstract"
-	;
+    :   Annotation
+    |   "public"
+    |   "abstract"
+    ;
 
 AnnotationTypeDeclaration
-	:	(InterfaceModifiers)? "@" "interface" Identifier AnnotationTypeBody
-	;
+    :   (InterfaceModifiers)? "@" "interface" Identifier AnnotationTypeBody
+    ;
 
 AnnotationTypeBody
-	:	"{" (AnnotationTypeElementDeclarations)? "}"
-	;
+    :   "{" (AnnotationTypeElementDeclarations)? "}"
+    ;
 
 AnnotationTypeElementDeclarations
-	:	AnnotationTypeElementDeclaration
-	|	AnnotationTypeElementDeclarations AnnotationTypeElementDeclaration
-	;
+    :   AnnotationTypeElementDeclaration
+    |   AnnotationTypeElementDeclarations AnnotationTypeElementDeclaration
+    ;
 
 AnnotationTypeElementDeclaration
-	:	(AbstractMethodModifiers)? Type Identifier "(" ")" (Dims)? (DefaultValue)? ";"
-	|	ConstantDeclaration
-	|	ClassDeclaration
-	|	InterfaceDeclaration
-//	|	EnumDeclaration
-	|	AnnotationTypeDeclaration
-	|	";"
-	;
+    :   (AbstractMethodModifiers)? Type Identifier "(" ")" (Dims)? (DefaultValue)? ";"
+    |   ConstantDeclaration
+    |   ClassDeclaration
+    |   InterfaceDeclaration
+//  |   EnumDeclaration
+    |   AnnotationTypeDeclaration
+    |   ";"
+    ;
 
 DefaultValue
-	:	"default" ElementValue
-	;
+    :   "default" ElementValue
+    ;
 
 Annotations
-	:	Annotation
-	|	Annotations Annotation
-	;
+    :   Annotation
+    |   Annotations Annotation
+    ;
 
 Annotation
-	:	NormalAnnotation
-	|	MarkerAnnotation
-	|	SingleElementAnnotation
-	;
+    :   NormalAnnotation
+    |   MarkerAnnotation
+    |   SingleElementAnnotation
+    ;
 
 NormalAnnotation
-	:	"@" TypeName "(" (ElementValuePairs)? ")"
-	;
+    :   "@" TypeName "(" (ElementValuePairs)? ")"
+    ;
 
 ElementValuePairs
-	:	ElementValuePair
-	|	ElementValuePairs "," ElementValuePair
-	;
+    :   ElementValuePair
+    |   ElementValuePairs "," ElementValuePair
+    ;
 
 ElementValuePair
-	:	Identifier "=" ElementValue
-	;
+    :   Identifier "=" ElementValue
+    ;
 
 ElementValue
-	:	ConditionalExpression
-	|	Annotation
-	|	ElementValueArrayInitializer
-	;
+    :   ConditionalExpression
+    |   Annotation
+    |   ElementValueArrayInitializer
+    ;
 
 ElementValueArrayInitializer
-	:	"{" (ElementValues)? (",")? "}"
-	;
+    :   "{" (ElementValues)? (",")? "}"
+    ;
 
 ElementValues
-	:	ElementValue
-	|	ElementValues "," ElementValue
-	;
+    :   ElementValue
+    |   ElementValues "," ElementValue
+    ;
 
 MarkerAnnotation
-	:	"@" Identifier
-	;
+    :   "@" Identifier
+    ;
 
 SingleElementAnnotation
-	:	"@" TypeName "(" ElementValue ")"
-	;
+    :   "@" TypeName "(" ElementValue ")"
+    ;
 
 //Chapter 10
 
 ArrayInitializer
-	:	"{" (VariableInitializers)? (",")? "}"
-	;
+    :   "{" (VariableInitializers)? (",")? "}"
+    ;
 
 VariableInitializers
-	:	VariableInitializer
-	|	VariableInitializers "," VariableInitializer
-	;
+    :   VariableInitializer
+    |   VariableInitializers "," VariableInitializer
+    ;
 
 //Chapter 14
 
 Block
-	:	"{" (BlockStatements)? "}"
-	;
+    :   "{" (BlockStatements)? "}"
+    ;
 
 BlockStatements
-	:	BlockStatement
-	|	BlockStatements BlockStatement
-	;
+    :   BlockStatement
+    |   BlockStatements BlockStatement
+    ;
 
 BlockStatement
-	:	LocalVariableDeclarationStatement
-	|	ClassDeclaration
-	|	Statement
-	;
+    :   LocalVariableDeclarationStatement
+    |   ClassDeclaration
+    |   Statement
+    ;
 
 LocalVariableDeclarationStatement
-	:	LocalVariableDeclaration ";"
-	;
+    :   LocalVariableDeclaration ";"
+    ;
 
 LocalVariableDeclaration
-	:	(VariableModifiers)? Type VariableDeclarators
-	;
+    :   (VariableModifiers)? Type VariableDeclarators
+    ;
 
 VariableModifiers
-	:	VariableModifier
-	|	VariableModifiers VariableModifier
-	;
+    :   VariableModifier
+    |   VariableModifiers VariableModifier
+    ;
 
 VariableModifier
-	:	Annotation
-	|	"final"
-	;
+    :   Annotation
+    |   "final"
+    ;
 
 VariableDeclarators
-	:	VariableDeclarator
-	|	VariableDeclarators "," VariableDeclarator
-	;
+    :   VariableDeclarator
+    |   VariableDeclarators "," VariableDeclarator
+    ;
 
 VariableDeclarator
-	:	VariableDeclaratorId
-	|	VariableDeclaratorId "=" VariableInitializer
-	;
+    :   VariableDeclaratorId
+    |   VariableDeclaratorId "=" VariableInitializer
+    ;
 
 VariableDeclaratorId
-	:	Identifier
-	|	VariableDeclaratorId "[" "]"
-	;
+    :   Identifier
+    |   VariableDeclaratorId "[" "]"
+    ;
 
 VariableInitializer
-	:	Expression
-	|	ArrayInitializer
-	;
+    :   Expression
+    |   ArrayInitializer
+    ;
 
 Statement
-	:	StatementWithoutTrailingSubstatement
-	|	LabeledStatement
-	|	IfThenStatement
-	|	IfThenElseStatement
-	|	WhileStatement
-	|	ForStatement
-	;
+    :   StatementWithoutTrailingSubstatement
+    |   LabeledStatement
+    |   IfThenStatement
+    |   IfThenElseStatement
+    |   WhileStatement
+    |   ForStatement
+    ;
 
 StatementWithoutTrailingSubstatement
-	:	Block
-	|	EmptyStatement
-	|	ExpressionStatement
-	|	AssertStatement
-	|	SwitchStatement
-	|	DoStatement
-	|	BreakStatement
-	|	ContinueStatement
-	|	ReturnStatement
-	|	SynchronizedStatement
-	|	ThrowStatement
-	|	TryStatement
-	;
+    :   Block
+    |   EmptyStatement
+    |   ExpressionStatement
+    |   AssertStatement
+    |   SwitchStatement
+    |   DoStatement
+    |   BreakStatement
+    |   ContinueStatement
+    |   ReturnStatement
+    |   SynchronizedStatement
+    |   ThrowStatement
+    |   TryStatement
+    ;
 
 StatementNoShortIf
-	:	StatementWithoutTrailingSubstatement
-	|	LabeledStatementNoShortIf
-	|	IfThenElseStatementNoShortIf
-	|	WhileStatementNoShortIf
-	|	ForStatementNoShortIf
-	;
+    :   StatementWithoutTrailingSubstatement
+    |   LabeledStatementNoShortIf
+    |   IfThenElseStatementNoShortIf
+    |   WhileStatementNoShortIf
+    |   ForStatementNoShortIf
+    ;
 
 IfThenStatement
-	:	"if" "(" Expression ")" Statement
-	;
+    :   "if" "(" Expression ")" Statement
+    ;
 
 IfThenElseStatement
-	:	"if" "(" Expression ")" StatementNoShortIf "else" Statement
-	;
+    :   "if" "(" Expression ")" StatementNoShortIf "else" Statement
+    ;
 
 IfThenElseStatementNoShortIf
-	:	"if" "(" Expression ")" StatementNoShortIf "else" StatementNoShortIf
-	;
+    :   "if" "(" Expression ")" StatementNoShortIf "else" StatementNoShortIf
+    ;
 
 EmptyStatement
-	:	";"
-	;
+    :   ";"
+    ;
 
 LabeledStatement
-	:	Identifier ":" Statement
-	;
+    :   Identifier ":" Statement
+    ;
 
 LabeledStatementNoShortIf
-	:	Identifier ":" StatementNoShortIf
-	;
+    :   Identifier ":" StatementNoShortIf
+    ;
 
 ExpressionStatement
-	:	StatementExpression ";"
-	;
+    :   StatementExpression ";"
+    ;
 
 StatementExpression
-	:	Assignment
-	|	PreIncrementExpression
-	|	PreDecrementExpression
-	|	PostIncrementExpression
-	|	PostDecrementExpression
-	|	MethodInvocation
-	|	ClassInstanceCreationExpression
-	;
+    :   Assignment
+    |   PreIncrementExpression
+    |   PreDecrementExpression
+    |   PostIncrementExpression
+    |   PostDecrementExpression
+    |   MethodInvocation
+    |   ClassInstanceCreationExpression
+    ;
 
 AssertStatement
-	:	"assert" Expression ";"
-	|	"assert" Expression ":" Expression ";"
-	;
+    :   "assert" Expression ";"
+    |   "assert" Expression ":" Expression ";"
+    ;
 
 SwitchStatement
-	:	"switch" "(" Expression ")" SwitchBlock
-	;
+    :   "switch" "(" Expression ")" SwitchBlock
+    ;
 
 SwitchBlock
-	:	"{" (SwitchBlockStatementGroups)? (SwitchLabels)? "}"
-	;
+    :   "{" (SwitchBlockStatementGroups)? (SwitchLabels)? "}"
+    ;
 
 SwitchBlockStatementGroups
-	:	SwitchBlockStatementGroup
-	|	SwitchBlockStatementGroups SwitchBlockStatementGroup
-	;
+    :   SwitchBlockStatementGroup
+    |   SwitchBlockStatementGroups SwitchBlockStatementGroup
+    ;
 
 SwitchBlockStatementGroup
-	:	SwitchLabels BlockStatements
-	;
+    :   SwitchLabels BlockStatements
+    ;
 
 SwitchLabels
-	:	SwitchLabel
-	|	SwitchLabels SwitchLabel
-	;
+    :   SwitchLabel
+    |   SwitchLabels SwitchLabel
+    ;
 
 SwitchLabel
-	:	"case" ConstantExpression ":"
-//	|	"case" EnumConstantName ":"
-	|	"default" ":"
-	;
+    :   "case" ConstantExpression ":"
+//  |   "case" EnumConstantName ":"
+    |   "default" ":"
+    ;
 
 //EnumConstantName
-//	:	Identifier
-//	;
+//  :   Identifier
+//  ;
 
 WhileStatement
-	:	"while" "(" Expression ")" Statement
-	;
+    :   "while" "(" Expression ")" Statement
+    ;
 
 WhileStatementNoShortIf
-	:	"while" "(" Expression ")" StatementNoShortIf
-	;
+    :   "while" "(" Expression ")" StatementNoShortIf
+    ;
 
 DoStatement
-	:	"do" Statement "while" "(" Expression ")" ";"
-	;
+    :   "do" Statement "while" "(" Expression ")" ";"
+    ;
 
 ForStatement
-	:	BasicForStatement
-	|	EnhancedForStatement
-	;
+    :   BasicForStatement
+    |   EnhancedForStatement
+    ;
 
 BasicForStatement
-	:	"for" "(" (ForInit)? ";" (Expression)? ";" (ForUpdate)? ")" Statement
-	;
+    :   "for" "(" (ForInit)? ";" (Expression)? ";" (ForUpdate)? ")" Statement
+    ;
 
 ForStatementNoShortIf
-	:	"for" "(" (ForInit)? ";" (Expression)? ";" (ForUpdate)? ")" StatementNoShortIf
-	;
+    :   "for" "(" (ForInit)? ";" (Expression)? ";" (ForUpdate)? ")" StatementNoShortIf
+    ;
 
 ForInit
-	:	StatementExpressionList
-	|	LocalVariableDeclaration
-	;
+    :   StatementExpressionList
+    |   LocalVariableDeclaration
+    ;
 
 ForUpdate
-	:	StatementExpressionList
-	;
+    :   StatementExpressionList
+    ;
 
 StatementExpressionList
-	:	StatementExpression
-	|	StatementExpressionList "," StatementExpression
-	;
+    :   StatementExpression
+    |   StatementExpressionList "," StatementExpression
+    ;
 
 EnhancedForStatement
-	:	"for" "(" FormalParameter ":" Expression ")" Statement
-	;
+    :   "for" "(" FormalParameter ":" Expression ")" Statement
+    ;
 
 BreakStatement
-	:	"break" (Identifier)? ";"
-	;
+    :   "break" (Identifier)? ";"
+    ;
 
 ContinueStatement
-	:	"continue" (Identifier)? ";"
-	;
+    :   "continue" (Identifier)? ";"
+    ;
 
 ReturnStatement
-	:	"return" (Expression)? ";"
-	;
+    :   "return" (Expression)? ";"
+    ;
 
 ThrowStatement
-	:	"throw" Expression ";"
-	;
+    :   "throw" Expression ";"
+    ;
 
 SynchronizedStatement
-	:	"synchronized" "(" Expression ")" Block
-	;
+    :   "synchronized" "(" Expression ")" Block
+    ;
 
 TryStatement
-	:	"try" Block Catches
-	|	"try" Block (Catches)? Finally
-	|	TryWithResourcesStatement
-	;
+    :   "try" Block Catches
+    |   "try" Block (Catches)? Finally
+    |   TryWithResourcesStatement
+    ;
 
 Catches
-	:	CatchClause
-	|	Catches CatchClause
-	;
+    :   CatchClause
+    |   Catches CatchClause
+    ;
 
 CatchClause
-	:	"catch" "(" CatchFormalParameter ")" Block
-	;
+    :   "catch" "(" CatchFormalParameter ")" Block
+    ;
 
 CatchFormalParameter
-	:	(VariableModifiers)? CatchType VariableDeclaratorId
-	;
+    :   (VariableModifiers)? CatchType VariableDeclaratorId
+    ;
 
 CatchType
-	:	ClassType
-	|	ClassType "|" CatchType
-	;
+    :   ClassType
+    |   ClassType "|" CatchType
+    ;
 
 Finally
-	:	"finally" Block
-	;
+    :   "finally" Block
+    ;
 
 TryWithResourcesStatement
-	:	"try" ResourceSpecification Block (Catches)? (Finally)?
-	;
+    :   "try" ResourceSpecification Block (Catches)? (Finally)?
+    ;
 
 ResourceSpecification
-	:	"(" Resources (";")? ")"
-	;
+    :   "(" Resources (";")? ")"
+    ;
 
 Resources
-	:	Resource
-	|	Resource ";" Resources
-	;
+    :   Resource
+    |   Resource ";" Resources
+    ;
 
 Resource
-	:	(VariableModifiers)? Type VariableDeclaratorId "=" Expression
-	;
+    :   (VariableModifiers)? Type VariableDeclaratorId "=" Expression
+    ;
 
 //Chapter 15
 
 Primary
-	:	PrimaryNoNewArray
-	|	ArrayCreationExpression
-	;
+    :   PrimaryNoNewArray
+    |   ArrayCreationExpression
+    ;
 
 PrimaryNoNewArray
-	:	Literal
-	|	Type "." "class"
-	|	"void" "." "class"
-	|	"this"
-	|	ClassName "." "this"
-	|	"(" Expression ")"
-	|	ClassInstanceCreationExpression
-	|	FieldAccess
-	|	MethodInvocation
-	|	ArrayAccess
-	;
+    :   Literal
+    |   Type "." "class"
+    |   "void" "." "class"
+    |   "this"
+    |   ClassName "." "this"
+    |   "(" Expression ")"
+    |   ClassInstanceCreationExpression
+    |   FieldAccess
+    |   MethodInvocation
+    |   ArrayAccess
+    ;
 
 Literal
-	:	INTEGER
-	|	FLOAT
-	|	("true" | "false")
-	|	STRING
-	|	"null"
-	;
+    :   INTEGER
+    |   FLOAT
+    |   ("true" | "false")
+    |   STRING
+    |   "null"
+    ;
 
 Identifier
-	:	ID
-	;
+    :   ID
+    ;
 
 ClassInstanceCreationExpression
-	:	"new" (TypeArguments)? /*TypeDeclSpecifier*/TypeName (TypeArgumentsOrDiamond)? "(" (ArgumentList)? ")" (ClassBody)?
-	|	(Primary | ExpressionName)
-		"." "new" (TypeArguments)? Identifier (TypeArgumentsOrDiamond)? "(" (ArgumentList)? ")" (ClassBody)?
-	;
+    :   "new" (TypeArguments)? /*TypeDeclSpecifier*/TypeName (TypeArgumentsOrDiamond)? "(" (ArgumentList)? ")" (ClassBody)?
+    |   (Primary | ExpressionName)
+        "." "new" (TypeArguments)? Identifier (TypeArgumentsOrDiamond)? "(" (ArgumentList)? ")" (ClassBody)?
+    ;
 
 TypeArgumentsOrDiamond
-	:	TypeArguments
-	|	"<>"
-	;
+    :   TypeArguments
+    |   "<>"
+    ;
 
 ArgumentList
-	:	Expression
-	|	ArgumentList "," Expression
-	;
+    :   Expression
+    |   ArgumentList "," Expression
+    ;
 
 ArrayCreationExpression
-	:	"new" PrimitiveType DimExprs (Dims)?
-	|	"new" ClassOrInterfaceType DimExprs (Dims)?
-	|	"new" PrimitiveType Dims ArrayInitializer
-	|	"new" ClassOrInterfaceType Dims ArrayInitializer
-	;
+    :   "new" PrimitiveType DimExprs (Dims)?
+    |   "new" ClassOrInterfaceType DimExprs (Dims)?
+    |   "new" PrimitiveType Dims ArrayInitializer
+    |   "new" ClassOrInterfaceType Dims ArrayInitializer
+    ;
 
 DimExprs
-	:	DimExpr
-	|	DimExprs DimExpr
-	;
+    :   DimExpr
+    |   DimExprs DimExpr
+    ;
 
 DimExpr
-	:	"[" Expression "]"
-	;
+    :   "[" Expression "]"
+    ;
 
 Dims
-	:	"[" "]"
-	|	Dims "[" "]"
-	;
+    :   "[" "]"
+    |   Dims "[" "]"
+    ;
 
 FieldAccess
-	:	Primary "." Identifier
-	|	"super" "." Identifier
-	|	ClassName "." "super" "." Identifier
-	;
+    :   Primary "." Identifier
+    |   "super" "." Identifier
+    |   ClassName "." "super" "." Identifier
+    ;
 
 MethodInvocation
-	:	MethodName "(" (ArgumentList)? ")"
-	|	Primary "." (NonWildTypeArguments)? Identifier "(" (ArgumentList)? ")"
-	|	"super" "." (NonWildTypeArguments)? Identifier "(" (ArgumentList)? ")"
-	|	ClassName "." "super" "." (NonWildTypeArguments)? Identifier "(" (ArgumentList)? ")"
-	|	TypeName "." NonWildTypeArguments Identifier "(" (ArgumentList)? ")"
-	;
+    :   MethodName "(" (ArgumentList)? ")"
+    |   Primary "." (NonWildTypeArguments)? Identifier "(" (ArgumentList)? ")"
+    |   "super" "." (NonWildTypeArguments)? Identifier "(" (ArgumentList)? ")"
+    |   ClassName "." "super" "." (NonWildTypeArguments)? Identifier "(" (ArgumentList)? ")"
+    |   TypeName "." NonWildTypeArguments Identifier "(" (ArgumentList)? ")"
+    ;
 
 ClassName
-	:	Identifier
-	;
+    :   Identifier
+    ;
 
 ArrayAccess
-	:	ExpressionName "[" Expression "]"
-	|	PrimaryNoNewArray "[" Expression "]"
-	;
+    :   ExpressionName "[" Expression "]"
+    |   PrimaryNoNewArray "[" Expression "]"
+    ;
 
 PostfixExpression
-	:	Primary
-	|	ExpressionName
-	|	PostIncrementExpression
-	|	PostDecrementExpression
-	;
+    :   Primary
+    |   ExpressionName
+    |   PostIncrementExpression
+    |   PostDecrementExpression
+    ;
 
 PostIncrementExpression
-	:	PostfixExpression "++"
-	;
+    :   PostfixExpression "++"
+    ;
 
 PostDecrementExpression
-	:	PostfixExpression "--"
-	;
+    :   PostfixExpression "--"
+    ;
 
 UnaryExpression
-	:	PreIncrementExpression
-	|	PreDecrementExpression
-	|	"+" UnaryExpression
-	|	"-" UnaryExpression
-	|	UnaryExpressionNotPlusMinus
-	;
+    :   PreIncrementExpression
+    |   PreDecrementExpression
+    |   "+" UnaryExpression
+    |   "-" UnaryExpression
+    |   UnaryExpressionNotPlusMinus
+    ;
 
 PreIncrementExpression
-	:	"++" UnaryExpression
-	;
+    :   "++" UnaryExpression
+    ;
 
 PreDecrementExpression
-	:	"--" UnaryExpression
-	;
+    :   "--" UnaryExpression
+    ;
 
 UnaryExpressionNotPlusMinus
-	:	PostfixExpression
-	|	"~" UnaryExpression
-	|	"!" UnaryExpression
-	|	CastExpression
-	;
+    :   PostfixExpression
+    |   "~" UnaryExpression
+    |   "!" UnaryExpression
+    |   CastExpression
+    ;
 
 CastExpression
-	:	"(" PrimitiveType ")" UnaryExpression
-	|	"(" ReferenceType ")" UnaryExpressionNotPlusMinus
-	;
+    :   "(" PrimitiveType ")" UnaryExpression
+    |   "(" ReferenceType ")" UnaryExpressionNotPlusMinus
+    ;
 
 MultiplicativeExpression
-	:	UnaryExpression
-	|	MultiplicativeExpression "*" UnaryExpression
-	|	MultiplicativeExpression "/" UnaryExpression
-	|	MultiplicativeExpression "%" UnaryExpression
-	;
+    :   UnaryExpression
+    |   MultiplicativeExpression "*" UnaryExpression
+    |   MultiplicativeExpression "/" UnaryExpression
+    |   MultiplicativeExpression "%" UnaryExpression
+    ;
 
 AdditiveExpression
-	:	MultiplicativeExpression
-	|	AdditiveExpression "+" MultiplicativeExpression
-	|	AdditiveExpression "-" MultiplicativeExpression
-	;
+    :   MultiplicativeExpression
+    |   AdditiveExpression "+" MultiplicativeExpression
+    |   AdditiveExpression "-" MultiplicativeExpression
+    ;
 
 ShiftExpression
-	:	AdditiveExpression
-	|	ShiftExpression /*"<<"*/ "<" "<" AdditiveExpression
-	|	ShiftExpression /*">>"*/ ">" ">" AdditiveExpression
-	|	ShiftExpression /*">>>"*/ ">" ">" ">" AdditiveExpression
-	;
+    :   AdditiveExpression
+    |   ShiftExpression /*"<<"*/ "<" "<" AdditiveExpression
+    |   ShiftExpression /*">>"*/ ">" ">" AdditiveExpression
+    |   ShiftExpression /*">>>"*/ ">" ">" ">" AdditiveExpression
+    ;
 
 RelationalExpression
-	:	ShiftExpression
-	|	RelationalExpression "<" ShiftExpression
-	|	RelationalExpression ">" ShiftExpression
-	|	RelationalExpression "<=" ShiftExpression
-	|	RelationalExpression ">=" ShiftExpression
-	|	RelationalExpression "instanceof" ReferenceType
-	;
+    :   ShiftExpression
+    |   RelationalExpression "<" ShiftExpression
+    |   RelationalExpression ">" ShiftExpression
+    |   RelationalExpression "<=" ShiftExpression
+    |   RelationalExpression ">=" ShiftExpression
+    |   RelationalExpression "instanceof" ReferenceType
+    ;
 
 EqualityExpression
-	:	RelationalExpression
-	|	EqualityExpression "==" RelationalExpression
-	|	EqualityExpression "!=" RelationalExpression
-	;
+    :   RelationalExpression
+    |   EqualityExpression "==" RelationalExpression
+    |   EqualityExpression "!=" RelationalExpression
+    ;
 
 AndExpression
-	:	EqualityExpression
-	|	AndExpression "&" EqualityExpression
-	;
+    :   EqualityExpression
+    |   AndExpression "&" EqualityExpression
+    ;
 
 ExclusiveOrExpression
-	:	AndExpression
-	|	ExclusiveOrExpression "^" AndExpression
-	;
+    :   AndExpression
+    |   ExclusiveOrExpression "^" AndExpression
+    ;
 
 InclusiveOrExpression
-	:	ExclusiveOrExpression
-	|	InclusiveOrExpression "|" ExclusiveOrExpression
-	;
+    :   ExclusiveOrExpression
+    |   InclusiveOrExpression "|" ExclusiveOrExpression
+    ;
 
 ConditionalAndExpression
-	:	InclusiveOrExpression
-	|	ConditionalAndExpression "&&" InclusiveOrExpression
-	;
+    :   InclusiveOrExpression
+    |   ConditionalAndExpression "&&" InclusiveOrExpression
+    ;
 
 ConditionalOrExpression
-	:	ConditionalAndExpression
-	|	ConditionalOrExpression "||" ConditionalAndExpression
-	;
+    :   ConditionalAndExpression
+    |   ConditionalOrExpression "||" ConditionalAndExpression
+    ;
 
 ConditionalExpression
-	:	ConditionalOrExpression
-	|	ConditionalOrExpression "?" Expression ":" ConditionalExpression
-	;
+    :   ConditionalOrExpression
+    |   ConditionalOrExpression "?" Expression ":" ConditionalExpression
+    ;
 
 AssignmentExpression
-	:	ConditionalExpression
-	|	Assignment
-	;
+    :   ConditionalExpression
+    |   Assignment
+    ;
 
 Assignment
-	:	LeftHandSide AssignmentOperator AssignmentExpression
-	;
+    :   LeftHandSide AssignmentOperator AssignmentExpression
+    ;
 
 LeftHandSide
-	:	ExpressionName
-	|	FieldAccess
-	|	ArrayAccess
-	;
+    :   ExpressionName
+    |   FieldAccess
+    |   ArrayAccess
+    ;
 
 AssignmentOperator
-	:	"="
-	|	"*="
-	|	"/="
-	|	"%="
-	|	"+="
-	|	"-="
-	|	/*"<<="*/ "<" "<="
-	|	/*">>="*/ ">" ">="
-	|	/*">>>="*/ ">" ">" ">="
-	|	"&="
-	|	"^="
-	|	"|="
-	;
+    :   "="
+    |   "*="
+    |   "/="
+    |   "%="
+    |   "+="
+    |   "-="
+    |   /*"<<="*/ "<" "<="
+    |   /*">>="*/ ">" ">="
+    |   /*">>>="*/ ">" ">" ">="
+    |   "&="
+    |   "^="
+    |   "|="
+    ;
 
 Expression
-	:	AssignmentExpression
-	;
+    :   AssignmentExpression
+    ;
 
 ConstantExpression
-	:	Expression
-	;
+    :   Expression
+    ;

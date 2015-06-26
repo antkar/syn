@@ -25,37 +25,37 @@ import com.karmant.syn.sample.script.rt.value.Value;
  * Script Language <code>+</code> operator.
  */
 class AddBinaryOperator extends BinaryOperator {
-	AddBinaryOperator() {
-		super("+");
-	}
+    AddBinaryOperator() {
+        super("+");
+    }
 
-	@Override
-	public RValue evaluate(Operand left, Operand right) throws SynsException {
-		OperandType leftType = left.getType();
-		OperandType rightType = right.getType();
-		if (leftType == OperandType.STRING || rightType == OperandType.STRING) {
-			return evaluateAddString(left, right);
-		}
-		return super.evaluate(left, right);
-	}
-	
-	/**
-	 * Evaluates string concatenation.
-	 */
-	private RValue evaluateAddString(Operand left, Operand right) throws SynsException {
-		String leftStr = left.stringValue();
-		String rightStr = right.stringValue();
-		String result = leftStr + rightStr;
-		return Value.forString(result);
-	}
+    @Override
+    public RValue evaluate(Operand left, Operand right) throws SynsException {
+        OperandType leftType = left.getType();
+        OperandType rightType = right.getType();
+        if (leftType == OperandType.STRING || rightType == OperandType.STRING) {
+            return evaluateAddString(left, right);
+        }
+        return super.evaluate(left, right);
+    }
+    
+    /**
+     * Evaluates string concatenation.
+     */
+    private RValue evaluateAddString(Operand left, Operand right) throws SynsException {
+        String leftStr = left.stringValue();
+        String rightStr = right.stringValue();
+        String result = leftStr + rightStr;
+        return Value.forString(result);
+    }
 
-	@Override
-	RValue evaluate(long left, long right) {
-		return Value.forLong(left + right);
-	}
+    @Override
+    RValue evaluate(long left, long right) {
+        return Value.forLong(left + right);
+    }
 
-	@Override
-	RValue evaluate(double left, double right) {
-		return Value.forDouble(left + right);
-	}
+    @Override
+    RValue evaluate(double left, double right) {
+        return Value.forDouble(left + right);
+    }
 }

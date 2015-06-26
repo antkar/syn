@@ -28,36 +28,36 @@ import com.karmant.syn.sample.script.rt.value.Value;
  * Assignment expression syntax node.
  */
 public class AssignmentExpression extends BinaryExpression {
-	/** The associated arithmetical operator for a compound assignment operator or
-	 * <code>null</code> if this is a simple assignment operator. */
-	private BinaryOperator op;
-	
-	public AssignmentExpression(){}
-	
-	@SynInit
-	private void init() {
-		String opLiteral = getOp();
-		op = "=".equals(opLiteral) ? null : BinaryOperator.forAssignmentLiteral(opLiteral);
-	}
+    /** The associated arithmetical operator for a compound assignment operator or
+     * <code>null</code> if this is a simple assignment operator. */
+    private BinaryOperator op;
+    
+    public AssignmentExpression(){}
+    
+    @SynInit
+    private void init() {
+        String opLiteral = getOp();
+        op = "=".equals(opLiteral) ? null : BinaryOperator.forAssignmentLiteral(opLiteral);
+    }
 
-	@Override
-	Value evaluate0(ScriptScope scope) throws SynsException {
-		//Evaluate operands.
-		Value left = getLeft().evaluate(scope);
-		LValue lleft = left.toLValue();
-		Value right = getRight().evaluate(scope);
-		RValue rright = right.toRValue();
-		
-		//Apply the arithmetical operator, if any.
-		RValue result = rright;
-		if (op != null) {
-			Operand leftOperand = left.toOperand();
-			Operand rightOperand = right.toOperand();
-			result = op.evaluate(leftOperand, rightOperand);
-		}
-		
-		//Assign the new value to the variable and return that value.
-		lleft.assign(result);
-		return result;
-	}
+    @Override
+    Value evaluate0(ScriptScope scope) throws SynsException {
+        //Evaluate operands.
+        Value left = getLeft().evaluate(scope);
+        LValue lleft = left.toLValue();
+        Value right = getRight().evaluate(scope);
+        RValue rright = right.toRValue();
+        
+        //Apply the arithmetical operator, if any.
+        RValue result = rright;
+        if (op != null) {
+            Operand leftOperand = left.toOperand();
+            Operand rightOperand = right.toOperand();
+            result = op.evaluate(leftOperand, rightOperand);
+        }
+        
+        //Assign the new value to the variable and return that value.
+        lleft.assign(result);
+        return result;
+    }
 }

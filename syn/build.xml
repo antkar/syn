@@ -17,90 +17,90 @@ limitations under the License.
 
 <project name="Syn" default="default">
 
-	<property name="release-bin-dir" value="bld/bin-release"/>
-	<property name="debug-bin-dir" value="bld/bin-debug"/>
-	<property name="dst-dir" value="bld/dst"/>
-	<property name="javadoc-dir" value="bld/javadoc"/>
-	<property name="bld-src-dir" value="bld/src"/>
-	
-	<loadproperties srcFile="build.properties" prefix="build."/>
-	
-	<target name="default" depends="clean,build"/>
-	
-	<target name="clean">
-		<delete dir="${release-bin-dir}"/>
-		<delete dir="${debug-bin-dir}"/>
-		<delete dir="${dst-dir}"/>
-		<delete dir="${javadoc-dir}"/>
-	</target>
+    <property name="release-bin-dir" value="bld/bin-release"/>
+    <property name="debug-bin-dir" value="bld/bin-debug"/>
+    <property name="dst-dir" value="bld/dst"/>
+    <property name="javadoc-dir" value="bld/javadoc"/>
+    <property name="bld-src-dir" value="bld/src"/>
+    
+    <loadproperties srcFile="build.properties" prefix="build."/>
+    
+    <target name="default" depends="clean,build"/>
+    
+    <target name="clean">
+        <delete dir="${release-bin-dir}"/>
+        <delete dir="${debug-bin-dir}"/>
+        <delete dir="${dst-dir}"/>
+        <delete dir="${javadoc-dir}"/>
+    </target>
 
-	<target name="build" depends="build-release,build-debug,source,javadoc"/>
+    <target name="build" depends="build-release,build-debug,source,javadoc"/>
 
-	<target name="build-release">
-		<antcall target="build-configuration">
-			<param name="param-bin-dir" value="${release-bin-dir}"/>
-			<param name="param-jar-file" value="syn-nodebug"/>
-			<param name="param-debug" value="no"/>
-		</antcall>
-	</target>
+    <target name="build-release">
+        <antcall target="build-configuration">
+            <param name="param-bin-dir" value="${release-bin-dir}"/>
+            <param name="param-jar-file" value="syn-nodebug"/>
+            <param name="param-debug" value="no"/>
+        </antcall>
+    </target>
 
-	<target name="build-debug">
-		<antcall target="build-configuration">
-			<param name="param-bin-dir" value="${debug-bin-dir}"/>
-			<param name="param-jar-file" value="syn"/>
-			<param name="param-debug" value="yes"/>
-		</antcall>
-	</target>
-	
-	<target name="build-configuration">
-		<mkdir dir="${param-bin-dir}"/>
-		<javac srcdir="." destdir="${param-bin-dir}" debug="${param-debug}" includeAntRuntime="no">
-			<include name="src-*/**/*.java"/>
-		</javac>
-		
-		<copy todir="${param-bin-dir}">
-			<fileset dir=".">
-				<include name="src-*/**/*.dtd"/>
-				<include name="src-*/**/*.xml"/>
-				<include name="src-*/**/*.txt"/>
-			</fileset>
-			
-			<cutdirsmapper dirs="1"/>
-		</copy>
-		
-		<jar destfile="bld/${param-jar-file}-${build.version}.jar">
-			<fileset dir="${param-bin-dir}"/>
-		</jar>
-		
-		<mkdir dir="${dst-dir}"/>
-		<zip destfile="${dst-dir}/${param-jar-file}-${build.version}.zip">
-			<zipfileset file="bld/${param-jar-file}-${build.version}.jar" prefix="syn-${build.version}"/>
-		</zip>
-	</target>
-	
-	<target name="source">
-		<mkdir dir="${bld-src-dir}"/>
-		
-		<copy todir="${bld-src-dir}">
-			<fileset dir=".">
-				<include name="src-*/**/*.java"/>
-				<include name="src-*/**/*.dtd"/>
-				<include name="src-*/**/*.xml"/>
-				<include name="src-*/**/*.txt"/>
-			</fileset>
-			
-			<cutdirsmapper dirs="1"/>
-		</copy>
-		
-		<zip basedir="${bld-src-dir}" destfile="${dst-dir}/syn-${build.version}-src.zip"/>
-	</target>
+    <target name="build-debug">
+        <antcall target="build-configuration">
+            <param name="param-bin-dir" value="${debug-bin-dir}"/>
+            <param name="param-jar-file" value="syn"/>
+            <param name="param-debug" value="yes"/>
+        </antcall>
+    </target>
+    
+    <target name="build-configuration">
+        <mkdir dir="${param-bin-dir}"/>
+        <javac srcdir="." destdir="${param-bin-dir}" debug="${param-debug}" includeAntRuntime="no">
+            <include name="src-*/**/*.java"/>
+        </javac>
+        
+        <copy todir="${param-bin-dir}">
+            <fileset dir=".">
+                <include name="src-*/**/*.dtd"/>
+                <include name="src-*/**/*.xml"/>
+                <include name="src-*/**/*.txt"/>
+            </fileset>
+            
+            <cutdirsmapper dirs="1"/>
+        </copy>
+        
+        <jar destfile="bld/${param-jar-file}-${build.version}.jar">
+            <fileset dir="${param-bin-dir}"/>
+        </jar>
+        
+        <mkdir dir="${dst-dir}"/>
+        <zip destfile="${dst-dir}/${param-jar-file}-${build.version}.zip">
+            <zipfileset file="bld/${param-jar-file}-${build.version}.jar" prefix="syn-${build.version}"/>
+        </zip>
+    </target>
+    
+    <target name="source">
+        <mkdir dir="${bld-src-dir}"/>
+        
+        <copy todir="${bld-src-dir}">
+            <fileset dir=".">
+                <include name="src-*/**/*.java"/>
+                <include name="src-*/**/*.dtd"/>
+                <include name="src-*/**/*.xml"/>
+                <include name="src-*/**/*.txt"/>
+            </fileset>
+            
+            <cutdirsmapper dirs="1"/>
+        </copy>
+        
+        <zip basedir="${bld-src-dir}" destfile="${dst-dir}/syn-${build.version}-src.zip"/>
+    </target>
 
-	<target name="javadoc">
-		<javadoc destdir="${javadoc-dir}">
-			<fileset dir=".">
-				<include name="src-*/**/*.java"/>
-			</fileset>
-		</javadoc>
-	</target>
-	
+    <target name="javadoc">
+        <javadoc destdir="${javadoc-dir}">
+            <fileset dir=".">
+                <include name="src-*/**/*.java"/>
+            </fileset>
+        </javadoc>
+    </target>
+    
 </project>

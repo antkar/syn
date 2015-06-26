@@ -19,17 +19,17 @@ package com.karmant.syn.sample.script.rt.value;
  * Void value.
  */
 class VoidValue extends Value {
-	static final Value INSTANCE = new VoidValue();
-	
-	private VoidValue(){}
-	
-	@Override
-	public ValueType getValueType() {
-		return ValueType.VOID;
-	}
+    static final Value INSTANCE = new VoidValue();
+    
+    private VoidValue(){}
+    
+    @Override
+    public ValueType getValueType() {
+        return ValueType.VOID;
+    }
 
-	@Override
-	public boolean isVoid() {
-		return true;
-	}
+    @Override
+    public boolean isVoid() {
+        return true;
+    }
 }

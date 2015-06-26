@@ -19,12 +19,12 @@ package com.karmant.syn.sample.script.rt.op;
  * Script Language <code>==</code> operator.
  */
 class EqBinaryOperator extends EqNeBinaryOperator {
-	EqBinaryOperator() {
-		super("==");
-	}
+    EqBinaryOperator() {
+        super("==");
+    }
 
-	@Override
-	boolean evaluateResult(boolean equal) {
-		return equal;
-	}
+    @Override
+    boolean evaluateResult(boolean equal) {
+        return equal;
+    }
 }

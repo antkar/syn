@@ -19,24 +19,24 @@ package com.karmant.syn;
  * Nonterminal bound type. Binds a result of a nonterminal.
  */
 class NonterminalBoundType extends AbstractBoundType {
-	NonterminalBoundType(Class<?> cls) {
-		super(cls);
-	}
+    NonterminalBoundType(Class<?> cls) {
+        super(cls);
+    }
 
-	@Override
-	Object convertNode(BinderEngine<?> engine, SynNode synNode, BoundObject bObjOwner, String key)
-			throws SynBinderException
-	{
-		if (synNode == null) {
-			return null;
-		}
+    @Override
+    Object convertNode(BinderEngine<?> engine, SynNode synNode, BoundObject bObjOwner, String key)
+            throws SynBinderException
+    {
+        if (synNode == null) {
+            return null;
+        }
 
-		ObjectNode objectNode = (ObjectNode) synNode;
-		BoundObject bObj = engine.bindObjectNode(objectNode);
-		bObj.setOwner(bObjOwner);
-		bObjOwner.addReference(key, bObj);
-		
-		Object obj = bObj.getJavaObject();
-		return obj;
-	}
+        ObjectNode objectNode = (ObjectNode) synNode;
+        BoundObject bObj = engine.bindObjectNode(objectNode);
+        bObj.setOwner(bObjOwner);
+        bObjOwner.addReference(key, bObj);
+        
+        Object obj = bObj.getJavaObject();
+        return obj;
+    }
 }

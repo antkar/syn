@@ -22,37 +22,37 @@ import java.lang.reflect.Field;
  */
 class LookupFieldExpression extends LookupComplexTermExpression {
 
-	private final Field field;
-	
-	LookupFieldExpression(Class<?> clsOfValue, LookupTermExpression baseExpression, Field field) {
-		super(clsOfValue, baseExpression);
-		this.field = field;
-	}
-	
-	@Override
-	Object eval(LookupEnv env) throws SynBinderException {
-		LookupTermExpression baseExpression = getBaseExpression();
-		Object eval = baseExpression.eval(env);
-		
-		Object result;
-		if (eval == null || eval == UNDEFINED) {
-			result = UNDEFINED;
-		} else {
-			BoundObject bEval = (BoundObject) eval;
-			Object obj = bEval.getJavaObject();
-			result = BinderReflectionUtil.getFieldValue(field, obj);
-		}
-		
-		return result;
-	}
+    private final Field field;
+    
+    LookupFieldExpression(Class<?> clsOfValue, LookupTermExpression baseExpression, Field field) {
+        super(clsOfValue, baseExpression);
+        this.field = field;
+    }
+    
+    @Override
+    Object eval(LookupEnv env) throws SynBinderException {
+        LookupTermExpression baseExpression = getBaseExpression();
+        Object eval = baseExpression.eval(env);
+        
+        Object result;
+        if (eval == null || eval == UNDEFINED) {
+            result = UNDEFINED;
+        } else {
+            BoundObject bEval = (BoundObject) eval;
+            Object obj = bEval.getJavaObject();
+            result = BinderReflectionUtil.getFieldValue(field, obj);
+        }
+        
+        return result;
+    }
 
-	@Override
-	String toSourceString() {
-		LookupTermExpression baseExpression = getBaseExpression();
-		String baseSourceString = baseExpression.toSourceString();
-		String name = field.getName();
-		String string = baseSourceString + "." + name;
-		return string;
-	}
+    @Override
+    String toSourceString() {
+        LookupTermExpression baseExpression = getBaseExpression();
+        String baseSourceString = baseExpression.toSourceString();
+        String name = field.getName();
+        String string = baseSourceString + "." + name;
+        return string;
+    }
 
 }

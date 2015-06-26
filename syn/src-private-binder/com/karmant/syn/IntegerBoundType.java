@@ -19,20 +19,20 @@ package com.karmant.syn;
  * {@link Integer} bound type.
  */
 class IntegerBoundType extends AbstractBoundType {
-	static final BoundType INSTANCE = new IntegerBoundType();
+    static final BoundType INSTANCE = new IntegerBoundType();
 
-	private IntegerBoundType() {
-		super(Integer.class);
-	}
+    private IntegerBoundType() {
+        super(Integer.class);
+    }
 
-	@Override
-	Object convertNode(BinderEngine<?> engine, SynNode synNode, BoundObject bObjOwner, String key)
-			throws SynBinderException
-	{
-		ValueNode valueNode = (ValueNode) synNode;
-		if (valueNode == null) {
-			return null;
-		}
-		return IntBoundType.extractValue0(valueNode);
-	}
+    @Override
+    Object convertNode(BinderEngine<?> engine, SynNode synNode, BoundObject bObjOwner, String key)
+            throws SynBinderException
+    {
+        ValueNode valueNode = (ValueNode) synNode;
+        if (valueNode == null) {
+            return null;
+        }
+        return IntBoundType.extractValue0(valueNode);
+    }
 }
