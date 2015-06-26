@@ -23,37 +23,37 @@ import com.karmant.syn.sample.script.rt.op.operand.Operand;
  * A value of type <code>boolean</code>.
  */
 class BooleanValue extends RValue {
-	private static RValue TRUE = new BooleanValue(true);
-	private static RValue FALSE = new BooleanValue(false);
-	
-	private final boolean value;
-	
-	private BooleanValue(boolean value) {
-		this.value = value;
-	}
-	
-	static RValue valueOf(boolean value) {
-		return value ? TRUE : FALSE;
-	}
-	
-	@Override
-	public Operand toOperand() throws SynsException {
-		return Operand.forBoolean(value);
-	}
-	
-	@Override
-	public ValueType getValueType() {
-		return ValueType.BOOLEAN;
-	}
-	
-	@Override
-	public Object toJava(Class<?> type, TypeMatchPrecision precision) {
-		if (boolean.class.equals(type)) {
-			precision.increment(2);
-			return value;
-		} else if (type.isAssignableFrom(Boolean.class)) {
-			return value;
-		}
-		return INVALID;
-	}
+    private static RValue TRUE = new BooleanValue(true);
+    private static RValue FALSE = new BooleanValue(false);
+    
+    private final boolean value;
+    
+    private BooleanValue(boolean value) {
+        this.value = value;
+    }
+    
+    static RValue valueOf(boolean value) {
+        return value ? TRUE : FALSE;
+    }
+    
+    @Override
+    public Operand toOperand() throws SynsException {
+        return Operand.forBoolean(value);
+    }
+    
+    @Override
+    public ValueType getValueType() {
+        return ValueType.BOOLEAN;
+    }
+    
+    @Override
+    public Object toJava(Class<?> type, TypeMatchPrecision precision) {
+        if (boolean.class.equals(type)) {
+            precision.increment(2);
+            return value;
+        } else if (type.isAssignableFrom(Boolean.class)) {
+            return value;
+        }
+        return INVALID;
+    }
 }

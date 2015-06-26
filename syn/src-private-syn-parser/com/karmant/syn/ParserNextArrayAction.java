@@ -20,43 +20,43 @@ package com.karmant.syn;
  * by a repetition element.
  */
 class ParserNextArrayAction implements IParserAction {
-	static final ParserNextArrayAction WITH_SEPARATOR = new ParserNextArrayAction(true); 
-	static final ParserNextArrayAction WITHOUT_SEPARATOR = new ParserNextArrayAction(false); 
-	
-	private final boolean separator;
-	
-	private ParserNextArrayAction(boolean separator) {
-		this.separator = separator;
-	}
+    static final ParserNextArrayAction WITH_SEPARATOR = new ParserNextArrayAction(true); 
+    static final ParserNextArrayAction WITHOUT_SEPARATOR = new ParserNextArrayAction(false); 
+    
+    private final boolean separator;
+    
+    private ParserNextArrayAction(boolean separator) {
+        this.separator = separator;
+    }
 
-	@Override
-	public IParserNode execute(ParserStackElement stack) {
-		//Getting an element node.
-		IParserNode itemNode = stack.createParserNode();
-		
-		//Skipping the element node.
-		stack = stack.getPrev();
-		
-		if (separator) {
-			//Skipping a separator.
-			stack = stack.getPrev();
-		}
-		
-		//Getting an array node.
-		IParserNode iArrayNode = stack.createParserNode();
-		
-		//Adding the element to the array.
-		ParserArrayNode parserArrayNode = (ParserArrayNode) iArrayNode; 
-		if (itemNode != null) {
-			SynNode userItemNode = itemNode.createUserNode();
-			parserArrayNode.addSubNode(userItemNode);
-		}
-		
-		return parserArrayNode;
-	}
-	
-	@Override
-	public String toString() {
-		return "$$ = $" + (separator ? 2 : 1) + " + [$0]";
-	}
+    @Override
+    public IParserNode execute(ParserStackElement stack) {
+        //Getting an element node.
+        IParserNode itemNode = stack.createParserNode();
+        
+        //Skipping the element node.
+        stack = stack.getPrev();
+        
+        if (separator) {
+            //Skipping a separator.
+            stack = stack.getPrev();
+        }
+        
+        //Getting an array node.
+        IParserNode iArrayNode = stack.createParserNode();
+        
+        //Adding the element to the array.
+        ParserArrayNode parserArrayNode = (ParserArrayNode) iArrayNode; 
+        if (itemNode != null) {
+            SynNode userItemNode = itemNode.createUserNode();
+            parserArrayNode.addSubNode(userItemNode);
+        }
+        
+        return parserArrayNode;
+    }
+    
+    @Override
+    public String toString() {
+        return "$$ = $" + (separator ? 2 : 1) + " + [$0]";
+    }
 }

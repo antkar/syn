@@ -19,26 +19,26 @@ package com.karmant.syn;
  * Primitive <code>double</code> array bound type.
  */
 class DoubleArrayBoundType extends ArrayBoundType {
-	static final BoundType INSTANCE = new DoubleArrayBoundType();
+    static final BoundType INSTANCE = new DoubleArrayBoundType();
 
-	private DoubleArrayBoundType(){}
+    private DoubleArrayBoundType(){}
 
-	@Override
-	Object convertArray(
-			BinderEngine<?> engine,
-			BoundObject bObjOwner,
-			String key,
-			ArrayNode arrayNode,
-			int size) throws SynBinderException
-	{
-		double[] array = new double[size];
-		
-		for (int i = 0; i < size; ++i) {
-			SynNode synElementNode = arrayNode.get(i);
-			double value = DoubleBoundType.extractValue(synElementNode);
-			array[i] = value;
-		}
-		
-		return array;
-	}
+    @Override
+    Object convertArray(
+            BinderEngine<?> engine,
+            BoundObject bObjOwner,
+            String key,
+            ArrayNode arrayNode,
+            int size) throws SynBinderException
+    {
+        double[] array = new double[size];
+        
+        for (int i = 0; i < size; ++i) {
+            SynNode synElementNode = arrayNode.get(i);
+            double value = DoubleBoundType.extractValue(synElementNode);
+            array[i] = value;
+        }
+        
+        return array;
+    }
 }

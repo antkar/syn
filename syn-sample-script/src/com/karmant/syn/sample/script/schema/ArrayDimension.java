@@ -24,23 +24,23 @@ import com.karmant.syn.sample.script.rt.value.Value;
  * Array dimension syntax node. Used in a new array allocation expression.
  */
 public class ArrayDimension {
-	/** The length of the dimension. */
-	@SynField
-	private Expression synLength;
-	
-	public ArrayDimension(){}
-	
-	/**
-	 * Evaluates the value of the dimension in the specified scope.
-	 */
-	int length(ScriptScope scope) throws SynsException {
-		Value value = synLength.evaluate(scope);
-		int len = value.toOperand().intValue();
-		return len;
-	}
-	
-	@Override
-	public String toString() {
-		return "[" + synLength + "]";
-	}
+    /** The length of the dimension. */
+    @SynField
+    private Expression synLength;
+    
+    public ArrayDimension(){}
+    
+    /**
+     * Evaluates the value of the dimension in the specified scope.
+     */
+    int length(ScriptScope scope) throws SynsException {
+        Value value = synLength.evaluate(scope);
+        int len = value.toOperand().intValue();
+        return len;
+    }
+    
+    @Override
+    public String toString() {
+        return "[" + synLength + "]";
+    }
 }

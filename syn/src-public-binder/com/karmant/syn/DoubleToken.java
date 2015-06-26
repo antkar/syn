@@ -19,23 +19,23 @@ package com.karmant.syn;
  * Token value of type <code>double</code>.
  */
 public class DoubleToken extends AbstractToken {
-	private final double value;
+    private final double value;
 
-	DoubleToken(TextPos pos, double value) {
-		super(pos);
-		this.value = value;
-	}
-	
-	/**
-	 * Returns the <code>double</code> value of this object.
-	 * @return the value.
-	 */
-	public double getValue() {
-		return value;
-	}
-	
-	@Override
-	public String toString() {
-		return value + "";
-	}
+    DoubleToken(TextPos pos, double value) {
+        super(pos);
+        this.value = value;
+    }
+    
+    /**
+     * Returns the <code>double</code> value of this object.
+     * @return the value.
+     */
+    public double getValue() {
+        return value;
+    }
+    
+    @Override
+    public String toString() {
+        return value + "";
+    }
 }

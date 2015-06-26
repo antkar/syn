@@ -19,16 +19,16 @@ package com.karmant.syn;
  * {@link Float} bound type.
  */
 class FloatWrapperBoundType extends AbstractBoundType {
-	static final BoundType INSTANCE = new FloatWrapperBoundType();
+    static final BoundType INSTANCE = new FloatWrapperBoundType();
 
-	private FloatWrapperBoundType() {
-		super(Float.class);
-	}
+    private FloatWrapperBoundType() {
+        super(Float.class);
+    }
 
-	@Override
-	Object convertNode(BinderEngine<?> engine, SynNode synNode, BoundObject bObjOwner, String key) {
-		ValueNode valueNode = (ValueNode) synNode;
-		Float value = valueNode == null ? null : (float) valueNode.getFloat();
-		return value;
-	}
+    @Override
+    Object convertNode(BinderEngine<?> engine, SynNode synNode, BoundObject bObjOwner, String key) {
+        ValueNode valueNode = (ValueNode) synNode;
+        Float value = valueNode == null ? null : (float) valueNode.getFloat();
+        return value;
+    }
 }

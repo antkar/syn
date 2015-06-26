@@ -22,20 +22,20 @@ import com.karmant.syn.sample.script.rt.javacls.JavaField;
  * Instance (not static) Java field value.
  */
 public class JavaInstanceFieldValue extends JavaFieldValue {
-	private final Object obj;
-	
-	public JavaInstanceFieldValue(JavaField field, Object obj) {
-		super(field);
-		this.obj = obj;
-	}
+    private final Object obj;
+    
+    public JavaInstanceFieldValue(JavaField field, Object obj) {
+        super(field);
+        this.obj = obj;
+    }
 
-	@Override
-	Object getFieldValue() throws SynsException {
-		return getField().get(obj);
-	}
+    @Override
+    Object getFieldValue() throws SynsException {
+        return getField().get(obj);
+    }
 
-	@Override
-	void setFieldValue(Object value) throws SynsException {
-		getField().set(obj, value);
-	}
+    @Override
+    void setFieldValue(Object value) throws SynsException {
+        getField().set(obj, value);
+    }
 }

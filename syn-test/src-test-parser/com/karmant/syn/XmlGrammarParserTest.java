@@ -25,10 +25,10 @@ import org.junit.Test;
  * Unit tests for {@link XmlGrammarParser}.
  */
 public class XmlGrammarParserTest extends TestCase {
-	@Test
-	public void testParseGrammarSuccess() throws Exception {
-		URL url = getClass().getResource("syn_grammar.xml");
-		EbnfGrammar eGrammar = XmlGrammarParser.parseGrammar(url);
-		assertNotNull(eGrammar);
-	}
+    @Test
+    public void testParseGrammarSuccess() throws Exception {
+        URL url = getClass().getResource("syn_grammar.xml");
+        EbnfGrammar eGrammar = XmlGrammarParser.parseGrammar(url);
+        assertNotNull(eGrammar);
+    }
 }

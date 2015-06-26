@@ -22,29 +22,29 @@ import com.karmant.syn.sample.script.rt.javacls.JavaMethodSet;
  * Java method value. Allows to invoke Java methods from a script.
  */
 abstract class JavaMethodValue extends Value {
-	private final JavaMethodSet methods;
+    private final JavaMethodSet methods;
 
-	JavaMethodValue(JavaMethodSet methods) {
-		this.methods = methods;
-	}
-	
-	/**
-	 * Returns the set of Java methods.
-	 */
-	final JavaMethodSet getMethods() {
-		return methods;
-	}
-	
-	@Override
-	public ValueType getValueType() {
-		return ValueType.JAVAMETHOD;
-	}
-	
-	@Override
-	public String getTypeMessage() {
-		return getCompoundTypeMessage(getMethods() + "");
-	}
+    JavaMethodValue(JavaMethodSet methods) {
+        this.methods = methods;
+    }
+    
+    /**
+     * Returns the set of Java methods.
+     */
+    final JavaMethodSet getMethods() {
+        return methods;
+    }
+    
+    @Override
+    public ValueType getValueType() {
+        return ValueType.JAVAMETHOD;
+    }
+    
+    @Override
+    public String getTypeMessage() {
+        return getCompoundTypeMessage(getMethods() + "");
+    }
 
-	@Override
-	public abstract Value call(RValue[] arguments) throws SynsException;
+    @Override
+    public abstract Value call(RValue[] arguments) throws SynsException;
 }

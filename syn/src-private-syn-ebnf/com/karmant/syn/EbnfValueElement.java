@@ -19,40 +19,40 @@ package com.karmant.syn;
  * Value EBNF element.
  */
 class EbnfValueElement extends EbnfElement {
-	private final ValueNode userNode;
-	
-	EbnfValueElement(String key, TextPos keyPos, ValueNode userNode) {
-		super(key, keyPos);
-		this.userNode = userNode;
-	}
-	
-	@Override
-	BnfElement convert(EbnfToBnfConverter converter, String currentNt) {
-		//A value element does not produce a BNF element.
-		return null;
-	}
-	
-	@Override
-	IParserGetter getGetter(int offset) {
-		return new ParserConstGetter(userNode);
-	}
+    private final ValueNode userNode;
+    
+    EbnfValueElement(String key, TextPos keyPos, ValueNode userNode) {
+        super(key, keyPos);
+        this.userNode = userNode;
+    }
+    
+    @Override
+    BnfElement convert(EbnfToBnfConverter converter, String currentNt) {
+        //A value element does not produce a BNF element.
+        return null;
+    }
+    
+    @Override
+    IParserGetter getGetter(int offset) {
+        return new ParserConstGetter(userNode);
+    }
 
-	@Override
-	<T> T invokeProcessor(EbnfElementProcessor<T> processor) throws SynException {
-		return processor.processValueElement(this);
-	}
-	
-	/**
-	 * Returns the associated value node.
-	 */
-	ValueNode getValueNode() {
-		return userNode;
-	}
-	
-	@Override
-	public String toString() {
-		String userStr = String.valueOf(userNode);
-		String s = "<" + userStr + ">";
-		return s;
-	}
+    @Override
+    <T> T invokeProcessor(EbnfElementProcessor<T> processor) throws SynException {
+        return processor.processValueElement(this);
+    }
+    
+    /**
+     * Returns the associated value node.
+     */
+    ValueNode getValueNode() {
+        return userNode;
+    }
+    
+    @Override
+    public String toString() {
+        String userStr = String.valueOf(userNode);
+        String s = "<" + userStr + ">";
+        return s;
+    }
 }

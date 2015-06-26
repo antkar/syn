@@ -22,14 +22,14 @@ import com.karmant.syn.TextPos;
  * Script <code>new</code> expression syntax node.
  */
 public abstract class NewExpression extends Expression {
-	/** The text position of the <code>new</code> keyword. */
-	@SynField
-	private TextPos synPos;
-	
-	public NewExpression(){}
-	
-	@Override
-	TextPos getStartTextPos() {
-		return synPos;
-	}
+    /** The text position of the <code>new</code> keyword. */
+    @SynField
+    private TextPos synPos;
+    
+    public NewExpression(){}
+    
+    @Override
+    TextPos getStartTextPos() {
+        return synPos;
+    }
 }

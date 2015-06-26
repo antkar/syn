@@ -19,17 +19,17 @@ package com.karmant.syn;
  * An element of a BNF grammar. Can be either a terminal or a nonterminal element.
  */
 abstract class BnfElement {
-	private final int elementIndex;
-	
-	BnfElement(int elementIndex) {
-		assert elementIndex >= 0;
-		this.elementIndex = elementIndex;
-	}
+    private final int elementIndex;
+    
+    BnfElement(int elementIndex) {
+        assert elementIndex >= 0;
+        this.elementIndex = elementIndex;
+    }
 
-	/**
-	 * Returns the index of this element in the grammar.
-	 */
-	int getElementIndex() {
-		return elementIndex;
-	}
+    /**
+     * Returns the index of this element in the grammar.
+     */
+    int getElementIndex() {
+        return elementIndex;
+    }
 }

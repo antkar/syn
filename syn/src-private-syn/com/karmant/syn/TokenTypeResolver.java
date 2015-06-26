@@ -23,22 +23,22 @@ import java.util.Map;
  * Maps an identifier (used in a grammar) to the corresponding literal token's type.
  */
 final class TokenTypeResolver {
-	private static final Map<String, TokenType> TOKEN_TYPE_MAP;
-	
-	static {
-		Map<String, TokenType> map = new HashMap<>();
-		map.put("ID", TokenType.ID);
-		map.put("INTEGER", TokenType.INTEGER);
-		map.put("FLOAT", TokenType.FLOAT);
-		map.put("STRING", TokenType.STRING);
-		TOKEN_TYPE_MAP = Collections.unmodifiableMap(map);
-	}
-	
-	private TokenTypeResolver() {
-	}
-	
-	static TokenType getTokenType(String name) {
-		TokenType tokenType = TOKEN_TYPE_MAP.get(name);
-		return tokenType;
-	}
+    private static final Map<String, TokenType> TOKEN_TYPE_MAP;
+    
+    static {
+        Map<String, TokenType> map = new HashMap<>();
+        map.put("ID", TokenType.ID);
+        map.put("INTEGER", TokenType.INTEGER);
+        map.put("FLOAT", TokenType.FLOAT);
+        map.put("STRING", TokenType.STRING);
+        TOKEN_TYPE_MAP = Collections.unmodifiableMap(map);
+    }
+    
+    private TokenTypeResolver() {
+    }
+    
+    static TokenType getTokenType(String name) {
+        TokenType tokenType = TOKEN_TYPE_MAP.get(name);
+        return tokenType;
+    }
 }

@@ -22,68 +22,68 @@ import com.karmant.syn.TextPos;
 
 
 public class SimpleMember {
-	@SynField	
-	private String sfName;
-	
-	@SynField
-	private String sfType;
+    @SynField
+    private String sfName;
+    
+    @SynField
+    private String sfType;
 
-	@SynField
-	private TextPos sfPos;
-	
-	@SynField("sfName")
-	private TextPos sfNamePos;
+    @SynField
+    private TextPos sfPos;
+    
+    @SynField("sfName")
+    private TextPos sfNamePos;
 
-	@SynField("sfType")
-	private TextPos sfTypePos;
+    @SynField("sfType")
+    private TextPos sfTypePos;
 
-	@SynLookup("obj == this.owner")
-	private SimpleEntity entity;
-	
-	@SynLookup("obj.sfName == this.sfType")
-	private SimpleEntity type;
+    @SynLookup("obj == this.owner")
+    private SimpleEntity entity;
+    
+    @SynLookup("obj.sfName == this.sfType")
+    private SimpleEntity type;
 
-	@SynLookup("obj != this && obj.owner == this.owner && obj.sfName == this.sfName")
-	private SimpleMember[] membersWithSameName;
-	
-	public SimpleMember() {
-		super();
-	}
-	
-	public String getName() {
-		return sfName;
-	}
-	
-	public SimpleEntity getType() {
-		return type;
-	}
-	
-	public String getSfType() {
-		return sfType;
-	}
-	
-	public TextPos getPos() {
-		return sfPos;
-	}
-	
-	public TextPos getNamePos() {
-		return sfNamePos;
-	}
-	
-	public TextPos getTypePos() {
-		return sfTypePos;
-	}
-	
-	@SynInit
-	private void init()	{
-		if (membersWithSameName.length > 0) {
-			throw new IllegalStateException(String.format("There is more than one member %s.%s",
-					entity.getName(), sfName));
-		}
-		if (type == null) {
-			throw new IllegalStateException(String.format(
-					"Name '%s' is used as the type of field %s.%s, but it is not defined",
-					sfType, entity.getName(), sfName));
-		}
-	}
+    @SynLookup("obj != this && obj.owner == this.owner && obj.sfName == this.sfName")
+    private SimpleMember[] membersWithSameName;
+    
+    public SimpleMember() {
+        super();
+    }
+    
+    public String getName() {
+        return sfName;
+    }
+    
+    public SimpleEntity getType() {
+        return type;
+    }
+    
+    public String getSfType() {
+        return sfType;
+    }
+    
+    public TextPos getPos() {
+        return sfPos;
+    }
+    
+    public TextPos getNamePos() {
+        return sfNamePos;
+    }
+    
+    public TextPos getTypePos() {
+        return sfTypePos;
+    }
+    
+    @SynInit
+    private void init() {
+        if (membersWithSameName.length > 0) {
+            throw new IllegalStateException(String.format("There is more than one member %s.%s",
+                    entity.getName(), sfName));
+        }
+        if (type == null) {
+            throw new IllegalStateException(String.format(
+                    "Name '%s' is used as the type of field %s.%s, but it is not defined",
+                    sfType, entity.getName(), sfName));
+        }
+    }
 }

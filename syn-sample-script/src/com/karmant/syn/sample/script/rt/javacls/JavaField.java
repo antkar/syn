@@ -27,52 +27,52 @@ import com.karmant.syn.sample.script.rt.value.Value;
  * Wraps a Java {@link Field}.
  */
 public class JavaField extends JavaMember {
-	private final Field field;
-	
-	JavaField(Field field) {
-		this.field = field;
-	}
-	
-	public boolean isStatic() {
-		return Modifier.isStatic(field.getModifiers());
-	}
-	
-	public Class<?> getType() {
-		return field.getType();
-	}
-	
-	@Override
-	Value getStaticValue() throws SynsException {
-		if (!isStatic()) {
-			throw new SynsException("Cannot statically access instance field " + field);
-		}
-		
-		return new JavaStaticFieldValue(this);
-	}
+    private final Field field;
+    
+    JavaField(Field field) {
+        this.field = field;
+    }
+    
+    public boolean isStatic() {
+        return Modifier.isStatic(field.getModifiers());
+    }
+    
+    public Class<?> getType() {
+        return field.getType();
+    }
+    
+    @Override
+    Value getStaticValue() throws SynsException {
+        if (!isStatic()) {
+            throw new SynsException("Cannot statically access instance field " + field);
+        }
+        
+        return new JavaStaticFieldValue(this);
+    }
 
-	@Override
-	Value getInstanceValue(Object obj) {
-		return new JavaInstanceFieldValue(this, obj);
-	}
+    @Override
+    Value getInstanceValue(Object obj) {
+        return new JavaInstanceFieldValue(this, obj);
+    }
 
-	public Object get(Object obj) throws SynsException {
-		try {
-			return field.get(obj);
-		} catch (IllegalAccessException e) {
-			throw new SynsException(e);
-		}
-	}
-	
-	public void set(Object obj, Object value) throws SynsException {
-		try {
-			field.set(obj, value);
-		} catch (IllegalAccessException e) {
-			throw new SynsException(e);
-		}
-	}
+    public Object get(Object obj) throws SynsException {
+        try {
+            return field.get(obj);
+        } catch (IllegalAccessException e) {
+            throw new SynsException(e);
+        }
+    }
+    
+    public void set(Object obj, Object value) throws SynsException {
+        try {
+            field.set(obj, value);
+        } catch (IllegalAccessException e) {
+            throw new SynsException(e);
+        }
+    }
 
-	@Override
-	public String toString() {
-		return field.toString();
-	}
+    @Override
+    public String toString() {
+        return field.toString();
+    }
 }

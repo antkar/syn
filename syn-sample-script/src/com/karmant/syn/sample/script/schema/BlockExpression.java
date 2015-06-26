@@ -25,28 +25,28 @@ import com.karmant.syn.sample.script.rt.value.Value;
  * Block expression syntax node.
  */
 public class BlockExpression extends TerminalExpression {
-	/** The text position of the first token of the block. */
-	@SynField
-	private TextPos synPos;
+    /** The text position of the first token of the block. */
+    @SynField
+    private TextPos synPos;
 
-	/** The block. */
-	@SynField
-	private Block synBlock;
-	
-	public BlockExpression(){}
-	
-	@Override
-	TextPos getStartTextPos() {
-		return synPos;
-	}
+    /** The block. */
+    @SynField
+    private Block synBlock;
+    
+    public BlockExpression(){}
+    
+    @Override
+    TextPos getStartTextPos() {
+        return synPos;
+    }
 
-	@Override
-	Value evaluate0(ScriptScope scope) throws SynsException {
-		return synBlock.toValue(scope);
-	}
-	
-	@Override
-	public String toString() {
-		return synBlock + "";
-	}
+    @Override
+    Value evaluate0(ScriptScope scope) throws SynsException {
+        return synBlock.toValue(scope);
+    }
+    
+    @Override
+    public String toString() {
+        return synBlock + "";
+    }
 }

@@ -22,18 +22,18 @@ package com.karmant.syn;
  * instance of {@link TerminalNode} for a token.   
  */
 interface IPrimitiveResult {
-	/**
-	 * Returns the token descriptor of the token.
-	 * @return the token descriptor.
-	 */
-	TokenDescriptor getTokenDescriptor();
-	
-	/**
-	 * Creates a {@link TerminalNode} for the token.
-	 * @param pos the text position of the first character of the token to be put into the node. The position
-	 * is tracked by {@link DefaultTokenStream}, not by primitive scanners. 
-	 * 
-	 * @return the text position.
-	 */
-	TerminalNode createTokenNode(PosBuffer pos);
+    /**
+     * Returns the token descriptor of the token.
+     * @return the token descriptor.
+     */
+    TokenDescriptor getTokenDescriptor();
+    
+    /**
+     * Creates a {@link TerminalNode} for the token.
+     * @param pos the text position of the first character of the token to be put into the node. The position
+     * is tracked by {@link DefaultTokenStream}, not by primitive scanners. 
+     * 
+     * @return the text position.
+     */
+    TerminalNode createTokenNode(PosBuffer pos);
 }

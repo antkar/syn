@@ -19,5 +19,5 @@ package com.karmant.syn.sample.script.schema;
  * Terminal expression syntax node.
  */
 public abstract class TerminalExpression extends Expression {
-	public TerminalExpression(){}
+    public TerminalExpression(){}
 }

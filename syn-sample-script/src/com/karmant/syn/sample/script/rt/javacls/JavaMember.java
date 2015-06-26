@@ -22,15 +22,15 @@ import com.karmant.syn.sample.script.rt.value.Value;
  * Wraps a Java class member.
  */
 abstract class JavaMember {
-	JavaMember(){}
-	
-	/**
-	 * Returns the value of a static member. If this member is not static, an exception is thrown.
-	 */
-	abstract Value getStaticValue() throws SynsException;
-	
-	/**
-	 * Returns the value of an instance member.
-	 */
-	abstract Value getInstanceValue(Object obj);
+    JavaMember(){}
+    
+    /**
+     * Returns the value of a static member. If this member is not static, an exception is thrown.
+     */
+    abstract Value getStaticValue() throws SynsException;
+    
+    /**
+     * Returns the value of an instance member.
+     */
+    abstract Value getInstanceValue(Object obj);
 }

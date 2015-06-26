@@ -21,21 +21,21 @@ import com.karmant.syn.sample.script.rt.value.Value;
  * An on-demand import looking for a Java class in a particular Java package.
  */
 class JavaPackageOnDemandImport extends OnDemandImport {
-	private final String packagePrefix;
-	
-	JavaPackageOnDemandImport(String packagePrefix) {
-		this.packagePrefix = packagePrefix;
-	}
+    private final String packagePrefix;
+    
+    JavaPackageOnDemandImport(String packagePrefix) {
+        this.packagePrefix = packagePrefix;
+    }
 
-	@Override
-	Value getValueOpt(String name) {
-		String className = packagePrefix + name;
-		Value value = ScriptScope.getJavaClassValueOpt(className);
-		return value;
-	}
-	
-	@Override
-	public String toString() {
-		return "package:" + packagePrefix + "*";
-	}
+    @Override
+    Value getValueOpt(String name) {
+        String className = packagePrefix + name;
+        Value value = ScriptScope.getJavaClassValueOpt(className);
+        return value;
+    }
+    
+    @Override
+    public String toString() {
+        return "package:" + packagePrefix + "*";
+    }
 }

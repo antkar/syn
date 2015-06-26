@@ -24,26 +24,26 @@ import java.io.PrintStream;
  * <li>{@link ObjectNode}.</li>
  */
 public abstract class SynNode {
-	SynNode(){}
-	
-	/**
-	 * Prints the syntax tree (considering this node the root) to the specified print stream. Used for
-	 * debugging purposes.
-	 * 
-	 * @param out the stream to print the tree to.
-	 */
-	public void print(PrintStream out) {
-		if (out == null) {
-			throw new NullPointerException("out");
-		}
-		print(out, 0);
-	}
-	
-	/**
-	 * Prints the tree to the specified stream with the specified indentation level.
-	 * 
-	 * @param out the stream.
-	 * @param level the indentation level; must be equal or greater than 0.
-	 */
-	abstract void print(PrintStream out, int level);
+    SynNode(){}
+    
+    /**
+     * Prints the syntax tree (considering this node the root) to the specified print stream. Used for
+     * debugging purposes.
+     * 
+     * @param out the stream to print the tree to.
+     */
+    public void print(PrintStream out) {
+        if (out == null) {
+            throw new NullPointerException("out");
+        }
+        print(out, 0);
+    }
+    
+    /**
+     * Prints the tree to the specified stream with the specified indentation level.
+     * 
+     * @param out the stream.
+     * @param level the indentation level; must be equal or greater than 0.
+     */
+    abstract void print(PrintStream out, int level);
 }

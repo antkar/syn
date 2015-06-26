@@ -20,21 +20,21 @@ package com.karmant.syn;
  */
 class LookupNeExpression extends LookupRelExpression {
 
-	LookupNeExpression(
-			LookupEqualityChecker equalityChecker,
-			LookupTermExpression left,
-			LookupTermExpression right)
-	{
-		super(equalityChecker, left, right);
-	}
+    LookupNeExpression(
+            LookupEqualityChecker equalityChecker,
+            LookupTermExpression left,
+            LookupTermExpression right)
+    {
+        super(equalityChecker, left, right);
+    }
 
-	@Override
-	boolean calcResult(boolean equal) {
-		return !equal;
-	}
-	
-	@Override
-	public String toString() {
-		return getLeft() + " != " + getRight();
-	}
+    @Override
+    boolean calcResult(boolean equal) {
+        return !equal;
+    }
+    
+    @Override
+    public String toString() {
+        return getLeft() + " != " + getRight();
+    }
 }

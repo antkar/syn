@@ -27,45 +27,45 @@ import java.util.Map;
  * parse a text.
  */
 class ParserConfiguration {
-	private final Map<String, ParserState> startStates;
-	private final List<ParserState> states;
-	private final List<TokenDescriptor> tokenDescriptors;
+    private final Map<String, ParserState> startStates;
+    private final List<ParserState> states;
+    private final List<TokenDescriptor> tokenDescriptors;
 
-	ParserConfiguration(
-			Map<String, ParserState> startStates,
-			List<ParserState> states,
-			List<TokenDescriptor> tokenDescriptors)
-	{
-		assert startStates != null;
-		assert states != null;
-		assert tokenDescriptors != null;
+    ParserConfiguration(
+            Map<String, ParserState> startStates,
+            List<ParserState> states,
+            List<TokenDescriptor> tokenDescriptors)
+    {
+        assert startStates != null;
+        assert states != null;
+        assert tokenDescriptors != null;
 
-		this.startStates = Collections.unmodifiableMap(new HashMap<>(startStates));
-		this.states = Collections.unmodifiableList(new ArrayList<>(states));
-		this.tokenDescriptors = Collections.unmodifiableList(new ArrayList<>(tokenDescriptors));
-	}
-	
-	/**
-	 * Returns the start LR state for a given start nonterminal.
-	 */
-	ParserState getStartState(String name) {
-		ParserState result = startStates.get(name);
-		return result;
-	}
-	
-	/**
-	 * Returns the list of token descriptors used in the grammar.
-	 */
-	List<TokenDescriptor> getTokenDescriptors() {
-		return tokenDescriptors;
-	}
-	
-	/**
-	 * Prints LR states to a stream. For debug purposes.
-	 */
-	void print(PrintStream out) {
-		for (ParserState state : states) {
-			state.print(out);
-		}
-	}
+        this.startStates = Collections.unmodifiableMap(new HashMap<>(startStates));
+        this.states = Collections.unmodifiableList(new ArrayList<>(states));
+        this.tokenDescriptors = Collections.unmodifiableList(new ArrayList<>(tokenDescriptors));
+    }
+    
+    /**
+     * Returns the start LR state for a given start nonterminal.
+     */
+    ParserState getStartState(String name) {
+        ParserState result = startStates.get(name);
+        return result;
+    }
+    
+    /**
+     * Returns the list of token descriptors used in the grammar.
+     */
+    List<TokenDescriptor> getTokenDescriptors() {
+        return tokenDescriptors;
+    }
+    
+    /**
+     * Prints LR states to a stream. For debug purposes.
+     */
+    void print(PrintStream out) {
+        for (ParserState state : states) {
+            state.print(out);
+        }
+    }
 }

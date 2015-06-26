@@ -25,27 +25,27 @@ import com.karmant.syn.sample.script.rt.value.Value;
  * Script <code>for</code> statement variable declaration syntax node.
  */
 public class ForVariableDeclaration {
-	/** The name of the variable. */
-	@SynField
-	private StringToken synName;
-	
-	/** The value of the variable, if any. */
-	@SynField
-	private Expression synExpression;
+    /** The name of the variable. */
+    @SynField
+    private StringToken synName;
+    
+    /** The value of the variable, if any. */
+    @SynField
+    private Expression synExpression;
 
-	public ForVariableDeclaration(){}
-	
-	/**
-	 * Adds this variable to the specified scope.
-	 */
-	void addToScope(ScriptScope scope) throws SynsException {
-		Value value = synExpression.evaluate(scope);
-		Value variable = Value.newVariable(value);
-		scope.addValue(synName, variable);
-	}
-	
-	@Override
-	public String toString() {
-		return "var " + synName + " = " + synExpression;
-	}
+    public ForVariableDeclaration(){}
+    
+    /**
+     * Adds this variable to the specified scope.
+     */
+    void addToScope(ScriptScope scope) throws SynsException {
+        Value value = synExpression.evaluate(scope);
+        Value variable = Value.newVariable(value);
+        scope.addValue(synName, variable);
+    }
+    
+    @Override
+    public String toString() {
+        return "var " + synName + " = " + synExpression;
+    }
 }

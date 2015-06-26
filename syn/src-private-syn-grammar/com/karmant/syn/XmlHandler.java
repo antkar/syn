@@ -26,36 +26,36 @@ import org.xml.sax.helpers.DefaultHandler;
  * Builds a tree of {@link XmlNode}s.
  */
 class XmlHandler extends DefaultHandler {
-	
-	private XmlNode rootNode;
-	private XmlNode currentNode = null;
-	
-	XmlHandler(){}
+    
+    private XmlNode rootNode;
+    private XmlNode currentNode = null;
+    
+    XmlHandler(){}
 
-	@Override
-	public void startElement(String uri, String localName, String qName, Attributes attributes) {
-		Map<String, String> attrMap = new HashMap<>();
-		for (int i = 0, n = attributes.getLength(); i < n; ++i) {
-			String name = attributes.getQName(i);
-			String value = attributes.getValue(i);
-			attrMap.put(name, value);
-		}
-		
-		XmlNode node = new XmlNode(currentNode, qName, attrMap);
-		if (currentNode != null) {
-			currentNode.addNestedNode(node);
-		} else if (rootNode == null) {
-			rootNode = node;
-		}
-		currentNode = node;
-	}
+    @Override
+    public void startElement(String uri, String localName, String qName, Attributes attributes) {
+        Map<String, String> attrMap = new HashMap<>();
+        for (int i = 0, n = attributes.getLength(); i < n; ++i) {
+            String name = attributes.getQName(i);
+            String value = attributes.getValue(i);
+            attrMap.put(name, value);
+        }
+        
+        XmlNode node = new XmlNode(currentNode, qName, attrMap);
+        if (currentNode != null) {
+            currentNode.addNestedNode(node);
+        } else if (rootNode == null) {
+            rootNode = node;
+        }
+        currentNode = node;
+    }
 
-	@Override
-	public void endElement(String uri, String localName, String qName) {
-		currentNode = currentNode.getParentNode();
-	}
-	
-	XmlNode getRootNode() {
-		return rootNode;
-	}
+    @Override
+    public void endElement(String uri, String localName, String qName) {
+        currentNode = currentNode.getParentNode();
+    }
+    
+    XmlNode getRootNode() {
+        return rootNode;
+    }
 }

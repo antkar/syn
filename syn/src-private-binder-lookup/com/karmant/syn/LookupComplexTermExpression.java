@@ -19,14 +19,14 @@ package com.karmant.syn;
  * Complex term lookup expression - contains another expression inside.
  */
 abstract class LookupComplexTermExpression extends LookupTermExpression {
-	private final LookupTermExpression baseExpression;
+    private final LookupTermExpression baseExpression;
 
-	LookupComplexTermExpression(Class<?> clsOfValue, LookupTermExpression baseExpression) {
-		super(clsOfValue);
-		this.baseExpression = baseExpression;
-	}
+    LookupComplexTermExpression(Class<?> clsOfValue, LookupTermExpression baseExpression) {
+        super(clsOfValue);
+        this.baseExpression = baseExpression;
+    }
 
-	LookupTermExpression getBaseExpression() {
-		return baseExpression;
-	}
+    LookupTermExpression getBaseExpression() {
+        return baseExpression;
+    }
 }

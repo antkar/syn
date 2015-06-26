@@ -19,26 +19,26 @@ package com.karmant.syn;
  * Primitive <code>float</code> array bound type.
  */
 class FloatArrayBoundType extends ArrayBoundType {
-	static final BoundType INSTANCE = new FloatArrayBoundType();
+    static final BoundType INSTANCE = new FloatArrayBoundType();
 
-	private FloatArrayBoundType(){}
+    private FloatArrayBoundType(){}
 
-	@Override
-	Object convertArray(
-			BinderEngine<?> engine,
-			BoundObject bObjOwner,
-			String key,
-			ArrayNode arrayNode,
-			int size) throws SynBinderException
-	{
-		float[] array = new float[size];
-		
-		for (int i = 0; i < size; ++i) {
-			SynNode synElementNode = arrayNode.get(i);
-			float value = FloatBoundType.extractValue(synElementNode);
-			array[i] = value;
-		}
-		
-		return array;
-	}
+    @Override
+    Object convertArray(
+            BinderEngine<?> engine,
+            BoundObject bObjOwner,
+            String key,
+            ArrayNode arrayNode,
+            int size) throws SynBinderException
+    {
+        float[] array = new float[size];
+        
+        for (int i = 0; i < size; ++i) {
+            SynNode synElementNode = arrayNode.get(i);
+            float value = FloatBoundType.extractValue(synElementNode);
+            array[i] = value;
+        }
+        
+        return array;
+    }
 }

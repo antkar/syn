@@ -23,31 +23,31 @@ import java.util.List;
  * {@link List} bound type.
  */
 class ListBoundType extends BoundType {
-	private final BoundType elementType;
-	
-	ListBoundType(BoundType elementType) {
-		this.elementType = elementType;
-	}
+    private final BoundType elementType;
+    
+    ListBoundType(BoundType elementType) {
+        this.elementType = elementType;
+    }
 
-	@Override
-	BoundType getArrayType(Field field) throws SynBinderException {
-		throw new SynBinderException(String.format("Arrays of List are not supported (%s)", field));
-	}
+    @Override
+    BoundType getArrayType(Field field) throws SynBinderException {
+        throw new SynBinderException(String.format("Arrays of List are not supported (%s)", field));
+    }
 
-	@Override
-	Object convertNode(BinderEngine<?> engine, SynNode synNode, BoundObject bObjOwner, String key)
-			throws SynBinderException
-	{
-		ArrayNode arrayNode = (ArrayNode) synNode;
-		int size = arrayNode.size();
-		List<Object> list = new ArrayList<>(size);
-		
-		for (int i = 0; i < size; ++i) {
-			SynNode synElementNode = arrayNode.get(i);
-			Object value = elementType.convertNode(engine, synElementNode, bObjOwner, key);
-			list.add(value);
-		}
-		
-		return list;
-	}
+    @Override
+    Object convertNode(BinderEngine<?> engine, SynNode synNode, BoundObject bObjOwner, String key)
+            throws SynBinderException
+    {
+        ArrayNode arrayNode = (ArrayNode) synNode;
+        int size = arrayNode.size();
+        List<Object> list = new ArrayList<>(size);
+        
+        for (int i = 0; i < size; ++i) {
+            SynNode synElementNode = arrayNode.get(i);
+            Object value = elementType.convertNode(engine, synElementNode, bObjOwner, key);
+            list.add(value);
+        }
+        
+        return list;
+    }
 }

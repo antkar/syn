@@ -33,64 +33,64 @@ import javax.swing.text.StyledDocument;
  */
 class ConsoleComponent {
 
-	private final JTextPane textPane;
-	private final StyledDocument doc;
-	private final JPanel panel;
-	
-	private final AttributeSet outStyle;
-	private final AttributeSet errStyle;
-	
-	ConsoleComponent() {
-		textPane = new JTextPane();
-		textPane.setEditable(false);
-		doc = textPane.getStyledDocument();
-		
-		panel = new JPanel(new BorderLayout());
-		JScrollPane scrollPane = UIUtil.createTextPaneScrollPane(textPane);
-		panel.add(scrollPane, BorderLayout.CENTER);
-		
-		Font font = UIManager.getFont("TextArea.font");
-		outStyle = UIUtil.createTextAttributes(font, Color.BLACK, false, false);
-		errStyle = UIUtil.createTextAttributes(font, Color.RED, false, false);
-	}
-	
-	/**
-	 * Returns the underlying Swing component.
-	 */
-	JComponent getComponent() {
-		return panel;
-	}
-	
-	/**
-	 * Appends the specified string as a standard output message.
-	 */
-	void stdOut(String str) {
-		append(str, outStyle);
-	}
-	
-	/**
-	 * Appends the specified string as an error message.
-	 */
-	void stdErr(String str) {
-		append(str, errStyle);
-	}
-	
-	/**
-	 * Clears the console.
-	 */
-	void clear() {
-		try {
-			doc.remove(0, doc.getLength());
-		} catch (BadLocationException e) {
-			//ignore.
-		}
-	}
-	
-	private void append(String str, AttributeSet attributes) {
-		try {
-			doc.insertString(doc.getLength(), str, attributes);
-		} catch (BadLocationException e) {
-			//ignore
-		}
-	}
+    private final JTextPane textPane;
+    private final StyledDocument doc;
+    private final JPanel panel;
+    
+    private final AttributeSet outStyle;
+    private final AttributeSet errStyle;
+    
+    ConsoleComponent() {
+        textPane = new JTextPane();
+        textPane.setEditable(false);
+        doc = textPane.getStyledDocument();
+        
+        panel = new JPanel(new BorderLayout());
+        JScrollPane scrollPane = UIUtil.createTextPaneScrollPane(textPane);
+        panel.add(scrollPane, BorderLayout.CENTER);
+        
+        Font font = UIManager.getFont("TextArea.font");
+        outStyle = UIUtil.createTextAttributes(font, Color.BLACK, false, false);
+        errStyle = UIUtil.createTextAttributes(font, Color.RED, false, false);
+    }
+    
+    /**
+     * Returns the underlying Swing component.
+     */
+    JComponent getComponent() {
+        return panel;
+    }
+    
+    /**
+     * Appends the specified string as a standard output message.
+     */
+    void stdOut(String str) {
+        append(str, outStyle);
+    }
+    
+    /**
+     * Appends the specified string as an error message.
+     */
+    void stdErr(String str) {
+        append(str, errStyle);
+    }
+    
+    /**
+     * Clears the console.
+     */
+    void clear() {
+        try {
+            doc.remove(0, doc.getLength());
+        } catch (BadLocationException e) {
+            //ignore.
+        }
+    }
+    
+    private void append(String str, AttributeSet attributes) {
+        try {
+            doc.insertString(doc.getLength(), str, attributes);
+        } catch (BadLocationException e) {
+            //ignore
+        }
+    }
 }

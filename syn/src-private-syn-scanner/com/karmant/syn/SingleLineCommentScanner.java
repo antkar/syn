@@ -19,20 +19,20 @@ package com.karmant.syn;
  * Single-line comment scanner. Scans comments starting with '//'.
  */
 class SingleLineCommentScanner implements IPrimitiveScanner {
-	SingleLineCommentScanner(){}
-	
-	@Override
-	public IPrimitiveResult scan(PrimitiveContext context) throws SynException {
-		if (context.current != '/' || context.lookahead() != '/') {
-			//Not '//'. Return null.
-			return null;
-		}
+    SingleLineCommentScanner(){}
+    
+    @Override
+    public IPrimitiveResult scan(PrimitiveContext context) throws SynException {
+        if (context.current != '/' || context.lookahead() != '/') {
+            //Not '//'. Return null.
+            return null;
+        }
 
-		//Skip all characters until the end of the line or end of file.
-		while (context.current != -1 && context.current != '\n') {
-			context.next();
-		}
-		
-		return NonePrimitiveResult.INSTANCE;
-	}
+        //Skip all characters until the end of the line or end of file.
+        while (context.current != -1 && context.current != '\n') {
+            context.next();
+        }
+        
+        return NonePrimitiveResult.INSTANCE;
+    }
 }

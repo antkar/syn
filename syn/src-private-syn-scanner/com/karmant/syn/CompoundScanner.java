@@ -20,22 +20,22 @@ package com.karmant.syn;
  * one-by-one.
  */
 class CompoundScanner implements IPrimitiveScanner {
-	private final IPrimitiveScanner[] scanners;
-	
-	CompoundScanner(IPrimitiveScanner... scanners) {
-		assert scanners != null;
-		this.scanners = scanners;
-	}
+    private final IPrimitiveScanner[] scanners;
+    
+    CompoundScanner(IPrimitiveScanner... scanners) {
+        assert scanners != null;
+        this.scanners = scanners;
+    }
 
-	@Override
-	public IPrimitiveResult scan(PrimitiveContext context) throws SynException {
-		for (int i = 0; i < scanners.length; ++i) {
-			IPrimitiveScanner scanner = scanners[i];
-			IPrimitiveResult result = scanner.scan(context);
-			if (result != null) {
-				return result;
-			}
-		}
-		return null;
-	}
+    @Override
+    public IPrimitiveResult scan(PrimitiveContext context) throws SynException {
+        for (int i = 0; i < scanners.length; ++i) {
+            IPrimitiveScanner scanner = scanners[i];
+            IPrimitiveResult result = scanner.scan(context);
+            if (result != null) {
+                return result;
+            }
+        }
+        return null;
+    }
 }

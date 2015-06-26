@@ -19,10 +19,10 @@ package com.karmant.syn.sample.script.rt.javacls;
  * Mock type match precision.
  */
 final class NullTypeMatchPrecision implements TypeMatchPrecision {
-	NullTypeMatchPrecision(){}
+    NullTypeMatchPrecision(){}
 
-	@Override
-	public void increment(int value) {
-		//Do nothing.
-	}
+    @Override
+    public void increment(int value) {
+        //Do nothing.
+    }
 }

@@ -24,9 +24,9 @@ import org.junit.runners.Suite.SuiteClasses;
  */
 @RunWith(Suite.class)
 @SuiteClasses({
-	SimpleUnitBindingTest.class,
-	SynBinderTest.class,
+    SimpleUnitBindingTest.class,
+    SynBinderTest.class,
 })
 public class BinderSuite {
-	private BinderSuite(){}
+    private BinderSuite(){}
 }

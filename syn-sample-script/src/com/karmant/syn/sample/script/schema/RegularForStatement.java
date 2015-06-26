@@ -26,63 +26,63 @@ import com.karmant.syn.sample.script.rt.value.Value;
  * Regular <code>for</code> statement syntax node.
  */
 public class RegularForStatement extends ForStatement {
-	/** The initializer. */
-	@SynField
-	private ForInit synInit;
-	
-	/** The condition expression. */
-	@SynField
-	private Expression synExpression;
-	
-	/** Update expressions. */
-	@SynField
-	private Expression[] synUpdate;
-	
-	/** The statement to be repeated. */
-	@SynField
-	private Statement synStatement;
+    /** The initializer. */
+    @SynField
+    private ForInit synInit;
+    
+    /** The condition expression. */
+    @SynField
+    private Expression synExpression;
+    
+    /** Update expressions. */
+    @SynField
+    private Expression[] synUpdate;
+    
+    /** The statement to be repeated. */
+    @SynField
+    private Statement synStatement;
 
-	public RegularForStatement(){}
+    public RegularForStatement(){}
 
-	@Override
-	StatementResult execute0(ScriptScope scope) throws SynsException {
-		//Create a scope and put the control variable there, if any.
-		scope = scope.deriveLoopScope("for");
-		if (synInit != null) {
-			synInit.execute(scope);
-		}
-		
-		//Execute the loop.
-		while (checkCondition(scope)) {
-			//Execute the body.
-			StatementResult result = synStatement.execute(scope);
-			if (result.isBreak()) {
-				break;
-			} else if (result.isReturn()) {
-				return result;
-			}
-			
-			//Execute update expressions.
-			for (Expression expression : synUpdate) {
-				expression.evaluate(scope);
-			}
-		}
-		
-		return StatementResult.NONE;
-	}
-	
-	/**
-	 * Checks whether the condition expression is satisfied.
-	 */
-	private boolean checkCondition(ScriptScope scope) throws SynsException {
-		if (synExpression == null) {
-			//No condition - assume true.
-			return true;
-		}
-		
-		//Evaluate the condition expression.
-		Value value = synExpression.evaluate(scope);
-		Operand operand = value.toOperand();
-		return operand.booleanValue();
-	}
+    @Override
+    StatementResult execute0(ScriptScope scope) throws SynsException {
+        //Create a scope and put the control variable there, if any.
+        scope = scope.deriveLoopScope("for");
+        if (synInit != null) {
+            synInit.execute(scope);
+        }
+        
+        //Execute the loop.
+        while (checkCondition(scope)) {
+            //Execute the body.
+            StatementResult result = synStatement.execute(scope);
+            if (result.isBreak()) {
+                break;
+            } else if (result.isReturn()) {
+                return result;
+            }
+            
+            //Execute update expressions.
+            for (Expression expression : synUpdate) {
+                expression.evaluate(scope);
+            }
+        }
+        
+        return StatementResult.NONE;
+    }
+    
+    /**
+     * Checks whether the condition expression is satisfied.
+     */
+    private boolean checkCondition(ScriptScope scope) throws SynsException {
+        if (synExpression == null) {
+            //No condition - assume true.
+            return true;
+        }
+        
+        //Evaluate the condition expression.
+        Value value = synExpression.evaluate(scope);
+        Operand operand = value.toOperand();
+        return operand.booleanValue();
+    }
 }

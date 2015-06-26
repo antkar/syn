@@ -23,5 +23,5 @@ package com.karmant.syn;
  * @see FileSourceDescriptor
  */
 public interface SourceDescriptor {
-	String getName();
+    String getName();
 }

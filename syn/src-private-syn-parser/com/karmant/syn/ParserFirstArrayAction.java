@@ -20,24 +20,24 @@ package com.karmant.syn;
  * by a repetition element.
  */
 class ParserFirstArrayAction implements IParserAction {
-	static final ParserFirstArrayAction INSTANCE = new ParserFirstArrayAction();
-	
-	private ParserFirstArrayAction(){}
+    static final ParserFirstArrayAction INSTANCE = new ParserFirstArrayAction();
+    
+    private ParserFirstArrayAction(){}
 
-	@Override
-	public IParserNode execute(ParserStackElement stack) {
-		ParserArrayNode result = new ParserArrayNode();
-		IParserNode node = stack.createParserNode();
-		if (node != null) {
-			//Null elements are not added.
-			SynNode userNode = node.createUserNode();
-			result.addSubNode(userNode);
-		}
-		return result;
-	}
-	
-	@Override
-	public String toString() {
-		return "$$ = [$0]";
-	}
+    @Override
+    public IParserNode execute(ParserStackElement stack) {
+        ParserArrayNode result = new ParserArrayNode();
+        IParserNode node = stack.createParserNode();
+        if (node != null) {
+            //Null elements are not added.
+            SynNode userNode = node.createUserNode();
+            result.addSubNode(userNode);
+        }
+        return result;
+    }
+    
+    @Override
+    public String toString() {
+        return "$$ = [$0]";
+    }
 }

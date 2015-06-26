@@ -23,25 +23,25 @@ import java.util.Collection;
  */
 class SingleObjectLookupBinder extends LookupBinder {
 
-	SingleObjectLookupBinder(Field field) {
-		super(field);
-	}
+    SingleObjectLookupBinder(Field field) {
+        super(field);
+    }
 
-	@Override
-	Object createValue(Collection<Object> oObjs) throws SynBinderException {
-		Object result;
-		
-		if (oObjs.isEmpty()) {
-			result = null;
-		} else if (oObjs.size() == 1) {
-			result = oObjs.iterator().next();
-		} else {
-			throw new SynBinderException(String.format(
-					"%d objects satisfy expression bound to the field %s, which is not an array",
-					oObjs.size(), getField()));
-		}
-		
-		return result;
-	}
+    @Override
+    Object createValue(Collection<Object> oObjs) throws SynBinderException {
+        Object result;
+        
+        if (oObjs.isEmpty()) {
+            result = null;
+        } else if (oObjs.size() == 1) {
+            result = oObjs.iterator().next();
+        } else {
+            throw new SynBinderException(String.format(
+                    "%d objects satisfy expression bound to the field %s, which is not an array",
+                    oObjs.size(), getField()));
+        }
+        
+        return result;
+    }
 
 }

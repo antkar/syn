@@ -22,27 +22,27 @@ import java.util.List;
  * Array Parser Tree node. Produced by repetition elements.
  */
 class ParserArrayNode implements IParserNode {
-	private final List<SynNode> subNodes;
-	
-	ParserArrayNode() {
-		subNodes = new ArrayList<>();
-	}
-	
-	/**
-	 * Adds a sub-node to this array.
-	 */
-	void addSubNode(SynNode subNode) {
-		subNodes.add(subNode);
-	}
+    private final List<SynNode> subNodes;
+    
+    ParserArrayNode() {
+        subNodes = new ArrayList<>();
+    }
+    
+    /**
+     * Adds a sub-node to this array.
+     */
+    void addSubNode(SynNode subNode) {
+        subNodes.add(subNode);
+    }
 
-	@Override
-	public SynNode createUserNode() {
-		SynNode result = new ArrayNode(subNodes);
-		return result;
-	}
-	
-	@Override
-	public String toString() {
-		return subNodes + "";
-	}
+    @Override
+    public SynNode createUserNode() {
+        SynNode result = new ArrayNode(subNodes);
+        return result;
+    }
+    
+    @Override
+    public String toString() {
+        return subNodes + "";
+    }
 }

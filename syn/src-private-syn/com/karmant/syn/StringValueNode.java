@@ -19,12 +19,12 @@ package com.karmant.syn;
  * String value node. Contains a value of type {@link String}.
  */
 class StringValueNode extends BasicStringValueNode {
-	StringValueNode(PosBuffer pos, String value) {
-		super(pos, value);
-	}
+    StringValueNode(PosBuffer pos, String value) {
+        super(pos, value);
+    }
 
-	@Override
-	public TokenDescriptor getTokenDescriptor() {
-		return TokenDescriptor.STRING;
-	}
+    @Override
+    public TokenDescriptor getTokenDescriptor() {
+        return TokenDescriptor.STRING;
+    }
 }

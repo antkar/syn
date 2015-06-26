@@ -25,36 +25,36 @@ import com.karmant.syn.sample.script.rt.value.Value;
  * Boolean literal expression syntax node.
  */
 public class BooleanLiteralExpression extends LiteralExpression {
-	/** The text position of the boolean literal. */
-	@SynField
-	private TextPos synPos;
-	
-	/** The value of the boolean literal. */
-	@SynField
-	private boolean synValue;
-	
-	/** The script representation of the value. */
-	private Value value;
+    /** The text position of the boolean literal. */
+    @SynField
+    private TextPos synPos;
+    
+    /** The value of the boolean literal. */
+    @SynField
+    private boolean synValue;
+    
+    /** The script representation of the value. */
+    private Value value;
 
-	public BooleanLiteralExpression(){}
-	
-	@SynInit
-	private void init() {
-		value = Value.forBoolean(synValue);
-	}
-	
-	@Override
-	TextPos getStartTextPos() {
-		return synPos;
-	}
+    public BooleanLiteralExpression(){}
+    
+    @SynInit
+    private void init() {
+        value = Value.forBoolean(synValue);
+    }
+    
+    @Override
+    TextPos getStartTextPos() {
+        return synPos;
+    }
 
-	@Override
-	Value evaluate0(ScriptScope scope) {
-		return value;
-	}
-	
-	@Override
-	public String toString() {
-		return value + "";
-	}
+    @Override
+    Value evaluate0(ScriptScope scope) {
+        return value;
+    }
+    
+    @Override
+    public String toString() {
+        return value + "";
+    }
 }

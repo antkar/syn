@@ -20,32 +20,32 @@ package com.karmant.syn;
  */
 class LookupOwnerExpression extends LookupComplexTermExpression {
 
-	LookupOwnerExpression(Class<?> clsOfValue, LookupTermExpression baseExpression) {
-		super(clsOfValue, baseExpression);
-	}
+    LookupOwnerExpression(Class<?> clsOfValue, LookupTermExpression baseExpression) {
+        super(clsOfValue, baseExpression);
+    }
 
-	@Override
-	Object eval(LookupEnv env) throws SynBinderException {
-		LookupTermExpression baseExpression = getBaseExpression();
-		Object eval = baseExpression.eval(env);
-		
-		Object result;
-		if (eval == null || eval == UNDEFINED) {
-			result = UNDEFINED;
-		} else {
-			BoundObject bEval = (BoundObject) eval; 
-			result = bEval.getOwner();
-		}
-		
-		return result;
-	}
+    @Override
+    Object eval(LookupEnv env) throws SynBinderException {
+        LookupTermExpression baseExpression = getBaseExpression();
+        Object eval = baseExpression.eval(env);
+        
+        Object result;
+        if (eval == null || eval == UNDEFINED) {
+            result = UNDEFINED;
+        } else {
+            BoundObject bEval = (BoundObject) eval; 
+            result = bEval.getOwner();
+        }
+        
+        return result;
+    }
 
-	@Override
-	String toSourceString() {
-		LookupTermExpression baseExpression = getBaseExpression();
-		String baseSourceString = baseExpression.toSourceString();
-		String string = baseSourceString + ".owner";
-		return string;
-	}
+    @Override
+    String toSourceString() {
+        LookupTermExpression baseExpression = getBaseExpression();
+        String baseSourceString = baseExpression.toSourceString();
+        String string = baseSourceString + ".owner";
+        return string;
+    }
 
 }

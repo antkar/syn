@@ -22,37 +22,37 @@ import java.util.List;
  * Lookup AND expression. Applies the logical AND operation to the set of sub-expressions.
  */
 class LookupAndExpression extends LookupExpression {
-	private final List<LookupRelExpression> relExpressions;
+    private final List<LookupRelExpression> relExpressions;
 
-	LookupAndExpression(List<LookupRelExpression> relExpressions) {
-		this.relExpressions = Collections.unmodifiableList(relExpressions);
-	}
+    LookupAndExpression(List<LookupRelExpression> relExpressions) {
+        this.relExpressions = Collections.unmodifiableList(relExpressions);
+    }
 
-	@Override
-	boolean eval(LookupEnv env) throws SynBinderException {
-		for (LookupRelExpression relExpression : relExpressions) {
-			boolean eval = relExpression.eval(env);
-			if (!eval) {
-				return false;
-			}
-		}
-		return true;
-	}
-	
-	@Override
-	public String toString() {
-		if (relExpressions.size() == 1) {
-			return relExpressions.get(0) + "";
-		}
-		
-		StringBuilder bld = new StringBuilder();
-		String sep = "";
-		for (LookupRelExpression expr : relExpressions) {
-			bld.append(sep);
-			bld.append(expr);
-			sep = " && ";
-		}
-		
-		return bld.toString();
-	}
+    @Override
+    boolean eval(LookupEnv env) throws SynBinderException {
+        for (LookupRelExpression relExpression : relExpressions) {
+            boolean eval = relExpression.eval(env);
+            if (!eval) {
+                return false;
+            }
+        }
+        return true;
+    }
+    
+    @Override
+    public String toString() {
+        if (relExpressions.size() == 1) {
+            return relExpressions.get(0) + "";
+        }
+        
+        StringBuilder bld = new StringBuilder();
+        String sep = "";
+        for (LookupRelExpression expr : relExpressions) {
+            bld.append(sep);
+            bld.append(expr);
+            sep = " && ";
+        }
+        
+        return bld.toString();
+    }
 }

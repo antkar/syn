@@ -16,7 +16,7 @@
 package com.karmant.syn.schema.result_key;
 
 public abstract class ResultKeyObj {
-	public ResultKeyObj() {
-		super();
-	}
+    public ResultKeyObj() {
+        super();
+    }
 }

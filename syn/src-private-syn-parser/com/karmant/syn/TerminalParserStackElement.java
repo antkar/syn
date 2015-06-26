@@ -21,29 +21,29 @@ import java.io.PrintStream;
  * Terminal stack element. Associated with a terminal symbol.
  */
 class TerminalParserStackElement extends ParserStackElement {
-	private final TerminalNode token;
+    private final TerminalNode token;
 
-	TerminalParserStackElement(ParserStackElement prev, ParserState state, TerminalNode node) {
-		super(prev, state);
-		
-		assert node != null;
-		this.token = node;
-	}
+    TerminalParserStackElement(ParserStackElement prev, ParserState state, TerminalNode node) {
+        super(prev, state);
+        
+        assert node != null;
+        this.token = node;
+    }
 
-	@Override
-	IParserNode createParserNode() {
-		ParserUserNode result = new ParserUserNode(token);
-		return result;
-	}
+    @Override
+    IParserNode createParserNode() {
+        ParserUserNode result = new ParserUserNode(token);
+        return result;
+    }
 
-	@Override
-	AmbiguityNode createAmbiguityNode() {
-		return AmbiguityNode.TERMINAL;
-	}
+    @Override
+    AmbiguityNode createAmbiguityNode() {
+        return AmbiguityNode.TERMINAL;
+    }
 
-	@Override
-	void print(PrintStream out, int level) {
-		CommonUtil.printIndent(out, level);
-		out.println(token);
-	}
+    @Override
+    void print(PrintStream out, int level) {
+        CommonUtil.printIndent(out, level);
+        out.println(token);
+    }
 }

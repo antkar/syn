@@ -22,10 +22,10 @@ import com.karmant.syn.sample.script.rt.SynsException;
  * Script <code>for</code> statement initializer.
  */
 public abstract class ForInit {
-	public ForInit(){}
+    public ForInit(){}
 
-	/**
-	 * Executes the initializer. Called at the beginning of a <code>for</code> statement execution.
-	 */
-	abstract void execute(ScriptScope scope) throws SynsException;
+    /**
+     * Executes the initializer. Called at the beginning of a <code>for</code> statement execution.
+     */
+    abstract void execute(ScriptScope scope) throws SynsException;
 }

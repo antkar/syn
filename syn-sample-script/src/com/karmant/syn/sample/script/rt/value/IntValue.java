@@ -23,37 +23,37 @@ import com.karmant.syn.sample.script.rt.op.operand.Operand;
  * A value of type <code>int</code>.
  */
 class IntValue extends RValue {
-	private final int value;
+    private final int value;
 
-	IntValue(int value) {
-		this.value = value;
-	}
-	
-	@Override
-	public Operand toOperand() throws SynsException {
-		return Operand.forLong(value);
-	}
-	
-	@Override
-	public ValueType getValueType() {
-		return ValueType.INT;
-	}
+    IntValue(int value) {
+        this.value = value;
+    }
+    
+    @Override
+    public Operand toOperand() throws SynsException {
+        return Operand.forLong(value);
+    }
+    
+    @Override
+    public ValueType getValueType() {
+        return ValueType.INT;
+    }
 
-	@Override
-	public Object toJava(Class<?> type, TypeMatchPrecision precision) {
-		if (int.class.equals(type)) {
-			precision.increment(2);
-			return value;
-		} else if (long.class.equals(type)) {
-			precision.increment(1);
-			return Long.valueOf(value);
-		} else if (float.class.equals(type)) {
-			return Float.valueOf(value);
-		} else if (double.class.equals(type)) {
-			return Double.valueOf(value);
-		} else if (type.isAssignableFrom(Integer.class)) {
-			return value;
-		}
-		return INVALID;
-	}
+    @Override
+    public Object toJava(Class<?> type, TypeMatchPrecision precision) {
+        if (int.class.equals(type)) {
+            precision.increment(2);
+            return value;
+        } else if (long.class.equals(type)) {
+            precision.increment(1);
+            return Long.valueOf(value);
+        } else if (float.class.equals(type)) {
+            return Float.valueOf(value);
+        } else if (double.class.equals(type)) {
+            return Double.valueOf(value);
+        } else if (type.isAssignableFrom(Integer.class)) {
+            return value;
+        }
+        return INVALID;
+    }
 }

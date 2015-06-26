@@ -19,12 +19,12 @@ package com.karmant.syn;
  * A counter. Returns consequent integer numbers.
  */
 class Counter {
-	private int counter = 0;
-	
-	/**
-	 * Returns the next number, increments the counter.
-	 */
-	int next() {
-		return counter++;
-	}
+    private int counter = 0;
+    
+    /**
+     * Returns the next number, increments the counter.
+     */
+    int next() {
+        return counter++;
+    }
 }

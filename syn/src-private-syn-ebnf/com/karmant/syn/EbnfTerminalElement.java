@@ -19,46 +19,46 @@ package com.karmant.syn;
  * Terminal EBNF element.
  */
 class EbnfTerminalElement extends EbnfElement {
-	private final TokenDescriptor tokenDescriptor;
+    private final TokenDescriptor tokenDescriptor;
 
-	EbnfTerminalElement(String key, TextPos keyPos, TokenDescriptor descriptor) {
-		super(key, keyPos);
-		assert descriptor != null;
-		tokenDescriptor = descriptor;
-	}
-	
-	/**
-	 * Returns the token descriptor associated with this terminal element.
-	 */
-	TokenDescriptor getTokenDescriptor() {
-		return tokenDescriptor;
-	}
-	
-	@Override
-	public String toString() {
-		String string = tokenDescriptor.toString();
-		return string;
-	}
+    EbnfTerminalElement(String key, TextPos keyPos, TokenDescriptor descriptor) {
+        super(key, keyPos);
+        assert descriptor != null;
+        tokenDescriptor = descriptor;
+    }
+    
+    /**
+     * Returns the token descriptor associated with this terminal element.
+     */
+    TokenDescriptor getTokenDescriptor() {
+        return tokenDescriptor;
+    }
+    
+    @Override
+    public String toString() {
+        String string = tokenDescriptor.toString();
+        return string;
+    }
 
-	@Override
-	BnfElement convert(EbnfToBnfConverter converter, String currentNt) {
-		BnfTerminal bTerminal = converter.convertTerminal(tokenDescriptor);
-		return bTerminal;
-	}
-	
-	@Override
-	boolean isValuableElement() {
-		boolean valuable = tokenDescriptor.getType().isLiteral();
-		return valuable;
-	}
-	
-	@Override
-	IParserGetter getGetter(int offset) {
-		return new ParserStackGetter(offset);
-	}
+    @Override
+    BnfElement convert(EbnfToBnfConverter converter, String currentNt) {
+        BnfTerminal bTerminal = converter.convertTerminal(tokenDescriptor);
+        return bTerminal;
+    }
+    
+    @Override
+    boolean isValuableElement() {
+        boolean valuable = tokenDescriptor.getType().isLiteral();
+        return valuable;
+    }
+    
+    @Override
+    IParserGetter getGetter(int offset) {
+        return new ParserStackGetter(offset);
+    }
 
-	@Override
-	<T> T invokeProcessor(EbnfElementProcessor<T> processor) throws SynException {
-		return processor.processTerminalElement(this);
-	}
+    @Override
+    <T> T invokeProcessor(EbnfElementProcessor<T> processor) throws SynException {
+        return processor.processTerminalElement(this);
+    }
 }

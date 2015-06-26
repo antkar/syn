@@ -19,39 +19,39 @@ package com.karmant.syn;
  * Multiline comments scanner.
  */
 class MultipleLineCommentScanner implements IPrimitiveScanner {
-	MultipleLineCommentScanner(){}
-	
-	@Override
-	public IPrimitiveResult scan(PrimitiveContext context) throws SynException {
-		if (context.current != '/' || context.lookahead() != '*') {
-			//Not a comment start. Return null.
-			return null;
-		}
+    MultipleLineCommentScanner(){}
+    
+    @Override
+    public IPrimitiveResult scan(PrimitiveContext context) throws SynException {
+        if (context.current != '/' || context.lookahead() != '*') {
+            //Not a comment start. Return null.
+            return null;
+        }
 
-		//Skip '/*' characters.
-		context.next();
-		context.next();
-		
-		//Scan the rest.
-		for (;;) {
-			int k = context.current;
-			if (k == '*') {
-				context.next();
-				if (context.current == '/') {
-					//End sequence '*/' found.
-					context.next();
-					break;
-				}
-			} else if (k == -1) {
-				//End of file. Error.
-				TextPos pos = context.getCurrentCharPos();
-				throw new SynLexicalException(pos,
-						"Multiline comment is unclosed at the end of the file");
-			} else {
-				context.next();
-			}
-		}
-		
-		return NonePrimitiveResult.INSTANCE;
-	}
+        //Skip '/*' characters.
+        context.next();
+        context.next();
+        
+        //Scan the rest.
+        for (;;) {
+            int k = context.current;
+            if (k == '*') {
+                context.next();
+                if (context.current == '/') {
+                    //End sequence '*/' found.
+                    context.next();
+                    break;
+                }
+            } else if (k == -1) {
+                //End of file. Error.
+                TextPos pos = context.getCurrentCharPos();
+                throw new SynLexicalException(pos,
+                        "Multiline comment is unclosed at the end of the file");
+            } else {
+                context.next();
+            }
+        }
+        
+        return NonePrimitiveResult.INSTANCE;
+    }
 }

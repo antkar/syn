@@ -19,26 +19,26 @@ package com.karmant.syn;
  * Constant getter. Returns a constant defined in a grammar.
  */
 class ParserConstGetter implements IParserGetter {
-	private final ValueNode userNode;
-	private final IParserNode parserNode;
+    private final ValueNode userNode;
+    private final IParserNode parserNode;
 
-	ParserConstGetter(ValueNode userNode) {
-		this.userNode = userNode;
-		this.parserNode = new ParserUserNode(userNode);
-	}
+    ParserConstGetter(ValueNode userNode) {
+        this.userNode = userNode;
+        this.parserNode = new ParserUserNode(userNode);
+    }
 
-	@Override
-	public IParserNode get(ParserStackElement element) {
-		return parserNode;
-	}
-	
-	@Override
-	public int offset() {
-		return 0;
-	}
-	
-	@Override
-	public String toString() {
-		return String.valueOf(userNode);
-	}
+    @Override
+    public IParserNode get(ParserStackElement element) {
+        return parserNode;
+    }
+    
+    @Override
+    public int offset() {
+        return 0;
+    }
+    
+    @Override
+    public String toString() {
+        return String.valueOf(userNode);
+    }
 }

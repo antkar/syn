@@ -19,25 +19,25 @@ package com.karmant.syn;
  * Result parser action. Returns the value associated with the special <code>result</code> attribute.
  */
 class ParserResultAction implements IParserAction {
-	private final IParserGetter getter;
+    private final IParserGetter getter;
 
-	ParserResultAction(IParserGetter getter) {
-		assert getter != null;
-		this.getter = getter;
-	}
+    ParserResultAction(IParserGetter getter) {
+        assert getter != null;
+        this.getter = getter;
+    }
 
-	@Override
-	public IParserNode execute(ParserStackElement stack) {
-		int getterOfs = getter.offset();
-		for (int i = 0; i < getterOfs; ++i) {
-			stack = stack.getPrev();
-		}
-		IParserNode result = getter.get(stack);
-		return result;
-	}
-	
-	@Override
-	public String toString() {
-		return "$$ = " + getter;
-	}
+    @Override
+    public IParserNode execute(ParserStackElement stack) {
+        int getterOfs = getter.offset();
+        for (int i = 0; i < getterOfs; ++i) {
+            stack = stack.getPrev();
+        }
+        IParserNode result = getter.get(stack);
+        return result;
+    }
+    
+    @Override
+    public String toString() {
+        return "$$ = " + getter;
+    }
 }

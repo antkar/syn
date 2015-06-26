@@ -24,32 +24,32 @@ import com.karmant.syn.sample.script.rt.SynsException;
  * Script class member declaration syntax node.
  */
 public class ClassMemberDeclaration {
-	/** The declaration itself. */
-	@SynField
-	private Declaration synDeclaration;
-	
-	public ClassMemberDeclaration(){}
-	
-	/**
-	 * Returns the underlying declaration.
-	 */
-	Declaration getDeclaration() {
-		return synDeclaration;
-	}
+    /** The declaration itself. */
+    @SynField
+    private Declaration synDeclaration;
+    
+    public ClassMemberDeclaration(){}
+    
+    /**
+     * Returns the underlying declaration.
+     */
+    Declaration getDeclaration() {
+        return synDeclaration;
+    }
 
-	/**
-	 * Classifies the declaration.
-	 */
-	void classify(
-			List<ConstantDeclaration> constants,
-			List<VariableDeclaration> variables,
-			List<FunctionDeclaration> functions) throws SynsException
-	{
-		synDeclaration.classify(constants, variables, functions);
-	}
-	
-	@Override
-	public String toString() {
-		return synDeclaration + "";
-	}
+    /**
+     * Classifies the declaration.
+     */
+    void classify(
+            List<ConstantDeclaration> constants,
+            List<VariableDeclaration> variables,
+            List<FunctionDeclaration> functions) throws SynsException
+    {
+        synDeclaration.classify(constants, variables, functions);
+    }
+    
+    @Override
+    public String toString() {
+        return synDeclaration + "";
+    }
 }

@@ -19,34 +19,34 @@ package com.karmant.syn;
  * Nonterminal EBNF element.
  */
 class EbnfNonterminalElement extends EbnfElement {
-	private final EbnfNonterminal nonterminal;
+    private final EbnfNonterminal nonterminal;
 
-	EbnfNonterminalElement(String key, TextPos keyPos, EbnfNonterminal nonterminal) {
-		super(key, keyPos);
-		assert nonterminal != null;
-		this.nonterminal = nonterminal;
-	}
-	
-	/**
-	 * Returns the nonterminal referenced by this element.
-	 */
-	EbnfNonterminal getNonterminal() {
-		return nonterminal;
-	}
+    EbnfNonterminalElement(String key, TextPos keyPos, EbnfNonterminal nonterminal) {
+        super(key, keyPos);
+        assert nonterminal != null;
+        this.nonterminal = nonterminal;
+    }
+    
+    /**
+     * Returns the nonterminal referenced by this element.
+     */
+    EbnfNonterminal getNonterminal() {
+        return nonterminal;
+    }
 
-	@Override
-	BnfElement convert(EbnfToBnfConverter converter, String currentNt) throws SynException {
-		BnfNonterminal bNonterminal = converter.convertNonterminal(nonterminal);
-		return bNonterminal;
-	}
-	
-	@Override
-	public String toString() {
-		return nonterminal.toString();
-	}
+    @Override
+    BnfElement convert(EbnfToBnfConverter converter, String currentNt) throws SynException {
+        BnfNonterminal bNonterminal = converter.convertNonterminal(nonterminal);
+        return bNonterminal;
+    }
+    
+    @Override
+    public String toString() {
+        return nonterminal.toString();
+    }
 
-	@Override
-	<T> T invokeProcessor(EbnfElementProcessor<T> processor) throws SynException {
-		return processor.processNonterminalElement(this);
-	}
+    @Override
+    <T> T invokeProcessor(EbnfElementProcessor<T> processor) throws SynException {
+        return processor.processNonterminalElement(this);
+    }
 }

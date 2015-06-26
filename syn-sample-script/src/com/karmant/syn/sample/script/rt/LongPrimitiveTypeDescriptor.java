@@ -23,19 +23,19 @@ import com.karmant.syn.sample.script.rt.value.Value;
  * Type descriptor for <code>long</code> type.
  */
 public final class LongPrimitiveTypeDescriptor extends PrimitiveTypeDescriptor {
-	public static final PrimitiveTypeDescriptor INSTANCE = new LongPrimitiveTypeDescriptor();
-	
-	private LongPrimitiveTypeDescriptor() {
-	}
+    public static final PrimitiveTypeDescriptor INSTANCE = new LongPrimitiveTypeDescriptor();
+    
+    private LongPrimitiveTypeDescriptor() {
+    }
 
-	@Override
-	public RValue cast(Operand operand) throws SynsException {
-		long result = operand.castToLong();
-		return Value.forLong(result);
-	}
-	
-	@Override
-	public String toString() {
-		return "long";
-	}
+    @Override
+    public RValue cast(Operand operand) throws SynsException {
+        long result = operand.castToLong();
+        return Value.forLong(result);
+    }
+    
+    @Override
+    public String toString() {
+        return "long";
+    }
 }

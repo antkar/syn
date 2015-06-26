@@ -25,21 +25,21 @@ import com.karmant.syn.sample.script.rt.SynsException;
  * Syntax node for an arbitrary expression initializer for a <code>for</code> statement.
  */
 public class ExpressionForInit extends ForInit {
-	/** The list of expressions. */
-	@SynField
-	private Expression[] synExpressions;
+    /** The list of expressions. */
+    @SynField
+    private Expression[] synExpressions;
 
-	public ExpressionForInit(){}
+    public ExpressionForInit(){}
 
-	@Override
-	void execute(ScriptScope scope) throws SynsException {
-		for (Expression expression : synExpressions) {
-			expression.evaluate(scope);
-		}
-	}
-	
-	@Override
-	public String toString() {
-		return Arrays.toString(synExpressions);
-	}
+    @Override
+    void execute(ScriptScope scope) throws SynsException {
+        for (Expression expression : synExpressions) {
+            expression.evaluate(scope);
+        }
+    }
+    
+    @Override
+    public String toString() {
+        return Arrays.toString(synExpressions);
+    }
 }

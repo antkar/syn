@@ -19,15 +19,15 @@ package com.karmant.syn;
  * {@link TerminalNode} bound type.
  */
 class TerminalNodeBoundType extends AbstractBoundType {
-	static final BoundType INSTANCE = new TerminalNodeBoundType();
+    static final BoundType INSTANCE = new TerminalNodeBoundType();
 
-	private TerminalNodeBoundType() {
-		super(TerminalNode.class);
-	}
+    private TerminalNodeBoundType() {
+        super(TerminalNode.class);
+    }
 
-	@Override
-	Object convertNode(BinderEngine<?> engine, SynNode synNode, BoundObject bObjOwner, String key) {
-		TerminalNode terminalNode = (TerminalNode) synNode;
-		return terminalNode;
-	}
+    @Override
+    Object convertNode(BinderEngine<?> engine, SynNode synNode, BoundObject bObjOwner, String key) {
+        TerminalNode terminalNode = (TerminalNode) synNode;
+        return terminalNode;
+    }
 }

@@ -19,11 +19,11 @@ package com.karmant.syn;
  * A semantic action associated with a BNF production.
  */
 interface IParserAction {
-	/**
-	 * Executes the action and calculates the result parser tree node.
-	 * 
-	 * @param stack the parser stack.
-	 * @return the tree node.
-	 */
-	IParserNode execute(ParserStackElement stack);
+    /**
+     * Executes the action and calculates the result parser tree node.
+     * 
+     * @param stack the parser stack.
+     * @return the tree node.
+     */
+    IParserNode execute(ParserStackElement stack);
 }

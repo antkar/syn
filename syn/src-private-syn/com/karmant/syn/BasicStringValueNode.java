@@ -19,31 +19,31 @@ package com.karmant.syn;
  * {@link String}-based value node. Subclasses are {@link IdentifierValueNode} and {@link StringValueNode}.
  */
 abstract class BasicStringValueNode extends ValueNode {
-	private final String value;
-	
-	BasicStringValueNode(PosBuffer pos, String value) {
-		super(pos);
-		assert value != null;
-		this.value = value;
-	}
+    private final String value;
+    
+    BasicStringValueNode(PosBuffer pos, String value) {
+        super(pos);
+        assert value != null;
+        this.value = value;
+    }
 
-	@Override
-	public SynValueType getValueType() {
-		return SynValueType.STRING;
-	}
-	
-	@Override
-	public String getString() {
-		return value;
-	}
+    @Override
+    public SynValueType getValueType() {
+        return SynValueType.STRING;
+    }
+    
+    @Override
+    public String getString() {
+        return value;
+    }
 
-	@Override
-	public Object getValue() {
-		return value;
-	}
-	
-	@Override
-	public String toString() {
-		return getTokenDescriptor() + "(" + getString() + ")";
-	}
+    @Override
+    public Object getValue() {
+        return value;
+    }
+    
+    @Override
+    public String toString() {
+        return getTokenDescriptor() + "(" + getString() + ")";
+    }
 }

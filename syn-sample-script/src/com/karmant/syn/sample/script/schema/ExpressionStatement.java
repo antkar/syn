@@ -25,25 +25,25 @@ import com.karmant.syn.sample.script.rt.SynsException;
  * Expression statement syntax node.
  */
 public class ExpressionStatement extends Statement {
-	/** The expression. */
-	@SynField
-	private Expression synExpression;
+    /** The expression. */
+    @SynField
+    private Expression synExpression;
 
-	public ExpressionStatement(){}
+    public ExpressionStatement(){}
 
-	@Override
-	TextPos getStartTextPos() {
-		return synExpression.getStartTextPos();
-	}
+    @Override
+    TextPos getStartTextPos() {
+        return synExpression.getStartTextPos();
+    }
 
-	@Override
-	StatementResult execute0(ScriptScope scope) throws SynsException {
-		synExpression.evaluate(scope);
-		return StatementResult.NONE;
-	}
-	
-	@Override
-	public String toString() {
-		return synExpression + "";
-	}
+    @Override
+    StatementResult execute0(ScriptScope scope) throws SynsException {
+        synExpression.evaluate(scope);
+        return StatementResult.NONE;
+    }
+    
+    @Override
+    public String toString() {
+        return synExpression + "";
+    }
 }

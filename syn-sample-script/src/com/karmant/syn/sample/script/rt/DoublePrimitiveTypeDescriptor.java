@@ -23,18 +23,18 @@ import com.karmant.syn.sample.script.rt.value.Value;
  * Type descriptor for <code>double</code> type.
  */
 public final class DoublePrimitiveTypeDescriptor extends PrimitiveTypeDescriptor {
-	public static final PrimitiveTypeDescriptor INSTANCE = new DoublePrimitiveTypeDescriptor();
-	
-	private DoublePrimitiveTypeDescriptor(){}
+    public static final PrimitiveTypeDescriptor INSTANCE = new DoublePrimitiveTypeDescriptor();
+    
+    private DoublePrimitiveTypeDescriptor(){}
 
-	@Override
-	public RValue cast(Operand operand) throws SynsException {
-		double result = operand.castToDouble();
-		return Value.forDouble(result);
-	}
-	
-	@Override
-	public String toString() {
-		return "double";
-	}
+    @Override
+    public RValue cast(Operand operand) throws SynsException {
+        double result = operand.castToDouble();
+        return Value.forDouble(result);
+    }
+    
+    @Override
+    public String toString() {
+        return "double";
+    }
 }

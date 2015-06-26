@@ -21,65 +21,65 @@ package com.karmant.syn;
  * @see ValueNode
  */
 public enum SynValueType {
-	/**
-	 * Boolean. Represented by <code>boolean</code>.
-	 */
-	BOOLEAN
-	{
-		@Override
-		<T> T invokeProcessor(ValueTypeProcessor<T> processor) throws SynException {
-			return processor.processBooleanValue();
-		}
-	},
-	/**
-	 * Integer. Represented by either <code>int</code> or <code>long</code>.
-	 */
-	INTEGER
-	{
-		@Override
-		<T> T invokeProcessor(ValueTypeProcessor<T> processor) throws SynException {
-			return processor.processIntegerValue();
-		}
-	},
-	/**
-	 * Floating-point. Represented by <code>double</code>.
-	 */
-	FLOAT
-	{
-		@Override
-		<T> T invokeProcessor(ValueTypeProcessor<T> processor) throws SynException {
-			return processor.processFloatValue();
-		}
-	},
-	/**
-	 * String. Represented by {@link java.lang.String}.
-	 */
-	STRING
-	{
-		@Override
-		<T> T invokeProcessor(ValueTypeProcessor<T> processor) throws SynException {
-			return processor.processStringValue();
-		}
-	},
-	/**
-	 * Object. Represented by {@link java.lang.Object}.
-	 */
-	OBJECT
-	{
-		@Override
-		<T> T invokeProcessor(ValueTypeProcessor<T> processor) throws SynException {
-			return processor.processObjectValue();
-		}
-	};
-	
-	/**
-	 * Each value invokes a corresponding method of the passed {@link ValueTypeProcessor processor}.
-	 * In contrast to using <code>switch</code> statement, this approach ensures that all values are
-	 * handled.
-	 *  
-	 * @param processor the processor. Cannot be <code>null</code>.
-	 * @return the value returned by the processor.
-	 * @throws SynException if thrown by the processor.
-	 */
-	abstract <T> T invokeProcessor(ValueTypeProcessor<T> processor) throws SynException;
+    /**
+     * Boolean. Represented by <code>boolean</code>.
+     */
+    BOOLEAN
+    {
+        @Override
+        <T> T invokeProcessor(ValueTypeProcessor<T> processor) throws SynException {
+            return processor.processBooleanValue();
+        }
+    },
+    /**
+     * Integer. Represented by either <code>int</code> or <code>long</code>.
+     */
+    INTEGER
+    {
+        @Override
+        <T> T invokeProcessor(ValueTypeProcessor<T> processor) throws SynException {
+            return processor.processIntegerValue();
+        }
+    },
+    /**
+     * Floating-point. Represented by <code>double</code>.
+     */
+    FLOAT
+    {
+        @Override
+        <T> T invokeProcessor(ValueTypeProcessor<T> processor) throws SynException {
+            return processor.processFloatValue();
+        }
+    },
+    /**
+     * String. Represented by {@link java.lang.String}.
+     */
+    STRING
+    {
+        @Override
+        <T> T invokeProcessor(ValueTypeProcessor<T> processor) throws SynException {
+            return processor.processStringValue();
+        }
+    },
+    /**
+     * Object. Represented by {@link java.lang.Object}.
+     */
+    OBJECT
+    {
+        @Override
+        <T> T invokeProcessor(ValueTypeProcessor<T> processor) throws SynException {
+            return processor.processObjectValue();
+        }
+    };
+    
+    /**
+     * Each value invokes a corresponding method of the passed {@link ValueTypeProcessor processor}.
+     * In contrast to using <code>switch</code> statement, this approach ensures that all values are
+     * handled.
+     *  
+     * @param processor the processor. Cannot be <code>null</code>.
+     * @return the value returned by the processor.
+     * @throws SynException if thrown by the processor.
+     */
+    abstract <T> T invokeProcessor(ValueTypeProcessor<T> processor) throws SynException;
 }

@@ -29,33 +29,33 @@ import com.karmant.syn.sample.script.rt.value.Value;
  * elements.
  */
 public class ArrayExpression extends TerminalExpression {
-	/** The text position of the first token of this array expression. */
-	@SynField
-	private TextPos synPos;
-	
-	/** List of dimensions. */
-	@SynField
-	private Expression[] synExpressions;
-	
-	public ArrayExpression(){}
-	
-	@Override
-	TextPos getStartTextPos() {
-		return synPos;
-	}
+    /** The text position of the first token of this array expression. */
+    @SynField
+    private TextPos synPos;
+    
+    /** List of dimensions. */
+    @SynField
+    private Expression[] synExpressions;
+    
+    public ArrayExpression(){}
+    
+    @Override
+    TextPos getStartTextPos() {
+        return synPos;
+    }
 
-	@Override
-	Value evaluate0(ScriptScope scope) throws SynsException {
-		RValue[] values = new RValue[synExpressions.length];
-		for (int i = 0; i < values.length; ++i) {
-			Value element = synExpressions[i].evaluate(scope);;
-			values[i] = element.toRValue();
-		}
-		return Value.newArray(values);
-	}
-	
-	@Override
-	public String toString() {
-		return Arrays.toString(synExpressions);
-	}
+    @Override
+    Value evaluate0(ScriptScope scope) throws SynsException {
+        RValue[] values = new RValue[synExpressions.length];
+        for (int i = 0; i < values.length; ++i) {
+            Value element = synExpressions[i].evaluate(scope);;
+            values[i] = element.toRValue();
+        }
+        return Value.newArray(values);
+    }
+    
+    @Override
+    public String toString() {
+        return Arrays.toString(synExpressions);
+    }
 }

@@ -27,32 +27,32 @@ import com.karmant.syn.sample.script.rt.value.Value;
  * Script variable declaration syntax node.
  */
 public class VariableDeclaration extends Declaration {
-	/** Initialization expression. Can be <code>null</code>. */
-	@SynField
-	private Expression synExpression;
+    /** Initialization expression. Can be <code>null</code>. */
+    @SynField
+    private Expression synExpression;
 
-	public VariableDeclaration(){}
-	
-	@Override
-	Value evaluateValue(ScriptScope scope) throws SynsException {
-		Value expressionValue = synExpression == null ? Value.forNull()
-				: synExpression.evaluate(scope);
+    public VariableDeclaration(){}
+    
+    @Override
+    Value evaluateValue(ScriptScope scope) throws SynsException {
+        Value expressionValue = synExpression == null ? Value.forNull()
+                : synExpression.evaluate(scope);
 
-		LValue variable = Value.newVariable(expressionValue);
-		return variable;
-	}
-	
-	@Override
-	void classify(
-			List<ConstantDeclaration> constants,
-			List<VariableDeclaration> variables,
-			List<FunctionDeclaration> functions)
-	{
-		variables.add(this);
-	}
-	
-	@Override
-	public String toString() {
-		return "var " + getName() + (synExpression == null ? "" : " = " + synExpression);
-	}
+        LValue variable = Value.newVariable(expressionValue);
+        return variable;
+    }
+    
+    @Override
+    void classify(
+            List<ConstantDeclaration> constants,
+            List<VariableDeclaration> variables,
+            List<FunctionDeclaration> functions)
+    {
+        variables.add(this);
+    }
+    
+    @Override
+    public String toString() {
+        return "var " + getName() + (synExpression == null ? "" : " = " + synExpression);
+    }
 }

@@ -21,36 +21,36 @@ import com.karmant.syn.sample.script.rt.SynsException;
  * Operand of type <code>boolean</code>.
  */
 class BooleanOperand extends Operand {
-	static final BooleanOperand TRUE = new BooleanOperand(true);
-	static final BooleanOperand FALSE = new BooleanOperand(false);
-	
-	private final boolean value;
+    static final BooleanOperand TRUE = new BooleanOperand(true);
+    static final BooleanOperand FALSE = new BooleanOperand(false);
+    
+    private final boolean value;
 
-	private BooleanOperand(boolean value) {
-		this.value = value;
-	}
-	
-	static Operand valueOf(boolean value) {
-		return value ? TRUE : FALSE;
-	}
+    private BooleanOperand(boolean value) {
+        this.value = value;
+    }
+    
+    static Operand valueOf(boolean value) {
+        return value ? TRUE : FALSE;
+    }
 
-	@Override
-	public OperandType getType() {
-		return OperandType.BOOLEAN;
-	}
+    @Override
+    public OperandType getType() {
+        return OperandType.BOOLEAN;
+    }
 
-	@Override
-	public boolean booleanValue() throws SynsException {
-		return value;
-	}
-	
-	@Override
-	public String stringValue() throws SynsException {
-		return value + "";
-	}
-	
-	@Override
-	public Object objectValue() throws SynsException {
-		return value;
-	}
+    @Override
+    public boolean booleanValue() throws SynsException {
+        return value;
+    }
+    
+    @Override
+    public String stringValue() throws SynsException {
+        return value + "";
+    }
+    
+    @Override
+    public Object objectValue() throws SynsException {
+        return value;
+    }
 }

@@ -23,49 +23,49 @@ import com.karmant.syn.TextPos;
  * A binary expression syntax node.
  */
 public abstract class BinaryExpression extends Expression {
-	/** Left operand. */
-	@SynField
-	private Expression synLeft;
-	
-	/** Right operand. */
-	@SynField
-	private Expression synRight;
-	
-	/** Operator. */
-	@SynField
-	private StringToken synOp;
-	
-	public BinaryExpression(){}
-	
-	@Override
-	final TextPos getStartTextPos() {
-		return synLeft.getStartTextPos();
-	}
+    /** Left operand. */
+    @SynField
+    private Expression synLeft;
+    
+    /** Right operand. */
+    @SynField
+    private Expression synRight;
+    
+    /** Operator. */
+    @SynField
+    private StringToken synOp;
+    
+    public BinaryExpression(){}
+    
+    @Override
+    final TextPos getStartTextPos() {
+        return synLeft.getStartTextPos();
+    }
 
-	/**
-	 * Returns the left operand.
-	 */
-	final Expression getLeft() {
-		return synLeft;
-	}
-	
-	/**
-	 * Returns the right operand.
-	 */
-	final Expression getRight() {
-		return synRight;
-	}
-	
-	/**
-	 * Returns the operator literal.
-	 */
-	final String getOp() {
-		String literal = synOp.getValue();
-		return literal;
-	}
-	
-	@Override
-	public String toString() {
-		return String.format("(%s %s %s)", synLeft, getOp(), synRight);
-	}
+    /**
+     * Returns the left operand.
+     */
+    final Expression getLeft() {
+        return synLeft;
+    }
+    
+    /**
+     * Returns the right operand.
+     */
+    final Expression getRight() {
+        return synRight;
+    }
+    
+    /**
+     * Returns the operator literal.
+     */
+    final String getOp() {
+        String literal = synOp.getValue();
+        return literal;
+    }
+    
+    @Override
+    public String toString() {
+        return String.format("(%s %s %s)", synLeft, getOp(), synRight);
+    }
 }

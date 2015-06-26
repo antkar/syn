@@ -27,46 +27,46 @@ import com.karmant.syn.sample.script.rt.value.Value;
  * Unary expression syntax node.
  */
 public abstract class UnaryExpression extends Expression {
-	/** The operand. */
-	@SynField
-	private Expression synExpression;
-	
-	/** The operator literal. */
-	@SynField
-	private StringToken synOp;
-	
-	/** Corresponding operator instance. */
-	private UnaryOperator op;
+    /** The operand. */
+    @SynField
+    private Expression synExpression;
+    
+    /** The operator literal. */
+    @SynField
+    private StringToken synOp;
+    
+    /** Corresponding operator instance. */
+    private UnaryOperator op;
 
-	public UnaryExpression(){}
-	
-	@SynInit
-	private void init() {
-		op = getOperator(synOp.getValue());
-	}
-	
-	/**
-	 * Returns the literal of the operator.
-	 */
-	StringToken getOp() {
-		return synOp;
-	}
-	
-	/**
-	 * Returns the expression.
-	 */
-	Expression getExpression() {
-		return synExpression;
-	}
-	
-	/**
-	 * Returns the operator for the specified literal.
-	 */
-	abstract UnaryOperator getOperator(String literal);
+    public UnaryExpression(){}
+    
+    @SynInit
+    private void init() {
+        op = getOperator(synOp.getValue());
+    }
+    
+    /**
+     * Returns the literal of the operator.
+     */
+    StringToken getOp() {
+        return synOp;
+    }
+    
+    /**
+     * Returns the expression.
+     */
+    Expression getExpression() {
+        return synExpression;
+    }
+    
+    /**
+     * Returns the operator for the specified literal.
+     */
+    abstract UnaryOperator getOperator(String literal);
 
-	@Override
-	final Value evaluate0(ScriptScope scope) throws SynsException {
-		Value value = synExpression.evaluate(scope);
-		return op.evaluate(value);
-	}
+    @Override
+    final Value evaluate0(ScriptScope scope) throws SynsException {
+        Value value = synExpression.evaluate(scope);
+        return op.evaluate(value);
+    }
 }

@@ -21,14 +21,14 @@ import java.lang.reflect.Field;
  * Common superclass for non-primitive bound types.
  */
 abstract class AbstractBoundType extends BoundType {
-	private final BoundType arrayType;
+    private final BoundType arrayType;
 
-	AbstractBoundType(Class<?> javaType) {
-		arrayType = GenericArrayBoundType.create(this, javaType);
-	}
+    AbstractBoundType(Class<?> javaType) {
+        arrayType = GenericArrayBoundType.create(this, javaType);
+    }
 
-	@Override
-	final BoundType getArrayType(Field field) throws SynBinderException {
-		return arrayType;
-	}
+    @Override
+    final BoundType getArrayType(Field field) throws SynBinderException {
+        return arrayType;
+    }
 }

@@ -19,23 +19,23 @@ package com.karmant.syn;
  * Token value of type <code>long</code>.
  */
 public class LongToken extends AbstractToken {
-	private final long value;
+    private final long value;
 
-	LongToken(TextPos pos, long value) {
-		super(pos);
-		this.value = value;
-	}
-	
-	/**
-	 * Returns the <code>long</code> value of this object.
-	 * @return the value.
-	 */
-	public long getValue() {
-		return value;
-	}
-	
-	@Override
-	public String toString() {
-		return value + "";
-	}
+    LongToken(TextPos pos, long value) {
+        super(pos);
+        this.value = value;
+    }
+    
+    /**
+     * Returns the <code>long</code> value of this object.
+     * @return the value.
+     */
+    public long getValue() {
+        return value;
+    }
+    
+    @Override
+    public String toString() {
+        return value + "";
+    }
 }

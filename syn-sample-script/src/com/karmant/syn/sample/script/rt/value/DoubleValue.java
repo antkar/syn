@@ -23,30 +23,30 @@ import com.karmant.syn.sample.script.rt.op.operand.Operand;
  * A value of type <code>double</code>.
  */
 class DoubleValue extends RValue {
-	private final double value;
+    private final double value;
 
-	DoubleValue(double value) {
-		this.value = value;
-	}
-	
-	@Override
-	public Operand toOperand() throws SynsException {
-		return Operand.forDouble(value);
-	}
-	
-	@Override
-	public ValueType getValueType() {
-		return ValueType.DOUBLE;
-	}
+    DoubleValue(double value) {
+        this.value = value;
+    }
+    
+    @Override
+    public Operand toOperand() throws SynsException {
+        return Operand.forDouble(value);
+    }
+    
+    @Override
+    public ValueType getValueType() {
+        return ValueType.DOUBLE;
+    }
 
-	@Override
-	public Object toJava(Class<?> type, TypeMatchPrecision precision) {
-		if (double.class.equals(type)) {
-			precision.increment(2);
-			return Double.valueOf(value);
-		} else if (type.isAssignableFrom(Double.class)) {
-			return value;
-		}
-		return INVALID;
-	}
+    @Override
+    public Object toJava(Class<?> type, TypeMatchPrecision precision) {
+        if (double.class.equals(type)) {
+            precision.increment(2);
+            return Double.valueOf(value);
+        } else if (type.isAssignableFrom(Double.class)) {
+            return value;
+        }
+        return INVALID;
+    }
 }

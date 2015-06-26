@@ -19,19 +19,19 @@ package com.karmant.syn;
  * User parser node. Wraps a {@link SynNode}, which will be returned to the client.
  */
 class ParserUserNode implements IParserNode {
-	private final SynNode userNode;
-	
-	ParserUserNode(SynNode userNode) {
-		this.userNode = userNode;
-	}
+    private final SynNode userNode;
+    
+    ParserUserNode(SynNode userNode) {
+        this.userNode = userNode;
+    }
 
-	@Override
-	public SynNode createUserNode() {
-		return userNode;
-	}
-	
-	@Override
-	public String toString() {
-		return userNode + "";
-	}
+    @Override
+    public SynNode createUserNode() {
+        return userNode;
+    }
+    
+    @Override
+    public String toString() {
+        return userNode + "";
+    }
 }

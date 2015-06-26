@@ -34,102 +34,102 @@ import com.karmant.syn.sample.script.rt.value.Value;
  * Class declaration syntax node.
  */
 public class ClassDeclaration extends Declaration {
-	/** Member declarations. */
-	@SynField
-	private ClassMemberDeclaration[] synMembers;
-	
-	public ClassDeclaration(){}
+    /** Member declarations. */
+    @SynField
+    private ClassMemberDeclaration[] synMembers;
+    
+    public ClassDeclaration(){}
 
-	@Override
-	Value evaluateValue(ScriptScope scope) throws SynsException {
-		checkNameConflicts();
-		
-		//Divide members into categories.
-		List<ConstantDeclaration> constants = new ArrayList<>();
-		List<VariableDeclaration> variables = new ArrayList<>();
-		List<FunctionDeclaration> functions = new ArrayList<>();
-		for (ClassMemberDeclaration member : synMembers) {
-			member.classify(constants, variables, functions);
-		}
-		
-		//Create a class scope and put the declared constants there.
-		Map<String, RValue> constantValues = new HashMap<>();
-		ScriptScope classScope = scope.deriveClassScope("class " + getName(), false);
-		setupClassScope(constants, constantValues, classScope);
-		
-		//Find the constructor declaration, if any.
-		String className = getName();
-		FunctionDeclaration constructor = findConstructor(functions);
-		
-		//Create the list of instance members declarations.
-		List<Declaration> instanceMembers = new ArrayList<>();
-		instanceMembers.addAll(variables);
-		instanceMembers.addAll(functions);
-		
-		//Create a class value.
-		Value value = Value.forClass(className, classScope, constructor, constantValues, instanceMembers);
-		return value;
-	}
+    @Override
+    Value evaluateValue(ScriptScope scope) throws SynsException {
+        checkNameConflicts();
+        
+        //Divide members into categories.
+        List<ConstantDeclaration> constants = new ArrayList<>();
+        List<VariableDeclaration> variables = new ArrayList<>();
+        List<FunctionDeclaration> functions = new ArrayList<>();
+        for (ClassMemberDeclaration member : synMembers) {
+            member.classify(constants, variables, functions);
+        }
+        
+        //Create a class scope and put the declared constants there.
+        Map<String, RValue> constantValues = new HashMap<>();
+        ScriptScope classScope = scope.deriveClassScope("class " + getName(), false);
+        setupClassScope(constants, constantValues, classScope);
+        
+        //Find the constructor declaration, if any.
+        String className = getName();
+        FunctionDeclaration constructor = findConstructor(functions);
+        
+        //Create the list of instance members declarations.
+        List<Declaration> instanceMembers = new ArrayList<>();
+        instanceMembers.addAll(variables);
+        instanceMembers.addAll(functions);
+        
+        //Create a class value.
+        Value value = Value.forClass(className, classScope, constructor, constantValues, instanceMembers);
+        return value;
+    }
 
-	/**
-	 * Checks if there are member name conflicts.
-	 */
-	private void checkNameConflicts() throws TextSynsException {
-		Set<String> names = new HashSet<>();
-		for (ClassMemberDeclaration member : synMembers) {
-			StringToken nameTk = member.getDeclaration().getNameTk();
-			String name = nameTk.getValue();
-			if (!names.add(name)) {
-				throw new TextSynsException("Duplicated class member: " + name, nameTk.getPos());
-			}
-		}
-	}
+    /**
+     * Checks if there are member name conflicts.
+     */
+    private void checkNameConflicts() throws TextSynsException {
+        Set<String> names = new HashSet<>();
+        for (ClassMemberDeclaration member : synMembers) {
+            StringToken nameTk = member.getDeclaration().getNameTk();
+            String name = nameTk.getValue();
+            if (!names.add(name)) {
+                throw new TextSynsException("Duplicated class member: " + name, nameTk.getPos());
+            }
+        }
+    }
 
-	/**
-	 * Finds the constructor function declaration. A constructor is the function with the same
-	 * name as the name of the class.
-	 */
-	private FunctionDeclaration findConstructor(List<FunctionDeclaration> functions) {
-		FunctionDeclaration constructor = null;
-		
-		String className = getName();
-		for (FunctionDeclaration function : functions) {
-			if (className.equals(function.getName())) {
-				constructor = function;
-				functions.remove(function);
-				break;
-			}
-		}
-		
-		return constructor;
-	}
+    /**
+     * Finds the constructor function declaration. A constructor is the function with the same
+     * name as the name of the class.
+     */
+    private FunctionDeclaration findConstructor(List<FunctionDeclaration> functions) {
+        FunctionDeclaration constructor = null;
+        
+        String className = getName();
+        for (FunctionDeclaration function : functions) {
+            if (className.equals(function.getName())) {
+                constructor = function;
+                functions.remove(function);
+                break;
+            }
+        }
+        
+        return constructor;
+    }
 
-	/**
-	 * Initializes class scope by putting constants there.
-	 */
-	private void setupClassScope(
-			List<ConstantDeclaration> constants,
-			Map<String, RValue> constantValues,
-			ScriptScope classScope) throws SynsException
-	{
-		for (ConstantDeclaration constant : constants) {
-			Value value = constant.addToScope(classScope);
-			RValue rvalue = value.toRValue(); 
-			constantValues.put(constant.getName(), rvalue);
-		}
-	}
-	
-	@Override
-	void classify(
-			List<ConstantDeclaration> constants,
-			List<VariableDeclaration> variables,
-			List<FunctionDeclaration> functions) throws SynsException
-	{
-		throw new SynsException("Nested classes are not supported");
-	}
-	
-	@Override
-	public String toString() {
-		return "class " + getName();
-	}
+    /**
+     * Initializes class scope by putting constants there.
+     */
+    private void setupClassScope(
+            List<ConstantDeclaration> constants,
+            Map<String, RValue> constantValues,
+            ScriptScope classScope) throws SynsException
+    {
+        for (ConstantDeclaration constant : constants) {
+            Value value = constant.addToScope(classScope);
+            RValue rvalue = value.toRValue(); 
+            constantValues.put(constant.getName(), rvalue);
+        }
+    }
+    
+    @Override
+    void classify(
+            List<ConstantDeclaration> constants,
+            List<VariableDeclaration> variables,
+            List<FunctionDeclaration> functions) throws SynsException
+    {
+        throw new SynsException("Nested classes are not supported");
+    }
+    
+    @Override
+    public String toString() {
+        return "class " + getName();
+    }
 }

@@ -30,128 +30,128 @@ import com.karmant.syn.schema.simpleunit.SimpleUnit;
  */
 public class SimpleUnitBindingTest extends TestCase {
 
-	@Test
-	public void testCorrectText() throws SynException, IOException {
-		SimpleUnit unit = parse("entity A { b : B; } entity B { c : C; } entity C { a : A; }");
-		assertNotNull(unit);
-		SimpleEntity[] entities = unit.getEntities();
-		assertEquals(3, entities.length);
-		
-		assertEquals("A", entities[0].getName());
-		SimpleMember[] members0 = entities[0].getMembers();
-		assertEquals(1, members0.length);
-		assertEquals("b", members0[0].getName());
-		assertEquals("B", members0[0].getSfType());
-		assertSame(entities[1], members0[0].getType());		
-		
-		assertEquals("B", entities[1].getName());
-		SimpleMember[] members1 = entities[1].getMembers();
-		assertEquals(1, members1.length);
-		assertEquals("c", members1[0].getName());
-		assertEquals("C", members1[0].getSfType());
-		assertSame(entities[2], members1[0].getType());		
+    @Test
+    public void testCorrectText() throws SynException, IOException {
+        SimpleUnit unit = parse("entity A { b : B; } entity B { c : C; } entity C { a : A; }");
+        assertNotNull(unit);
+        SimpleEntity[] entities = unit.getEntities();
+        assertEquals(3, entities.length);
+        
+        assertEquals("A", entities[0].getName());
+        SimpleMember[] members0 = entities[0].getMembers();
+        assertEquals(1, members0.length);
+        assertEquals("b", members0[0].getName());
+        assertEquals("B", members0[0].getSfType());
+        assertSame(entities[1], members0[0].getType());
+        
+        assertEquals("B", entities[1].getName());
+        SimpleMember[] members1 = entities[1].getMembers();
+        assertEquals(1, members1.length);
+        assertEquals("c", members1[0].getName());
+        assertEquals("C", members1[0].getSfType());
+        assertSame(entities[2], members1[0].getType());
 
-		assertEquals("C", entities[2].getName());
-		SimpleMember[] members2 = entities[2].getMembers();
-		assertEquals(1, members2.length);
-		assertEquals("a", members2[0].getName());
-		assertEquals("A", members2[0].getSfType());
-		assertSame(entities[0], members2[0].getType());		
-	}
-	
-	@Test
-	public void testNoEntities() throws SynException, IOException {
-		SimpleUnit unit = parse("");
-		assertNotNull(unit);
-		SimpleEntity[] entities = unit.getEntities();
-		assertEquals(0, entities.length);
-	}
+        assertEquals("C", entities[2].getName());
+        SimpleMember[] members2 = entities[2].getMembers();
+        assertEquals(1, members2.length);
+        assertEquals("a", members2[0].getName());
+        assertEquals("A", members2[0].getSfType());
+        assertSame(entities[0], members2[0].getType());
+    }
+    
+    @Test
+    public void testNoEntities() throws SynException, IOException {
+        SimpleUnit unit = parse("");
+        assertNotNull(unit);
+        SimpleEntity[] entities = unit.getEntities();
+        assertEquals(0, entities.length);
+    }
 
-	@Test
-	public void testNoMembers() throws SynException, IOException {
-		SimpleUnit unit = parse("entity A { }");
-		assertNotNull(unit);
-		SimpleEntity[] entities = unit.getEntities();
-		assertEquals(1, entities.length);
-		assertEquals("A", entities[0].getName());
-		SimpleMember[] members = entities[0].getMembers();
-		assertEquals(0, members.length);
-	}
-	
-	@Test
-	public void testTwoEntitiesWithSameName() throws SynException, IOException {
-		try {
-			parse("entity A { } entity B { } entity A { }");
-			fail();
-		} catch (IllegalStateException e) {
-			assertEquals("There is more than one entity with name A", e.getMessage());
-		}
-	}
-	
-	@Test
-	public void testMembersWithSameNameInDifferentEntities() throws SynException, IOException {
-		SimpleUnit unit = parse("entity A { x : X; } entity B { x : X; } entity X { }");
-		assertNotNull(unit);
-	}
+    @Test
+    public void testNoMembers() throws SynException, IOException {
+        SimpleUnit unit = parse("entity A { }");
+        assertNotNull(unit);
+        SimpleEntity[] entities = unit.getEntities();
+        assertEquals(1, entities.length);
+        assertEquals("A", entities[0].getName());
+        SimpleMember[] members = entities[0].getMembers();
+        assertEquals(0, members.length);
+    }
+    
+    @Test
+    public void testTwoEntitiesWithSameName() throws SynException, IOException {
+        try {
+            parse("entity A { } entity B { } entity A { }");
+            fail();
+        } catch (IllegalStateException e) {
+            assertEquals("There is more than one entity with name A", e.getMessage());
+        }
+    }
+    
+    @Test
+    public void testMembersWithSameNameInDifferentEntities() throws SynException, IOException {
+        SimpleUnit unit = parse("entity A { x : X; } entity B { x : X; } entity X { }");
+        assertNotNull(unit);
+    }
 
-	@Test
-	public void testMembersWithSameNameInSameEntity() throws SynException, IOException {
-		try {
-			parse("entity A { x : X; x : X; } entity X { }");
-			fail();
-		} catch (IllegalStateException e) {
-			assertEquals("There is more than one member A.x", e.getMessage());
-		}
-	}
+    @Test
+    public void testMembersWithSameNameInSameEntity() throws SynException, IOException {
+        try {
+            parse("entity A { x : X; x : X; } entity X { }");
+            fail();
+        } catch (IllegalStateException e) {
+            assertEquals("There is more than one member A.x", e.getMessage());
+        }
+    }
 
-	@Test
-	public void testMembersWithSameTypeInSameEntity() throws SynException, IOException {
-		SimpleUnit unit = parse("entity A { x1 : X; x2 : X; } entity X { }");
-		assertNotNull(unit);
-	}
+    @Test
+    public void testMembersWithSameTypeInSameEntity() throws SynException, IOException {
+        SimpleUnit unit = parse("entity A { x1 : X; x2 : X; } entity X { }");
+        assertNotNull(unit);
+    }
 
-	@Test
-	public void testWrongTypeName() throws SynException, IOException {
-		try {
-			parse("entity A { x : X; }");
-			fail();
-		} catch (IllegalStateException e) {
-			assertEquals("Name 'X' is used as the type of field A.x, but it is not defined", e.getMessage());
-		}
-	}
-	
-	@Test
-	public void testTextPosBinding() throws SynException, IOException {
-		SimpleUnit unit = parse("entity Ent123 { attrib123 : Ent123; } ");
-		assertNotNull(unit);
-		SimpleEntity[] entities = unit.getEntities();
-		assertEquals(1, entities.length);
-		SimpleEntity entity = entities[0];
-		SimpleMember[] members = entity.getMembers();
-		assertEquals(1, members.length);
-		SimpleMember member = members[0];
-		
-		TextPos pos = member.getPos();
-		assertNotNull(pos);
-		assertEquals(1, pos.getLine());
-		assertEquals(27, pos.getColumn());
-		assertEquals(1, pos.getLength());
-		
-		TextPos namePos = member.getNamePos();
-		assertNotNull(namePos);
-		assertEquals(1, namePos.getLine());
-		assertEquals(17, namePos.getColumn());
-		assertEquals(9, namePos.getLength());
-		
-		TextPos typePos = member.getTypePos();
-		assertNotNull(typePos);
-		assertEquals(1, typePos.getLine());
-		assertEquals(29, typePos.getColumn());
-		assertEquals(6, typePos.getLength());
-	}
+    @Test
+    public void testWrongTypeName() throws SynException, IOException {
+        try {
+            parse("entity A { x : X; }");
+            fail();
+        } catch (IllegalStateException e) {
+            assertEquals("Name 'X' is used as the type of field A.x, but it is not defined", e.getMessage());
+        }
+    }
+    
+    @Test
+    public void testTextPosBinding() throws SynException, IOException {
+        SimpleUnit unit = parse("entity Ent123 { attrib123 : Ent123; } ");
+        assertNotNull(unit);
+        SimpleEntity[] entities = unit.getEntities();
+        assertEquals(1, entities.length);
+        SimpleEntity entity = entities[0];
+        SimpleMember[] members = entity.getMembers();
+        assertEquals(1, members.length);
+        SimpleMember member = members[0];
+        
+        TextPos pos = member.getPos();
+        assertNotNull(pos);
+        assertEquals(1, pos.getLine());
+        assertEquals(27, pos.getColumn());
+        assertEquals(1, pos.getLength());
+        
+        TextPos namePos = member.getNamePos();
+        assertNotNull(namePos);
+        assertEquals(1, namePos.getLine());
+        assertEquals(17, namePos.getColumn());
+        assertEquals(9, namePos.getLength());
+        
+        TextPos typePos = member.getTypePos();
+        assertNotNull(typePos);
+        assertEquals(1, typePos.getLine());
+        assertEquals(29, typePos.getColumn());
+        assertEquals(6, typePos.getLength());
+    }
 
-	private static SimpleUnit parse(String text) throws SynException, IOException {
-		SimpleUnit unit = SynBinderTest.parse(SimpleUnit.class, "simpleunit_grammar.txt", text);
-		return unit;
-	}
+    private static SimpleUnit parse(String text) throws SynException, IOException {
+        SimpleUnit unit = SynBinderTest.parse(SimpleUnit.class, "simpleunit_grammar.txt", text);
+        return unit;
+    }
 }

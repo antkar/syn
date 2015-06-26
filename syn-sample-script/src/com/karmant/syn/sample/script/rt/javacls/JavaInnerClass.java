@@ -21,24 +21,24 @@ import com.karmant.syn.sample.script.rt.value.Value;
  * Wraps a Java inner {@link Class}.
  */
 class JavaInnerClass extends JavaMember {
-	private final Value value;
+    private final Value value;
 
-	JavaInnerClass(JavaClass javaClass) {
-		value = Value.forJavaClass(javaClass);
-	}
+    JavaInnerClass(JavaClass javaClass) {
+        value = Value.forJavaClass(javaClass);
+    }
 
-	@Override
-	Value getStaticValue() {
-		return value;
-	}
+    @Override
+    Value getStaticValue() {
+        return value;
+    }
 
-	@Override
-	Value getInstanceValue(Object obj) {
-		return value;
-	}
-	
-	@Override
-	public String toString() {
-		return value + "";
-	}
+    @Override
+    Value getInstanceValue(Object obj) {
+        return value;
+    }
+    
+    @Override
+    public String toString() {
+        return value + "";
+    }
 }

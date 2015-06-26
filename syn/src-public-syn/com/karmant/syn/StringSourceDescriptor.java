@@ -19,22 +19,22 @@ package com.karmant.syn;
  * Source descriptor representing an arbitrary {@link String}.
  */
 public class StringSourceDescriptor implements SourceDescriptor {
-	private final String name;
+    private final String name;
 
-	public StringSourceDescriptor(String name) {
-		if (name == null) {
-			throw new NullPointerException("name");
-		}
-		this.name = name;
-	}
+    public StringSourceDescriptor(String name) {
+        if (name == null) {
+            throw new NullPointerException("name");
+        }
+        this.name = name;
+    }
 
-	@Override
-	public String getName() {
-		return name;
-	}
-	
-	@Override
-	public String toString() {
-		return name;
-	}
+    @Override
+    public String getName() {
+        return name;
+    }
+    
+    @Override
+    public String toString() {
+        return name;
+    }
 }

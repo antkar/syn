@@ -19,13 +19,13 @@ package com.karmant.syn;
  * Thrown if there is a semantical error in the grammar passed to a {@link SynParser}.
  */
 public class SynGrammarException extends SynTextException {
-	private static final long serialVersionUID = 3530779109153425091L;
+    private static final long serialVersionUID = 3530779109153425091L;
 
-	SynGrammarException(TextPos textPos, String message, Throwable cause) {
-		super(textPos, message, cause);
-	}
+    SynGrammarException(TextPos textPos, String message, Throwable cause) {
+        super(textPos, message, cause);
+    }
 
-	SynGrammarException(TextPos textPos, String message) {
-		super(textPos, message);
-	}
+    SynGrammarException(TextPos textPos, String message) {
+        super(textPos, message);
+    }
 }

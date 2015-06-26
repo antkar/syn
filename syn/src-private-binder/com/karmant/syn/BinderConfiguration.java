@@ -25,36 +25,36 @@ import java.util.Map;
  */
 class BinderConfiguration<T> {
 
-	private Class<T> classToBind;
-	private Map<String, ObjectBinder> prKeyToBinderMap;
-	private Map<Class<?>, Collection<Lookup>> clsToLookupsMap;
-	private Map<Class<?>, Collection<InitMethod>> clsToInitMethodsMap;
-	
-	BinderConfiguration(
-			Class<T> classToBind,
-			Map<String, ObjectBinder> prKeyToBinderMap,
-			Map<Class<?>, Collection<Lookup>> clsToLookupsMap,
-			Map<Class<?>, Collection<InitMethod>> clsToInitMethodsMap)
-	{
-		this.classToBind = classToBind;
-		this.prKeyToBinderMap = prKeyToBinderMap;
-		this.clsToLookupsMap = clsToLookupsMap;
-		this.clsToInitMethodsMap = clsToInitMethodsMap;
-	}
+    private Class<T> classToBind;
+    private Map<String, ObjectBinder> prKeyToBinderMap;
+    private Map<Class<?>, Collection<Lookup>> clsToLookupsMap;
+    private Map<Class<?>, Collection<InitMethod>> clsToInitMethodsMap;
+    
+    BinderConfiguration(
+            Class<T> classToBind,
+            Map<String, ObjectBinder> prKeyToBinderMap,
+            Map<Class<?>, Collection<Lookup>> clsToLookupsMap,
+            Map<Class<?>, Collection<InitMethod>> clsToInitMethodsMap)
+    {
+        this.classToBind = classToBind;
+        this.prKeyToBinderMap = prKeyToBinderMap;
+        this.clsToLookupsMap = clsToLookupsMap;
+        this.clsToInitMethodsMap = clsToInitMethodsMap;
+    }
 
-	Class<T> getClassToBind() {
-		return classToBind;
-	}
+    Class<T> getClassToBind() {
+        return classToBind;
+    }
 
-	Map<String, ObjectBinder> getPrKeyToBinderMap() {
-		return prKeyToBinderMap;
-	}
+    Map<String, ObjectBinder> getPrKeyToBinderMap() {
+        return prKeyToBinderMap;
+    }
 
-	Map<Class<?>, Collection<Lookup>> getClsToLookupsMap() {
-		return clsToLookupsMap;
-	}
+    Map<Class<?>, Collection<Lookup>> getClsToLookupsMap() {
+        return clsToLookupsMap;
+    }
 
-	Map<Class<?>, Collection<InitMethod>> getClsToInitMethodsMap() {
-		return clsToInitMethodsMap;
-	}
+    Map<Class<?>, Collection<InitMethod>> getClsToInitMethodsMap() {
+        return clsToInitMethodsMap;
+    }
 }

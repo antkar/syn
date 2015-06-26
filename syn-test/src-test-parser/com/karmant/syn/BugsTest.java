@@ -23,31 +23,31 @@ import org.junit.Test;
  * Unit tests for some found bugs.
  */
 public class BugsTest extends TestCase {
-	@Test
-	public void testIdentifierAtEndOfFile() throws SynException {
-		String source = "aaa";
-		DefaultTokenStream tokenStream = TokenStreamNumberTest.createTokenStream(source);
-		tokenStream.nextToken();
-		assertEquals(TokenType.ID, tokenStream.getTokenDescriptor().getType());
-		tokenStream.nextToken();
-		assertEquals(TokenType.END_OF_FILE, tokenStream.getTokenDescriptor().getType());
-	}
+    @Test
+    public void testIdentifierAtEndOfFile() throws SynException {
+        String source = "aaa";
+        DefaultTokenStream tokenStream = TokenStreamNumberTest.createTokenStream(source);
+        tokenStream.nextToken();
+        assertEquals(TokenType.ID, tokenStream.getTokenDescriptor().getType());
+        tokenStream.nextToken();
+        assertEquals(TokenType.END_OF_FILE, tokenStream.getTokenDescriptor().getType());
+    }
 
-	/*
-	 * Null value was not properly supported. Productions like "P: result=<null>" didn't return
-	 * a null value, but its string representation.  
-	 */
-	@Test
-	public void testNullValue() throws SynException {
-		SynParser parser = SynParserSimpleTest.createParserStr("@File: ID result=<null>;");
-		SynNode node = SynParserSimpleTest.parseStr(parser, "aaa", "File");
-		assertEquals(null, node);
-	}
-	
-	@Test
-	public void testNpeInArrayNode() throws SynException {
-		SynParser parser = SynParserSimpleTest.createParserStr("@File: (Rule)*; Rule: ('!')? ID;");
-		SynNode node = SynParserSimpleTest.parseStr(parser, "aaa !bbb ccc", "File");
-		assertEquals("[\"!\"]", node.toString());
-	}
+    /*
+     * Null value was not properly supported. Productions like "P: result=<null>" didn't return
+     * a null value, but its string representation.  
+     */
+    @Test
+    public void testNullValue() throws SynException {
+        SynParser parser = SynParserSimpleTest.createParserStr("@File: ID result=<null>;");
+        SynNode node = SynParserSimpleTest.parseStr(parser, "aaa", "File");
+        assertEquals(null, node);
+    }
+    
+    @Test
+    public void testNpeInArrayNode() throws SynException {
+        SynParser parser = SynParserSimpleTest.createParserStr("@File: (Rule)*; Rule: ('!')? ID;");
+        SynNode node = SynParserSimpleTest.parseStr(parser, "aaa !bbb ccc", "File");
+        assertEquals("[\"!\"]", node.toString());
+    }
 }

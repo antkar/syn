@@ -22,9 +22,9 @@ package com.karmant.syn;
  * @see SynParser#setFailOnAmbiguity(boolean)
  */
 public class SynAmbiguityException extends SynTextException {
-	private static final long serialVersionUID = 6499789689926542454L;
+    private static final long serialVersionUID = 6499789689926542454L;
 
-	SynAmbiguityException(TextPos textPos, String message) {
-		super(textPos, message);
-	}
+    SynAmbiguityException(TextPos textPos, String message) {
+        super(textPos, message);
+    }
 }

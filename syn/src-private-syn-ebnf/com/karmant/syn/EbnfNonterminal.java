@@ -19,50 +19,50 @@ package com.karmant.syn;
  * EBNF nonterminal.
  */
 class EbnfNonterminal {
-	private final String name;
-	private EbnfProductions productions;
+    private final String name;
+    private EbnfProductions productions;
 
-	/**
-	 * Constructs a nonterminal. Productions are undefined at this point.
-	 */
-	EbnfNonterminal(String name) {
-		assert name != null;
-		assert name.length() > 0;
-		this.name = name;
-		
-		productions = null;
-	}
-	
-	/**
-	 * Sets productions of this nonterminal.
-	 */
-	void setProductions(EbnfProductions productions) {
-		assert productions != null;
-		assert this.productions == null;
-		
-		this.productions = productions;
-		for (EbnfProduction production : productions.asList()) {
-			production.setNonterminal(this);
-		}
-	}
-	
-	/**
-	 * Returns productions of this nonterminal.
-	 */
-	EbnfProductions getProductions() {
-		assert productions != null : name;
-		return productions;
-	}
-	
-	/**
-	 * Returns the name of this nonterminal.
-	 */
-	String getName() {
-		return name;
-	}
-	
-	@Override
-	public String toString() {
-		return name;
-	}
+    /**
+     * Constructs a nonterminal. Productions are undefined at this point.
+     */
+    EbnfNonterminal(String name) {
+        assert name != null;
+        assert name.length() > 0;
+        this.name = name;
+        
+        productions = null;
+    }
+    
+    /**
+     * Sets productions of this nonterminal.
+     */
+    void setProductions(EbnfProductions productions) {
+        assert productions != null;
+        assert this.productions == null;
+        
+        this.productions = productions;
+        for (EbnfProduction production : productions.asList()) {
+            production.setNonterminal(this);
+        }
+    }
+    
+    /**
+     * Returns productions of this nonterminal.
+     */
+    EbnfProductions getProductions() {
+        assert productions != null : name;
+        return productions;
+    }
+    
+    /**
+     * Returns the name of this nonterminal.
+     */
+    String getName() {
+        return name;
+    }
+    
+    @Override
+    public String toString() {
+        return name;
+    }
 }

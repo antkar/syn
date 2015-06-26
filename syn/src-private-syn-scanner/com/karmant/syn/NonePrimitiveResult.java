@@ -19,17 +19,17 @@ package com.karmant.syn;
  * A scanner result that does not describe a token. Returned by the white space scanner and comment scanners.
  */
 final class NonePrimitiveResult implements IPrimitiveResult {
-	static final IPrimitiveResult INSTANCE = new NonePrimitiveResult();
-	
-	private NonePrimitiveResult(){}
+    static final IPrimitiveResult INSTANCE = new NonePrimitiveResult();
+    
+    private NonePrimitiveResult(){}
 
-	@Override
-	public TokenDescriptor getTokenDescriptor() {
-		return null;
-	}
+    @Override
+    public TokenDescriptor getTokenDescriptor() {
+        return null;
+    }
 
-	@Override
-	public TerminalNode createTokenNode(PosBuffer pos) {
-		return null;
-	}
+    @Override
+    public TerminalNode createTokenNode(PosBuffer pos) {
+        return null;
+    }
 }

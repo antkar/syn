@@ -23,72 +23,72 @@ import java.util.List;
  * EBNF production.
  */
 class EbnfProduction {
-	private EbnfNonterminal nonterminal = null;
-	private final List<EbnfElement> elements;
+    private EbnfNonterminal nonterminal = null;
+    private final List<EbnfElement> elements;
 
-	EbnfProduction(List<EbnfElement> elements) {
-		assert elements != null;
-		this.elements = Collections.unmodifiableList(new ArrayList<>(elements));
-	}
+    EbnfProduction(List<EbnfElement> elements) {
+        assert elements != null;
+        this.elements = Collections.unmodifiableList(new ArrayList<>(elements));
+    }
 
-	/**
-	 * Sets the nonterminal which this production belongs to. Cannot be initialized in the constructor, because
-	 * there may be recursive dependencies between nonterminals.
-	 */
-	void setNonterminal(EbnfNonterminal nonterminal) {
-		assert nonterminal != null;
-		assert this.nonterminal == null;
-		this.nonterminal = nonterminal;
-	}
-	
-	/**
-	 * Returns the nonterminal which this production belongs to.
-	 */
-	EbnfNonterminal getNonterminal() {
-		assert nonterminal != null;
-		return nonterminal;
-	}
-	
-	/**
-	 * Returns the elements of this production.
-	 */
-	List<EbnfElement> getElements() {
-		return elements;
-	}
-	
-	/**
-	 * Returns <code>true</code> if this production contains an embedded object.
-	 * @see {@link EbnfEmbeddedElement}.
-	 */
-	boolean hasEmbeddedObject() {
-		for (EbnfElement element : elements) {
-			if (element.getAttribute() != null || element.hasEmbeddedObject()) {
-				return true;
-			}
-		}
-		return false;
-	}
-	
-	@Override
-	public String toString() {
-		StringBuilder bld = new StringBuilder();
-		
-		//Append nonterminal.
-		if (nonterminal != null) {
-			bld.append(nonterminal.getName());
-			bld.append(": ");
-		}
-		
-		//Append elements.
-		String sep = "";
-		for (EbnfElement element : elements) {
-			bld.append(sep);
-			bld.append(element);
-			sep = " ";
-		}
-		
-		//Return result.
-		String string = bld.toString();
-		return string;
-	}
+    /**
+     * Sets the nonterminal which this production belongs to. Cannot be initialized in the constructor, because
+     * there may be recursive dependencies between nonterminals.
+     */
+    void setNonterminal(EbnfNonterminal nonterminal) {
+        assert nonterminal != null;
+        assert this.nonterminal == null;
+        this.nonterminal = nonterminal;
+    }
+    
+    /**
+     * Returns the nonterminal which this production belongs to.
+     */
+    EbnfNonterminal getNonterminal() {
+        assert nonterminal != null;
+        return nonterminal;
+    }
+    
+    /**
+     * Returns the elements of this production.
+     */
+    List<EbnfElement> getElements() {
+        return elements;
+    }
+    
+    /**
+     * Returns <code>true</code> if this production contains an embedded object.
+     * @see {@link EbnfEmbeddedElement}.
+     */
+    boolean hasEmbeddedObject() {
+        for (EbnfElement element : elements) {
+            if (element.getAttribute() != null || element.hasEmbeddedObject()) {
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    @Override
+    public String toString() {
+        StringBuilder bld = new StringBuilder();
+        
+        //Append nonterminal.
+        if (nonterminal != null) {
+            bld.append(nonterminal.getName());
+            bld.append(": ");
+        }
+        
+        //Append elements.
+        String sep = "";
+        for (EbnfElement element : elements) {
+            bld.append(sep);
+            bld.append(element);
+            sep = " ";
+        }
+        
+        //Return result.
+        String string = bld.toString();
+        return string;
+    }
 }

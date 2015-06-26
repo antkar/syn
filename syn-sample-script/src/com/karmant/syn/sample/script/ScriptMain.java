@@ -26,51 +26,51 @@ import com.karmant.syn.sample.script.schema.Script;
  * Script Language interpreter application entry point. Executes script files specified in the command line.
  */
 public final class ScriptMain {
-	private ScriptMain(){}
-	
-	public static void main(String[] args) throws Exception {
-		//Parse command line arguments.
-		List<File> files = new ArrayList<>();
-		List<String> arguments = new ArrayList<>();
-		parseArguments(args, files, arguments);
-		
-		//Check if script files were specified.
-		if (files.isEmpty()) {
-			System.out.println("Usage: ScriptMain FILE_NAME+ [-args ARGUMENT+]");
-			System.exit(1);
-		}
+    private ScriptMain(){}
+    
+    public static void main(String[] args) throws Exception {
+        //Parse command line arguments.
+        List<File> files = new ArrayList<>();
+        List<String> arguments = new ArrayList<>();
+        parseArguments(args, files, arguments);
+        
+        //Check if script files were specified.
+        if (files.isEmpty()) {
+            System.out.println("Usage: ScriptMain FILE_NAME+ [-args ARGUMENT+]");
+            System.exit(1);
+        }
 
-		//Parse scripts.
-		SynBinder<Script> binder = ScriptExecutor.getSynBinder();
-		
-		List<Script> scripts = new ArrayList<>();
-		for (File file : files) {
-			Script script = binder.parse(file);
-			scripts.add(script);
-		}
-		
-		//Execute scripts.
-		Script.execute(scripts, arguments);
-	}
+        //Parse scripts.
+        SynBinder<Script> binder = ScriptExecutor.getSynBinder();
+        
+        List<Script> scripts = new ArrayList<>();
+        for (File file : files) {
+            Script script = binder.parse(file);
+            scripts.add(script);
+        }
+        
+        //Execute scripts.
+        Script.execute(scripts, arguments);
+    }
 
-	/**
-	 * Parses command line arguments.
-	 */
-	private static void parseArguments(String[] args, List<File> files, List<String> arguments) {
-		//Parse file names.
-		int ofs = 0;
-		while (ofs < args.length && !"-args".equals(args[ofs])) {
-			files.add(new File(args[ofs]));
-			++ofs;
-		}
-		
-		//Parse options.
-		if (ofs < args.length) {
-			++ofs;
-			while (ofs < args.length) {
-				arguments.add(args[ofs]);
-				++ofs;
-			}
-		}
-	}
+    /**
+     * Parses command line arguments.
+     */
+    private static void parseArguments(String[] args, List<File> files, List<String> arguments) {
+        //Parse file names.
+        int ofs = 0;
+        while (ofs < args.length && !"-args".equals(args[ofs])) {
+            files.add(new File(args[ofs]));
+            ++ofs;
+        }
+        
+        //Parse options.
+        if (ofs < args.length) {
+            ++ofs;
+            while (ofs < args.length) {
+                arguments.add(args[ofs]);
+                ++ofs;
+            }
+        }
+    }
 }

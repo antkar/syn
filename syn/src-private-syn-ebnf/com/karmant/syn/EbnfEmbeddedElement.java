@@ -28,28 +28,28 @@ package com.karmant.syn;
  */
 abstract class EbnfEmbeddedElement extends EbnfCompoundElement {
 
-	EbnfEmbeddedElement(String key, TextPos keyPos, EbnfProductions body) {
-		super(key, keyPos, body);
-	}
+    EbnfEmbeddedElement(String key, TextPos keyPos, EbnfProductions body) {
+        super(key, keyPos, body);
+    }
 
-	@Override
-	boolean hasEmbeddedObject() {
-		if (getAttribute() == null) {
-			//If the attribute is specified, the element must return an independent value.
-			//An element may have an embedded object only if the attribute name is not specified.
-			EbnfProductions body = getBody();
-			for (EbnfProduction production : body.asList()) {
-				if (production.hasEmbeddedObject()) {
-					return true;
-				}
-			}
-		}
-		return false;
-	}
-	
-	@Override
-	EbnfProductions getEmbeddedProductions() {
-		EbnfProductions body = getBody();
-		return body;
-	}
+    @Override
+    boolean hasEmbeddedObject() {
+        if (getAttribute() == null) {
+            //If the attribute is specified, the element must return an independent value.
+            //An element may have an embedded object only if the attribute name is not specified.
+            EbnfProductions body = getBody();
+            for (EbnfProduction production : body.asList()) {
+                if (production.hasEmbeddedObject()) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+    
+    @Override
+    EbnfProductions getEmbeddedProductions() {
+        EbnfProductions body = getBody();
+        return body;
+    }
 }

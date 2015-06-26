@@ -28,63 +28,63 @@ import com.karmant.syn.sample.script.rt.value.Value;
  * For-each statement syntax node.
  */
 public class ForEachStatement extends ForStatement {
-	/** Not <code>null</code> if a new control variable is declared in the header of the
-	 * <code>for</code> statement. */
-	@SynField
-	private String synNewVariable;
-	
-	/** The name of the control variable. */
-	@SynField
-	private StringToken synVariable;
-	
-	/** The expression to be iterated. */
-	@SynField
-	private Expression synExpression;
-	
-	/** The statement to be executed. */
-	@SynField
-	private Statement synStatement;
+    /** Not <code>null</code> if a new control variable is declared in the header of the
+     * <code>for</code> statement. */
+    @SynField
+    private String synNewVariable;
+    
+    /** The name of the control variable. */
+    @SynField
+    private StringToken synVariable;
+    
+    /** The expression to be iterated. */
+    @SynField
+    private Expression synExpression;
+    
+    /** The statement to be executed. */
+    @SynField
+    private Statement synStatement;
 
-	public ForEachStatement(){}
+    public ForEachStatement(){}
 
-	@Override
-	StatementResult execute0(ScriptScope scope) throws SynsException {
-		//Define the control variable.
-		final ScriptScope innerScope = scope.deriveLoopScope("for");
-		final LValue variable = getControlVariable(scope, innerScope);
-		
-		//Evaluate the expression.
-		Value value = synExpression.evaluate(scope);
-		RValue rvalue = value.toRValue();
-		
-		//Iterate over values.
-		for (RValue element : rvalue.toIterable()) {
-			variable.assign(element);
-			StatementResult result = synStatement.execute(innerScope);
-			if (result.isBreak()) {
-				break;
-			} else if (result.isReturn()) {
-				return result;
-			}
-		}
-		
-		return StatementResult.NONE;
-	}
+    @Override
+    StatementResult execute0(ScriptScope scope) throws SynsException {
+        //Define the control variable.
+        final ScriptScope innerScope = scope.deriveLoopScope("for");
+        final LValue variable = getControlVariable(scope, innerScope);
+        
+        //Evaluate the expression.
+        Value value = synExpression.evaluate(scope);
+        RValue rvalue = value.toRValue();
+        
+        //Iterate over values.
+        for (RValue element : rvalue.toIterable()) {
+            variable.assign(element);
+            StatementResult result = synStatement.execute(innerScope);
+            if (result.isBreak()) {
+                break;
+            } else if (result.isReturn()) {
+                return result;
+            }
+        }
+        
+        return StatementResult.NONE;
+    }
 
-	/**
-	 * Returns the control variable for this <code>for</code> statement. Either creates a new
-	 * variable, or looks for an existing one.
-	 */
-	private LValue getControlVariable(ScriptScope scope, final ScriptScope innerScope) throws SynsException {
-		Value variable;
-		if (synNewVariable != null) {
-			variable = Value.newVariable(Value.forNull());
-			innerScope.addValue(synVariable, variable);
-		} else {
-			variable = scope.getValue(synVariable);
-		}
-		
-		final LValue lvariable = variable.toLValue();
-		return lvariable;
-	}
+    /**
+     * Returns the control variable for this <code>for</code> statement. Either creates a new
+     * variable, or looks for an existing one.
+     */
+    private LValue getControlVariable(ScriptScope scope, final ScriptScope innerScope) throws SynsException {
+        Value variable;
+        if (synNewVariable != null) {
+            variable = Value.newVariable(Value.forNull());
+            innerScope.addValue(synVariable, variable);
+        } else {
+            variable = scope.getValue(synVariable);
+        }
+        
+        final LValue lvariable = variable.toLValue();
+        return lvariable;
+    }
 }

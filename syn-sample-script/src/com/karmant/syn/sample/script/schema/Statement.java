@@ -25,31 +25,31 @@ import com.karmant.syn.sample.script.rt.TextSynsException;
  * Script statement syntax node.
  */
 public abstract class Statement {
-	public Statement(){}
-	
-	/**
-	 * Returns the text position of the first token of the statement. Used for errors reporting.
-	 */
-	abstract TextPos getStartTextPos();
+    public Statement(){}
+    
+    /**
+     * Returns the text position of the first token of the statement. Used for errors reporting.
+     */
+    abstract TextPos getStartTextPos();
 
-	/**
-	 * Executes this statement in the specified scope. Takes care about exceptions, adding the
-	 * text position.
-	 */
-	final StatementResult execute(ScriptScope scope) throws SynsException {
-		try {
-			return execute0(scope);
-		} catch (TextSynsException e) {
-			throw e;
-		} catch (SynsException e) {
-			throw new TextSynsException(e, getStartTextPos());
-		} catch (Throwable e) {
-			throw new TextSynsException(e, getStartTextPos());
-		}
-	}
-	
-	/**
-	 * Executes the statement in the specified scope. Must not be called directly.
-	 */
-	abstract StatementResult execute0(ScriptScope scope) throws SynsException;
+    /**
+     * Executes this statement in the specified scope. Takes care about exceptions, adding the
+     * text position.
+     */
+    final StatementResult execute(ScriptScope scope) throws SynsException {
+        try {
+            return execute0(scope);
+        } catch (TextSynsException e) {
+            throw e;
+        } catch (SynsException e) {
+            throw new TextSynsException(e, getStartTextPos());
+        } catch (Throwable e) {
+            throw new TextSynsException(e, getStartTextPos());
+        }
+    }
+    
+    /**
+     * Executes the statement in the specified scope. Must not be called directly.
+     */
+    abstract StatementResult execute0(ScriptScope scope) throws SynsException;
 }

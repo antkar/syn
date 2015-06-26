@@ -22,14 +22,14 @@ package com.karmant.syn;
  */
 interface ValueTypeProcessor<T> {
 
-	T processBooleanValue() throws SynException;
+    T processBooleanValue() throws SynException;
 
-	T processIntegerValue() throws SynException;
+    T processIntegerValue() throws SynException;
 
-	T processFloatValue() throws SynException;
+    T processFloatValue() throws SynException;
 
-	T processStringValue() throws SynException;
+    T processStringValue() throws SynException;
 
-	T processObjectValue() throws SynException;
+    T processObjectValue() throws SynException;
 
 }

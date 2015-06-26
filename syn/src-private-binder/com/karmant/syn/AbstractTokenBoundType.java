@@ -19,28 +19,28 @@ package com.karmant.syn;
  * Common superclass for token bound types.
  */
 abstract class AbstractTokenBoundType extends AbstractBoundType {
-	AbstractTokenBoundType(Class<? extends AbstractToken> javaType) {
-		super(javaType);
-	}
+    AbstractTokenBoundType(Class<? extends AbstractToken> javaType) {
+        super(javaType);
+    }
 
-	@Override
-	final Object convertNode(BinderEngine<?> engine, SynNode synNode, BoundObject bObjOwner, String key)
-			throws SynBinderException
-	{
-		ValueNode valueNode = (ValueNode) synNode;
-		if (valueNode == null) {
-			//Node is null - return null.
-			return null;
-		}
-		
-		//Extract text position and create a token value.
-		TextPos pos = ((TerminalNode)synNode).getPos();
-		AbstractToken token = createToken(pos, valueNode);
-		return token;
-	}
-	
-	/**
-	 * Creates a token value from the given text position and a SYN value node.
-	 */
-	abstract AbstractToken createToken(TextPos pos, ValueNode valueNode) throws SynBinderException;
+    @Override
+    final Object convertNode(BinderEngine<?> engine, SynNode synNode, BoundObject bObjOwner, String key)
+            throws SynBinderException
+    {
+        ValueNode valueNode = (ValueNode) synNode;
+        if (valueNode == null) {
+            //Node is null - return null.
+            return null;
+        }
+        
+        //Extract text position and create a token value.
+        TextPos pos = ((TerminalNode)synNode).getPos();
+        AbstractToken token = createToken(pos, valueNode);
+        return token;
+    }
+    
+    /**
+     * Creates a token value from the given text position and a SYN value node.
+     */
+    abstract AbstractToken createToken(TextPos pos, ValueNode valueNode) throws SynBinderException;
 }

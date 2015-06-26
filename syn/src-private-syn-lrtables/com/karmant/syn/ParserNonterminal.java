@@ -19,36 +19,36 @@ package com.karmant.syn;
  * Parser nonterminal descriptor.
  */
 class ParserNonterminal {
-	private final int index;
-	private final String name;
-	private final boolean extended;
+    private final int index;
+    private final String name;
+    private final boolean extended;
 
-	ParserNonterminal(int index, String name, boolean extended) {
-		assert index >= 0;
-		assert name != null;
-		
-		this.index = index;
-		this.name = name;
-		this.extended = extended;
-	}
-	
-	int getIndex() {
-		return index;
-	}
-	
-	String getName() {
-		return name;
-	}
-	
-	/**
-	 * Returns <code>true</code> if this is an extended start nonterminal.
-	 */
-	boolean isExtended() {
-		return extended;
-	}
-	
-	@Override
-	public String toString() {
-		return name;
-	}
+    ParserNonterminal(int index, String name, boolean extended) {
+        assert index >= 0;
+        assert name != null;
+        
+        this.index = index;
+        this.name = name;
+        this.extended = extended;
+    }
+    
+    int getIndex() {
+        return index;
+    }
+    
+    String getName() {
+        return name;
+    }
+    
+    /**
+     * Returns <code>true</code> if this is an extended start nonterminal.
+     */
+    boolean isExtended() {
+        return extended;
+    }
+    
+    @Override
+    public String toString() {
+        return name;
+    }
 }

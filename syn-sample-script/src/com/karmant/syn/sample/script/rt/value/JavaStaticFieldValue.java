@@ -22,21 +22,21 @@ import com.karmant.syn.sample.script.rt.javacls.JavaField;
  * Java static field value.
  */
 public class JavaStaticFieldValue extends JavaFieldValue {
-	public JavaStaticFieldValue(JavaField field) {
-		super(field);
-		
-		if (!field.isStatic()) {
-			throw new IllegalArgumentException(field + "");
-		}
-	}
+    public JavaStaticFieldValue(JavaField field) {
+        super(field);
+        
+        if (!field.isStatic()) {
+            throw new IllegalArgumentException(field + "");
+        }
+    }
 
-	@Override
-	Object getFieldValue() throws SynsException {
-		return getField().get(null);
-	}
+    @Override
+    Object getFieldValue() throws SynsException {
+        return getField().get(null);
+    }
 
-	@Override
-	void setFieldValue(Object value) throws SynsException {
-		getField().set(null, value);
-	}
+    @Override
+    void setFieldValue(Object value) throws SynsException {
+        getField().set(null, value);
+    }
 }

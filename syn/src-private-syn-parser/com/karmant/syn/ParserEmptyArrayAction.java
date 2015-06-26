@@ -19,18 +19,18 @@ package com.karmant.syn;
  * A parser action returning an empty array (used in zero-many repetition element).
  */
 class ParserEmptyArrayAction implements IParserAction {
-	static final ParserEmptyArrayAction INSTANCE = new ParserEmptyArrayAction();
-	
-	private ParserEmptyArrayAction() {
-	}
+    static final ParserEmptyArrayAction INSTANCE = new ParserEmptyArrayAction();
+    
+    private ParserEmptyArrayAction() {
+    }
 
-	@Override
-	public IParserNode execute(ParserStackElement stack) {
-		return new ParserArrayNode();
-	}
-	
-	@Override
-	public String toString() {
-		return "$$ = []";
-	}
+    @Override
+    public IParserNode execute(ParserStackElement stack) {
+        return new ParserArrayNode();
+    }
+    
+    @Override
+    public String toString() {
+        return "$$ = []";
+    }
 }

@@ -20,15 +20,15 @@ package com.karmant.syn;
  */
 interface IParserGetter {
 
-	/**
-	 * Returns the offset of the stack element where to read a value from.
-	 */
-	int offset();
-	
-	/**
-	 * Gets a parser node from a stack element.
-	 * @param element the stack element at the offset returned by {@link #offset()}.
-	 * @return the parser node.
-	 */
-	IParserNode get(ParserStackElement element);
+    /**
+     * Returns the offset of the stack element where to read a value from.
+     */
+    int offset();
+    
+    /**
+     * Gets a parser node from a stack element.
+     * @param element the stack element at the offset returned by {@link #offset()}.
+     * @return the parser node.
+     */
+    IParserNode get(ParserStackElement element);
 }

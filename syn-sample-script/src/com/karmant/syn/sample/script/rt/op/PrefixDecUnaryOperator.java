@@ -23,22 +23,22 @@ import com.karmant.syn.sample.script.rt.value.Value;
  * Script Language prefix <code>--</code> operator.
  */
 class PrefixDecUnaryOperator extends AssignmentUnaryOperator {
-	PrefixDecUnaryOperator() {
-		super("--");
-	}
+    PrefixDecUnaryOperator() {
+        super("--");
+    }
 
-	@Override
-	long evaluate(long value) {
-		return value - 1;
-	}
+    @Override
+    long evaluate(long value) {
+        return value - 1;
+    }
 
-	@Override
-	double evaluate(double value) {
-		return value - 1;
-	}
+    @Override
+    double evaluate(double value) {
+        return value - 1;
+    }
 
-	@Override
-	Value resultValue(RValue prevValue, LValue value) {
-		return value;
-	}
+    @Override
+    Value resultValue(RValue prevValue, LValue value) {
+        return value;
+    }
 }

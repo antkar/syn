@@ -20,15 +20,15 @@ package com.karmant.syn;
  */
 class StringEqualityChecker implements LookupEqualityChecker {
 
-	static final StringEqualityChecker INSTANCE = new StringEqualityChecker();
-	
-	private StringEqualityChecker() {
-	}
+    static final StringEqualityChecker INSTANCE = new StringEqualityChecker();
+    
+    private StringEqualityChecker() {
+    }
 
-	@Override
-	public boolean equal(Object a, Object b) {
-		boolean result = a == null ? b == null : a.equals(b);
-		return result;
-	}
+    @Override
+    public boolean equal(Object a, Object b) {
+        boolean result = a == null ? b == null : a.equals(b);
+        return result;
+    }
 
 }

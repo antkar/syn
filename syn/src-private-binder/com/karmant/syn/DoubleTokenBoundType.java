@@ -19,15 +19,15 @@ package com.karmant.syn;
  * {@link DoubleToken} bound type.
  */
 class DoubleTokenBoundType extends AbstractTokenBoundType {
-	static final BoundType INSTANCE = new DoubleTokenBoundType();
+    static final BoundType INSTANCE = new DoubleTokenBoundType();
 
-	private DoubleTokenBoundType() {
-		super(DoubleToken.class);
-	}
+    private DoubleTokenBoundType() {
+        super(DoubleToken.class);
+    }
 
-	@Override
-	AbstractToken createToken(TextPos pos, ValueNode valueNode) {
-		double value = valueNode.getFloat();
-		return new DoubleToken(pos, value);
-	}
+    @Override
+    AbstractToken createToken(TextPos pos, ValueNode valueNode) {
+        double value = valueNode.getFloat();
+        return new DoubleToken(pos, value);
+    }
 }

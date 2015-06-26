@@ -22,14 +22,14 @@ import com.karmant.syn.sample.script.rt.value.RValue;
  * Primitive type descriptor used by Script Language explicit cast operator to denote a type.
  */
 public abstract class PrimitiveTypeDescriptor {
-	PrimitiveTypeDescriptor(){}
+    PrimitiveTypeDescriptor(){}
 
-	/**
-	 * Casts the specified operand to the primitive type denoted by this type descriptor.
-	 * 
-	 * @param operand the operand.
-	 * @return the casted value.
-	 * @throws SynsException if the operand cannot be casted to the type.
-	 */
-	public abstract RValue cast(Operand operand) throws SynsException;
+    /**
+     * Casts the specified operand to the primitive type denoted by this type descriptor.
+     * 
+     * @param operand the operand.
+     * @return the casted value.
+     * @throws SynsException if the operand cannot be casted to the type.
+     */
+    public abstract RValue cast(Operand operand) throws SynsException;
 }

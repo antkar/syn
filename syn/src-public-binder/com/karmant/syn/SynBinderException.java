@@ -20,13 +20,13 @@ package com.karmant.syn;
  * Java classes are not appropriate.
  */
 public class SynBinderException extends SynException {
-	private static final long serialVersionUID = -2519990095704993313L;
+    private static final long serialVersionUID = -2519990095704993313L;
 
-	SynBinderException(String message, Throwable cause) {
-		super(message, cause);
-	}
+    SynBinderException(String message, Throwable cause) {
+        super(message, cause);
+    }
 
-	SynBinderException(String message) {
-		super(message);
-	}
+    SynBinderException(String message) {
+        super(message);
+    }
 }

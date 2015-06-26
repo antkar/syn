@@ -22,17 +22,17 @@ import com.karmant.syn.sample.script.rt.value.Value;
  * Script Language <code>/</code> operator.
  */
 class DivBinaryOperator extends BinaryOperator {
-	DivBinaryOperator() {
-		super("/");
-	}
+    DivBinaryOperator() {
+        super("/");
+    }
 
-	@Override
-	RValue evaluate(long left, long right) {
-		return Value.forLong(left / right);
-	}
+    @Override
+    RValue evaluate(long left, long right) {
+        return Value.forLong(left / right);
+    }
 
-	@Override
-	RValue evaluate(double left, double right) {
-		return Value.forDouble(left / right);
-	}
+    @Override
+    RValue evaluate(double left, double right) {
+        return Value.forDouble(left / right);
+    }
 }

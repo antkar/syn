@@ -28,63 +28,63 @@ import com.karmant.syn.sample.script.rt.value.Value;
  * Declaration syntax node.
  */
 public abstract class Declaration {
-	/** The text position of the first token. */
-	@SynField
-	private TextPos synPos;
+    /** The text position of the first token. */
+    @SynField
+    private TextPos synPos;
 
-	/** The name of the declaration. */
-	@SynField
-	private StringToken synName;
+    /** The name of the declaration. */
+    @SynField
+    private StringToken synName;
 
-	public Declaration(){}
-	
-	/**
-	 * Returns the text position of the first token of this declaration.
-	 */
-	TextPos getStartTextPos() {
-		return synPos;
-	}
+    public Declaration(){}
+    
+    /**
+     * Returns the text position of the first token of this declaration.
+     */
+    TextPos getStartTextPos() {
+        return synPos;
+    }
 
-	/**
-	 * Returns the name of the declaration.
-	 */
-	public String getName() {
-		return synName.getValue();
-	}
-	
-	/**
-	 * Returns the name token of the declaration.
-	 */
-	public StringToken getNameTk() {
-		return synName;
-	}
+    /**
+     * Returns the name of the declaration.
+     */
+    public String getName() {
+        return synName.getValue();
+    }
+    
+    /**
+     * Returns the name token of the declaration.
+     */
+    public StringToken getNameTk() {
+        return synName;
+    }
 
-	/**
-	 * Adds this declaration to the specified scope.
-	 */
-	public final Value addToScope(ScriptScope scope) throws SynsException {
-		Value value = evaluateValue(scope);
-		scope.addValue(synName, value);
-		return value;
-	}
-	
-	/**
-	 * Evaluates the initial value of the declaration.
-	 */
-	abstract Value evaluateValue(ScriptScope scope) throws SynsException;
-	
-	/**
-	 * Returns <code>true</code> if this declaration is a function.
-	 */
-	boolean isFunction() {
-		return false;
-	}
+    /**
+     * Adds this declaration to the specified scope.
+     */
+    public final Value addToScope(ScriptScope scope) throws SynsException {
+        Value value = evaluateValue(scope);
+        scope.addValue(synName, value);
+        return value;
+    }
+    
+    /**
+     * Evaluates the initial value of the declaration.
+     */
+    abstract Value evaluateValue(ScriptScope scope) throws SynsException;
+    
+    /**
+     * Returns <code>true</code> if this declaration is a function.
+     */
+    boolean isFunction() {
+        return false;
+    }
 
-	/**
-	 * Classifies this declaration as either a constant, a variable or a function.
-	 */
-	abstract void classify(
-			List<ConstantDeclaration> constants,
-			List<VariableDeclaration> variables,
-			List<FunctionDeclaration> functions) throws SynsException;
+    /**
+     * Classifies this declaration as either a constant, a variable or a function.
+     */
+    abstract void classify(
+            List<ConstantDeclaration> constants,
+            List<VariableDeclaration> variables,
+            List<FunctionDeclaration> functions) throws SynsException;
 }

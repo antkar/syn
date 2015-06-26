@@ -19,35 +19,35 @@ package com.karmant.syn.sample.script.rt.value;
  * Array element value.
  */
 class ArrayElementValue extends LValue {
-	private RValue rvalue;
-	
-	ArrayElementValue(RValue value) {
-		this.rvalue = value;
-	}
-	
-	@Override
-	public ValueType getValueType() {
-		return ValueType.ARRAY_ELEMENT;
-	}
+    private RValue rvalue;
+    
+    ArrayElementValue(RValue value) {
+        this.rvalue = value;
+    }
+    
+    @Override
+    public ValueType getValueType() {
+        return ValueType.ARRAY_ELEMENT;
+    }
 
-	@Override
-	public String getTypeMessage() {
-		String subType = rvalue.getTypeMessage();
-		return getCompoundTypeMessage(subType);
-	}
+    @Override
+    public String getTypeMessage() {
+        String subType = rvalue.getTypeMessage();
+        return getCompoundTypeMessage(subType);
+    }
 
-	@Override
-	public void assign(RValue value) {
-		rvalue = value;;
-	}
-	
-	@Override
-	public RValue toRValue() {
-		return rvalue;
-	}
-	
-	@Override
-	public String toString() {
-		return rvalue.toString();
-	}
+    @Override
+    public void assign(RValue value) {
+        rvalue = value;;
+    }
+    
+    @Override
+    public RValue toRValue() {
+        return rvalue;
+    }
+    
+    @Override
+    public String toString() {
+        return rvalue.toString();
+    }
 }

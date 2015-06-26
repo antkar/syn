@@ -19,9 +19,9 @@ package com.karmant.syn;
  * Equality checker. Used by the {@link SynLookup} functionality to compare values.
  */
 interface LookupEqualityChecker {
-	/**
-	 * Returns <code>true</code> if the passed objects are equal. The returned value is used
-	 * as the result of the lookup expression equality operator <code>==</code>. 
-	 */
-	boolean equal(Object a, Object b);
+    /**
+     * Returns <code>true</code> if the passed objects are equal. The returned value is used
+     * as the result of the lookup expression equality operator <code>==</code>. 
+     */
+    boolean equal(Object a, Object b);
 }

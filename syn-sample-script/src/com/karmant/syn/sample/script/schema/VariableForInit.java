@@ -24,21 +24,21 @@ import com.karmant.syn.sample.script.util.MiscUtil;
  * New variable <code>for</code> initializer.
  */
 public class VariableForInit extends ForInit {
-	/** List of variables. */
-	@SynField
-	private ForVariableDeclaration[] synVariables;
+    /** List of variables. */
+    @SynField
+    private ForVariableDeclaration[] synVariables;
 
-	public VariableForInit(){}
+    public VariableForInit(){}
 
-	@Override
-	void execute(ScriptScope scope) throws SynsException {
-		for (ForVariableDeclaration declaration : synVariables) {
-			declaration.addToScope(scope);
-		}
-	}
-	
-	@Override
-	public String toString() {
-		return MiscUtil.arrayToString(synVariables, ", ");
-	}
+    @Override
+    void execute(ScriptScope scope) throws SynsException {
+        for (ForVariableDeclaration declaration : synVariables) {
+            declaration.addToScope(scope);
+        }
+    }
+    
+    @Override
+    public String toString() {
+        return MiscUtil.arrayToString(synVariables, ", ");
+    }
 }

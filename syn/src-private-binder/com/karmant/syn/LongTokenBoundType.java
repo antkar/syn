@@ -19,15 +19,15 @@ package com.karmant.syn;
  * {@link LongToken} bound type.
  */
 class LongTokenBoundType extends AbstractTokenBoundType {
-	static final BoundType INSTANCE = new LongTokenBoundType();
+    static final BoundType INSTANCE = new LongTokenBoundType();
 
-	private LongTokenBoundType() {
-		super(LongToken.class);
-	}
+    private LongTokenBoundType() {
+        super(LongToken.class);
+    }
 
-	@Override
-	AbstractToken createToken(TextPos pos, ValueNode valueNode) throws SynBinderException {
-		long value = valueNode.getLong();
-		return new LongToken(pos, value);
-	}
+    @Override
+    AbstractToken createToken(TextPos pos, ValueNode valueNode) throws SynBinderException {
+        long value = valueNode.getLong();
+        return new LongToken(pos, value);
+    }
 }

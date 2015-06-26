@@ -27,52 +27,52 @@ import com.karmant.syn.sample.script.rt.value.Value;
  * Script <code>while</code> statement syntax node.
  */
 public class WhileStatement extends Statement {
-	/** The text position of the first token. */
-	@SynField
-	private TextPos synPos;
+    /** The text position of the first token. */
+    @SynField
+    private TextPos synPos;
 
-	/** The condition expression. */
-	@SynField
-	private Expression synExpression;
-	
-	/** The statement to repeat. */
-	@SynField
-	private Statement synStatement;
+    /** The condition expression. */
+    @SynField
+    private Expression synExpression;
+    
+    /** The statement to repeat. */
+    @SynField
+    private Statement synStatement;
 
-	public WhileStatement(){}
+    public WhileStatement(){}
 
-	@Override
-	TextPos getStartTextPos() {
-		return synPos;
-	}
+    @Override
+    TextPos getStartTextPos() {
+        return synPos;
+    }
 
-	@Override
-	StatementResult execute0(ScriptScope scope) throws SynsException {
-		//Create a nested scope to execute the loop in it.
-		scope = scope.deriveLoopScope("while");
-		
-		for (;;) {
-			//Check the condition.
-			Value value = synExpression.evaluate(scope);
-			Operand operand = value.toOperand();
-			if (!operand.booleanValue()) {
-				break;
-			}
-			
-			//Execute the statement.
-			StatementResult result = synStatement.execute(scope);
-			if (result.isReturn()) {
-				return result;
-			} else if (result.isBreak()) {
-				break;
-			}
-		}
-		
-		return StatementResult.NONE;
-	}
-	
-	@Override
-	public String toString() {
-		return "while (...)";
-	}
+    @Override
+    StatementResult execute0(ScriptScope scope) throws SynsException {
+        //Create a nested scope to execute the loop in it.
+        scope = scope.deriveLoopScope("while");
+        
+        for (;;) {
+            //Check the condition.
+            Value value = synExpression.evaluate(scope);
+            Operand operand = value.toOperand();
+            if (!operand.booleanValue()) {
+                break;
+            }
+            
+            //Execute the statement.
+            StatementResult result = synStatement.execute(scope);
+            if (result.isReturn()) {
+                return result;
+            } else if (result.isBreak()) {
+                break;
+            }
+        }
+        
+        return StatementResult.NONE;
+    }
+    
+    @Override
+    public String toString() {
+        return "while (...)";
+    }
 }

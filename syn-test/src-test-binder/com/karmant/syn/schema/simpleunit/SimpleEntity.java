@@ -20,31 +20,31 @@ import com.karmant.syn.SynInit;
 import com.karmant.syn.SynLookup;
 
 public class SimpleEntity {
-	@SynField
-	private String sfName;
-	
-	@SynField
-	private SimpleMember[] sfMembers;
-	
-	@SynLookup("obj != this && obj.sfName == this.sfName")
-	private SimpleEntity[] entitiesWithSameName;
-	
-	public SimpleEntity() {
-		super();
-	}
-	
-	public String getName() {
-		return sfName;
-	}
-	
-	public SimpleMember[] getMembers() {
-		return sfMembers;
-	}
-	
-	@SynInit
-	private void init() {
-		if (entitiesWithSameName.length > 0) {
-			throw new IllegalStateException(String.format("There is more than one entity with name %s", sfName));
-		}
-	}
+    @SynField
+    private String sfName;
+    
+    @SynField
+    private SimpleMember[] sfMembers;
+    
+    @SynLookup("obj != this && obj.sfName == this.sfName")
+    private SimpleEntity[] entitiesWithSameName;
+    
+    public SimpleEntity() {
+        super();
+    }
+    
+    public String getName() {
+        return sfName;
+    }
+    
+    public SimpleMember[] getMembers() {
+        return sfMembers;
+    }
+    
+    @SynInit
+    private void init() {
+        if (entitiesWithSameName.length > 0) {
+            throw new IllegalStateException(String.format("There is more than one entity with name %s", sfName));
+        }
+    }
 }

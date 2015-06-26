@@ -19,25 +19,25 @@ package com.karmant.syn;
  * Environment for a lookup expression evaluation.
  */
 class LookupEnv {
-	private final BoundObject vThis;
-	private final BoundObject vObj;
-	
-	LookupEnv(BoundObject vThis, BoundObject vObj) {
-		this.vThis = vThis;
-		this.vObj = vObj;
-	}
+    private final BoundObject vThis;
+    private final BoundObject vObj;
+    
+    LookupEnv(BoundObject vThis, BoundObject vObj) {
+        this.vThis = vThis;
+        this.vObj = vObj;
+    }
 
-	/**
-	 * Returns the object associated with "this" special name.
-	 */
-	BoundObject getVThis() {
-		return vThis;
-	}
+    /**
+     * Returns the object associated with "this" special name.
+     */
+    BoundObject getVThis() {
+        return vThis;
+    }
 
-	/**
-	 * Returns the object associated with "obj" special name.
-	 */
-	BoundObject getVObj() {
-		return vObj;
-	}
+    /**
+     * Returns the object associated with "obj" special name.
+     */
+    BoundObject getVObj() {
+        return vObj;
+    }
 }

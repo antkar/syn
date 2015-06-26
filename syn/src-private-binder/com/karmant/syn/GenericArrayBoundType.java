@@ -23,38 +23,38 @@ import java.lang.reflect.Array;
  * @param <T> the type of the array's element.
  */
 class GenericArrayBoundType<T> extends ArrayBoundType {
-	private final BoundType elementType;
-	private final Class<?> componentType;
+    private final BoundType elementType;
+    private final Class<?> componentType;
 
-	private GenericArrayBoundType(BoundType elementType, Class<?> componentType) {
-		this.elementType = elementType;
-		this.componentType = componentType;
-	}
-	
-	/**
-	 * Returns an instance of a generic array bound type.
-	 */
-	static <T> GenericArrayBoundType<T> create(BoundType elementType, Class<T> componentType) {
-		//Now simply creates a new object, but can be changed to cache instances.
-		return new GenericArrayBoundType<>(elementType, componentType);
-	}
+    private GenericArrayBoundType(BoundType elementType, Class<?> componentType) {
+        this.elementType = elementType;
+        this.componentType = componentType;
+    }
+    
+    /**
+     * Returns an instance of a generic array bound type.
+     */
+    static <T> GenericArrayBoundType<T> create(BoundType elementType, Class<T> componentType) {
+        //Now simply creates a new object, but can be changed to cache instances.
+        return new GenericArrayBoundType<>(elementType, componentType);
+    }
 
-	@Override
-	Object convertArray(
-			BinderEngine<?> engine,
-			BoundObject bObjOwner,
-			String key,
-			ArrayNode arrayNode,
-			int size) throws SynBinderException
-	{
-		Object[] array = (Object[])Array.newInstance(componentType, size);
-		
-		for (int i = 0; i < size; ++i) {
-			SynNode synElementNode = arrayNode.get(i);
-			Object value = elementType.convertNode(engine, synElementNode, bObjOwner, key);
-			array[i] = value;
-		}
-		
-		return array;
-	}
+    @Override
+    Object convertArray(
+            BinderEngine<?> engine,
+            BoundObject bObjOwner,
+            String key,
+            ArrayNode arrayNode,
+            int size) throws SynBinderException
+    {
+        Object[] array = (Object[])Array.newInstance(componentType, size);
+        
+        for (int i = 0; i < size; ++i) {
+            SynNode synElementNode = arrayNode.get(i);
+            Object value = elementType.convertNode(engine, synElementNode, bObjOwner, key);
+            array[i] = value;
+        }
+        
+        return array;
+    }
 }

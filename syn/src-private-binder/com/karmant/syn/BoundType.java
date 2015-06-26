@@ -22,31 +22,31 @@ import java.util.List;
  * Describes a type of the value bound to a Java class field.
  */
 abstract class BoundType {
-	private BoundType listType;
-	
-	BoundType(){}
-	
-	/**
-	 * Returns the bound type denoting the array of this type.
-	 * @throws SynBinderException if the type does not support arrays.
-	 */
-	abstract BoundType getArrayType(Field field) throws SynBinderException;
-	
-	/**
-	 * Returns the bound type denoting the {@link List} of this type.
-	 * @throws SynBinderException if the type does not support lists.
-	 */
-	final BoundType getListType(Field field) throws SynBinderException {
-		if (listType == null) {
-			listType = new ListBoundType(this);
-		}
-		return listType;
-	}
-	
-	/**
-	 * Converts a SYN node to a value which has to be bound to a Java field.
-	 * @throws SynBinderException if the node cannot be converted.
-	 */
-	abstract Object convertNode(BinderEngine<?> engine, SynNode synNode, BoundObject bObjOwner, String key)
-			throws SynBinderException;
+    private BoundType listType;
+    
+    BoundType(){}
+    
+    /**
+     * Returns the bound type denoting the array of this type.
+     * @throws SynBinderException if the type does not support arrays.
+     */
+    abstract BoundType getArrayType(Field field) throws SynBinderException;
+    
+    /**
+     * Returns the bound type denoting the {@link List} of this type.
+     * @throws SynBinderException if the type does not support lists.
+     */
+    final BoundType getListType(Field field) throws SynBinderException {
+        if (listType == null) {
+            listType = new ListBoundType(this);
+        }
+        return listType;
+    }
+    
+    /**
+     * Converts a SYN node to a value which has to be bound to a Java field.
+     * @throws SynBinderException if the node cannot be converted.
+     */
+    abstract Object convertNode(BinderEngine<?> engine, SynNode synNode, BoundObject bObjOwner, String key)
+            throws SynBinderException;
 }

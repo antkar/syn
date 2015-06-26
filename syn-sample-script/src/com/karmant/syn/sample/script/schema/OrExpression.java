@@ -19,5 +19,5 @@ package com.karmant.syn.sample.script.schema;
  * Script <code>||</code> expression syntax node.
  */
 public class OrExpression extends ArithmeticalBinaryExpression {
-	public OrExpression(){}
+    public OrExpression(){}
 }

@@ -17,88 +17,88 @@ limitations under the License.
 
 <project name="SynScript" default="default">
 
-	<property name="bin-dir" value="bld/bin"/>
-	<property name="dst-dir" value="bld/dst"/>
-	<property name="tmp-dir" value="bld/tmp"/>
-	
-	<loadproperties srcFile="../syn/build.properties" prefix="build."/>
+    <property name="bin-dir" value="bld/bin"/>
+    <property name="dst-dir" value="bld/dst"/>
+    <property name="tmp-dir" value="bld/tmp"/>
+    
+    <loadproperties srcFile="../syn/build.properties" prefix="build."/>
 
-	<property name="dst-jar-file" value="syn-sample-script-${build.version}.jar"/>
-		
+    <property name="dst-jar-file" value="syn-sample-script-${build.version}.jar"/>
+        
     <target name="default" depends="clean,build"/>
-	
-	<target name="clean">
-    	<delete dir="${bin-dir}"/>
-    	<delete dir="${dst-dir}"/>
-	</target>
+    
+    <target name="clean">
+        <delete dir="${bin-dir}"/>
+        <delete dir="${dst-dir}"/>
+    </target>
 
-	<target name="build">
-		<ant dir="../syn" antfile="build.xml" target="build-debug"/>
+    <target name="build">
+        <ant dir="../syn" antfile="build.xml" target="build-debug"/>
 
-    	<mkdir dir="${dst-dir}"/>
-    	<mkdir dir="${tmp-dir}"/>
-		<copy file="../syn/bld/dst/syn-${build.version}.jar" todir="${tmp-dir}"/>
-		
-    	<mkdir dir="${bin-dir}"/>
-    	<javac srcdir="." destdir="${bin-dir}" classpath="${tmp-dir}/syn-${build.version}.jar"
-    		debug="on" includeAntRuntime="no"
-    	>
-    		<include name="src/**/*.java"/>
-    	</javac>
-    	
-		<jar destfile="${tmp-dir}/${dst-jar-file}">
-			<manifest>
-				<attribute name="Main-Class" value="com.karmant.syn.sample.script.ScriptMain"/>
-				<attribute name="Class-Path" value="syn-${build.version}.jar"/>
-			</manifest>
-			
-			<fileset dir="${bin-dir}"/>
-			
-			<fileset dir="src">
-				<include name="**/*.txt"/>
-			</fileset>
-		</jar>
-		
-		<mkdir dir="${tmp-dir}/snake"/>
-		<copy todir="${tmp-dir}/snake">
-			<fileset dir="sample" includes="*.syns"/>
-		</copy>
-		
-		<antcall target="createLaunchers">
-			<param name="header" value="@echo off"/>
-			<param name="fileExt" value="cmd"/>
-			<param name="runDir" value="%~dp0"/>
-			<param name="allArgs" value="%*"/>
-		</antcall>
+        <mkdir dir="${dst-dir}"/>
+        <mkdir dir="${tmp-dir}"/>
+        <copy file="../syn/bld/dst/syn-${build.version}.jar" todir="${tmp-dir}"/>
+        
+        <mkdir dir="${bin-dir}"/>
+        <javac srcdir="." destdir="${bin-dir}" classpath="${tmp-dir}/syn-${build.version}.jar"
+            debug="on" includeAntRuntime="no"
+        >
+            <include name="src/**/*.java"/>
+        </javac>
+        
+        <jar destfile="${tmp-dir}/${dst-jar-file}">
+            <manifest>
+                <attribute name="Main-Class" value="com.karmant.syn.sample.script.ScriptMain"/>
+                <attribute name="Class-Path" value="syn-${build.version}.jar"/>
+            </manifest>
+            
+            <fileset dir="${bin-dir}"/>
+            
+            <fileset dir="src">
+                <include name="**/*.txt"/>
+            </fileset>
+        </jar>
+        
+        <mkdir dir="${tmp-dir}/snake"/>
+        <copy todir="${tmp-dir}/snake">
+            <fileset dir="sample" includes="*.syns"/>
+        </copy>
+        
+        <antcall target="createLaunchers">
+            <param name="header" value="@echo off"/>
+            <param name="fileExt" value="cmd"/>
+            <param name="runDir" value="%~dp0"/>
+            <param name="allArgs" value="%*"/>
+        </antcall>
 
-		<antcall target="createLaunchers">
-			<param name="header" value="#!/bin/sh"/>
-			<param name="fileExt" value="sh"/>
-			<param name="runDir" value="$(dirname $0)/"/>
-			<param name="allArgs" value="&quot;$@&quot;"/>
-		</antcall>
-		
-		<zip destfile="${dst-dir}/syn-sample-${build.version}.zip">
-			<zipfileset dir="${tmp-dir}" prefix="syn-sample"/>
-		</zip>
-		
-		<tar destfile="${dst-dir}/syn-sample-${build.version}.tgz" compression="gzip">
-			<tarfileset dir="${tmp-dir}" prefix="syn-sample" excludes="*.sh"/>
-			<tarfileset filemode="555" dir="${tmp-dir}" prefix="syn-sample" includes="*.sh"/>
-		</tar>
-		
-		<zip destfile="${dst-dir}/syn-sample-src-${build.version}.zip">
-			<zipfileset dir="src"/>
-		</zip>
-	</target>
-	
-	<target name="createLaunchers">
-		<echo file="${tmp-dir}/script.${fileExt}">${header}
+        <antcall target="createLaunchers">
+            <param name="header" value="#!/bin/sh"/>
+            <param name="fileExt" value="sh"/>
+            <param name="runDir" value="$(dirname $0)/"/>
+            <param name="allArgs" value="&quot;$@&quot;"/>
+        </antcall>
+        
+        <zip destfile="${dst-dir}/syn-sample-${build.version}.zip">
+            <zipfileset dir="${tmp-dir}" prefix="syn-sample"/>
+        </zip>
+        
+        <tar destfile="${dst-dir}/syn-sample-${build.version}.tgz" compression="gzip">
+            <tarfileset dir="${tmp-dir}" prefix="syn-sample" excludes="*.sh"/>
+            <tarfileset filemode="555" dir="${tmp-dir}" prefix="syn-sample" includes="*.sh"/>
+        </tar>
+        
+        <zip destfile="${dst-dir}/syn-sample-src-${build.version}.zip">
+            <zipfileset dir="src"/>
+        </zip>
+    </target>
+    
+    <target name="createLaunchers">
+        <echo file="${tmp-dir}/script.${fileExt}">${header}
 java -jar ${runDir}${dst-jar-file} ${allArgs}</echo>
-		<echo file="${tmp-dir}/console.${fileExt}">${header}
+        <echo file="${tmp-dir}/console.${fileExt}">${header}
 java -cp ${runDir}${dst-jar-file} com.karmant.syn.sample.script.ide.IDEMain</echo>
-		<echo file="${tmp-dir}/snake.${fileExt}">${header}
+        <echo file="${tmp-dir}/snake.${fileExt}">${header}
 ${runDir}script.${fileExt} ${runDir}snake/Snake.syns ${runDir}snake/Level.syns ${runDir}snake/World.syns ${runDir}snake/View.syns</echo>
-	</target>
+    </target>
 
 </project>

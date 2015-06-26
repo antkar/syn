@@ -24,10 +24,10 @@ import org.junit.runners.Suite.SuiteClasses;
  */
 @RunWith(Suite.class)
 @SuiteClasses({
-	DeclarationScriptTest.class,
-	ExpressionScriptTest.class,
-	StatementScriptTest.class
+    DeclarationScriptTest.class,
+    ExpressionScriptTest.class,
+    StatementScriptTest.class
 })
 public final class ScriptSuite {
-	private ScriptSuite(){}
+    private ScriptSuite(){}
 }

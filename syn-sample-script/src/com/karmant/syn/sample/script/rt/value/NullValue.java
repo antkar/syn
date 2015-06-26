@@ -23,36 +23,36 @@ import com.karmant.syn.sample.script.rt.op.operand.Operand;
  * Null value.
  */
 final class NullValue extends RValue {
-	static final RValue INSTANCE = new NullValue();
-	
-	private NullValue(){}
-	
-	@Override
-	public Operand toOperand() throws SynsException {
-		return Operand.forNull();
-	}
-	
-	@Override
-	public ValueType getValueType() {
-		return ValueType.NULL;
-	}
-	
-	@Override
-	public Value getMemberOpt(String name) throws SynsException {
-		throw errNullPointer();
-	}
-	
-	@Override
-	public LValue getArrayElement(int index) throws SynsException {
-		throw errNullPointer();
-	}
+    static final RValue INSTANCE = new NullValue();
+    
+    private NullValue(){}
+    
+    @Override
+    public Operand toOperand() throws SynsException {
+        return Operand.forNull();
+    }
+    
+    @Override
+    public ValueType getValueType() {
+        return ValueType.NULL;
+    }
+    
+    @Override
+    public Value getMemberOpt(String name) throws SynsException {
+        throw errNullPointer();
+    }
+    
+    @Override
+    public LValue getArrayElement(int index) throws SynsException {
+        throw errNullPointer();
+    }
 
-	@Override
-	public Object toJava(Class<?> type, TypeMatchPrecision precision) {
-		return type.isPrimitive() ? INVALID : null;
-	}
-	
-	private SynsException errNullPointer() {
-		return new SynsException("Null pointer");
-	}
+    @Override
+    public Object toJava(Class<?> type, TypeMatchPrecision precision) {
+        return type.isPrimitive() ? INVALID : null;
+    }
+    
+    private SynsException errNullPointer() {
+        return new SynsException("Null pointer");
+    }
 }

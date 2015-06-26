@@ -19,5 +19,5 @@ package com.karmant.syn.sample.script.schema;
  * Script <code>&amp;&amp;</code> expression syntax node.
  */
 public class AndExpression extends ArithmeticalBinaryExpression {
-	public AndExpression(){}
+    public AndExpression(){}
 }

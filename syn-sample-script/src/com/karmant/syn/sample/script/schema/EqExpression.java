@@ -19,5 +19,5 @@ package com.karmant.syn.sample.script.schema;
  * Equality expression syntax node.
  */
 public class EqExpression extends ArithmeticalBinaryExpression {
-	public EqExpression(){}
+    public EqExpression(){}
 }

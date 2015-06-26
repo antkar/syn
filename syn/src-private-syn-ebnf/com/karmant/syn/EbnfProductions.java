@@ -23,32 +23,32 @@ import java.util.List;
  * A list of EBNF productions.
  */
 class EbnfProductions {
-	private final List<EbnfProduction> productions;
+    private final List<EbnfProduction> productions;
 
-	EbnfProductions(List<EbnfProduction> productions) {
-		assert productions != null;
-		this.productions = Collections.unmodifiableList(new ArrayList<>(productions));
-	}
-	
-	/**
-	 * Returns the list of productions.
-	 */
-	List<EbnfProduction> asList() {
-		return productions;
-	}
-	
-	@Override
-	public String toString() {
-		StringBuilder bld = new StringBuilder();
-		
-		String sep = "";
-		for (EbnfProduction production : productions) {
-			bld.append(sep);
-			bld.append(production);
-			sep = " | ";
-		}
-		
-		String result = bld.toString();
-		return result;
-	}
+    EbnfProductions(List<EbnfProduction> productions) {
+        assert productions != null;
+        this.productions = Collections.unmodifiableList(new ArrayList<>(productions));
+    }
+    
+    /**
+     * Returns the list of productions.
+     */
+    List<EbnfProduction> asList() {
+        return productions;
+    }
+    
+    @Override
+    public String toString() {
+        StringBuilder bld = new StringBuilder();
+        
+        String sep = "";
+        for (EbnfProduction production : productions) {
+            bld.append(sep);
+            bld.append(production);
+            sep = " | ";
+        }
+        
+        String result = bld.toString();
+        return result;
+    }
 }

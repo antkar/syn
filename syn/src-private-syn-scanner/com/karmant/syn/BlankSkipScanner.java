@@ -20,23 +20,23 @@ package com.karmant.syn;
  * one for blank tokens, and one for the others. Blank tokens may be white spaces and comments. 
  */
 class BlankSkipScanner implements IPrimitiveScanner {
-	private final IPrimitiveScanner blankScanner;
-	private final IPrimitiveScanner scanner;
-	
-	BlankSkipScanner(IPrimitiveScanner blankScanner, IPrimitiveScanner scanner) {
-		this.blankScanner = blankScanner;
-		this.scanner = scanner;
-	}
+    private final IPrimitiveScanner blankScanner;
+    private final IPrimitiveScanner scanner;
+    
+    BlankSkipScanner(IPrimitiveScanner blankScanner, IPrimitiveScanner scanner) {
+        this.blankScanner = blankScanner;
+        this.scanner = scanner;
+    }
 
-	@Override
-	public IPrimitiveResult scan(PrimitiveContext context) throws SynException {
-		boolean blankSkipped = false;
-		while (blankScanner.scan(context) != null) {
-			blankSkipped = true;
-		}
-		if (blankSkipped) {
-			context.startToken();
-		}
-		return scanner.scan(context);
-	}
+    @Override
+    public IPrimitiveResult scan(PrimitiveContext context) throws SynException {
+        boolean blankSkipped = false;
+        while (blankScanner.scan(context) != null) {
+            blankSkipped = true;
+        }
+        if (blankSkipped) {
+            context.startToken();
+        }
+        return scanner.scan(context);
+    }
 }

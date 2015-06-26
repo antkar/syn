@@ -20,8 +20,8 @@ package com.karmant.syn;
  */
 abstract class LookupBaseExpression extends LookupTermExpression {
 
-	LookupBaseExpression(Class<?> clsOfValue) {
-		super(clsOfValue);
-	}
+    LookupBaseExpression(Class<?> clsOfValue) {
+        super(clsOfValue);
+    }
 
 }

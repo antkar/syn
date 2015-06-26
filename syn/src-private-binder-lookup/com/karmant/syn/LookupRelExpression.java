@@ -20,43 +20,43 @@ package com.karmant.syn;
  */
 abstract class LookupRelExpression extends LookupExpression {
 
-	private final LookupEqualityChecker equalityChecker;
-	private final LookupTermExpression left;
-	private final LookupTermExpression right;
-	
-	LookupRelExpression(
-			LookupEqualityChecker equalityChecker,
-			LookupTermExpression left,
-			LookupTermExpression right)
-	{
-		this.equalityChecker = equalityChecker;
-		this.left = left;
-		this.right = right;
-	}
-	
-	LookupTermExpression getLeft() {
-		return left;
-	}
-	
-	LookupTermExpression getRight() {
-		return right;
-	}
+    private final LookupEqualityChecker equalityChecker;
+    private final LookupTermExpression left;
+    private final LookupTermExpression right;
+    
+    LookupRelExpression(
+            LookupEqualityChecker equalityChecker,
+            LookupTermExpression left,
+            LookupTermExpression right)
+    {
+        this.equalityChecker = equalityChecker;
+        this.left = left;
+        this.right = right;
+    }
+    
+    LookupTermExpression getLeft() {
+        return left;
+    }
+    
+    LookupTermExpression getRight() {
+        return right;
+    }
 
-	abstract boolean calcResult(boolean equal);
+    abstract boolean calcResult(boolean equal);
 
-	@Override
-	boolean eval(LookupEnv env) throws SynBinderException {
-		Object leftObj = left.eval(env);
-		Object rightObj = right.eval(env);
-		
-		boolean result;
-		if (leftObj == LookupTermExpression.UNDEFINED || rightObj == LookupTermExpression.UNDEFINED) {
-			result = false;
-		} else {
-			boolean equal = equalityChecker.equal(leftObj, rightObj);
-			result = calcResult(equal);
-		}
-		
-		return result;
-	}
+    @Override
+    boolean eval(LookupEnv env) throws SynBinderException {
+        Object leftObj = left.eval(env);
+        Object rightObj = right.eval(env);
+        
+        boolean result;
+        if (leftObj == LookupTermExpression.UNDEFINED || rightObj == LookupTermExpression.UNDEFINED) {
+            result = false;
+        } else {
+            boolean equal = equalityChecker.equal(leftObj, rightObj);
+            result = calcResult(equal);
+        }
+        
+        return result;
+    }
 }

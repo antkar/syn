@@ -1,66 +1,66 @@
 Specification {
-	chapters : Chapter+;
+    chapters : Chapter+;
 }
 
 Chapter {
-	number : int;
-	name : text;
-	file_name : string;
-	sections : Section+;
+    number : int;
+    name : text;
+    file_name : string;
+    sections : Section+;
 
-	assert number >= 3;
-	assert number <= 17;
-	assert !exist(Chapter c : c.number < number) || exist(Chapter c : c.number == number - 1);
-	assert !exist(Chapter c : c != this && c.number == number);
-	assert !exist(Chapter c : c != this && c.name == name);
-	assert file_name == format("chapter%02d.txt", number);
+    assert number >= 3;
+    assert number <= 17;
+    assert !exist(Chapter c : c.number < number) || exist(Chapter c : c.number == number - 1);
+    assert !exist(Chapter c : c != this && c.number == number);
+    assert !exist(Chapter c : c != this && c.name == name);
+    assert file_name == format("chapter%02d.txt", number);
 }
 
 Section {
-	number : int+;
-	name : text;
-	syntaxes : Syntax*;
+    number : int+;
+    name : text;
+    syntaxes : Syntax*;
 
-	assert number[0] == Chapter.sections.number;
-	assert !exist(Chapter.sections c : less_number(c.number, number))
-		|| exist(Chapter.sections c : previous_number(c.number, number));
+    assert number[0] == Chapter.sections.number;
+    assert !exist(Chapter.sections c : less_number(c.number, number))
+        || exist(Chapter.sections c : previous_number(c.number, number));
 
-	function less_number(number1 : int*, number2 : int*) : boolean {
-		if (number1.length == 0 && number2.length > 0) return true;
-		if (number2.length == 0 && number1.length > 0) return false;
-		if (number1.length == 0 && number2.length == 0) return false;
-		if (number1[0] < number2[0]) return true;
-		if (number1[0] > number2[0]) return false;
-		return less_number(subarray(number1, 1), subarray(number2, 1));
-	}
+    function less_number(number1 : int*, number2 : int*) : boolean {
+        if (number1.length == 0 && number2.length > 0) return true;
+        if (number2.length == 0 && number1.length > 0) return false;
+        if (number1.length == 0 && number2.length == 0) return false;
+        if (number1[0] < number2[0]) return true;
+        if (number1[0] > number2[0]) return false;
+        return less_number(subarray(number1, 1), subarray(number2, 1));
+    }
 
-	function previous_number(number1 : int+, number2 : int+) : boolean {
-		// next(1.2.3.4.5) =
-		// - 1.2.3.4.5.1
-		// - 1.2.3.4.6
-		// - 1.2.3.5
-		// - 1.2.4
-		// - 1.3
-		// - 2
-		if (number2.length > number1.length) {
-			return number2.length == number1.length + 1
-				&& subarray(number2, 0, number1.length) == number1
-				&& number2[number1.length] == 1;
-		} else {
-			return
-				subarray(number2, 0, number2.length - 1)
-					== subarray(number1, 0, number2.length - 1)
-				&& number2[number2.length - 1] == number1[number2.length - 1] + 1;
-		}
-	}
+    function previous_number(number1 : int+, number2 : int+) : boolean {
+        // next(1.2.3.4.5) =
+        // - 1.2.3.4.5.1
+        // - 1.2.3.4.6
+        // - 1.2.3.5
+        // - 1.2.4
+        // - 1.3
+        // - 2
+        if (number2.length > number1.length) {
+            return number2.length == number1.length + 1
+                && subarray(number2, 0, number1.length) == number1
+                && number2[number1.length] == 1;
+        } else {
+            return
+                subarray(number2, 0, number2.length - 1)
+                    == subarray(number1, 0, number2.length - 1)
+                && number2[number2.length - 1] == number1[number2.length - 1] + 1;
+        }
+    }
 }
 
 Syntax {
-	nonterminals : Nonterminal+;
+    nonterminals : Nonterminal+;
 }
 
 Nonterminal {
-	name : identifier;
+    name : identifier;
 
-	todo "implement structure and constraints";
+    todo "implement structure and constraints";
 }

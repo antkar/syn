@@ -19,16 +19,16 @@ package com.karmant.syn;
  * {@link Double} bound type.
  */
 class DoubleWrapperBoundType extends AbstractBoundType {
-	static final BoundType INSTANCE = new DoubleWrapperBoundType();
+    static final BoundType INSTANCE = new DoubleWrapperBoundType();
 
-	private DoubleWrapperBoundType() {
-		super(Double.class);
-	}
+    private DoubleWrapperBoundType() {
+        super(Double.class);
+    }
 
-	@Override
-	Object convertNode(BinderEngine<?> engine, SynNode synNode, BoundObject bObjOwner, String key) {
-		ValueNode valueNode = (ValueNode) synNode;
-		Double value = valueNode == null ? null : valueNode.getFloat();
-		return value;
-	}
+    @Override
+    Object convertNode(BinderEngine<?> engine, SynNode synNode, BoundObject bObjOwner, String key) {
+        ValueNode valueNode = (ValueNode) synNode;
+        Double value = valueNode == null ? null : valueNode.getFloat();
+        return value;
+    }
 }

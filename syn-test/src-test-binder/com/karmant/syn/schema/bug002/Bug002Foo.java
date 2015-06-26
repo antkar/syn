@@ -18,21 +18,21 @@ package com.karmant.syn.schema.bug002;
 import com.karmant.syn.SynField;
 
 public class Bug002Foo {
-	@SynField
-	private String name;
-	
-	@SynField
-	private int cardinality;
-	
-	public Bug002Foo() {
-		super();
-	}
+    @SynField
+    private String name;
+    
+    @SynField
+    private int cardinality;
+    
+    public Bug002Foo() {
+        super();
+    }
 
-	public String getName() {
-		return name;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public int getCardinality() {
-		return cardinality;
-	}
+    public int getCardinality() {
+        return cardinality;
+    }
 }

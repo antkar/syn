@@ -19,15 +19,15 @@ package com.karmant.syn;
  * {@link FloatToken} bound type.
  */
 class FloatTokenBoundType extends AbstractTokenBoundType {
-	static final BoundType INSTANCE = new FloatTokenBoundType();
+    static final BoundType INSTANCE = new FloatTokenBoundType();
 
-	private FloatTokenBoundType() {
-		super(FloatToken.class);
-	}
+    private FloatTokenBoundType() {
+        super(FloatToken.class);
+    }
 
-	@Override
-	AbstractToken createToken(TextPos pos, ValueNode valueNode) throws SynBinderException {
-		float value = (float)valueNode.getFloat();
-		return new FloatToken(pos, value);
-	}
+    @Override
+    AbstractToken createToken(TextPos pos, ValueNode valueNode) throws SynBinderException {
+        float value = (float)valueNode.getFloat();
+        return new FloatToken(pos, value);
+    }
 }

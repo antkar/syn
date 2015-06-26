@@ -22,19 +22,19 @@ package com.karmant.syn;
  */
 class BinderConfiguratorResult<T> {
 
-	private final EbnfGrammar genGrammar;
-	private final BinderConfiguration<T> config;
-	
-	BinderConfiguratorResult(EbnfGrammar genGrammar, BinderConfiguration<T> config) {
-		this.genGrammar = genGrammar;
-		this.config = config;
-	}
+    private final EbnfGrammar genGrammar;
+    private final BinderConfiguration<T> config;
+    
+    BinderConfiguratorResult(EbnfGrammar genGrammar, BinderConfiguration<T> config) {
+        this.genGrammar = genGrammar;
+        this.config = config;
+    }
 
-	EbnfGrammar getGenGrammar() {
-		return genGrammar;
-	}
+    EbnfGrammar getGenGrammar() {
+        return genGrammar;
+    }
 
-	BinderConfiguration<T> getConfig() {
-		return config;
-	}
+    BinderConfiguration<T> getConfig() {
+        return config;
+    }
 }

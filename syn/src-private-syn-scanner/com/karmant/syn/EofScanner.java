@@ -19,17 +19,17 @@ package com.karmant.syn;
  * End-of-file token scanner.
  */
 class EofScanner implements IPrimitiveScanner {
-	private static final IPrimitiveResult PRIMITIVE_RESULT =
-			new TokenNodePrimitiveResult(TokenDescriptor.END_OF_FILE);
-	
-	EofScanner(){}
+    private static final IPrimitiveResult PRIMITIVE_RESULT =
+            new TokenNodePrimitiveResult(TokenDescriptor.END_OF_FILE);
+    
+    EofScanner(){}
 
-	@Override
-	public IPrimitiveResult scan(PrimitiveContext context) {
-		if (context.current == -1) {
-			//End-of-file. Return corresponding token.
-			return PRIMITIVE_RESULT;
-		}
-		return null;
-	}
+    @Override
+    public IPrimitiveResult scan(PrimitiveContext context) {
+        if (context.current == -1) {
+            //End-of-file. Return corresponding token.
+            return PRIMITIVE_RESULT;
+        }
+        return null;
+    }
 }

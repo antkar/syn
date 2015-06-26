@@ -20,19 +20,19 @@ package com.karmant.syn;
  */
 class LookupThisExpression extends LookupBaseExpression {
 
-	LookupThisExpression(Class<?> clsOfValue) {
-		super(clsOfValue);
-	}
+    LookupThisExpression(Class<?> clsOfValue) {
+        super(clsOfValue);
+    }
 
-	@Override
-	Object eval(LookupEnv env) {
-		Object vThis = env.getVThis();
-		return vThis;
-	}
+    @Override
+    Object eval(LookupEnv env) {
+        Object vThis = env.getVThis();
+        return vThis;
+    }
 
-	@Override
-	String toSourceString() {
-		return "this";
-	}
+    @Override
+    String toSourceString() {
+        return "this";
+    }
 
 }

@@ -22,17 +22,17 @@ import com.karmant.syn.sample.script.rt.value.Value;
  * Script Language <code>&gt;</code> operator.
  */
 class GtBinaryOperator extends BinaryOperator {
-	GtBinaryOperator() {
-		super(">");
-	}
+    GtBinaryOperator() {
+        super(">");
+    }
 
-	@Override
-	RValue evaluate(long left, long right) {
-		return Value.forBoolean(left > right);
-	}
+    @Override
+    RValue evaluate(long left, long right) {
+        return Value.forBoolean(left > right);
+    }
 
-	@Override
-	RValue evaluate(double left, double right) {
-		return Value.forBoolean(left > right);
-	}
+    @Override
+    RValue evaluate(double left, double right) {
+        return Value.forBoolean(left > right);
+    }
 }

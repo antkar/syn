@@ -19,26 +19,26 @@ package com.karmant.syn;
  * Temporary LR state. Used during LR states generation process.
  */
 class ParserTempState {
-	private final ParserItemSet itemSet;
-	private final ParserState state;
+    private final ParserItemSet itemSet;
+    private final ParserState state;
 
-	ParserTempState(ParserItemSet itemSet, ParserState state) {
-		assert itemSet != null;
-		assert state != null;
-		this.itemSet = itemSet;
-		this.state = state;
-	}
-	
-	ParserItemSet getItemSet() {
-		return itemSet;
-	}
-	
-	ParserState getState() {
-		return state;
-	}
-	
-	@Override
-	public String toString() {
-		return state + " " + itemSet;
-	}
+    ParserTempState(ParserItemSet itemSet, ParserState state) {
+        assert itemSet != null;
+        assert state != null;
+        this.itemSet = itemSet;
+        this.state = state;
+    }
+    
+    ParserItemSet getItemSet() {
+        return itemSet;
+    }
+    
+    ParserState getState() {
+        return state;
+    }
+    
+    @Override
+    public String toString() {
+        return state + " " + itemSet;
+    }
 }

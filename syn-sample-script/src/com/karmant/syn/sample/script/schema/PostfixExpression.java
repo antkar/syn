@@ -22,20 +22,20 @@ import com.karmant.syn.sample.script.rt.op.UnaryOperator;
  * Script postfix unary expression syntax node.
  */
 public class PostfixExpression extends UnaryExpression {
-	public PostfixExpression(){}
-	
-	@Override
-	TextPos getStartTextPos() {
-		return getExpression().getStartTextPos();
-	}
+    public PostfixExpression(){}
+    
+    @Override
+    TextPos getStartTextPos() {
+        return getExpression().getStartTextPos();
+    }
 
-	@Override
-	UnaryOperator getOperator(String literal) {
-		return UnaryOperator.forPostfixLiteral(literal);
-	}
-	
-	@Override
-	public String toString() {
-		return String.format("(%s%s)", getExpression(), getOp());
-	}
+    @Override
+    UnaryOperator getOperator(String literal) {
+        return UnaryOperator.forPostfixLiteral(literal);
+    }
+    
+    @Override
+    public String toString() {
+        return String.format("(%s%s)", getExpression(), getOp());
+    }
 }

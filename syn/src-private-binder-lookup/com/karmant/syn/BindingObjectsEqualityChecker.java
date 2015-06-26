@@ -19,14 +19,14 @@ package com.karmant.syn;
  * Equality checker for binding objects.
  */
 class BindingObjectsEqualityChecker implements LookupEqualityChecker {
-	
-	static final BindingObjectsEqualityChecker INSTANCE = new BindingObjectsEqualityChecker();
-	
-	private BindingObjectsEqualityChecker(){}
+    
+    static final BindingObjectsEqualityChecker INSTANCE = new BindingObjectsEqualityChecker();
+    
+    private BindingObjectsEqualityChecker(){}
 
-	@Override
-	public boolean equal(Object a, Object b) {
-		boolean c = a == b;
-		return c;
-	}
+    @Override
+    public boolean equal(Object a, Object b) {
+        boolean c = a == b;
+        return c;
+    }
 }

@@ -21,23 +21,23 @@ import java.io.PrintStream;
  * Start stack element.
  */
 class StartParserStackElement extends ParserStackElement {
-	StartParserStackElement(ParserState state) {
-		super(null, state);
-	}
+    StartParserStackElement(ParserState state) {
+        super(null, state);
+    }
 
-	@Override
-	IParserNode createParserNode() {
-		throw new UnsupportedOperationException();
-	}
-	
-	@Override
-	AmbiguityNode createAmbiguityNode() {
-		throw new UnsupportedOperationException();
-	}
-	
-	@Override
-	void print(PrintStream out, int level) {
-		CommonUtil.printIndent(out, level);
-		out.println(getClass().getCanonicalName());
-	}
+    @Override
+    IParserNode createParserNode() {
+        throw new UnsupportedOperationException();
+    }
+    
+    @Override
+    AmbiguityNode createAmbiguityNode() {
+        throw new UnsupportedOperationException();
+    }
+    
+    @Override
+    void print(PrintStream out, int level) {
+        CommonUtil.printIndent(out, level);
+        out.println(getClass().getCanonicalName());
+    }
 }

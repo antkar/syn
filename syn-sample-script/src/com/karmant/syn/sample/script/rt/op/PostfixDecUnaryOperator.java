@@ -23,22 +23,22 @@ import com.karmant.syn.sample.script.rt.value.Value;
  * Script Language postfix <code>--</code> operator.
  */
 class PostfixDecUnaryOperator extends AssignmentUnaryOperator {
-	PostfixDecUnaryOperator() {
-		super("--");
-	}
+    PostfixDecUnaryOperator() {
+        super("--");
+    }
 
-	@Override
-	long evaluate(long value) {
-		return value - 1;
-	}
+    @Override
+    long evaluate(long value) {
+        return value - 1;
+    }
 
-	@Override
-	double evaluate(double value) {
-		return value - 1;
-	}
+    @Override
+    double evaluate(double value) {
+        return value - 1;
+    }
 
-	@Override
-	Value resultValue(RValue prevValue, LValue value) {
-		return prevValue;
-	}
+    @Override
+    Value resultValue(RValue prevValue, LValue value) {
+        return prevValue;
+    }
 }

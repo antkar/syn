@@ -24,20 +24,20 @@ import com.karmant.syn.sample.script.rt.value.Value;
  * Script Language <code>||</code> operator.
  */
 class OrBinaryOperator extends BinaryOperator {
-	OrBinaryOperator() {
-		super("||");
-	}
+    OrBinaryOperator() {
+        super("||");
+    }
 
-	@Override
-	public RValue evaluate(Operand left) throws SynsException {
-		if (left.booleanValue()) {
-			return Value.forBoolean(true);
-		}
-		return null;
-	}
+    @Override
+    public RValue evaluate(Operand left) throws SynsException {
+        if (left.booleanValue()) {
+            return Value.forBoolean(true);
+        }
+        return null;
+    }
 
-	@Override
-	RValue evaluate(boolean left, boolean right) {
-		return Value.forBoolean(left || right);
-	}
+    @Override
+    RValue evaluate(boolean left, boolean right) {
+        return Value.forBoolean(left || right);
+    }
 }

@@ -21,29 +21,29 @@ import java.lang.reflect.Field;
  * Primitive <code>float</code> bound type.
  */
 class FloatBoundType extends BoundType {
-	static final BoundType INSTANCE = new FloatBoundType();
+    static final BoundType INSTANCE = new FloatBoundType();
 
-	private FloatBoundType(){}
+    private FloatBoundType(){}
 
-	@Override
-	Object convertNode(BinderEngine<?> engine, SynNode synNode, BoundObject bObjOwner, String key)
-			throws SynBinderException
-	{
-		float value = extractValue(synNode);
-		return value;
-	}
+    @Override
+    Object convertNode(BinderEngine<?> engine, SynNode synNode, BoundObject bObjOwner, String key)
+            throws SynBinderException
+    {
+        float value = extractValue(synNode);
+        return value;
+    }
 
-	@Override
-	BoundType getArrayType(Field field) throws SynBinderException {
-		return FloatArrayBoundType.INSTANCE;
-	}
+    @Override
+    BoundType getArrayType(Field field) throws SynBinderException {
+        return FloatArrayBoundType.INSTANCE;
+    }
 
-	static float extractValue(SynNode synNode) throws SynBinderException {
-		ValueNode valueNode = (ValueNode) synNode;
-		if (valueNode == null) {
-			throw new SynBinderException("Cannot bind null value to a float field");
-		}
-		float value = (float) valueNode.getFloat();
-		return value;
-	}
+    static float extractValue(SynNode synNode) throws SynBinderException {
+        ValueNode valueNode = (ValueNode) synNode;
+        if (valueNode == null) {
+            throw new SynBinderException("Cannot bind null value to a float field");
+        }
+        float value = (float) valueNode.getFloat();
+        return value;
+    }
 }

@@ -19,19 +19,19 @@ package com.karmant.syn;
  * SHIFT transition - a transition by a terminal symbol.
  */
 class ParserShift {
-	final TokenDescriptor tokenDescriptor;
-	final ParserState state;
-	
-	ParserShift(TokenDescriptor tokenDescriptor, ParserState state) {
-		assert tokenDescriptor != null;
-		assert state != null;
+    final TokenDescriptor tokenDescriptor;
+    final ParserState state;
+    
+    ParserShift(TokenDescriptor tokenDescriptor, ParserState state) {
+        assert tokenDescriptor != null;
+        assert state != null;
 
-		this.tokenDescriptor = tokenDescriptor;
-		this.state = state;
-	}
-	
-	@Override
-	public String toString() {
-		return tokenDescriptor + " -> " + state.getIndex();
-	}
+        this.tokenDescriptor = tokenDescriptor;
+        this.state = state;
+    }
+    
+    @Override
+    public String toString() {
+        return tokenDescriptor + " -> " + state.getIndex();
+    }
 }

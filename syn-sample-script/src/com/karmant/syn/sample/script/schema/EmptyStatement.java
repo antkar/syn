@@ -24,24 +24,24 @@ import com.karmant.syn.sample.script.rt.StatementResult;
  * Empty statement syntax node.
  */
 public class EmptyStatement extends Statement {
-	/** The text position. */
-	@SynField
-	private TextPos synPos;
+    /** The text position. */
+    @SynField
+    private TextPos synPos;
 
-	public EmptyStatement(){}
+    public EmptyStatement(){}
 
-	@Override
-	TextPos getStartTextPos() {
-		return synPos;
-	}
+    @Override
+    TextPos getStartTextPos() {
+        return synPos;
+    }
 
-	@Override
-	StatementResult execute0(ScriptScope scope) {
-		return StatementResult.NONE;
-	}
-	
-	@Override
-	public String toString() {
-		return ";";
-	}
+    @Override
+    StatementResult execute0(ScriptScope scope) {
+        return StatementResult.NONE;
+    }
+    
+    @Override
+    public String toString() {
+        return ";";
+    }
 }

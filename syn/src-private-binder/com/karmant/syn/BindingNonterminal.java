@@ -24,36 +24,36 @@ import java.util.Map;
  */
 class BindingNonterminal {
 
-	private final String name;
-	private final Map<String, EbnfProduction> innerPrs;
-	private final List<EbnfNonterminal> innerNts;
-	
-	BindingNonterminal(
-			String name,
-			Map<String, EbnfProduction> innerPrs,
-			List<EbnfNonterminal> innerNts)
-	{
-		this.name = name;
-		this.innerPrs = Collections.unmodifiableMap(innerPrs);
-		this.innerNts = Collections.unmodifiableList(innerNts);
-	}
+    private final String name;
+    private final Map<String, EbnfProduction> innerPrs;
+    private final List<EbnfNonterminal> innerNts;
+    
+    BindingNonterminal(
+            String name,
+            Map<String, EbnfProduction> innerPrs,
+            List<EbnfNonterminal> innerNts)
+    {
+        this.name = name;
+        this.innerPrs = Collections.unmodifiableMap(innerPrs);
+        this.innerNts = Collections.unmodifiableList(innerNts);
+    }
 
-	/**
-	 * Returns the map of inner productions of the nonterminal. Keys in the map are production keys.
-	 */
-	Map<String, EbnfProduction> getInnerPrs() {
-		return innerPrs;
-	}
+    /**
+     * Returns the map of inner productions of the nonterminal. Keys in the map are production keys.
+     */
+    Map<String, EbnfProduction> getInnerPrs() {
+        return innerPrs;
+    }
 
-	/**
-	 * Returns the list of inner nonterminals.
-	 */
-	List<EbnfNonterminal> getInnerNts() {
-		return innerNts;
-	}
-	
-	@Override
-	public String toString() {
-		return name;
-	}
+    /**
+     * Returns the list of inner nonterminals.
+     */
+    List<EbnfNonterminal> getInnerNts() {
+        return innerNts;
+    }
+    
+    @Override
+    public String toString() {
+        return name;
+    }
 }

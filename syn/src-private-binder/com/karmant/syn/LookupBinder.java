@@ -23,34 +23,34 @@ import java.util.Collection;
  */
 abstract class LookupBinder {
 
-	private final Field field;
-	
-	LookupBinder(Field field) {
-		this.field = field;
-	}
-	
-	/**
-	 * Creates a Java value from a collection of objects that satisfy the {@link SynLookup}'s filter.
-	 */
-	abstract Object createValue(Collection<Object> oObjs) throws SynBinderException;
+    private final Field field;
+    
+    LookupBinder(Field field) {
+        this.field = field;
+    }
+    
+    /**
+     * Creates a Java value from a collection of objects that satisfy the {@link SynLookup}'s filter.
+     */
+    abstract Object createValue(Collection<Object> oObjs) throws SynBinderException;
 
-	/**
-	 * Binds the given collection of Java objects to the field.
-	 */
-	void bind(Object oThis, Collection<Object> oObjs) throws SynBinderException {
-		Object value = createValue(oObjs);
-		BinderReflectionUtil.setFieldValue(field, oThis, value);
-	}
+    /**
+     * Binds the given collection of Java objects to the field.
+     */
+    void bind(Object oThis, Collection<Object> oObjs) throws SynBinderException {
+        Object value = createValue(oObjs);
+        BinderReflectionUtil.setFieldValue(field, oThis, value);
+    }
 
-	/**
-	 * Returns the associated Java field.
-	 */
-	Field getField() {
-		return field;
-	}
-	
-	@Override
-	public String toString() {
-		return field + "(" + getClass().getSimpleName() + ")";
-	}
+    /**
+     * Returns the associated Java field.
+     */
+    Field getField() {
+        return field;
+    }
+    
+    @Override
+    public String toString() {
+        return field + "(" + getClass().getSimpleName() + ")";
+    }
 }

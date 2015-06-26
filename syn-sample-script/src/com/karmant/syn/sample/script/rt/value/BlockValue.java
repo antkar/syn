@@ -25,54 +25,54 @@ import com.karmant.syn.sample.script.schema.Block;
  * Script block value. 
  */
 class BlockValue extends RValue {
-	/** The scope where the block expression was evaluated. */
-	private final ScriptScope scope;
-	
-	/** The block itself. */
-	private final Block block;
-	
-	BlockValue(ScriptScope scope, Block block) {
-		this.scope = scope;
-		this.block = block;
-	}
-	
-	@Override
-	public Operand toOperand() throws SynsException {
-		return Operand.forObject(this);
-	}
-	
-	@Override
-	public ValueType getValueType() {
-		return ValueType.BLOCK;
-	}
-	
-	@Override
-	public Object toJava(Class<?> type, TypeMatchPrecision precision) throws SynsException {
-		if (type.isInterface()) {
-			return BlockToJavaAdapter.createAdapter(this, type);
-		} else if (type.isInstance(this)) {
-			return this;
-		} else {
-			return INVALID;
-		}
-	}
+    /** The scope where the block expression was evaluated. */
+    private final ScriptScope scope;
+    
+    /** The block itself. */
+    private final Block block;
+    
+    BlockValue(ScriptScope scope, Block block) {
+        this.scope = scope;
+        this.block = block;
+    }
+    
+    @Override
+    public Operand toOperand() throws SynsException {
+        return Operand.forObject(this);
+    }
+    
+    @Override
+    public ValueType getValueType() {
+        return ValueType.BLOCK;
+    }
+    
+    @Override
+    public Object toJava(Class<?> type, TypeMatchPrecision precision) throws SynsException {
+        if (type.isInterface()) {
+            return BlockToJavaAdapter.createAdapter(this, type);
+        } else if (type.isInstance(this)) {
+            return this;
+        } else {
+            return INVALID;
+        }
+    }
 
-	@Override
-	public Value call(RValue[] arguments) throws SynsException {
-		return block.call(scope, arguments);
-	}
-	
-	/**
-	 * Checks whether there is a function with the specified name defined in the block.
-	 */
-	boolean hasFunction(String name) {
-		return block.hasFunction(name);
-	}
-	
-	/**
-	 * Calls a function defined in the block.
-	 */
-	Value callFunction(String name, RValue[] arguments) throws SynsException {
-		return block.callFunction(scope, name, arguments);
-	}
+    @Override
+    public Value call(RValue[] arguments) throws SynsException {
+        return block.call(scope, arguments);
+    }
+    
+    /**
+     * Checks whether there is a function with the specified name defined in the block.
+     */
+    boolean hasFunction(String name) {
+        return block.hasFunction(name);
+    }
+    
+    /**
+     * Calls a function defined in the block.
+     */
+    Value callFunction(String name, RValue[] arguments) throws SynsException {
+        return block.callFunction(scope, name, arguments);
+    }
 }

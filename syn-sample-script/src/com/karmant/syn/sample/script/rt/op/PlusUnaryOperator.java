@@ -19,17 +19,17 @@ package com.karmant.syn.sample.script.rt.op;
  * Script Language unary <code>+</code> operator.
  */
 class PlusUnaryOperator extends ArithmeticalUnaryOperator {
-	PlusUnaryOperator() {
-		super("+");
-	}
+    PlusUnaryOperator() {
+        super("+");
+    }
 
-	@Override
-	long evaluate(long value) {
-		return value;
-	}
+    @Override
+    long evaluate(long value) {
+        return value;
+    }
 
-	@Override
-	double evaluate(double value) {
-		return value;
-	}
+    @Override
+    double evaluate(double value) {
+        return value;
+    }
 }

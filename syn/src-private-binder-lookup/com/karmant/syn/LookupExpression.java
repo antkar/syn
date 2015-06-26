@@ -19,8 +19,8 @@ package com.karmant.syn;
  * Lookup filter expression. Used to determine if an object has to be bound to a field.
  */
 abstract class LookupExpression {
-	/**
-	 * Evaluates the expression.
-	 */
-	abstract boolean eval(LookupEnv env) throws SynBinderException;
+    /**
+     * Evaluates the expression.
+     */
+    abstract boolean eval(LookupEnv env) throws SynBinderException;
 }

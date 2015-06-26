@@ -19,24 +19,24 @@ package com.karmant.syn;
  * Primitive result describing a token which does not have an associated value.
  */
 class TokenNodePrimitiveResult implements IPrimitiveResult {
-	private TokenDescriptor tokenDescriptor;
-	
-	TokenNodePrimitiveResult(TokenDescriptor tokenDescriptor) {
-		this.tokenDescriptor = tokenDescriptor;
-	}
-	
-	void setTokenDescriptor(TokenDescriptor tokenDescriptor) {
-		this.tokenDescriptor = tokenDescriptor;
-	}
+    private TokenDescriptor tokenDescriptor;
+    
+    TokenNodePrimitiveResult(TokenDescriptor tokenDescriptor) {
+        this.tokenDescriptor = tokenDescriptor;
+    }
+    
+    void setTokenDescriptor(TokenDescriptor tokenDescriptor) {
+        this.tokenDescriptor = tokenDescriptor;
+    }
 
-	@Override
-	public TokenDescriptor getTokenDescriptor() {
-		return tokenDescriptor;
-	}
+    @Override
+    public TokenDescriptor getTokenDescriptor() {
+        return tokenDescriptor;
+    }
 
-	@Override
-	public TerminalNode createTokenNode(PosBuffer pos) {
-		assert tokenDescriptor != null;
-		return new TokenNode(pos, tokenDescriptor);
-	}
+    @Override
+    public TerminalNode createTokenNode(PosBuffer pos) {
+        assert tokenDescriptor != null;
+        return new TokenNode(pos, tokenDescriptor);
+    }
 }

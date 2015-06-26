@@ -27,11 +27,11 @@ import java.lang.annotation.Target;
  * <p>Example:
  * <pre>
  * public class SimpleEntity {
- *	&#64;SynField
- *	private String sfName;
- *	
- *	&#64;SynLookup("obj != this && obj.sfName == this.sfName")
- *	private SimpleEntity[] entitiesWithSameName;
+ *     &#64;SynField
+ *     private String sfName;
+ *
+ *     &#64;SynLookup("obj != this && obj.sfName == this.sfName")
+ *     private SimpleEntity[] entitiesWithSameName;
  * }</pre>
  * In each object of this class the field <code>entitiesWithSameName</code> will be initialized by an array
  * of other <code>SimpleEntity</code> objects whose <code>sfName</code> field has the same value.</p>
@@ -49,6 +49,6 @@ import java.lang.annotation.Target;
 @Target({ElementType.FIELD})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface SynLookup {
-	/** Filter expression. */
-	String value();
+    /** Filter expression. */
+    String value();
 }

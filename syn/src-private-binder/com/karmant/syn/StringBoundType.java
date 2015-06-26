@@ -19,17 +19,17 @@ package com.karmant.syn;
  * {@link String} bound type.
  */
 class StringBoundType extends AbstractBoundType {
-	static final BoundType INSTANCE = new StringBoundType();
-	static final BoundType STRING_TOKEN_INSTANCE = new StringTokenBoundType(INSTANCE);
-	
-	private StringBoundType() {
-		super(String.class);
-	}
+    static final BoundType INSTANCE = new StringBoundType();
+    static final BoundType STRING_TOKEN_INSTANCE = new StringTokenBoundType(INSTANCE);
+    
+    private StringBoundType() {
+        super(String.class);
+    }
 
-	@Override
-	Object convertNode(BinderEngine<?> engine, SynNode synNode, BoundObject bObjOwner, String key) {
-		ValueNode valueNode = (ValueNode) synNode;
-		String string = valueNode.getString();
-		return string;
-	}
+    @Override
+    Object convertNode(BinderEngine<?> engine, SynNode synNode, BoundObject bObjOwner, String key) {
+        ValueNode valueNode = (ValueNode) synNode;
+        String string = valueNode.getString();
+        return string;
+    }
 }

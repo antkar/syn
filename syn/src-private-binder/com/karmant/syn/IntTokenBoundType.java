@@ -19,15 +19,15 @@ package com.karmant.syn;
  * {@link IntToken} bound type.
  */
 class IntTokenBoundType extends AbstractTokenBoundType {
-	static final BoundType INSTANCE = new IntTokenBoundType();
+    static final BoundType INSTANCE = new IntTokenBoundType();
 
-	private IntTokenBoundType() {
-		super(IntToken.class);
-	}
+    private IntTokenBoundType() {
+        super(IntToken.class);
+    }
 
-	@Override
-	AbstractToken createToken(TextPos pos, ValueNode valueNode) throws SynBinderException {
-		int value = IntBoundType.extractValue0(valueNode);
-		return new IntToken(pos, value);
-	}
+    @Override
+    AbstractToken createToken(TextPos pos, ValueNode valueNode) throws SynBinderException {
+        int value = IntBoundType.extractValue0(valueNode);
+        return new IntToken(pos, value);
+    }
 }

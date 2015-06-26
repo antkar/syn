@@ -21,12 +21,12 @@ import java.io.InputStream;
  * Null input stream. Always signals the end of a stream.
  */
 public class NullInputStream extends InputStream {
-	public static final InputStream INSTANCE = new NullInputStream();
-	
-	private NullInputStream(){}
+    public static final InputStream INSTANCE = new NullInputStream();
+    
+    private NullInputStream(){}
 
-	@Override
-	public int read() {
-		return -1;
-	}
+    @Override
+    public int read() {
+        return -1;
+    }
 }

@@ -21,27 +21,27 @@ package com.karmant.syn;
  * {@link ValueNode} is created instead. 
  */
 class TokenNode extends TerminalNode {
-	private final TokenDescriptor tokenDescriptor;
+    private final TokenDescriptor tokenDescriptor;
 
-	TokenNode(PosBuffer pos, TokenDescriptor tokenDescriptor) {
-		super(pos);
-		assert tokenDescriptor != null;
-		this.tokenDescriptor = tokenDescriptor;
-	}
+    TokenNode(PosBuffer pos, TokenDescriptor tokenDescriptor) {
+        super(pos);
+        assert tokenDescriptor != null;
+        this.tokenDescriptor = tokenDescriptor;
+    }
 
-	@Override
-	public TokenDescriptor getTokenDescriptor() {
-		return tokenDescriptor;
-	}
-	
-	@Override
-	public String getString() {
-		return tokenDescriptor.getLiteral();
-	}
+    @Override
+    public TokenDescriptor getTokenDescriptor() {
+        return tokenDescriptor;
+    }
+    
+    @Override
+    public String getString() {
+        return tokenDescriptor.getLiteral();
+    }
 
-	@Override
-	public String toString() {
-		String toString = tokenDescriptor.toString();
-		return toString;
-	}
+    @Override
+    public String toString() {
+        String toString = tokenDescriptor.toString();
+        return toString;
+    }
 }

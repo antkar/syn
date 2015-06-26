@@ -22,46 +22,46 @@ import java.io.IOException;
  */
 class LookaheadCharStream {
 
-	private final CharStream stream;
-	
-	private int current;
-	private final CharPos currentPos;
-	private int lookahead;
-	private final CharPos lookaheadPos;
+    private final CharStream stream;
+    
+    private int current;
+    private final CharPos currentPos;
+    private int lookahead;
+    private final CharPos lookaheadPos;
 
-	LookaheadCharStream(CharStream stream) throws IOException {
-		this.stream = stream;
-		
-		currentPos = new CharPos();
-		lookaheadPos = new CharPos();
-		
-		current = 0;
-		lookahead = stream.read(lookaheadPos);
-	}
-	
-	/**
-	 * Removes the next character from the stream and returns its code and position.
-	 *  
-	 * @param pos the position is written into that object.
-	 * @return the character code, or <code>-1</code>, if end-of-file reached.
-	 * @throws IOException if operation fails.
-	 */
-	int next(CharPos pos) throws IOException {
-		if (current != -1) {
-			current = lookahead;
-			currentPos.set(lookaheadPos);
-			lookahead = stream.read(lookaheadPos);
-		}
-		
-		pos.set(currentPos);
-		return current;
-	}
-	
-	/**
-	 * Returns the code of the next character in the stream, but does not remove the character. 
-	 * @return the character code, of <code>-1</code> if end-of-file reached.
-	 */
-	int peek() {
-		return lookahead;
-	}
+    LookaheadCharStream(CharStream stream) throws IOException {
+        this.stream = stream;
+        
+        currentPos = new CharPos();
+        lookaheadPos = new CharPos();
+        
+        current = 0;
+        lookahead = stream.read(lookaheadPos);
+    }
+    
+    /**
+     * Removes the next character from the stream and returns its code and position.
+     *  
+     * @param pos the position is written into that object.
+     * @return the character code, or <code>-1</code>, if end-of-file reached.
+     * @throws IOException if operation fails.
+     */
+    int next(CharPos pos) throws IOException {
+        if (current != -1) {
+            current = lookahead;
+            currentPos.set(lookaheadPos);
+            lookahead = stream.read(lookaheadPos);
+        }
+        
+        pos.set(currentPos);
+        return current;
+    }
+    
+    /**
+     * Returns the code of the next character in the stream, but does not remove the character. 
+     * @return the character code, of <code>-1</code> if end-of-file reached.
+     */
+    int peek() {
+        return lookahead;
+    }
 }

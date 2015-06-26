@@ -24,24 +24,24 @@ import com.karmant.syn.sample.script.rt.value.Value;
  * Script <code>null</code> literal expression syntax node.
  */
 public class NullExpression extends LiteralExpression {
-	/** The text position. */
-	@SynField
-	private TextPos synPos;
-	
-	public NullExpression(){}
+    /** The text position. */
+    @SynField
+    private TextPos synPos;
+    
+    public NullExpression(){}
 
-	@Override
-	TextPos getStartTextPos() {
-		return synPos;
-	}
+    @Override
+    TextPos getStartTextPos() {
+        return synPos;
+    }
 
-	@Override
-	Value evaluate0(ScriptScope scope) {
-		return Value.forNull();
-	}
-	
-	@Override
-	public String toString() {
-		return "null";
-	}
+    @Override
+    Value evaluate0(ScriptScope scope) {
+        return Value.forNull();
+    }
+    
+    @Override
+    public String toString() {
+        return "null";
+    }
 }

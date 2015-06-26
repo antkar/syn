@@ -24,17 +24,17 @@ import org.junit.runners.Suite.SuiteClasses;
  */
 @RunWith(Suite.class)
 @SuiteClasses({
-	TokenStreamTest.class,
-	XmlGrammarParserTest.class,
-	EbnfToBnfConverterTest.class,
-	ParserConfiguratorTest.class,
-	ParserEngineTest.class,
-	SynParserSimpleTest.class,
-	SynParserJavaTest.class,
-	TokenStreamNumberTest.class,
-	TokenStreamStringTest.class,
-	BugsTest.class,
+    TokenStreamTest.class,
+    XmlGrammarParserTest.class,
+    EbnfToBnfConverterTest.class,
+    ParserConfiguratorTest.class,
+    ParserEngineTest.class,
+    SynParserSimpleTest.class,
+    SynParserJavaTest.class,
+    TokenStreamNumberTest.class,
+    TokenStreamStringTest.class,
+    BugsTest.class,
 })
 public class LightSuite {
-	private LightSuite(){}
+    private LightSuite(){}
 }

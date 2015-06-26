@@ -20,10 +20,10 @@ package com.karmant.syn.sample.script.rt.javacls;
  * the types of the method's formal parameters. Used to choose an appropriate overloaded method.
  */
 public interface TypeMatchPrecision {
-	TypeMatchPrecision NULL = new NullTypeMatchPrecision();
-	
-	/**
-	 * Increments the precision. The higher the value - the more suitable is the method.
-	 */
-	void increment(int value);
+    TypeMatchPrecision NULL = new NullTypeMatchPrecision();
+    
+    /**
+     * Increments the precision. The higher the value - the more suitable is the method.
+     */
+    void increment(int value);
 }

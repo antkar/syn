@@ -19,26 +19,26 @@ package com.karmant.syn.sample.script.util;
  * Helper utilities.
  */
 public final class MiscUtil {
-	private MiscUtil(){}
+    private MiscUtil(){}
 
-	/**
-	 * Converts an array to a string using the specified separator string.
-	 */
-	public static String arrayToString(Object[] array, String sep) {
-		StringBuilder bld = new StringBuilder();
-		appendArray(bld, array, sep);
-		return bld + "";
-	}
+    /**
+     * Converts an array to a string using the specified separator string.
+     */
+    public static String arrayToString(Object[] array, String sep) {
+        StringBuilder bld = new StringBuilder();
+        appendArray(bld, array, sep);
+        return bld + "";
+    }
 
-	/**
-	 * Appends an array to a string builder using the specified separator string.
-	 */
-	public static void appendArray(StringBuilder bld, Object[] array, String sep) {
-		String curSep = "";
-		for (Object obj : array) {
-			bld.append(curSep);
-			bld.append(obj);
-			curSep = sep;
-		}
-	}
+    /**
+     * Appends an array to a string builder using the specified separator string.
+     */
+    public static void appendArray(StringBuilder bld, Object[] array, String sep) {
+        String curSep = "";
+        for (Object obj : array) {
+            bld.append(curSep);
+            bld.append(obj);
+            curSep = sep;
+        }
+    }
 }

@@ -19,16 +19,16 @@ package com.karmant.syn;
  * {@link Long} bound type.
  */
 class LongWrapperBoundType extends AbstractBoundType {
-	static final BoundType INSTANCE = new LongWrapperBoundType();
+    static final BoundType INSTANCE = new LongWrapperBoundType();
 
-	private LongWrapperBoundType() {
-		super(Long.class);
-	}
+    private LongWrapperBoundType() {
+        super(Long.class);
+    }
 
-	@Override
-	Object convertNode(BinderEngine<?> engine, SynNode synNode, BoundObject bObjOwner, String key) {
-		ValueNode valueNode = (ValueNode) synNode;
-		Long value = valueNode == null ? null : valueNode.getLong();
-		return value;
-	}
+    @Override
+    Object convertNode(BinderEngine<?> engine, SynNode synNode, BoundObject bObjOwner, String key) {
+        ValueNode valueNode = (ValueNode) synNode;
+        Long value = valueNode == null ? null : valueNode.getLong();
+        return value;
+    }
 }

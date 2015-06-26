@@ -19,26 +19,26 @@ package com.karmant.syn;
  * Object value node. Contains a value of type {@link Object}.
  */
 class ObjectValueNode extends ValueNode {
-	private final Object value;
-	
-	ObjectValueNode(Object value) {
-		super(null);
-		assert value != null;
-		this.value = value;
-	}
+    private final Object value;
+    
+    ObjectValueNode(Object value) {
+        super(null);
+        assert value != null;
+        this.value = value;
+    }
 
-	@Override
-	public SynValueType getValueType() {
-		return SynValueType.OBJECT;
-	}
-	
-	@Override
-	public Object getValue() {
-		return value;
-	}
+    @Override
+    public SynValueType getValueType() {
+        return SynValueType.OBJECT;
+    }
+    
+    @Override
+    public Object getValue() {
+        return value;
+    }
 
-	@Override
-	public TokenDescriptor getTokenDescriptor() {
-		return null;
-	}
+    @Override
+    public TokenDescriptor getTokenDescriptor() {
+        return null;
+    }
 }

@@ -19,16 +19,16 @@ package com.karmant.syn;
  * {@link Object} bound type.
  */
 class ObjectBoundType extends AbstractBoundType {
-	static final BoundType INSTANCE = new ObjectBoundType();
-	
-	private ObjectBoundType() {
-		super(Object.class);
-	}
+    static final BoundType INSTANCE = new ObjectBoundType();
+    
+    private ObjectBoundType() {
+        super(Object.class);
+    }
 
-	@Override
-	Object convertNode(BinderEngine<?> engine, SynNode synNode, BoundObject bObjOwner, String key) {
-		ValueNode valueNode = (ValueNode) synNode;
-		Object value = valueNode.getValue();
-		return value;
-	}
+    @Override
+    Object convertNode(BinderEngine<?> engine, SynNode synNode, BoundObject bObjOwner, String key) {
+        ValueNode valueNode = (ValueNode) synNode;
+        Object value = valueNode.getValue();
+        return value;
+    }
 }

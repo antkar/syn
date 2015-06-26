@@ -24,59 +24,59 @@ import java.util.Map;
  * A lightweight XML document node. Represents an XML element.
  */
 class XmlNode {
-	private final XmlNode parentNode;
-	private List<XmlNode> nestedNodes = null;
-	private final String name;
-	private final Map<String, String> attributes;
+    private final XmlNode parentNode;
+    private List<XmlNode> nestedNodes = null;
+    private final String name;
+    private final Map<String, String> attributes;
 
-	XmlNode(XmlNode parentNode, String name, Map<String, String> attributes) {
-		assert attributes != null;
-		assert name != null;
-		
-		this.parentNode = parentNode;
-		this.name = name;
-		this.attributes = Collections.unmodifiableMap(attributes);
-	}
-	
-	/**
-	 * Returns the parent node, if any.
-	 */
-	XmlNode getParentNode() {
-		return parentNode;
-	}
+    XmlNode(XmlNode parentNode, String name, Map<String, String> attributes) {
+        assert attributes != null;
+        assert name != null;
+        
+        this.parentNode = parentNode;
+        this.name = name;
+        this.attributes = Collections.unmodifiableMap(attributes);
+    }
+    
+    /**
+     * Returns the parent node, if any.
+     */
+    XmlNode getParentNode() {
+        return parentNode;
+    }
 
-	/**
-	 * Adds a nested node to this node.
-	 */
-	void addNestedNode(XmlNode node) {
-		if (nestedNodes == null) {
-			nestedNodes = new ArrayList<>();
-		}
-		nestedNodes.add(node);
-	}
-	
-	/**
-	 * Returns the list of nested nodes.
-	 */
-	List<XmlNode> getNestedNodes() {
-		List<XmlNode> result = Collections.emptyList();
-		if (nestedNodes != null) {
-			result = nestedNodes;
-		}
-		return result;
-	}
-	
-	/**
-	 * Returns the map of XML attributes.
-	 */
-	Map<String, String> getAttributes() {
-		return attributes;
-	}
-	
-	/**
-	 * Returns the name of this node.
-	 */
-	String getName() {
-		return name;
-	}
+    /**
+     * Adds a nested node to this node.
+     */
+    void addNestedNode(XmlNode node) {
+        if (nestedNodes == null) {
+            nestedNodes = new ArrayList<>();
+        }
+        nestedNodes.add(node);
+    }
+    
+    /**
+     * Returns the list of nested nodes.
+     */
+    List<XmlNode> getNestedNodes() {
+        List<XmlNode> result = Collections.emptyList();
+        if (nestedNodes != null) {
+            result = nestedNodes;
+        }
+        return result;
+    }
+    
+    /**
+     * Returns the map of XML attributes.
+     */
+    Map<String, String> getAttributes() {
+        return attributes;
+    }
+    
+    /**
+     * Returns the name of this node.
+     */
+    String getName() {
+        return name;
+    }
 }

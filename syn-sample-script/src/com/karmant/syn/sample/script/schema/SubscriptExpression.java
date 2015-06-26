@@ -27,33 +27,33 @@ import com.karmant.syn.sample.script.rt.value.Value;
  * Array access expression syntax node.
  */
 public class SubscriptExpression extends TerminalExpression {
-	/** The expression to be used as an array. */
-	@SynField
-	private Expression synArray;
-	
-	/** The index expression. */
-	@SynField
-	private Expression synIndex;
+    /** The expression to be used as an array. */
+    @SynField
+    private Expression synArray;
+    
+    /** The index expression. */
+    @SynField
+    private Expression synIndex;
 
-	public SubscriptExpression(){}
-	
-	@Override
-	TextPos getStartTextPos() {
-		return synArray.getStartTextPos();
-	}
+    public SubscriptExpression(){}
+    
+    @Override
+    TextPos getStartTextPos() {
+        return synArray.getStartTextPos();
+    }
 
-	@Override
-	Value evaluate0(ScriptScope scope) throws SynsException {
-		Value array = synArray.evaluate(scope);
-		RValue rarray = array.toRValue();
-		Value index = synIndex.evaluate(scope);
-		Operand indexOperand = index.toOperand();
-		int i = indexOperand.intValue();
-		return rarray.getArrayElement(i);
-	}
-	
-	@Override
-	public String toString() {
-		return String.format("(%s[%s])", synArray, synIndex);
-	}
+    @Override
+    Value evaluate0(ScriptScope scope) throws SynsException {
+        Value array = synArray.evaluate(scope);
+        RValue rarray = array.toRValue();
+        Value index = synIndex.evaluate(scope);
+        Operand indexOperand = index.toOperand();
+        int i = indexOperand.intValue();
+        return rarray.getArrayElement(i);
+    }
+    
+    @Override
+    public String toString() {
+        return String.format("(%s[%s])", synArray, synIndex);
+    }
 }

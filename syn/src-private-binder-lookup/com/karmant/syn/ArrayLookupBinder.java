@@ -24,18 +24,18 @@ import java.util.Collection;
  */
 class ArrayLookupBinder extends LookupBinder {
 
-	private final Class<?> clsOfObj;
-	
-	ArrayLookupBinder(Field field, Class<?> clsOfObj) {
-		super(field);
-		this.clsOfObj = clsOfObj;
-	}
+    private final Class<?> clsOfObj;
+    
+    ArrayLookupBinder(Field field, Class<?> clsOfObj) {
+        super(field);
+        this.clsOfObj = clsOfObj;
+    }
 
-	@Override
-	Object createValue(Collection<Object> oObjs) {
-		Object[] array = (Object[]) Array.newInstance(clsOfObj, 0);
-		Object[] result = oObjs.toArray(array);
-		return result;
-	}
+    @Override
+    Object createValue(Collection<Object> oObjs) {
+        Object[] array = (Object[]) Array.newInstance(clsOfObj, 0);
+        Object[] result = oObjs.toArray(array);
+        return result;
+    }
 
 }
