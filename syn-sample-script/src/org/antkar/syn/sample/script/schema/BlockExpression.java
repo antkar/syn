@@ -15,12 +15,12 @@
  */
 package org.antkar.syn.sample.script.schema;
 
+import org.antkar.syn.SynField;
+import org.antkar.syn.TextPos;
 import org.antkar.syn.sample.script.rt.ScriptScope;
 import org.antkar.syn.sample.script.rt.SynsException;
 import org.antkar.syn.sample.script.rt.value.Value;
-
-import org.antkar.syn.SynField;
-import org.antkar.syn.TextPos;
+import org.antkar.syn.sample.script.schema.FunctionObject.Factory;
 
 /**
  * Block expression syntax node.
@@ -44,6 +44,11 @@ public class BlockExpression extends TerminalExpression {
     @Override
     Value evaluate0(ScriptScope scope) throws SynsException {
         return synBlock.toValue(scope);
+    }
+    
+    @Override
+    Factory getFunctionObjectFactory() {
+        return new BlockFunctionObject.Factory(synBlock);
     }
     
     @Override

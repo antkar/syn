@@ -17,22 +17,28 @@ package org.antkar.syn.sample.script.rt.value;
 
 import org.antkar.syn.sample.script.rt.ScriptScope;
 import org.antkar.syn.sample.script.rt.SynsException;
+import org.antkar.syn.sample.script.rt.javacls.TypeMatchPrecision;
 import org.antkar.syn.sample.script.rt.op.operand.Operand;
-import org.antkar.syn.sample.script.schema.FunctionDeclaration;
+import org.antkar.syn.sample.script.schema.FunctionObject;
 
 /**
  * Script function value.
  */
-class FunctionValue extends RValue {
+class FunctionValue extends RValue implements AdaptableToJavaInterface {
     /** The scope where the function was declared. The function will be executed in that scope. */
     private final ScriptScope scope;
     
-    /** The function declaration. */
-    private final FunctionDeclaration function;
+    /** The function object. */
+    private final FunctionObject function;
     
-    FunctionValue(ScriptScope scope, FunctionDeclaration function) {
+    FunctionValue(ScriptScope scope, FunctionObject function) {
         this.scope = scope;
         this.function = function;
+    }
+    
+    @Override
+    public Object toJava(Class<?> type, TypeMatchPrecision precision) throws SynsException {
+        return BlockToJavaAdapter.toJava(this, type);
     }
     
     @Override
@@ -40,6 +46,16 @@ class FunctionValue extends RValue {
         return function.call(scope, arguments);
     }
     
+    @Override
+    public boolean hasFunction(String name) {
+        return false;
+    }
+
+    @Override
+    public Value callFunction(String name, RValue[] arguments) throws SynsException {
+        throw new IllegalStateException(name);
+    }
+
     @Override
     public Operand toOperand() throws SynsException {
         return Operand.forObject(function);
@@ -52,6 +68,11 @@ class FunctionValue extends RValue {
     
     @Override
     public String getTypeMessage() {
-        return getCompoundTypeMessage(function.getName());
+        return getCompoundTypeMessage(function.getScopeName());
+    }
+    
+    @Override
+    public String toString() {
+        return getTypeMessage();
     }
 }

@@ -15,16 +15,15 @@
  */
 package org.antkar.syn.sample.script.schema;
 
+import java.util.Arrays;
 import java.util.List;
-
-import org.antkar.syn.sample.script.rt.ScriptScope;
-import org.antkar.syn.sample.script.rt.StatementResult;
-import org.antkar.syn.sample.script.rt.SynsException;
-import org.antkar.syn.sample.script.rt.value.RValue;
-import org.antkar.syn.sample.script.rt.value.Value;
 
 import org.antkar.syn.StringToken;
 import org.antkar.syn.SynField;
+import org.antkar.syn.SynInit;
+import org.antkar.syn.sample.script.rt.ScriptScope;
+import org.antkar.syn.sample.script.rt.SynsException;
+import org.antkar.syn.sample.script.rt.value.Value;
 
 /**
  * Script function declaration syntax node.
@@ -36,13 +35,22 @@ public class FunctionDeclaration extends Declaration {
     
     /** The body. */
     @SynField
-    private Block synBlock;
+    private FunctionBody synBody;
+    
+    private FunctionObject function;
 
     public FunctionDeclaration(){}
     
+    @SynInit
+    private void init() {
+        String scopeName = "function " + getName();
+        List<StringToken> parameters = Arrays.asList(synParameters);
+        function = synBody.createFunction(scopeName, parameters);
+    }
+    
     @Override
     Value evaluateValue(ScriptScope scope) throws SynsException {
-        return Value.forFunction(scope, this);
+        return Value.forFunction(scope, function);
     }
     
     @Override
@@ -54,26 +62,13 @@ public class FunctionDeclaration extends Declaration {
         functions.add(this);
     }
     
-    /**
-     * Calls this function with the specified actual arguments.
-     */
-    public Value call(ScriptScope scope, RValue[] arguments) throws SynsException {
-        ScriptScope argumentsScope = scope.deriveFunctionScope("function " + getName());
-        
-        for (int i = 0; i < synParameters.length; ++i) {
-            StringToken param = synParameters[i];
-            Value value = i < arguments.length ? arguments[i] : Value.forNull();
-            Value variable = Value.newVariable(value);
-            argumentsScope.addValue(param, variable);
-        }
-        
-        StatementResult result = synBlock.execute(argumentsScope);
-        return result.isReturn() ? result.getReturnValue() : Value.forVoid();
-    }
-    
     @Override
     boolean isFunction() {
         return true;
+    }
+    
+    public FunctionObject getFunction() {
+        return function;
     }
     
     @Override

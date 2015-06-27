@@ -71,6 +71,11 @@ class JavaObjectValue extends RValue {
         throw errInvalidOperation();
     }
     
+    @Override
+    public String toString() {
+        return "" + obj;
+    }
+    
     /**
      * If the Java object implements the {@link Iterable} interface, this class is used to
      * adapt the object to an {@link Iterable} which returns script values.

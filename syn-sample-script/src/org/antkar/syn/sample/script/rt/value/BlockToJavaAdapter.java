@@ -37,42 +37,58 @@ final class BlockToJavaAdapter {
     private BlockToJavaAdapter(){}
 
     /**
-     * Returns an object that implements the specified interface and redirects method calls
-     * to the specified Script Language block.
+     * If the target Java class is an interface, creates a proxy object which implements the
+     * interface and redirects its methods to the adaptable object.
      */
-    static Object createAdapter(BlockValue blockValue, Class<?> javaInterface) throws SynsException {
-        InvocationHandler handler = createInvocationHandler(blockValue, javaInterface);
+    static Object toJava(AdaptableToJavaInterface adaptable, Class<?> type) throws SynsException {
+        if (type.isInterface()) {
+            return createAdapter(adaptable, type);
+        } else if (type.isInstance(adaptable)) {
+            return adaptable;
+        } else {
+            return RValue.INVALID;
+        }
+    }
+
+    /**
+     * Returns an object that implements the specified interface and redirects method calls
+     * to the specified Script Language object.
+     */
+    private static Object createAdapter(AdaptableToJavaInterface adaptable, Class<?> javaInterface)
+            throws SynsException
+    {
+        InvocationHandler handler = createInvocationHandler(adaptable, javaInterface);
         ClassLoader classLoader = javaInterface.getClassLoader();
         Class<?>[] interfaces = new Class<?>[]{javaInterface};
         return Proxy.newProxyInstance(classLoader, interfaces, handler);
     }
-    
+
     /**
      * Creates an invocation handler for redirecting interface method calls to a Script Language
      * block.
      */
     private static InvocationHandler createInvocationHandler(
-            BlockValue blockValue,
+            AdaptableToJavaInterface adaptable,
             Class<?> javaInterface) throws SynsException
     {
         Map<String, Method> methods = getInterfaceMethods(javaInterface);
         
         if (methods.isEmpty()) {
             //No methods - return a special null invocation handler.
-            return new NoMethodsInvocationHandler(blockValue);
+            return new NoMethodsInvocationHandler(adaptable);
         } else if (methods.size() == 1) {
             String name = methods.keySet().iterator().next();
-            if (!blockValue.hasFunction(name)) {
+            if (!adaptable.hasFunction(name)) {
                 //The interface defines a single method, and there is no function with the same
                 //name defined in the block. So the method will be redirected to the block
                 //itself.
-                return new SingleMethodInvocationHandler(blockValue);
+                return new SingleMethodInvocationHandler(adaptable);
             }
         }
         
         //Methods of the interface have to be redirected to corresponding functions defined
         //in the block.
-        return new MultipleMehtodsInvocationHandler(blockValue);
+        return new MultipleMehtodsInvocationHandler(adaptable);
     }
     
     /**
@@ -186,10 +202,10 @@ final class BlockToJavaAdapter {
      * Block-based proxy invocation handler.
      */
     private static abstract class ScriptInvocationHandler implements InvocationHandler {
-        final BlockValue blockValue;
+        final AdaptableToJavaInterface adaptable;
         
-        ScriptInvocationHandler(BlockValue blockValue) {
-            this.blockValue = blockValue;
+        ScriptInvocationHandler(AdaptableToJavaInterface adaptable) {
+            this.adaptable = adaptable;
         }
 
         @Override
@@ -216,11 +232,11 @@ final class BlockToJavaAdapter {
                 if (Proxy.isProxyClass(arg.getClass())) {
                     InvocationHandler handler = Proxy.getInvocationHandler(arg);
                     if (handler instanceof ScriptInvocationHandler) {
-                        args[0] = ((ScriptInvocationHandler)handler).blockValue;
+                        args[0] = ((ScriptInvocationHandler)handler).adaptable;
                     }
                 }
             }
-            return method.invoke(blockValue, args);
+            return method.invoke(adaptable, args);
         }
         
         /**
@@ -233,8 +249,8 @@ final class BlockToJavaAdapter {
      * Invocation handler for an interface which defines no methods.
      */
     private static class NoMethodsInvocationHandler extends ScriptInvocationHandler {
-        NoMethodsInvocationHandler(BlockValue blockValue) {
-            super(blockValue);
+        NoMethodsInvocationHandler(AdaptableToJavaInterface adaptable) {
+            super(adaptable);
         }
 
         @Override
@@ -249,19 +265,33 @@ final class BlockToJavaAdapter {
      * block.
      */
     private static class SingleMethodInvocationHandler extends ScriptInvocationHandler {
-        SingleMethodInvocationHandler(BlockValue blockValue) {
-            super(blockValue);
+        SingleMethodInvocationHandler(AdaptableToJavaInterface adaptable) {
+            super(adaptable);
         }
 
         @Override
         Object invoke0(Object proxy, Method method, Object[] args) throws Throwable {
+            RValue[] scriptArgs = javaArgsToScript(args);
+            
             Value value;
             try {
-                value = blockValue.call(RValue.ARRAY0);
+                value = adaptable.call(scriptArgs);
             } catch (ThrowSynsException e) {
                 throw e.getCause();
             }
+            
             return getJavaReturnValue(method, value);
+        }
+        
+        private RValue[] javaArgsToScript(Object[] args) throws SynsException {
+            if (args == null || args.length == 0) return RValue.ARRAY0;
+            
+            RValue[] result = new RValue[args.length];
+            for (int i = 0; i < args.length; ++i) {
+                RValue value = Value.forJavaObject(args[i]);
+                result[i] = value;
+            }
+            return result;
         }
     }
     
@@ -270,14 +300,14 @@ final class BlockToJavaAdapter {
      * a Script Language block.
      */
     private static class MultipleMehtodsInvocationHandler extends ScriptInvocationHandler {
-        MultipleMehtodsInvocationHandler(BlockValue blockValue) {
-            super(blockValue);
+        MultipleMehtodsInvocationHandler(AdaptableToJavaInterface adaptable) {
+            super(adaptable);
         }
 
         @Override
         Object invoke0(Object proxy, Method method, Object[] args) throws Throwable {
             String name = method.getName();
-            if (!blockValue.hasFunction(name)) {
+            if (!adaptable.hasFunction(name)) {
                 //If there is no such function in the block, return the default value instead of
                 //throwing an exception. This feature allows to implement only those interface
                 //methods that are really important. E. g. there is no need to implement all 5
@@ -292,7 +322,7 @@ final class BlockToJavaAdapter {
             //Call the function.
             Value value;
             try {
-                value = blockValue.callFunction(name, arguments);
+                value = adaptable.callFunction(name, arguments);
             } catch (ThrowSynsException e) {
                 throw e.getCause();
             }

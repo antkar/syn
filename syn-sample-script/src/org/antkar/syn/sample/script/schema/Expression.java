@@ -15,12 +15,11 @@
  */
 package org.antkar.syn.sample.script.schema;
 
+import org.antkar.syn.TextPos;
 import org.antkar.syn.sample.script.rt.ScriptScope;
 import org.antkar.syn.sample.script.rt.SynsException;
 import org.antkar.syn.sample.script.rt.TextSynsException;
 import org.antkar.syn.sample.script.rt.value.Value;
-
-import org.antkar.syn.TextPos;
 
 /**
  * An expression syntax node.
@@ -53,4 +52,8 @@ public abstract class Expression {
      * Evaluates the expression in the specified scope. Must not be called directly.
      */
     abstract Value evaluate0(ScriptScope scope) throws SynsException;
+    
+    FunctionObject.Factory getFunctionObjectFactory() {
+        return new ExpressionFunctionObject.Factory(this);
+    }
 }

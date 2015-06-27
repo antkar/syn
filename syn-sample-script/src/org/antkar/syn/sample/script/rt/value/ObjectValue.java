@@ -64,4 +64,9 @@ class ObjectValue extends RValue {
         }
         return this;
     }
+    
+    @Override
+    public String toString() {
+        return getTypeMessage();
+    }
 }
