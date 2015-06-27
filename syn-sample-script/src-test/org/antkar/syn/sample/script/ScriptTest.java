@@ -21,15 +21,13 @@ import java.io.PrintStream;
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
 
-import org.antkar.syn.sample.script.ScriptExecutor;
+import org.antkar.syn.StringToken;
+import org.antkar.syn.SynException;
+import org.antkar.syn.TextPos;
 import org.antkar.syn.sample.script.rt.ScriptScope;
 import org.antkar.syn.sample.script.rt.SynsException;
 import org.antkar.syn.sample.script.util.NullInputStream;
 import org.junit.Assert;
-
-import org.antkar.syn.StringToken;
-import org.antkar.syn.SynException;
-import org.antkar.syn.TextPos;
 
 /**
  * Common superclass for Script Language tests. Tests complete script execution.
@@ -117,6 +115,26 @@ public abstract class ScriptTest extends Assert {
         
         public static void print(Object value) {
             System.out.print(value + " ");
+        }
+        
+        public static void voidToVoid(Runnable function) {
+            function.run();
+        }
+        
+        public static String voidToString(VoidToString function) {
+            return function.call();
+        }
+        
+        public static String intToString(int value, IntToString function) {
+            return function.call(value);
+        }
+        
+        public interface VoidToString {
+            String call();
+        }
+        
+        public interface IntToString {
+            String call(int value);
         }
     }
 }

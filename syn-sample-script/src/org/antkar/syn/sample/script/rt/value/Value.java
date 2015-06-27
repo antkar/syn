@@ -18,6 +18,7 @@ package org.antkar.syn.sample.script.rt.value;
 import java.util.List;
 import java.util.Map;
 
+import org.antkar.syn.StringToken;
 import org.antkar.syn.sample.script.rt.ScriptScope;
 import org.antkar.syn.sample.script.rt.SynsException;
 import org.antkar.syn.sample.script.rt.TextSynsException;
@@ -25,9 +26,8 @@ import org.antkar.syn.sample.script.rt.javacls.JavaClass;
 import org.antkar.syn.sample.script.rt.op.operand.Operand;
 import org.antkar.syn.sample.script.schema.Block;
 import org.antkar.syn.sample.script.schema.Declaration;
+import org.antkar.syn.sample.script.schema.FunctionObject;
 import org.antkar.syn.sample.script.schema.FunctionDeclaration;
-
-import org.antkar.syn.StringToken;
 
 /**
  * A value. Subclasses represent values of various types used to hold variable values, function
@@ -161,7 +161,7 @@ public abstract class Value {
     /**
      * Returns a value for a Script Language function.
      */
-    public static Value forFunction(ScriptScope scope, FunctionDeclaration function) {
+    public static Value forFunction(ScriptScope scope, FunctionObject function) {
         return new FunctionValue(scope, function);
     }
 

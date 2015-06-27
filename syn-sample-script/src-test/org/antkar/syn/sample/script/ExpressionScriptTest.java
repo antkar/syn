@@ -708,18 +708,90 @@ public class ExpressionScriptTest extends ScriptTest {
         execute("var b = { print('block'); }; print('b()'); b();");
         chkOut("b() block ");
     }
+    
+    @Test
+    public void testJavaInterfaceVoidToVoidFromBlock() throws Exception {
+        execute("voidToVoid({ print('block'); });");
+        chkOut("block ");
+    }
 
     @Test
-    public void testBlockPassToJavaMethod() throws Exception {
+    public void testJavaInterfaceVoidToVoidFromBlockInThread() throws Exception {
         execute("var block = { print('block'); };" +
                 "var thread = new Thread(block); thread.start(); thread.join();");
         chkOut("block ");
     }
     
     @Test
+    public void testJavaInterfaceVoidToVoidFromLambda() throws Exception {
+        execute("voidToVoid(() -> print('block'));");
+        chkOut("block ");
+    }
+    
+    @Test
+    public void testJavaInterfaceVoidToVoidFromFunction() throws Exception {
+        execute("function f() = print('block'); voidToVoid(f);");
+        chkOut("block ");
+    }
+    
+    @Test
+    public void testJavaInterfaceVoidToStringFromBlock() throws Exception {
+        execute("print(voidToString({ return 'block'; }));");
+        chkOut("block ");
+    }
+    
+    @Test
+    public void testJavaInterfaceVoidToStringFromLambda() throws Exception {
+        execute("print(voidToString(() -> 'block'));");
+        chkOut("block ");
+    }
+    
+    @Test
+    public void testJavaInterfaceVoidToStringFromFunction() throws Exception {
+        execute("function f() = 'block'; print(voidToString(f));");
+        chkOut("block ");
+    }
+    
+    @Test
+    public void testJavaInterfaceIntToStringFromLambda() throws Exception {
+        execute("print(intToString(123, x -> 'x=' + x));");
+        chkOut("x=123 ");
+    }
+    
+    @Test
+    public void testJavaInterfaceIntToStringFromFunction() throws Exception {
+        execute("function f(x) = 'x=' + x; print(intToString(123, f));");
+        chkOut("x=123 ");
+    }
+    
+    @Test
     public void testBlockWithStateCall() throws Exception {
         execute("var block = { var z=0; print('block-' + z); ++z; }; block(); block();");
         chkOut("block-0 block-0 ");
+    }
+    
+    @Test
+    public void testLambdaExpressionNoParameters() throws Exception {
+        execute("var f = () -> print(\"Lambda!\"); f();");
+        chkOut("Lambda! ");
+    }
+    
+    @Test
+    public void testLambdaExpressionOneParameter() throws Exception {
+        execute("var f = x -> x * x; print(f(5));");
+        chkOut("25 ");
+    }
+    
+    @Test
+    public void testLambdaExpressionTwoParameters() throws Exception {
+        execute("var f = (a, b) -> a * b; print(f(5, 7));");
+        chkOut("35 ");
+    }
+    
+    @Test
+    public void testLambdaExpressionTwoParametersWithBlock() throws Exception {
+        execute("var f = (a, b) -> { return a * b; }; print(100 * f(5, 7));");
+        chkOut("3500 ");
     }
     
     @Test

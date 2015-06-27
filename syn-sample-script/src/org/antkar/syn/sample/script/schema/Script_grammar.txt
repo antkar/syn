@@ -52,8 +52,20 @@ ConstantDeclaration
     ;
 
 FunctionDeclaration
-    :   synPos="function" synName=ID "(" synParameters=(ID : ",")* ")"
-        "{" synBlock=Block "}"
+    :   synPos="function" synName=ID "(" synParameters=(ID : ",")* ")" synBody=FunctionBody
+    ;
+    
+FunctionBody
+    :   BlockFunctionBody
+    |   ExpressionFunctionBody
+    ;
+    
+BlockFunctionBody
+    :   "{" synBlock=Block "}"
+    ;
+    
+ExpressionFunctionBody
+    :   "=" synExpression=Expression ";"
     ;
     
 ClassDeclaration
@@ -269,6 +281,7 @@ SubTerminalExpression
     :   "(" result=Expression ")"
     |   MemberExpression
     |   FunctionExpression
+    |   LambdaExpression
     |   NewClassExpression
     |   NewArrayExpression
     |   ArrayExpression
@@ -283,6 +296,23 @@ MemberExpression
     
 FunctionExpression
     :   synFunction=TerminalExpression "(" synArguments=(Expression : ",")* ")"
+    ;
+    
+LambdaExpression
+    :   synParameters=LambdaParameters "->" synExpression=Expression
+    ;
+    
+LambdaParameters
+    :   SingleLambdaParameter
+    |   MultipleLambdaParameters
+    ;
+    
+SingleLambdaParameter
+    :   synName=ID
+    ;
+    
+MultipleLambdaParameters
+    :   synPos="(" synNames=(ID : ",")* ")"
     ;
     
 NewClassExpression

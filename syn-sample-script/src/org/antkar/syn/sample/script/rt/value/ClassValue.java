@@ -94,7 +94,7 @@ class ClassValue extends Value {
         
         //Call the constructor, if any.
         if (constructor != null) {
-            constructor.call(objectScope, arguments);
+            constructor.getFunction().call(objectScope, arguments);
         }
         
         //Create a new object value.

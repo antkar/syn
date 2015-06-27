@@ -120,6 +120,20 @@ public class DeclarationScriptTest extends ScriptTest {
     }
     
     @Test
+    public void testFunctionExpressionBody() throws Exception {
+        execute("function foo(a, b) = a * b;" +
+                "print(foo(5, 7));");
+        chkOut("35 ");
+    }
+    
+    @Test
+    public void testFunctionExpressionBodyWithBlock() throws Exception {
+        execute("function foo(a, b) = { return a * b; };" +
+                "print(100 * foo(5, 7));");
+        chkOut("3500 ");
+    }
+    
+    @Test
     public void testClassNoMembers() throws Exception {
         execute("class C {} new C();");
         chkOut("");
