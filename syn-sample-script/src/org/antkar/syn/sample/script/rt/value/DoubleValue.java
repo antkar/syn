@@ -31,7 +31,7 @@ class DoubleValue extends RValue {
     
     @Override
     public Operand toOperand() throws SynsException {
-        return Operand.forDouble(value);
+        return Operand.forDouble(this, value);
     }
     
     @Override

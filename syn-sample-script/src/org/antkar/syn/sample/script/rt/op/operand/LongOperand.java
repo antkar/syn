@@ -16,14 +16,17 @@
 package org.antkar.syn.sample.script.rt.op.operand;
 
 import org.antkar.syn.sample.script.rt.SynsException;
+import org.antkar.syn.sample.script.rt.value.RValue;
 
 /**
  * Operand of type <code>long</code>.
  */
 class LongOperand extends Operand {
+    private final RValue rValue;
     private final long value;
 
-    LongOperand(long value) {
+    LongOperand(RValue rValue, long value) {
+        this.rValue = rValue;
         this.value = value;
     }
 
@@ -31,7 +34,17 @@ class LongOperand extends Operand {
     public OperandType getType() {
         return OperandType.LONG;
     }
-
+    
+    @Override
+    public RValue toRValue() {
+        return rValue;
+    }
+    
+    @Override
+    public boolean booleanValueImplicit() throws SynsException {
+        return true;
+    }
+    
     @Override
     public long longValue() throws SynsException {
         return value;

@@ -47,4 +47,9 @@ abstract class JavaMethodValue extends Value {
 
     @Override
     public abstract Value call(RValue[] arguments) throws SynsException;
+    
+    @Override
+    ValueType getTypeofValueType() {
+        return getValueType();
+    }
 }

@@ -22,10 +22,8 @@ import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
 
 import org.antkar.syn.StringToken;
-import org.antkar.syn.SynException;
 import org.antkar.syn.TextPos;
 import org.antkar.syn.sample.script.rt.ScriptScope;
-import org.antkar.syn.sample.script.rt.SynsException;
 import org.antkar.syn.sample.script.util.NullInputStream;
 import org.junit.Assert;
 
@@ -40,7 +38,7 @@ public abstract class ScriptTest extends Assert {
     /**
      * Executes the given script, redirecting the output to {@link #stdOut} and {@link #stdErr} fields.
      */
-    void execute(String script) throws SynException, SynsException {
+    void execute(String script) throws Exception {
         //Create stdout redirection stream.
         ByteArrayOutputStream bout = new ByteArrayOutputStream();
         @SuppressWarnings("resource")

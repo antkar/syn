@@ -15,6 +15,7 @@
  */
 package org.antkar.syn.sample.script.rt.value;
 
+import org.antkar.syn.sample.script.rt.ScriptScope;
 import org.antkar.syn.sample.script.rt.SynsException;
 import org.antkar.syn.sample.script.rt.op.operand.Operand;
 
@@ -35,9 +36,9 @@ public abstract class LValue extends Value {
     }
     
     @Override
-    public final Value getMemberOpt(String name) throws SynsException {
-        RValue rvalue = toRValue();;
-        return rvalue.getMemberOpt(name);
+    public final Value getMemberOpt(String name, ScriptScope readerScope) throws SynsException {
+        RValue rvalue = toRValue();
+        return rvalue.getMemberOpt(name, readerScope);
     }
     
     @Override

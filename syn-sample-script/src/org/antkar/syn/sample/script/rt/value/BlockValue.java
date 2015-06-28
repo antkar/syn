@@ -38,7 +38,7 @@ class BlockValue extends RValue implements AdaptableToJavaInterface {
     
     @Override
     public Operand toOperand() throws SynsException {
-        return Operand.forObject(this);
+        return Operand.forObject(this, this);
     }
     
     @Override

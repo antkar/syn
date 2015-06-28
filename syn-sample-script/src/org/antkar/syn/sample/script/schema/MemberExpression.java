@@ -45,7 +45,7 @@ public class MemberExpression extends TerminalExpression {
     @Override
     Value evaluate0(ScriptScope scope) throws SynsException {
         Value object = synObject.evaluate(scope);
-        return object.getMember(synName);
+        return object.getMember(synName, scope);
     }
     
     @Override

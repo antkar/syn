@@ -15,6 +15,10 @@
  */
 package org.antkar.syn.sample.script.rt.op.operand;
 
+import org.antkar.syn.sample.script.rt.value.RValue;
+import org.antkar.syn.sample.script.rt.value.Value;
+
+
 /**
  * A <code>null</code> operand.
  */
@@ -26,6 +30,16 @@ class NullOperand extends Operand {
     @Override
     public OperandType getType() {
         return OperandType.NULL;
+    }
+    
+    @Override
+    public RValue toRValue() {
+        return Value.forNull();
+    }
+    
+    @Override
+    public boolean booleanValueImplicit() {
+        return false;
     }
     
     @Override

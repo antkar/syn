@@ -15,6 +15,7 @@
  */
 package org.antkar.syn.sample.script.rt.value;
 
+import org.antkar.syn.sample.script.rt.ScriptScope;
 import org.antkar.syn.sample.script.rt.SynsException;
 import org.antkar.syn.sample.script.rt.javacls.TypeMatchPrecision;
 import org.antkar.syn.sample.script.rt.op.operand.Operand;
@@ -38,7 +39,7 @@ final class NullValue extends RValue {
     }
     
     @Override
-    public Value getMemberOpt(String name) throws SynsException {
+    public Value getMemberOpt(String name, ScriptScope readerScope) throws SynsException {
         throw errNullPointer();
     }
     

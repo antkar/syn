@@ -15,38 +15,30 @@
  */
 package org.antkar.syn.sample.script.schema;
 
-import java.util.List;
-
-import org.antkar.syn.sample.script.rt.SynsException;
-
 import org.antkar.syn.SynField;
 
 /**
  * Script class member declaration syntax node.
  */
 public class ClassMemberDeclaration {
+    @SynField
+    private String synPublic;
+    
     /** The declaration itself. */
     @SynField
     private Declaration synDeclaration;
     
     public ClassMemberDeclaration(){}
     
+    public boolean isPublic() {
+        return synPublic != null;
+    }
+    
     /**
      * Returns the underlying declaration.
      */
-    Declaration getDeclaration() {
+    public Declaration getDeclaration() {
         return synDeclaration;
-    }
-
-    /**
-     * Classifies the declaration.
-     */
-    void classify(
-            List<ConstantDeclaration> constants,
-            List<VariableDeclaration> variables,
-            List<FunctionDeclaration> functions) throws SynsException
-    {
-        synDeclaration.classify(constants, variables, functions);
     }
     
     @Override

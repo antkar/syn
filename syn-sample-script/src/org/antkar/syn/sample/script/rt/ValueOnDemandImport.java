@@ -29,7 +29,7 @@ class ValueOnDemandImport extends OnDemandImport {
 
     @Override
     Value getValueOpt(String name) throws SynsException {
-        return value.getMemberOpt(name);
+        return value.getMemberOpt(name, null);
     }
     
     @Override

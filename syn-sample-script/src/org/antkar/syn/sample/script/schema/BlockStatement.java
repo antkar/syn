@@ -43,7 +43,7 @@ public class BlockStatement extends Statement {
 
     @Override
     StatementResult execute0(ScriptScope scope) throws SynsException {
-        ScriptScope subScope = scope.deriveNestedScope("block");
+        ScriptScope subScope = scope.nestedBlockScope("block");
         return synBlock.execute(subScope);
     }
     

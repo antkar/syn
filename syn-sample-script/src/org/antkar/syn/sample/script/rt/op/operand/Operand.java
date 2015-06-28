@@ -37,29 +37,29 @@ public abstract class Operand {
     /**
      * Creates an integer operand.
      */
-    public static Operand forLong(long value) {
-        return new LongOperand(value);
+    public static Operand forLong(RValue rValue, long value) {
+        return new LongOperand(rValue, value);
     }
     
     /**
      * Creates a floating-point operand.
      */
-    public static Operand forDouble(double value) {
-        return new DoubleOperand(value);
+    public static Operand forDouble(RValue rValue, double value) {
+        return new DoubleOperand(rValue, value);
     }
     
     /**
      * Creates a String operand.
      */
-    public static Operand forString(String value) {
-        return new StringOperand(value);
+    public static Operand forString(RValue rValue, String value) {
+        return new StringOperand(rValue, value);
     }
     
     /**
      * Creates an Object operand.
      */
-    public static Operand forObject(Object value) {
-        return new ObjectOperand(value);
+    public static Operand forObject(RValue rValue, Object value) {
+        return new ObjectOperand(rValue, value);
     }
     
     /**
@@ -74,6 +74,8 @@ public abstract class Operand {
      */
     public abstract OperandType getType();
     
+    public abstract RValue toRValue();
+
     /**
      * Returns the <code>boolean</code> value of the operand. Throws an exception if the operand
      * is not boolean.
@@ -81,7 +83,16 @@ public abstract class Operand {
     public boolean booleanValue() throws SynsException {
         throw errTypeMissmatch(OperandType.BOOLEAN);
     }
-    
+
+    /**
+     * Tries to apply an implicit conversion to convert this value to boolean.
+     * For instance, a <code>null</code> value is convered to <code>false</code>,
+     * a non-null reference value is converted to <code>true</code>.
+     */
+    public boolean booleanValueImplicit() throws SynsException {
+        return booleanValue();
+    }
+
     /**
      * Returns the <code>int</code> value of the operand. Throws an exception if the operand
      * is not integer or if its value is out of <code>int</code> type range.

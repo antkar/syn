@@ -42,6 +42,11 @@ abstract class JavaFieldValue extends LValue {
     }
     
     @Override
+    ValueType getTypeofValueType() throws SynsException {
+        return toRValue().getTypeofValueType();
+    }
+    
+    @Override
     public String getTypeMessage() {
         return getCompoundTypeMessage(getField() + "");
     }

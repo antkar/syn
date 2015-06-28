@@ -15,6 +15,7 @@
  */
 package org.antkar.syn.sample.script.rt.value;
 
+import org.antkar.syn.sample.script.rt.ScriptScope;
 import org.antkar.syn.sample.script.rt.SynsException;
 import org.antkar.syn.sample.script.rt.javacls.JavaClass;
 
@@ -39,12 +40,22 @@ class JavaClassValue extends Value {
     }
     
     @Override
-    public Value getMemberOpt(String name) throws SynsException {
+    public Value getMemberOpt(String name, ScriptScope readerScope) throws SynsException {
         return cls.getStaticMemberOpt(name);
+    }
+    
+    @Override
+    public Value call(RValue[] arguments) throws SynsException {
+        return newObject(arguments);
     }
     
     @Override
     public Value newObject(RValue[] arguments) throws SynsException {
         return cls.newInstance(arguments);
+    }
+    
+    @Override
+    ValueType getTypeofValueType() throws SynsException {
+        return getValueType();
     }
 }

@@ -50,7 +50,7 @@ public class WhileStatement extends Statement {
     @Override
     StatementResult execute0(ScriptScope scope) throws SynsException {
         //Create a nested scope to execute the loop in it.
-        scope = scope.deriveLoopScope("while");
+        scope = scope.nestedLoopScope("while");
         
         for (;;) {
             //Check the condition.

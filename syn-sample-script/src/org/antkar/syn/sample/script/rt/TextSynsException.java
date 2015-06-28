@@ -23,21 +23,27 @@ import org.antkar.syn.TextPos;
 public class TextSynsException extends SynsException {
     private static final long serialVersionUID = 6304936443784708827L;
     
+    private final String originalMessage;
     private final TextPos textPos;
 
     public TextSynsException(String message, TextPos textPos) {
         super(textPos + ": " + message);
+        this.originalMessage = message;
         this.textPos = textPos;
     }
 
     public TextSynsException(Throwable cause, TextPos textPos) {
-        super(textPos + ": " + cause.getMessage(), cause);
-        this.textPos = textPos;
+        this(cause.getMessage(), cause, textPos);
     }
 
     public TextSynsException(String message, Throwable cause, TextPos textPos) {
         super(textPos + ": " + message, cause);
+        this.originalMessage = message;
         this.textPos = textPos;
+    }
+    
+    public String getOriginalMessage() {
+        return originalMessage;
     }
 
     public TextPos getTextPos() {

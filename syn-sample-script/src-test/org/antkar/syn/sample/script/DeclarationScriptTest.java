@@ -88,7 +88,7 @@ public class DeclarationScriptTest extends ScriptTest {
             execute("const C = 123; C = 456;");
             fail();
         } catch (TextSynsException e) {
-            assertEquals("Invalid operation for int", e.getCause().getMessage());
+            assertEquals("Invalid operation for int", e.getOriginalMessage());
         }
         chkOut("");
     }
@@ -147,31 +147,145 @@ public class DeclarationScriptTest extends ScriptTest {
     
     @Test
     public void testClassMemberVariable() throws Exception {
-        execute("class C { var x = 123; } var c = new C(); print(c.x);");
+        execute("class C { public var x = 123; } var c = new C(); print(c.x);");
         chkOut("123 ");
     }
     
     @Test
     public void testClassMemberVariableChangeValue() throws Exception {
-        execute("class C { var x = 123; } var c = new C(); c.x = 987; print(c.x); ");
+        execute("class C { public var x = 123; } var c = new C(); c.x = 987; print(c.x); ");
         chkOut("987 ");
     }
     
     @Test
     public void testClassMemberVariableFunction() throws Exception {
-        execute("class C { var x = 123; function f() {print(x++);} } var c = new C(); c.f(); c.f();");
+        execute("class C { var x = 123; public function f() {print(x++);} } "
+                + "var c = new C(); c.f(); c.f();");
         chkOut("123 124 ");
     }
     
     @Test
     public void testClassMemberConstant() throws Exception {
-        execute("class C { const X = 123; } print(C.X); var c = new C(); print(c.X);");
+        execute("class C { public const X = 123; } print(C.X); var c = new C(); print(c.X);");
         chkOut("123 123 ");
     }
     
     @Test
     public void testClassMemberFunction() throws Exception {
-        execute("class C { function fn(a) { print('C.fn(' + a + ')'); } } var c = new C(); c.fn(123);");
+        execute("class C { public function fn(a) { print('C.fn(' + a + ')'); } } "
+                + "var c = new C(); c.fn(123);");
         chkOut("C.fn(123) ");
+    }
+    
+    @Test
+    public void testClassMemberVariablePrivateAccessInside() throws Exception {
+        execute("class X { var x = 123; public function f() = x; } print(X().f());");
+        chkOut("123 ");
+    }
+    
+    @Test
+    public void testClassMemberVariablePrivateAccessOutside() throws Exception {
+        try {
+            execute("class X { var x = 123; } print(X().x);");
+            fail();
+        } catch (TextSynsException e) {
+            assertEquals("Unknown name: x", e.getOriginalMessage());
+        }
+        chkOut("");
+    }
+    
+    @Test
+    public void testClassMemberVariablePrivateAccessAnotherObject() throws Exception {
+        execute("class X { var x; function X(x){ this.x = x; } public function f(obj) = obj.x; }"
+                + "print(X(123).f(X(456)));");
+        chkOut("456 ");
+    }
+    
+    @Test
+    public void testClassMemberVariablePrivateAccessFromNestedBlock() throws Exception {
+        execute("class X { var x = 123; public function f() { function g() = x; return g(); } }"
+                + "print(X().f());");
+        chkOut("123 ");
+    }
+    
+    @Test
+    public void testClassMemberVariablePublicAccessOutside() throws Exception {
+        execute("class X { public var x = 123; } print(X().x);");
+        chkOut("123 ");
+    }
+
+    @Test
+    public void testClassMemberConstantPrivateAccessInside() throws Exception {
+        execute("class X { const x = 123; public function f() = x; } print(X().f());");
+        chkOut("123 ");
+    }
+
+    @Test
+    public void testClassMemberConstantPrivateAccessInsideConstant() throws Exception {
+        execute("class X { const x = 123; public const y = x; } print(X.y);");
+        chkOut("123 ");
+    }
+
+    @Test
+    public void testClassMemberConstantPrivateAccessOutside() throws Exception {
+        try {
+            execute("class X { const x = 123; } print(X.x);");
+            fail();
+        } catch (TextSynsException e) {
+            assertEquals("Unknown name: x", e.getOriginalMessage());
+        }
+        chkOut("");
+    }
+
+    @Test
+    public void testClassMemberConstantPublicAccessOutside() throws Exception {
+        execute("class X { public const x = 123; } print(X.x);");
+        chkOut("123 ");
+    }
+    
+    @Test
+    public void testClassMemberCosntructorPrivateAccessOutside() throws Exception {
+        execute("class X { public var x = 123; function X(){} } print(X().x); ");
+        chkOut("123 ");
+    }
+    
+    @Test
+    public void testClassMemberConstructorPublicAccessOutside() throws Exception {
+        execute("class X { public var x = 123; public function X(){} } print(X().x); ");
+        chkOut("123 ");
+    }
+    
+    @Test
+    public void testClassVariableInitializerPassingAnotherVariableToFunction() throws Exception {
+        execute("function f(x) = x * 2; class X { var k = 123; public var copy = f(k); }"
+                + "print(X().copy);");
+        chkOut("246 ");
+    }
+    
+    @Test
+    public void testClassVariableInitializerPassingAnotherVariableToConstructor() throws Exception {
+        execute("class Z { public var z; function Z(z){ this.z = z; } }"
+                + "class X { var k = 123; public var copy = Z(k); }"
+                + "print(X().copy.z);");
+        chkOut("123 ");
+    }
+    
+    @Test
+    public void testClassVariableInitializerChainDependency() throws Exception {
+        // This test tests that member variables are initialized in the order in which they are
+        // declared.
+        execute("function f(x) = x + 1;"
+                + "class X { var v1=1; var v2=f(v1); var v3=f(v2); var v4=f(v3); var v5=f(v4);"
+                + "var v6=f(v5); var v7=f(v6); var v8=f(v7); var v9=f(v8); var vA=f(v9);"
+                + "public var s = [v1, v2, v3, v4, v5, v6, v7, v8, v9, vA]; }"
+                + "print(X().s);");
+        chkOut("[1, 2, 3, 4, 5, 6, 7, 8, 9, 10] ");
+    }
+    
+    @Test
+    public void testClassVariableInitializerUsesClassFunctionDeclaredBelow() throws Exception {
+        execute("class X { public var x = f; function f(a) = a * 2; }"
+                + "print(X().x(123));");
+        chkOut("246 ");
     }
 }

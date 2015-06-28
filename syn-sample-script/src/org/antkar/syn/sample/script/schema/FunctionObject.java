@@ -26,7 +26,7 @@ public abstract class FunctionObject {
     }
 
     public final Value call(ScriptScope scope, RValue[] arguments) throws SynsException {
-        ScriptScope argumentsScope = scope.deriveFunctionScope(scopeName);
+        ScriptScope argumentsScope = scope.nestedFunctionScope(scopeName);
         
         for (int i = 0; i < parameters.size(); ++i) {
             StringToken param = parameters.get(i);

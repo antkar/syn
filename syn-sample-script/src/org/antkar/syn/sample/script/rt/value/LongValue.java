@@ -31,7 +31,7 @@ class LongValue extends RValue {
     
     @Override
     public Operand toOperand() throws SynsException {
-        return Operand.forLong(value);
+        return Operand.forLong(this, value);
     }
     
     @Override

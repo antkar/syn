@@ -71,12 +71,17 @@ public class SynParserJdkTest extends TestCase {
         for (SynException e : errors) {
             e.printStackTrace(System.out);
         }
+        for (SynException e : errors) {
+            System.out.println(e);
+        }
         
-        System.out.printf(Locale.US,
-                "Summary: %,d lines, %,d characters, %,d s",
+        System.out.println(String.format(Locale.US,
+                "Summary: %,d errors; %,d files; %,d lines; %,d characters; %,d s",
+                errors.size(),
+                fileNo,
                 totalLines,
                 totalChars,
-                (time/1000));
+                (time / 1000)));
         assertEquals(0, errors.size());
 
     }

@@ -41,7 +41,7 @@ public class NameExpression extends TerminalExpression {
 
     @Override
     Value evaluate0(ScriptScope scope) throws SynsException {
-        return scope.getValue(synNames);
+        return scope.getValue(synNames, scope);
     }
     
     @Override

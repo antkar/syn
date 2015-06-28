@@ -58,7 +58,7 @@ class FunctionValue extends RValue implements AdaptableToJavaInterface {
 
     @Override
     public Operand toOperand() throws SynsException {
-        return Operand.forObject(function);
+        return Operand.forObject(this, function);
     }
     
     @Override
