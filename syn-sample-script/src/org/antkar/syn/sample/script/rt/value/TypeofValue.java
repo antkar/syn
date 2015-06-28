@@ -35,10 +35,12 @@ class TypeofValue extends RValue {
         }
         VALUES = Collections.unmodifiableMap(values);
     }
-    
+
+    private final ValueType valueType;
     private final Value typeValue;
     
     private TypeofValue(ValueType valueType) {
+        this.valueType = valueType;
         typeValue = Value.forString(valueType.getTypeName());
     }
     
@@ -61,5 +63,10 @@ class TypeofValue extends RValue {
         case "type": return typeValue;
         default: return null;
         }
+    }
+    
+    @Override
+    public String toString() {
+        return valueType.getTypeName();
     }
 }
