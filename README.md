@@ -54,8 +54,8 @@ Statement statement = binder.parse(text);
 statement.execute();
 ```
 
-See [SynBinder](http://antkar.github.io/syn/javadoc/com/karmant/syn/SynBinder.html)
-and [SynParser](http://antkar.github.io/syn/javadoc/com/karmant/syn/SynParser.html) classes documentation
+See [SynBinder](http://antkar.github.io/syn/javadoc/org/antkar/syn/SynBinder.html)
+and [SynParser](http://antkar.github.io/syn/javadoc/org/antkar/syn/SynParser.html) classes documentation
 for more details.
 
 ## Samle: a Scripting Language
