@@ -102,7 +102,7 @@ public class Block {
      * the scope, so the scope calling code must care about them.
      */
     StatementResult executeWithoutDeclarations(ScriptScope declarationsScope) throws SynsException {
-        ScriptScope codeScope = declarationsScope.deriveNestedScope("block");
+        ScriptScope codeScope = declarationsScope.nestedBlockScope("block");
         
         for (Statement statement : statements) {
             StatementResult result = statement.execute(codeScope);
@@ -130,7 +130,7 @@ public class Block {
      * Calls this block as a function in the specified scope.
      */
     public Value call(ScriptScope scope, RValue[] arguments) throws SynsException {
-        ScriptScope declarationsScope = scope.deriveFunctionScope("block");
+        ScriptScope declarationsScope = scope.nestedFunctionScope("block");
         StatementResult result = execute(declarationsScope);
         return result.isReturn() ? result.getReturnValue() : Value.forVoid();
     }
@@ -145,7 +145,7 @@ public class Block {
         }
 
         //First, create a new scope for the block and put the declarations there. 
-        ScriptScope declarationsScope = scope.deriveFunctionScope("block " + name);
+        ScriptScope declarationsScope = scope.nestedFunctionScope("block " + name);
         registerDeclarations(declarationsScope);
         
         //Then, find the function in the scope and call it.

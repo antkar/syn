@@ -15,9 +15,6 @@
  */
 package org.antkar.syn.sample.script.rt.value;
 
-import java.util.List;
-import java.util.Map;
-
 import org.antkar.syn.StringToken;
 import org.antkar.syn.sample.script.rt.ScriptScope;
 import org.antkar.syn.sample.script.rt.SynsException;
@@ -25,9 +22,8 @@ import org.antkar.syn.sample.script.rt.TextSynsException;
 import org.antkar.syn.sample.script.rt.javacls.JavaClass;
 import org.antkar.syn.sample.script.rt.op.operand.Operand;
 import org.antkar.syn.sample.script.schema.Block;
-import org.antkar.syn.sample.script.schema.Declaration;
+import org.antkar.syn.sample.script.schema.ClassDeclaration;
 import org.antkar.syn.sample.script.schema.FunctionObject;
-import org.antkar.syn.sample.script.schema.FunctionDeclaration;
 
 /**
  * A value. Subclasses represent values of various types used to hold variable values, function
@@ -92,13 +88,11 @@ public abstract class Value {
      * Returns a value for a Script Language class.
      */
     public static Value forClass(
-            String className,
+            ClassDeclaration classDeclaration,
             ScriptScope classScope,
-            FunctionDeclaration constructor,
-            Map<String, RValue> constants,
-            List<Declaration> instanceMembers)
+            RValue[] staticMemberValues)
     {
-        return new ClassValue(className, classScope, constructor, constants, instanceMembers);
+        return new ClassValue(classDeclaration, classScope, staticMemberValues);
     }
     
     /**
@@ -221,9 +215,9 @@ public abstract class Value {
      * Returns the value of the member with the specified name. Throws an exception if the value
      * does not support members or there is no member with such name.
      */
-    public Value getMember(StringToken nameTk) throws SynsException {
+    public Value getMember(StringToken nameTk, ScriptScope readerScope) throws SynsException {
         String name = nameTk.getValue();
-        Value value = getMemberOpt(name);
+        Value value = getMemberOpt(name, readerScope);
         if (value == null) {
             throw new TextSynsException("Unknown name: " + name, nameTk.getPos());
         }
@@ -234,7 +228,7 @@ public abstract class Value {
      * Returns the value of the member with the specified name, or <code>null</code> if there is
      * no such member. Throws an exception if the value does not support members at all.
      */
-    public Value getMemberOpt(String name) throws SynsException {
+    public Value getMemberOpt(String name, ScriptScope readerScope) throws SynsException {
         throw errInvalidOperation();
     }
 
@@ -246,7 +240,21 @@ public abstract class Value {
     public Value newObject(RValue[] arguments) throws SynsException {
         throw errInvalidOperation();
     }
-
+    
+    public final Value getTypeof() throws SynsException {
+        ValueType valueType = getTypeofValueType();
+        return TypeofValue.forValueType(valueType);
+    }
+    
+    /**
+     * Returns the {@link ValueType} used to calculate a <code>typeof</code> expression.
+     * Differs from the {@link #getValueType} method, for example, for l-values, returning the
+     * type of the underlying r-value.
+     */
+    ValueType getTypeofValueType() throws SynsException {
+        return toRValue().getValueType();
+    }
+    
     /**
      * Treats this value as an l-value. Throws an exception if this value is not an l-value. 
      */

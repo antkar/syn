@@ -106,6 +106,54 @@ public class ExpressionScriptTest extends ScriptTest {
         execute("function fn(x, y){print('fn(' + x + ')');return y;} print(fn(1, false) || fn(2, false));");
         chkOut("fn(1) fn(2) false ");
     }
+    
+    @Test
+    public void testOrNullString() throws Exception {
+        execute("print(null || 'Hello');");
+        chkOut("Hello ");
+    }
+    
+    @Test
+    public void testOrNullFunction() throws Exception {
+        execute("print(null || { print('Hello'); return 123; }());");
+        chkOut("Hello 123 ");
+    }
+    
+    @Test
+    public void testOrStringFunction() throws Exception {
+        execute("print('Bye' || { print('Hello'); return 123; }());");
+        chkOut("Bye ");
+    }
+    
+    @Test
+    public void testOrFalseString() throws Exception {
+        execute("print(false || 'Hello');");
+        chkOut("Hello ");
+    }
+    
+    @Test
+    public void testOrTrueString() throws Exception {
+        execute("print(true || 'Hello');");
+        chkOut("true ");
+    }
+    
+    @Test
+    public void testOrIntString() throws Exception {
+        execute("print(123 || 'Hello');");
+        chkOut("123 ");
+    }
+    
+    @Test
+    public void testOrLongString() throws Exception {
+        execute("print(123L || 'Hello');");
+        chkOut("123 ");
+    }
+    
+    @Test
+    public void testOrDoubleString() throws Exception {
+        execute("print(123.456 || 'Hello');");
+        chkOut("123.456 ");
+    }
 
     @Test
     public void testAndTrueTrue() throws Exception, SynsException {
@@ -158,13 +206,13 @@ public class ExpressionScriptTest extends ScriptTest {
     @Test
     public void testEqStringStringDiffObjs() throws Exception {
         execute("print('aaa' == 'aaa'); print('aaa' == 'bbb');");
-        chkOut("false false ");
+        chkOut("true false ");
     }
     
     @Test
     public void testEqStringStringSameObj() throws Exception {
         execute("var a = 'aaa'; var b = 'aaa'; print(a == a); print(a == b);");
-        chkOut("true false ");
+        chkOut("true true ");
     }
     
     @Test
@@ -218,13 +266,13 @@ public class ExpressionScriptTest extends ScriptTest {
     @Test
     public void testNeStringStringDiffObjs() throws Exception {
         execute("print('aaa' != 'aaa'); print('aaa' != 'bbb');");
-        chkOut("true true ");
+        chkOut("false true ");
     }
     
     @Test
     public void testNeStringStringSameObj() throws Exception {
         execute("var a = 'aaa'; var b = 'aaa'; print(a != a); print(a != b);");
-        chkOut("false true ");
+        chkOut("false false ");
     }
     
     @Test
@@ -591,7 +639,7 @@ public class ExpressionScriptTest extends ScriptTest {
 
     @Test
     public void testMemberClassVariable() throws Exception, SynsException {
-        execute("class C { var x = 123; } print(new C().x);");
+        execute("class C { public var x = 123; } print(new C().x);");
         chkOut("123 ");
     }
 
@@ -659,6 +707,18 @@ public class ExpressionScriptTest extends ScriptTest {
     public void testFunctionJavaVarArgs() throws Exception {
         execute("print(String.format(java.util.Locale.US, '%d %s %b', 123, 456, true));");
         chkOut("123 456 true ");
+    }
+    
+    @Test
+    public void testFunctionClassConstruction() throws Exception {
+        execute("class X { public var x = 123; function X() = print('X()'); } print(X().x);");
+        chkOut("X() 123 ");
+    }
+    
+    @Test
+    public void testFunctionJavaClassConstruction() throws Exception {
+        execute("var list = java.util.ArrayList(); list.add(123); print(list);");
+        chkOut("[123] ");
     }
     
     @Test
@@ -810,6 +870,73 @@ public class ExpressionScriptTest extends ScriptTest {
     public void testName() throws Exception, SynsException {
         execute("var x = 123; print(x);");
         chkOut("123 ");
+    }
+    
+    @Test
+    public void testThisInConstructorAccessFunction() throws Exception {
+        execute("class X { function X() = this.f(); function f() = print('f()'); } new X();");
+        chkOut("f() ");
+    }
+    
+    @Test
+    public void testThisInConstructorAccessVariable() throws Exception {
+        execute("class X { public var x; function X(x){ this.x = x; } } print(new X(123).x);");
+        chkOut("123 ");
+    }
+    
+    @Test
+    public void testThisInFunctionAccessVariable() throws Exception {
+        execute("class X { var x = 123; public function f(x) = this.x; public function g(x) = x; }"
+                + "print(new X().f(456)); print(new X().g(456));");
+        chkOut("123 456 ");
+    }
+    
+    @Test
+    public void testThisInClassVariableInitializer() throws Exception {
+        execute("class X { public var self = this; } var x = X(); print(x.self == x);");
+        chkOut("true ");
+    }
+    
+    @Test
+    public void testThisInClassVariableInitializerUsingAnotherVariable() throws Exception {
+        execute("class X { var k = 123; public var copy = this.k; } print(X().copy);");
+        chkOut("123 ");
+    }
+    
+    @Test
+    public void testTypeofInt() throws Exception {
+        execute("print(typeof(123).type);");
+        chkOut("int ");
+    }
+    
+    @Test
+    public void testTypeofDouble() throws Exception {
+        execute("print(typeof(123.456).type);");
+        chkOut("double ");
+    }
+    
+    @Test
+    public void testTypeofString() throws Exception {
+        execute("print(typeof('Hello').type);");
+        chkOut("String ");
+    }
+    
+    @Test
+    public void testTypeofNull() throws Exception {
+        execute("print(typeof(null).type);");
+        chkOut("null ");
+    }
+    
+    @Test
+    public void testTypeofVoid() throws Exception {
+        execute("function f(){} print(typeof(f()).type);");
+        chkOut("void ");
+    }
+
+    @Test
+    public void testTypeofObject() throws Exception {
+        execute("class X{} print(typeof(X()).type);");
+        chkOut("object ");
     }
 
     @Test

@@ -54,16 +54,12 @@ public class FunctionDeclaration extends Declaration {
     }
     
     @Override
-    void classify(
-            List<ConstantDeclaration> constants,
-            List<VariableDeclaration> variables,
-            List<FunctionDeclaration> functions)
-    {
-        functions.add(this);
+    void visit(Visitor visitor) throws SynsException {
+        visitor.visitFunctionDeclaration(this);
     }
     
     @Override
-    boolean isFunction() {
+    public boolean isFunction() {
         return true;
     }
     

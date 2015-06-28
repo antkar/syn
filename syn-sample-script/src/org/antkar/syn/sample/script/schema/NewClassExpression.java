@@ -40,7 +40,7 @@ public class NewClassExpression extends NewExpression {
 
     @Override
     Value evaluate0(ScriptScope scope) throws SynsException {
-        Value value = scope.getValue(synTypeName);
+        Value value = scope.getValue(synTypeName, scope);
         
         RValue[] arguments = new RValue[synArguments.length];
         for (int i = 0; i < arguments.length; ++i) {

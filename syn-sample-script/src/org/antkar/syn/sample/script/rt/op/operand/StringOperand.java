@@ -16,20 +16,33 @@
 package org.antkar.syn.sample.script.rt.op.operand;
 
 import org.antkar.syn.sample.script.rt.SynsException;
+import org.antkar.syn.sample.script.rt.value.RValue;
 
 /**
  * A {@link String} operand.
  */
 class StringOperand extends Operand {
+    private final RValue rValue;
     private final String value;
 
-    StringOperand(String value) {
+    StringOperand(RValue rValue, String value) {
+        this.rValue = rValue;
         this.value = value;
     }
 
     @Override
     public OperandType getType() {
         return OperandType.STRING;
+    }
+    
+    @Override
+    public RValue toRValue() {
+        return rValue;
+    }
+    
+    @Override
+    public boolean booleanValueImplicit() {
+        return true;
     }
     
     @Override

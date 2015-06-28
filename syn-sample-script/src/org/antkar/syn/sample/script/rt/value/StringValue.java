@@ -15,6 +15,7 @@
  */
 package org.antkar.syn.sample.script.rt.value;
 
+import org.antkar.syn.sample.script.rt.ScriptScope;
 import org.antkar.syn.sample.script.rt.SynsException;
 import org.antkar.syn.sample.script.rt.javacls.JavaClass;
 import org.antkar.syn.sample.script.rt.javacls.TypeMatchPrecision;
@@ -32,7 +33,7 @@ class StringValue extends RValue {
     
     @Override
     public Operand toOperand() throws SynsException {
-        return Operand.forString(value);
+        return Operand.forString(this, value);
     }
     
     @Override
@@ -46,7 +47,7 @@ class StringValue extends RValue {
     }
     
     @Override
-    public Value getMemberOpt(String name) {
+    public Value getMemberOpt(String name, ScriptScope readerScope) {
         JavaClass javaClass = JavaClass.getInstance(String.class);
         Value result = javaClass.getInstanceMemberOpt(name, value);
         return result;

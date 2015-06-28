@@ -22,6 +22,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
 
+import org.antkar.syn.sample.script.rt.ScriptScope;
 import org.antkar.syn.sample.script.rt.SynsException;
 import org.antkar.syn.sample.script.rt.javacls.TypeMatchPrecision;
 import org.antkar.syn.sample.script.rt.op.operand.Operand;
@@ -41,11 +42,11 @@ class ArrayValue extends RValue {
     
     @Override
     public Operand toOperand() throws SynsException {
-        return Operand.forObject(this);
+        return Operand.forObject(this, this);
     }
     
     @Override
-    public Value getMemberOpt(String name) {
+    public Value getMemberOpt(String name, ScriptScope readerScope) {
         if ("length".equals(name)) {
             return Value.forInt(array.length);
         }

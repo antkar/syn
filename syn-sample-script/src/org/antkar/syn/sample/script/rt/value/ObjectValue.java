@@ -15,27 +15,27 @@
  */
 package org.antkar.syn.sample.script.rt.value;
 
-import java.util.Map;
-
+import org.antkar.syn.sample.script.rt.ScriptScope;
 import org.antkar.syn.sample.script.rt.SynsException;
 import org.antkar.syn.sample.script.rt.javacls.TypeMatchPrecision;
 import org.antkar.syn.sample.script.rt.op.operand.Operand;
+import org.antkar.syn.sample.script.schema.ClassDeclaration;
 
 /**
  * Script object value.
  */
-class ObjectValue extends RValue {
+public final class ObjectValue extends RValue {
     private final ClassValue classValue;
-    private final Map<String, Value> memberValues;
+    private final Value[] memberValues;
     
-    ObjectValue(ClassValue classValue, Map<String, Value> memberValues) {
+    ObjectValue(ClassValue classValue, Value[] memberValues) {
         this.classValue = classValue;
         this.memberValues = memberValues;
     }
     
     @Override
     public Operand toOperand() throws SynsException {
-        return Operand.forObject(this);
+        return Operand.forObject(this, this);
     }
     
     @Override
@@ -45,16 +45,16 @@ class ObjectValue extends RValue {
 
     @Override
     public String getTypeMessage() {
-        return getCompoundTypeMessage(classValue.getClassName());
+        String className = classValue.getClassDeclaration().getName();
+        return getCompoundTypeMessage(className);
     }
 
     @Override
-    public Value getMemberOpt(String name) {
-        Value value = memberValues.get(name);
-        if (value == null) {
-            value = classValue.getMemberOpt(name);
-        }
-        return value;
+    public Value getMemberOpt(String name, ScriptScope readerScope) {
+        ClassDeclaration classDeclaration = classValue.getClassDeclaration();
+        ClassMemberDescriptor descriptor = classDeclaration.getMemberDescriptorOpt(name);
+        Value result = descriptor == null ? null : descriptor.read(classValue, this, readerScope);
+        return result;
     }
     
     @Override
@@ -63,6 +63,14 @@ class ObjectValue extends RValue {
             return INVALID;
         }
         return this;
+    }
+    
+    public ClassDeclaration getClassDeclaration() {
+        return classValue.getClassDeclaration();
+    }
+    
+    Value readValue(int index) {
+        return memberValues[index];
     }
     
     @Override

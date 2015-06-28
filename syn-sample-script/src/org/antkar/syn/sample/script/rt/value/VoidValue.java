@@ -15,6 +15,7 @@
  */
 package org.antkar.syn.sample.script.rt.value;
 
+
 /**
  * Void value.
  */
@@ -26,6 +27,11 @@ class VoidValue extends Value {
     @Override
     public ValueType getValueType() {
         return ValueType.VOID;
+    }
+    
+    @Override
+    ValueType getTypeofValueType() {
+        return getValueType();
     }
 
     @Override

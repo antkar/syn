@@ -16,20 +16,33 @@
 package org.antkar.syn.sample.script.rt.op.operand;
 
 import org.antkar.syn.sample.script.rt.SynsException;
+import org.antkar.syn.sample.script.rt.value.RValue;
 
 /**
  * An {@link Object} operand.
  */
 class ObjectOperand extends Operand {
+    private final RValue rValue;
     private final Object value;
 
-    ObjectOperand(Object value) {
+    ObjectOperand(RValue rValue, Object value) {
+        this.rValue = rValue;
         this.value = value;
     }
 
     @Override
     public OperandType getType() {
         return OperandType.OBJECT;
+    }
+    
+    @Override
+    public RValue toRValue() {
+        return rValue;
+    }
+    
+    @Override
+    public boolean booleanValueImplicit() {
+        return true;
     }
     
     @Override

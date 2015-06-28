@@ -73,7 +73,7 @@ ClassDeclaration
     ;
     
 ClassMemberDeclaration
-    :   synDeclaration=Declaration
+    :   synPublic=("public")? synDeclaration=Declaration
     ;
 
 //
@@ -287,6 +287,8 @@ SubTerminalExpression
     |   ArrayExpression
     |   BlockExpression
     |   SubscriptExpression
+    |   TypeofExpression
+    |   ThisExpression
     |   LiteralExpression
     ;
     
@@ -343,6 +345,14 @@ NameExpression
     :   synNames=(ID : ".")+
     ;
 
+TypeofExpression
+    :   synPos="typeof" "(" synExpression=Expression ")"
+    ;
+     
+ThisExpression
+    :   synPos="this"
+    ;
+    
 LiteralExpression
     :   IntegerLiteralExpression
     |   FloatingPointLiteralExpression

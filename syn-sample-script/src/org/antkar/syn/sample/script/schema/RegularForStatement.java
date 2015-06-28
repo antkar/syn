@@ -48,7 +48,7 @@ public class RegularForStatement extends ForStatement {
     @Override
     StatementResult execute0(ScriptScope scope) throws SynsException {
         //Create a scope and put the control variable there, if any.
-        scope = scope.deriveLoopScope("for");
+        scope = scope.nestedLoopScope("for");
         if (synInit != null) {
             synInit.execute(scope);
         }

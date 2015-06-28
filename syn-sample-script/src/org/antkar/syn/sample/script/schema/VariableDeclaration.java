@@ -15,14 +15,11 @@
  */
 package org.antkar.syn.sample.script.schema;
 
-import java.util.List;
-
+import org.antkar.syn.SynField;
 import org.antkar.syn.sample.script.rt.ScriptScope;
 import org.antkar.syn.sample.script.rt.SynsException;
 import org.antkar.syn.sample.script.rt.value.LValue;
 import org.antkar.syn.sample.script.rt.value.Value;
-
-import org.antkar.syn.SynField;
 
 /**
  * Script variable declaration syntax node.
@@ -44,12 +41,8 @@ public class VariableDeclaration extends Declaration {
     }
     
     @Override
-    void classify(
-            List<ConstantDeclaration> constants,
-            List<VariableDeclaration> variables,
-            List<FunctionDeclaration> functions)
-    {
-        variables.add(this);
+    void visit(Visitor visitor) throws SynsException {
+        visitor.visitVariableDeclaration(this);
     }
     
     @Override

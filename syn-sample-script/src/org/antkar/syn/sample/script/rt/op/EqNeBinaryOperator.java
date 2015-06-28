@@ -44,7 +44,7 @@ public abstract class EqNeBinaryOperator extends BinaryOperator {
         if (isReference(leftType) && isReference(rightType)) {
             Object leftObj = left.objectValue();
             Object rightObj = right.objectValue();
-            boolean equal = leftObj == rightObj;
+            boolean equal = leftObj == null ? rightObj == null : leftObj.equals(rightObj);
             return makeResult(equal);
         }
         

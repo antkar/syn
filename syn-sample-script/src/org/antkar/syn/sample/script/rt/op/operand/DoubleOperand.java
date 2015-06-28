@@ -16,14 +16,17 @@
 package org.antkar.syn.sample.script.rt.op.operand;
 
 import org.antkar.syn.sample.script.rt.SynsException;
+import org.antkar.syn.sample.script.rt.value.RValue;
 
 /**
  * Operand of type <code>double</code>.
  */
 class DoubleOperand extends Operand {
+    private final RValue rValue;
     private final double value;
 
-    DoubleOperand(double value) {
+    DoubleOperand(RValue rValue, double value) {
+        this.rValue = rValue;
         this.value = value;
     }
 
@@ -31,7 +34,17 @@ class DoubleOperand extends Operand {
     public OperandType getType() {
         return OperandType.DOUBLE;
     }
+    
+    @Override
+    public RValue toRValue() {
+        return rValue;
+    }
 
+    @Override
+    public boolean booleanValueImplicit() {
+        return true;
+    }
+    
     @Override
     public double doubleValue() throws SynsException {
         return value;

@@ -15,46 +15,36 @@
  */
 package org.antkar.syn.sample.script.rt.value;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import org.antkar.syn.sample.script.rt.ScriptScope;
 import org.antkar.syn.sample.script.rt.SynsException;
+import org.antkar.syn.sample.script.schema.ClassDeclaration;
 import org.antkar.syn.sample.script.schema.Declaration;
 import org.antkar.syn.sample.script.schema.FunctionDeclaration;
 
 /**
  * Script class value. Associated with names of classes defined in a script.
  */
-class ClassValue extends Value {
-    /** The name of the class. */
-    private final String className;
+final class ClassValue extends Value {
+    /** The declaration of this class. */
+    private final ClassDeclaration classDeclaration;
     
     /** The scope of class body. Class constants are defined in that scope. */
     private final ScriptScope classScope;
     
-    /** Constructor function. Can be <code>null</code>. */
-    private final FunctionDeclaration constructor;
+    private final RValue[] staticMemberValues;
     
-    /** Static (constant) members. */
-    private final Map<String, RValue> staticMembers;
-    
-    /** Instance member declarations (variables and functions). */
-    private final List<Declaration> instanceMembers;
+    private final String objectScopeDescription;
 
     ClassValue(
-            String className,
+            ClassDeclaration classDeclaration,
             ScriptScope classScope,
-            FunctionDeclaration constructor,
-            Map<String, RValue> staticMembers,
-            List<Declaration> instanceMembers)
+            RValue[] staticMemberValues)
     {
-        this.className = className;
+        this.classDeclaration = classDeclaration;
         this.classScope = classScope;
-        this.constructor = constructor;
-        this.staticMembers = staticMembers;
-        this.instanceMembers = instanceMembers;
+        this.staticMemberValues = staticMemberValues;
+        
+        objectScopeDescription = "object " + classDeclaration.getName();
     }
     
     @Override
@@ -64,40 +54,68 @@ class ClassValue extends Value {
     
     @Override
     public String getTypeMessage() {
+        String className = classDeclaration.getName();
         return getCompoundTypeMessage(className);
     }
 
-    /**
-     * Returns the name of the class.
-     */
-    String getClassName() {
-        return className;
+    ClassDeclaration getClassDeclaration() {
+        return classDeclaration;
     }
     
     @Override
-    public Value getMemberOpt(String name) {
-        return staticMembers.get(name);
+    public Value call(RValue[] arguments) throws SynsException {
+        return newObject(arguments);
+    }
+    
+    @Override
+    public Value getMemberOpt(String name, ScriptScope readerScope) {
+        ClassMemberDescriptor descriptor = classDeclaration.getStaticMemberDescriptorOpt(name);
+        return descriptor == null ? null : descriptor.read(this, null, readerScope);
     }
     
     @Override
     public Value newObject(RValue[] arguments) throws SynsException {
+        //Create a new object value.
+        Value[] memberValues = new Value[classDeclaration.getInstanceMemberDescriptors().size()];
+        ObjectValue objectValue = new ObjectValue(this, memberValues);
+
         //Create the scope of the object. Instance variables and functions will be defined in that scope,
         //and all instance functions will be executed in that scope.
-        ScriptScope objectScope = classScope.deriveClassScope("object " + className, true);
+        ScriptScope objectScope = classScope.nestedObjectScope(objectScopeDescription, objectValue);
         
         //Add instance members into the object's scope, get their initial values.
-        Map<String, Value> memberValues = new HashMap<>();
-        for (Declaration declaration : instanceMembers) {
-            Value value = declaration.addToScope(objectScope);
-            memberValues.put(declaration.getName(), value);
-        }
+        initializeInstanceMembers(objectScope, memberValues, true);
+        initializeInstanceMembers(objectScope, memberValues, false);
         
         //Call the constructor, if any.
+        FunctionDeclaration constructor = classDeclaration.getConstructor();
         if (constructor != null) {
             constructor.getFunction().call(objectScope, arguments);
         }
         
-        //Create a new object value.
-        return new ObjectValue(this, memberValues);
+        return objectValue;
+    }
+    
+    private void initializeInstanceMembers(
+            ScriptScope objectScope,
+            Value[] memberValues,
+            boolean function) throws SynsException
+    {
+        for (ClassMemberDescriptor descriptor : classDeclaration.getInstanceMemberDescriptors()) {
+            Declaration declaration = descriptor.getDeclaration();
+            if (declaration.isFunction() == function) {
+                Value value = declaration.addToScope(objectScope);
+                memberValues[descriptor.getIndex()] = value;
+            }
+        }
+    }
+    
+    @Override
+    ValueType getTypeofValueType() {
+        return getValueType();
+    }
+    
+    Value readValue(int index) {
+        return staticMemberValues[index];
     }
 }

@@ -20,11 +20,11 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.antkar.syn.StringToken;
 import org.antkar.syn.sample.script.rt.javacls.JavaClass;
+import org.antkar.syn.sample.script.rt.value.ObjectValue;
 import org.antkar.syn.sample.script.rt.value.Value;
 import org.antkar.syn.sample.script.util.MiscUtil;
-
-import org.antkar.syn.StringToken;
 
 /**
  * A scope. Contains a set of names visible in a particular point of a script.
@@ -37,13 +37,15 @@ public class ScriptScope {
     /** Human-readable description. Used for debugging purposes. */
     private final String description;
     
-    /** When <code>true</code>, it is not allowed to add a name into this scope if the same name is
-     * defined in the parent scope (and its parent scope, if the field is <code>true</code> for the
-     * parent scope, and so on.). Used, for example, in <code>for</code> Script Language statement,
+    /** The value associated with "this" expression. */
+    private final ObjectValue thisValue;
+    
+    /** When <code>false</code>, it is not allowed to add a name into this scope if the same name is
+     * defined in a parent scope. Used, for example, in <code>for</code> Script Language statement,
      * which involves two scopes: a header scope (where the loop counter variable is defined) and
      * a body scope. Though those are two different scopes, it is not allowed to define a variable
      * in the body scope if a variable with the same name is defined in the header scope. */
-    private final boolean isSharingParentNamespace;
+    private final boolean parentNamesShadowingAllowed;
     
     /** <code>true</code> if this scope is inside a loop, and therefore <code>break</code> and
      * <code>continue</code> statements are allowed. */
@@ -61,15 +63,17 @@ public class ScriptScope {
     
     private ScriptScope(
             ScriptScope parentScope,
+            ObjectValue thisValue,
             String description,
-            boolean shareNamespace,
+            boolean shadowingAllowed,
             boolean loop,
             boolean function)
     {
         this.parentScope = parentScope;
         this.description = description;
+        this.thisValue = thisValue;
         
-        isSharingParentNamespace = shareNamespace;
+        parentNamesShadowingAllowed = shadowingAllowed;
         isLoop = loop;
         isFunction = function;
         
@@ -82,49 +86,70 @@ public class ScriptScope {
      * The scope includes <code>java.lang.*</code> on-demand import.
      */
     public static ScriptScope createRootScope() {
-        ScriptScope scope = new ScriptScope(null, "root", false, false, false);
+        ScriptScope scope = new ScriptScope(null, null, "root", false, false, false);
         scope.onDemandImports.add(new JavaPackageOnDemandImport("java.lang."));
         return scope;
     }
     
     /**
-     * Creates a derived scope for a function.
+     * Creates a scope for a nested function.
      */
-    public ScriptScope deriveFunctionScope(String descr) {
-        return deriveScope(descr, false, false, true);
+    public ScriptScope nestedFunctionScope(String scopeDescription) {
+        return createNestedScope(scopeDescription, thisValue, true, false, true);
     }
     
     /**
-     * Creates a derived scope for a loop.
+     * Creates a scope for a loop statement.
      */
-    public ScriptScope deriveLoopScope(String descr) {
-        return deriveScope(descr, true, true, isFunction);
+    public ScriptScope nestedLoopScope(String nestedDescription) {
+        return createNestedScope(nestedDescription, thisValue, false, true, isFunction);
     }
     
     /**
-     * Creates a derived nested scope.
+     * Creates a scope for a nested block.
      */
-    public ScriptScope deriveNestedScope(String descr) {
-        return deriveScope(descr, true, isLoop, isFunction);
+    public ScriptScope nestedBlockScope(String nestedDescription) {
+        return createNestedScope(nestedDescription, thisValue, false, isLoop, isFunction);
     }
     
     /**
-     * Creates a derived scope for a class.
+     * Creates a scope for a nested class.
      */
-    public ScriptScope deriveClassScope(String descr, boolean sharingParentNamespace) {
-        return deriveScope(descr, sharingParentNamespace, false, false);
+    public ScriptScope nestedClassScope(String nestedDescription) {
+        return createNestedScope(nestedDescription, null, true, false, false);
     }
 
     /**
+     * Creates a scope for a class object (has to be called on a class scope).
+     */
+    public ScriptScope nestedObjectScope(String nestedDescription, ObjectValue nestedThisValue) {
+        return createNestedScope(nestedDescription, nestedThisValue, false, false, false);
+    }
+    
+    /**
      * Creates a derived scope with the specified properties.
      */
-    private ScriptScope deriveScope(
-            String descr,
-            boolean shareNamespace,
+    private ScriptScope createNestedScope(
+            String nestedDescription,
+            ObjectValue nestedThisValue,
+            boolean shadowingAllowed,
             boolean loop,
             boolean function)
     {
-        return new ScriptScope(this, descr, shareNamespace, loop, function);
+        return new ScriptScope(
+                this,
+                nestedThisValue,
+                nestedDescription,
+                shadowingAllowed,
+                loop,
+                function);
+    }
+    
+    /**
+     * Returns the value of "this", or <code>null</code> if it is not defined in this scope.
+     */
+    public ObjectValue getThisValueOpt() {
+        return thisValue;
     }
 
     /**
@@ -202,12 +227,12 @@ public class ScriptScope {
      * by resolving all the names one by one. But if the entire name chain is known, it is possible
      * to determine if that chain denotes a Java class.
      */
-    public Value getValue(StringToken[] nameChain) throws SynsException {
+    public Value getValue(StringToken[] nameChain, ScriptScope readerScope) throws SynsException {
         Value value = getValueOpt(nameChain[0].getValue());
         if (value != null) {
             //The first name of the chain is defined in the scope. The other names can be resolved
             //one-by-one.
-            value = getValueByNameChain(value, nameChain, 1);
+            value = getValueByNameChain(readerScope, value, nameChain, 1);
             return value;
         }
         
@@ -304,7 +329,7 @@ public class ScriptScope {
             Value value = getJavaClassValueOpt(className);
             if (value != null) {
                 //Java class found. Use the rest of the chain to get the value.
-                value = getValueByNameChain(value, nameChain, i + 1);
+                value = getValueByNameChain(null, value, nameChain, i + 1);
                 return value;
             }
         }
@@ -315,11 +340,14 @@ public class ScriptScope {
     /**
      * Gets a value by a name chain.
      */
-    private static Value getValueByNameChain(Value value, StringToken[] nameChain, int start)
-            throws SynsException
+    private static Value getValueByNameChain(
+            ScriptScope readerScope,
+            Value value,
+            StringToken[] nameChain,
+            int start) throws SynsException
     {
         for (int i = start; i < nameChain.length; ++i) {
-            value = value.getMember(nameChain[i]);
+            value = value.getMember(nameChain[i], readerScope);
         }
         return value;
     }
@@ -370,7 +398,7 @@ public class ScriptScope {
             if (scope.nameMap.containsKey(name)) {
                 return true;
             }
-            if (!scope.isSharingParentNamespace) {
+            if (scope.parentNamesShadowingAllowed) {
                 break;
             }
             scope = scope.parentScope;

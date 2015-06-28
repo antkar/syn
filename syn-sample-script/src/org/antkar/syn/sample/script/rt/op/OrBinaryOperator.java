@@ -18,7 +18,6 @@ package org.antkar.syn.sample.script.rt.op;
 import org.antkar.syn.sample.script.rt.SynsException;
 import org.antkar.syn.sample.script.rt.op.operand.Operand;
 import org.antkar.syn.sample.script.rt.value.RValue;
-import org.antkar.syn.sample.script.rt.value.Value;
 
 /**
  * Script Language <code>||</code> operator.
@@ -30,14 +29,13 @@ class OrBinaryOperator extends BinaryOperator {
 
     @Override
     public RValue evaluate(Operand left) throws SynsException {
-        if (left.booleanValue()) {
-            return Value.forBoolean(true);
-        }
-        return null;
+        boolean b = left.booleanValueImplicit();
+        return b ? left.toRValue() : null;
     }
-
+    
     @Override
-    RValue evaluate(boolean left, boolean right) {
-        return Value.forBoolean(left || right);
+    public RValue evaluate(Operand left, Operand right) throws SynsException {
+        boolean b = left.booleanValueImplicit();
+        return b ? left.toRValue() : right.toRValue();
     }
 }

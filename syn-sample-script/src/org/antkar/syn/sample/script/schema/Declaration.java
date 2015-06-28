@@ -15,15 +15,12 @@
  */
 package org.antkar.syn.sample.script.schema;
 
-import java.util.List;
-
-import org.antkar.syn.sample.script.rt.ScriptScope;
-import org.antkar.syn.sample.script.rt.SynsException;
-import org.antkar.syn.sample.script.rt.value.Value;
-
 import org.antkar.syn.StringToken;
 import org.antkar.syn.SynField;
 import org.antkar.syn.TextPos;
+import org.antkar.syn.sample.script.rt.ScriptScope;
+import org.antkar.syn.sample.script.rt.SynsException;
+import org.antkar.syn.sample.script.rt.value.Value;
 
 /**
  * Declaration syntax node.
@@ -75,17 +72,18 @@ public abstract class Declaration {
     abstract Value evaluateValue(ScriptScope scope) throws SynsException;
     
     /**
-     * Returns <code>true</code> if this declaration is a function.
+     * Returns <code>true</code> if this declaration is a function declaration.
      */
-    boolean isFunction() {
+    public boolean isFunction() {
         return false;
     }
 
-    /**
-     * Classifies this declaration as either a constant, a variable or a function.
-     */
-    abstract void classify(
-            List<ConstantDeclaration> constants,
-            List<VariableDeclaration> variables,
-            List<FunctionDeclaration> functions) throws SynsException;
+    abstract void visit(Visitor visitor) throws SynsException;
+    
+    interface Visitor {
+        void visitConstantDeclaration(ConstantDeclaration declaration) throws SynsException;
+        void visitVariableDeclaration(VariableDeclaration declaration) throws SynsException;
+        void visitFunctionDeclaration(FunctionDeclaration declaration) throws SynsException;
+        void visitClassDeclaration(ClassDeclaration declaration) throws SynsException;
+    }
 }

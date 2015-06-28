@@ -113,7 +113,7 @@ public class TryStatement extends Statement {
      */
     private StatementResult executeCatchStatement(ScriptScope scope, Throwable e) throws SynsException {
         //Create a scope and put the catch variable there.
-        ScriptScope derivedScope = scope.deriveNestedScope("catch");
+        ScriptScope derivedScope = scope.nestedBlockScope("catch");
         Value value = Value.forJavaObject(e);
         Value variable = Value.newVariable(value);
         derivedScope.addValue(synCatchVariable, variable);

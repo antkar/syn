@@ -16,6 +16,8 @@
 package org.antkar.syn.sample.script.rt.op.operand;
 
 import org.antkar.syn.sample.script.rt.SynsException;
+import org.antkar.syn.sample.script.rt.value.RValue;
+import org.antkar.syn.sample.script.rt.value.Value;
 
 /**
  * Operand of type <code>boolean</code>.
@@ -37,6 +39,16 @@ class BooleanOperand extends Operand {
     @Override
     public OperandType getType() {
         return OperandType.BOOLEAN;
+    }
+    
+    @Override
+    public RValue toRValue() {
+        return Value.forBoolean(value);
+    }
+    
+    @Override
+    public boolean booleanValueImplicit() {
+        return value;
     }
 
     @Override

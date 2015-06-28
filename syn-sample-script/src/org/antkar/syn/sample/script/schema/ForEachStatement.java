@@ -51,7 +51,7 @@ public class ForEachStatement extends ForStatement {
     @Override
     StatementResult execute0(ScriptScope scope) throws SynsException {
         //Define the control variable.
-        final ScriptScope innerScope = scope.deriveLoopScope("for");
+        final ScriptScope innerScope = scope.nestedLoopScope("for");
         final LValue variable = getControlVariable(scope, innerScope);
         
         //Evaluate the expression.
