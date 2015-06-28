@@ -54,7 +54,9 @@ limitations under the License.
     
     <target name="build-configuration">
         <mkdir dir="${param-bin-dir}"/>
-        <javac srcdir="." destdir="${param-bin-dir}" debug="${param-debug}" includeAntRuntime="no">
+        <javac srcdir="." destdir="${param-bin-dir}" debug="${param-debug}" includeAntRuntime="no"
+            source="1.7" target="1.7"
+        >
             <include name="src-*/**/*.java"/>
         </javac>
         

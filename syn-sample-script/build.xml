@@ -37,11 +37,11 @@ limitations under the License.
 
         <mkdir dir="${dst-dir}"/>
         <mkdir dir="${tmp-dir}"/>
-        <copy file="../syn/bld/dst/syn-${build.version}.jar" todir="${tmp-dir}"/>
+        <copy file="../syn/bld/syn-${build.version}.jar" todir="${tmp-dir}"/>
         
         <mkdir dir="${bin-dir}"/>
         <javac srcdir="." destdir="${bin-dir}" classpath="${tmp-dir}/syn-${build.version}.jar"
-            debug="on" includeAntRuntime="no"
+            debug="on" includeAntRuntime="no" source="1.7" target="1.7"
         >
             <include name="src/**/*.java"/>
         </javac>
@@ -98,7 +98,7 @@ java -jar ${runDir}${dst-jar-file} ${allArgs}</echo>
         <echo file="${tmp-dir}/console.${fileExt}">${header}
 java -cp ${runDir}${dst-jar-file} org.antkar.syn.sample.script.ide.IDEMain</echo>
         <echo file="${tmp-dir}/snake.${fileExt}">${header}
-${runDir}script.${fileExt} ${runDir}snake/Snake.syns ${runDir}snake/Level.syns ${runDir}snake/World.syns ${runDir}snake/View.syns</echo>
+${runDir}script.${fileExt} ${runDir}snake/Utils.syns ${runDir}snake/Snake.syns ${runDir}snake/Level.syns ${runDir}snake/World.syns ${runDir}snake/View.syns</echo>
     </target>
 
 </project>
