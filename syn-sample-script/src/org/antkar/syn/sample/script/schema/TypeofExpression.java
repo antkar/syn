@@ -44,4 +44,9 @@ public class TypeofExpression extends Expression {
         Value result = value.getTypeof();
         return result;
     }
+    
+    @Override
+    public String toString() {
+        return "typeof(" + synExpression + ")";
+    }
 }
