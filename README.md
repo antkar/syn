@@ -189,7 +189,7 @@ Written in the sample scripting language. Features:
 * Smooth snake movement.
 * Autosave, autoresume.
 
-See the source code: [Snake.syns](https://github.com/antkar/syn/blob/master/syn-sample-script/sample/Snake.syns), [Level.syns](https://github.com/antkar/syn/blob/master/syn-sample-script/sample/Level.syns), [View.syns](https://github.com/antkar/syn/blob/master/syn-sample-script/sample/View.syns), [World.syns](https://github.com/antkar/syn/blob/master/syn-sample-script/sample/World.syns).
+See the source code: [Snake.syns](https://github.com/antkar/syn/blob/master/syn-sample-script/sample/Snake.syns), [Level.syns](https://github.com/antkar/syn/blob/master/syn-sample-script/sample/Level.syns), [View.syns](https://github.com/antkar/syn/blob/master/syn-sample-script/sample/View.syns), [World.syns](https://github.com/antkar/syn/blob/master/syn-sample-script/sample/World.syns), [Utils.syns](https://github.com/antkar/syn/blob/master/syn-sample-script/sample/Utils.syns).
 
 ![Screenshot](http://antkar.org/snake/snakec.png)
 
