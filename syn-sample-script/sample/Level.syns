@@ -87,7 +87,7 @@ class Level_MapGenerator {
     function generateInnerWalls() {
         var mirror = chooseRandomMirror();
         
-        var wallCountGoal = level - 1;
+        var wallCountGoal = level + 4;
         while (calculateCurrentWallCount() < wallCountGoal) {
             if (!generateWall(mirror)) break;
         }
