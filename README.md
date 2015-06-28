@@ -60,7 +60,7 @@ for more details.
 
 ## Samle: a Scripting Language
 
-A simple Javascript-like language interpreter.
+A simple Javascript-like language interpreter, which uses Syn to parse source code and build a convenient syntax tree.
 
 Features:
 
@@ -87,17 +87,41 @@ frame.setLocationRelativeTo(null);
 frame.setVisible(true);
 ```
 
+Try-catch-finally block:
+
+```JavaScript
+var file = new java.io.RandomAccessFile("Demo.syns", "r");
+try {
+    System.out.println("File size: " + file.length());
+} catch (e) {
+    System.err.println("Unable to get file size.");
+    e.printStackTrace();
+} finally {
+    file.close();
+}
+```
+
+For-each loop statement:
+
+```JavaScript
+var dir = new java.io.File(".");
+for (var subFile : dir.listFiles()) {
+    System.out.println(subFile.getName());
+}
+```
+
 Lambda expressions:
 
 ```JavaScript
-function repeat(n, lambda) {
-    for (var i = 0; i < n; ++i) lambda();
+function count(collection, predicate) {
+    var result = 0;
+    for (var element : collection) if (predicate(element)) ++result;
+    return result;
 }
 
-var x = 0;
-repeat(10, {
-    System.out.println("x=" + (x++));
-});
+var numbers = [1, 2, 3, 4, 5];
+var oddCount = count(numbers, x -> (x % 2) != 0); // Lambda expression.
+System.out.println(oddCount);
 ```
 
 Implementing Java interfaces:
@@ -123,47 +147,27 @@ frame.addMouseListener({
 });
 ```
 
-Try-catch-finally block:
-
-```JavaScript
-var file = new java.io.RandomAccessFile("Demo.syns", "r");
-try {
-    System.out.println("File size: " + file.length());
-} catch (e) {
-    System.err.println("Unable to get file size.");
-    e.printStackTrace();
-} finally {
-    file.close();
-}
-```
-
-For-each loop statement:
-
-```JavaScript
-var dir = new java.io.File(".");
-for (var subFile : dir.listFiles()) {
-    System.out.println(subFile.getName());
-}
-```
-
 Classes:
 
 ```JavaScript
 class Foo {
-    var mx;
-    var my;
+    var x;
+    var y;
 
-    function Foo(x, y) {//Constructor.
-        mx = x;
-        my = y;
+    public function Foo(x, y) {// Constructor.
+        this.x = x;
+        this.y = y;
     }
     
-    function print() {
+    public function print() {
         System.out.println("Foo(" + mx + ", " + my + ")");
     }
+    
+    public function getX() = x;  // Short function notation.
+    public function getY() = y;
 }
 
-var foo = new Foo(5, 10);
+var foo = Foo(5, 10);
 foo.print();
 ```
 
@@ -191,6 +195,6 @@ See the source code: [Snake.syns](https://github.com/antkar/syn/blob/master/syn-
 
 ### How to Run?
 
-Download the binary distribution: [syn-sample-1.0.zip](https://github.com/antkar/syn/releases/download/v1.0/syn-sample-1.0.zip) or [syn-sample-1.0.tgz](https://github.com/antkar/syn/releases/download/v1.0/syn-sample-1.0.tgz). Java 7 or later is required.
+Download the binary distribution: [syn-sample-1.1.zip](https://github.com/antkar/syn/releases/download/v1.1/syn-sample-1.1.zip) or [syn-sample-1.1.tgz](https://github.com/antkar/syn/releases/download/v1.1/syn-sample-1.1.tgz). Java 7 or later is required.
 
 To execute an arbitrary script, run `script.cmd` or `script.sh`, passing the script file name in the command line.
