@@ -191,7 +191,7 @@ Written in the sample scripting language. Features:
 
 See the source code: [Snake.syns](https://github.com/antkar/syn/blob/master/syn-sample-script/sample/Snake.syns), [Level.syns](https://github.com/antkar/syn/blob/master/syn-sample-script/sample/Level.syns), [View.syns](https://github.com/antkar/syn/blob/master/syn-sample-script/sample/View.syns), [World.syns](https://github.com/antkar/syn/blob/master/syn-sample-script/sample/World.syns), [Utils.syns](https://github.com/antkar/syn/blob/master/syn-sample-script/sample/Utils.syns).
 
-![Screenshot](http://antkar.org/snake/snakec.png)
+![Screenshot](https://antkar.github.io/syn/img/snake/snakec.png)
 
 ### How to Run?
 
