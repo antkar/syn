@@ -4,9 +4,9 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -24,26 +24,26 @@ class World {
     public const CELL_WALL = 1;
     public const CELL_SNAKE = 2;
     public const CELL_FOOD = 3;
-    
+
     // Snake movement directions.
     public const DIR_UP = Vector2D(0, -1);
     public const DIR_DOWN = Vector2D(0, 1);
     public const DIR_LEFT = Vector2D(-1, 0);
     public const DIR_RIGHT = Vector2D(1, 0);
-    
+
     // Current level number.
     var level;
-    
+
     var mapState;
     var foodState;
     var snakeState;
-    
+
     function World(level, levelMap) {
         this.level = level;
-        
+
         mapState = World_Map(levelMap);
         foodState = World_FoodState(mapState);
-        
+
         snakeState = World_SnakeState(
             levelMap.startLocation,
             levelMap.startDirection,
@@ -53,7 +53,7 @@ class World {
 
     // Sets snake direction. Returns <true> on success, <false> otherwise.
     public function setSnakeDirection(dir) = snakeState.setDirection(dir);
-    
+
     // Single move of a snake. Moves the snake by one cell, and creates a new food if the current
     // one has been eaten.
     public function move() {
@@ -63,16 +63,16 @@ class World {
     }
 
     public function getCell(pos) = mapState.getCell(pos);
-    
+
     public function foodPos() = foodState.getFoodPos();
     public function foodWeight() = foodState.getFoodWeight();
     public function foodCells(pos) = foodState.foodCells(pos);
-    
+
     public function snakeLen() = snakeState.snakeLen();
     public function snakeCell(ofs) = snakeState.snakeCell(ofs);
     public function snakeHeadMoved() = snakeState.isHeadMoved();
     public function snakeTailMoved() = snakeState.isTailMoved();
-    
+
     public function gameOver() = snakeState.isCrashed();
     public function levelFinished() = !foodState.hasMoreFood();
 }
@@ -80,7 +80,7 @@ class World {
 // Map of a world.
 class World_Map {
     var cells;
-    
+
     function World_Map(levelMap) {
         cells = new [WORLD_SIZE.y][WORLD_SIZE.x];
         for (var pos : Vector2D(0, 0).range2D(WORLD_SIZE)) {
@@ -88,7 +88,7 @@ class World_Map {
             setCell(pos, cell);
         }
     }
-    
+
     public function getCell(pos) = cells[pos.y][pos.x];
     public function setCell(pos, cell) = cells[pos.y][pos.x] = cell;
 }
@@ -99,20 +99,20 @@ class World_FoodState {
     var foodPos;
     var foodWeight = 0;
     var foodRnd = java.util.Random();
-    
+
     function World_FoodState(mapState) {
         this.mapState = mapState;
         createFood(1);
     }
 
     public function getFoodPos() = foodPos;
-    public function getFoodWeight() = foodWeight;    
+    public function getFoodWeight() = foodWeight;
     public function hasMoreFood() = foodWeight > 0;
-    
+
     // Removes the current food and creates a new one, with an increased weight.
     public function foodEaten() {
         removeFood();
-        
+
         var nextWeight = foodWeight + 1;
         foodWeight = 0;
         if (nextWeight <= MAX_FOOD) createFood(nextWeight);
@@ -120,7 +120,7 @@ class World_FoodState {
 
     // Returns a list of positions of cells occupied by the food.
     public function foodCells(basePos) = extList(basePos.range2D(basePos.add(FOOD_SIZE)));
-    
+
     // Creates a food at a random position.
     function createFood(weight) {
         for (var i = 0; i < 100; ++i) {
@@ -133,7 +133,7 @@ class World_FoodState {
             }
         }
     }
-    
+
     function randomFoodPos() {
         var y = foodRnd.nextInt(WORLD_SIZE.y - 1);
         var x = foodRnd.nextInt(WORLD_SIZE.x - 1);
@@ -150,25 +150,25 @@ class World_FoodState {
 // State of a snake. Maintains a list of cells occupied by the snake.
 class World_SnakeState {
     const DIRECTIONS = [ World.DIR_UP, World.DIR_DOWN, World.DIR_LEFT, World.DIR_RIGHT ];
-    
+
     var mapState;
     var foodState;
 
     var snakeCells = World_SnakeCells();        // Queue of cells occupied by the snake.
     var snakeDir = Vector2D(0, 0);              // Current snake head direction.
     var snakeCapacity = MIN_SNAKE_LEN;          // The length which the snake has to grow to.
-    
+
     // <true> if the snake's head/tail has moved during the last move() call.
     var headMoved = false;
     var tailMoved = false;
-    
+
     // <true> if the snake has collided with a wall.
     var crashed = false;
 
     function World_SnakeState(location, direction, mapState, foodState) {
         this.mapState = mapState;
         this.foodState = foodState;
-        
+
         setDirection(direction);
         snakeCells.add(location);
         mapState.setCell(location, World.CELL_SNAKE);
@@ -176,53 +176,53 @@ class World_SnakeState {
 
     public function snakeLen() = snakeCells.size();
     public function snakeCell(ofs) = snakeCells.get(ofs);
-    public function isHeadMoved() = headMoved;    
-    public function isTailMoved() = tailMoved;    
+    public function isHeadMoved() = headMoved;
+    public function isTailMoved() = tailMoved;
     public function isCrashed() = crashed;
-    
+
     public function setDirection(dir) {
-        assert(extList(DIRECTIONS).exists(p -> p.equals(dir))); 
+        assert(extList(DIRECTIONS).exists(p -> p.equals(dir)));
         if (snakeDir.equals(dir) || snakeDir.neg().equals(dir)) return false;
         snakeDir = dir;
         return true;
     }
-    
+
     public function move() {
         headMoved = false;
         tailMoved = false;
         var foodEaten = false;
-        
+
         if (snakeCells.size() <= snakeCapacity) {
             // The snake is not too long, so its head can move.
             foodEaten = moveSnakeHead();
         }
-        
+
         if (!crashed && snakeCells.size() > snakeCapacity) {
             // The snake is not too short, so the tail can move.
             moveSnakeTail();
         }
-        
+
         return !crashed && foodEaten;
     }
-    
+
     // Moves the snake head to an adjacent cell.
     function moveSnakeHead() {
         var oldHeadPos = snakeCells.get(0);
         var headPos = oldHeadPos.add(snakeDir);
         snakeCells.add(headPos);
         headMoved = true;
-        
+
         var foodEaten = occupyCell(headPos);
         return foodEaten;
     }
-    
+
     function occupyCell(headPos) {
         var cell = mapState.getCell(headPos);
-        
+
         if (cell != World.CELL_WALL) {
             mapState.setCell(headPos, World.CELL_SNAKE);
         }
-        
+
         var foodEaten = false;
 
         if (cell == World.CELL_FOOD) {
@@ -233,10 +233,10 @@ class World_SnakeState {
             // Collision with a wall.
             crashed = true;
         }
-        
+
         return foodEaten;
     }
-    
+
     // Moves the snake tail.
     function moveSnakeTail() {
         var tailPos = snakeCells.remove();
@@ -246,20 +246,20 @@ class World_SnakeState {
 }
 
 // A queue of cell positions occupied by a snake. The first element of the queue is the position
-// of the head of the snake, the last position is the position of the tail. 
+// of the head of the snake, the last position is the position of the tail.
 class World_SnakeCells {
     var snakePos;           // Ring-array of snake element positions.
     var snakeHeadOfs;       // Offset of the head element in the snakePos array.
     var snakeLen;           // Current number of snake elements.
-    
+
     function World_SnakeCells() {
         snakePos = new [MAX_SNAKE_LEN + 1];
         for (var i = 0; i < snakePos.length; ++i) snakePos[i] = Vector2D(0, 0);
-        
+
         snakeHeadOfs = 0;
         snakeLen = 0;
     }
-    
+
     // Inserts a new head element position.
     public function add(pos) {
         ++snakeLen;
@@ -267,7 +267,7 @@ class World_SnakeCells {
         if (snakeHeadOfs < 0) snakeHeadOfs = snakePos.length - 1;
         snakePos[snakeHeadOfs] = pos;
     }
-    
+
     // Removes the tail element.
     public function remove() {
         var result = get(snakeLen - 1);
@@ -276,11 +276,11 @@ class World_SnakeCells {
     }
 
     // Returns the element at the specified offset from the head, so get(0) returns the
-    // head element, get(snakeLen - 1) returns the tail element.    
+    // head element, get(snakeLen - 1) returns the tail element.
     public function get(ofs) {
         var index = (ofs + snakeHeadOfs) % snakePos.length;
         return snakePos[index];
     }
-    
+
     public function size() = snakeLen;
 }

@@ -27,7 +27,7 @@ import org.antkar.syn.sample.script.rt.value.Value;
 /**
  * For-each statement syntax node.
  */
-public class ForEachStatement extends ForStatement {
+public final class ForEachStatement extends ForStatement {
     /** Not <code>null</code> if a new control variable is declared in the header of the
      * <code>for</code> statement. */
     @SynField

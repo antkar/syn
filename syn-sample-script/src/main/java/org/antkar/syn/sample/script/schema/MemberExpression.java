@@ -25,7 +25,7 @@ import org.antkar.syn.sample.script.rt.value.Value;
 /**
  * Member access expression syntax node.
  */
-public class MemberExpression extends TerminalExpression {
+public final class MemberExpression extends TerminalExpression {
     /** The expression denoting the object to look for a member in. */
     @SynField
     private Expression synObject;

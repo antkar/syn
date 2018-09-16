@@ -16,14 +16,15 @@
 package org.antkar.syn.internal.bnf;
 
 import java.io.PrintStream;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
+
+import org.antkar.syn.internal.Checks;
+import org.antkar.syn.internal.CommonUtil;
 
 /**
  * BNF nonterminal element.
  */
-public class BnfNonterminal extends BnfElement {
+public final class BnfNonterminal extends BnfElement {
     private final int index;
     private final String name;
     private List<BnfProduction> productions;
@@ -34,9 +35,9 @@ public class BnfNonterminal extends BnfElement {
      */
     public BnfNonterminal(int elementIndex, int index, String name) {
         super(elementIndex);
-        assert index >= 0;
-        assert name != null;
-        assert name.length() > 0;
+        Checks.argument(index >= 0);
+        Checks.notNull(name);
+        Checks.argument(!name.isEmpty());
         this.index = index;
         this.name = name;
 
@@ -47,11 +48,11 @@ public class BnfNonterminal extends BnfElement {
      * Sets productions of this nonterminal. Must be called one and only one time.
      */
     public void setProductions(List<BnfProduction> productions) {
-        assert productions != null;
-        assert productions.size() > 0;
-        assert this.productions == null;
+        Checks.notNull(productions);
+        Checks.argument(!productions.isEmpty());
+        Checks.state(this.productions == null);
 
-        this.productions = Collections.unmodifiableList(new ArrayList<>(productions));
+        this.productions = CommonUtil.unmodifiableListCopy(productions);
         for (BnfProduction production : this.productions) {
             production.setNonterminal(this);
         }
@@ -68,7 +69,7 @@ public class BnfNonterminal extends BnfElement {
      * Returns the list of productions. Productions must have been set before.
      */
     public List<BnfProduction> getProductions() {
-        assert productions != null;
+        Checks.state(productions != null);
         return productions;
     }
 

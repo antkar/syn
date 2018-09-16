@@ -4,9 +4,9 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -27,17 +27,17 @@ import org.antkar.syn.sample.script.schema.ClassDeclaration;
 public final class ObjectValue extends RValue {
     private final ClassValue classValue;
     private final Value[] memberValues;
-    
+
     ObjectValue(ClassValue classValue, Value[] memberValues) {
         this.classValue = classValue;
         this.memberValues = memberValues;
     }
-    
+
     @Override
     public Operand toOperand() throws SynsException {
         return Operand.forObject(this, this);
     }
-    
+
     @Override
     public ValueType getValueType() {
         return ValueType.OBJECT;
@@ -56,7 +56,7 @@ public final class ObjectValue extends RValue {
         Value result = descriptor == null ? null : descriptor.read(classValue, this, readerScope);
         return result;
     }
-    
+
     @Override
     public Object toJava(Class<?> type, TypeMatchPrecision precision) {
         if (!type.equals(Object.class)) {
@@ -64,15 +64,15 @@ public final class ObjectValue extends RValue {
         }
         return this;
     }
-    
+
     public ClassDeclaration getClassDeclaration() {
         return classValue.getClassDeclaration();
     }
-    
+
     Value readValue(int index) {
         return memberValues[index];
     }
-    
+
     @Override
     public String toString() {
         return getTypeMessage();

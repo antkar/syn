@@ -24,7 +24,7 @@ import org.antkar.syn.sample.script.rt.SynsException;
 /**
  * Expression statement syntax node.
  */
-public class ExpressionStatement extends Statement {
+public final class ExpressionStatement extends Statement {
     /** The expression. */
     @SynField
     private Expression synExpression;

@@ -46,14 +46,14 @@ public abstract class Declaration {
     /**
      * Returns the name of the declaration.
      */
-    public String getName() {
+    public final String getName() {
         return synName.getValue();
     }
 
     /**
      * Returns the name token of the declaration.
      */
-    public StringToken getNameTk() {
+    public final StringToken getNameTk() {
         return synName;
     }
 

@@ -3,7 +3,7 @@
  * (http://docs.oracle.com/javase/specs/jls/se7/html/index.html)
  *
  * Grammar was a little bit modified in order to fix ambiguities and errors. This grammar accepts
- * all JDK 7 Update 17 sources (src.zip). 
+ * all JDK 7 Update 17 sources (src.zip).
  */
 
 @goal

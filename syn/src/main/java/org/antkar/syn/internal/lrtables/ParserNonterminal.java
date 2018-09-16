@@ -15,25 +15,18 @@
  */
 package org.antkar.syn.internal.lrtables;
 
+import org.antkar.syn.internal.Checks;
+
 /**
  * Parser nonterminal descriptor.
  */
 public final class ParserNonterminal {
-    private final int index;
     private final String name;
     private final boolean extended;
 
-    ParserNonterminal(int index, String name, boolean extended) {
-        assert index >= 0;
-        assert name != null;
-
-        this.index = index;
-        this.name = name;
+    ParserNonterminal(String name, boolean extended) {
+        this.name = Checks.notNull(name);
         this.extended = extended;
-    }
-
-    int getIndex() {
-        return index;
     }
 
     public String getName() {

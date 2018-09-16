@@ -27,7 +27,7 @@ import org.antkar.syn.sample.script.rt.value.Value;
 /**
  * Assignment expression syntax node.
  */
-public class AssignmentExpression extends BinaryExpression {
+public final class AssignmentExpression extends BinaryExpression {
     /** The associated arithmetical operator for a compound assignment operator or
      * <code>null</code> if this is a simple assignment operator. */
     private BinaryOperator op;

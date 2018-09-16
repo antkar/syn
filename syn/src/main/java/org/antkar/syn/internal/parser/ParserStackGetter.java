@@ -15,6 +15,8 @@
  */
 package org.antkar.syn.internal.parser;
 
+import org.antkar.syn.internal.Checks;
+
 /**
  * A getter that returns values from a parser stack.
  */
@@ -22,7 +24,7 @@ public final class ParserStackGetter implements IParserGetter {
     private final int offset;
 
     public ParserStackGetter(int offset) {
-        assert offset >= 0;
+        Checks.argument(offset >= 0);
         this.offset = offset;
     }
 

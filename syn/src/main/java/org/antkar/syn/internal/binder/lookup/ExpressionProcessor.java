@@ -4,9 +4,9 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -32,7 +32,7 @@ import org.antkar.syn.internal.CommonUtil;
  * This class is responsible for creation of a {@link LookupExpression} object from an
  * Abstract Syntax Tree of a lookup expression.
  */
-class ExpressionProcessor {
+final class ExpressionProcessor {
 
     private final Class<?> clsOfThis;
     private final Class<?> clsOfObj;
@@ -55,7 +55,7 @@ class ExpressionProcessor {
     }
 
     /**
-     * Creates a {@link LookupExpression} object from the specified AST. 
+     * Creates a {@link LookupExpression} object from the specified AST.
      */
     static LookupExpression processExpression(
             Class<?> clsOfThis,
@@ -76,18 +76,18 @@ class ExpressionProcessor {
     }
 
     /**
-     * Processes a lookup AND expression. 
+     * Processes a lookup AND expression.
      */
     private LookupExpression processAndExpression(SynNode rootNode) throws SynBinderException {
         ObjectNode rootObjNode = (ObjectNode) rootNode;
         ArrayNode relExpressionsNode = (ArrayNode) rootObjNode.get("relExpressions");
-        
+
         List<LookupRelExpression> relExpressions = new ArrayList<>();
         for (SynNode relExpressionNode : relExpressionsNode) {
             LookupRelExpression relExpression = processRelExpression(relExpressionNode);
             relExpressions.add(relExpression);
         }
-        
+
         LookupExpression andExpression = new LookupAndExpression(relExpressions);
         return andExpression;
     }
@@ -102,13 +102,13 @@ class ExpressionProcessor {
         String op = relExpressionObjNode.getString("op");
         ObjectNode leftNode = (ObjectNode) relExpressionObjNode.get("left");
         ObjectNode rightNode = (ObjectNode) relExpressionObjNode.get("right");
-        
+
         LookupTermExpression left = processTermExpression(leftNode);
         LookupTermExpression right = processTermExpression(rightNode);
-        
+
         LookupEqualityChecker equalityChecker = getEqualityChecker(left, right);
         LookupRelExpression relExpression = createRelExpression(op, left, right, equalityChecker);
-        
+
         return relExpression;
     }
 
@@ -129,7 +129,7 @@ class ExpressionProcessor {
             throw new IllegalStateException(op);
         }
     }
-    
+
     /**
      * Returns an equality checker for specified expression nodes.
      */
@@ -139,10 +139,10 @@ class ExpressionProcessor {
     {
         Class<?> leftCls = left.getClassOfValue();
         Class<?> rightCls = right.getClassOfValue();
-        
+
         boolean leftBound = clsToSynFldMap.containsKey(leftCls);
         boolean rightBound = clsToSynFldMap.containsKey(rightCls);
-        
+
         if (leftBound && rightBound) {
             if (leftCls.isAssignableFrom(rightCls) || rightCls.isAssignableFrom(leftCls)) {
                 return BindingObjectsEqualityChecker.INSTANCE;
@@ -154,7 +154,7 @@ class ExpressionProcessor {
                 }
             }
         }
-        
+
         throw new SynBinderException(String.format(
                 "Cannot compare %s with %s",
                 leftCls.getCanonicalName(), rightCls.getCanonicalName()));
@@ -165,7 +165,7 @@ class ExpressionProcessor {
      */
     private LookupTermExpression processTermExpression(ObjectNode node) throws SynBinderException {
         String type = node.getString("type");
-        
+
         if ("id".equals(type)) {
             return processIdExpression(node);
         } else if ("field".equals(type)) {
@@ -181,7 +181,7 @@ class ExpressionProcessor {
     private LookupTermExpression processIdExpression(ObjectNode node) throws SynBinderException {
         final String sThis = "this";
         final String sObj = "obj";
-        
+
         String name = node.getString("name");
         if (sThis.equals(name)) {
             return new LookupThisExpression(clsOfThis);
@@ -200,16 +200,16 @@ class ExpressionProcessor {
     private LookupTermExpression processFieldExpression(ObjectNode node) throws SynBinderException {
         ObjectNode baseExpressionNode = (ObjectNode) node.get("baseExpression");
         String name = node.getString("name");
-        
+
         LookupTermExpression baseExpression = processTermExpression(baseExpressionNode);
-        
+
         Class<?> baseCls = baseExpression.getClassOfValue();
         if (!clsToSynFldMap.containsKey(baseCls)) {
             throw new SynBinderException(String.format(
                     "Cannot get field '%s' from expression '%s', because its type is %s",
                     name, baseExpression.toSourceString(), baseCls.getCanonicalName()));
         }
-        
+
         LookupTermExpression expression;
         if ("owner".equals(name)) {
             expression = processOwnerExpression(baseExpression, baseCls, name);
@@ -218,7 +218,7 @@ class ExpressionProcessor {
         }
         return expression;
     }
-    
+
     /**
      * Processes an "owner" lookup expression.
      */
@@ -228,14 +228,14 @@ class ExpressionProcessor {
             String kwOwner) throws SynBinderException
     {
         verifyOwnerFieldConflict(baseCls, kwOwner);
-        
+
         Class<?> ownerCls = clsToOwnerMap.get(baseCls);
         if (ownerCls == null) {
             throw new SynBinderException(String.format(
                     "Class %s has no owner class",
                     baseCls.getCanonicalName()));
         }
-        
+
         LookupTermExpression expression = new LookupOwnerExpression(ownerCls, baseExpression);
         return expression;
     }
@@ -269,17 +269,17 @@ class ExpressionProcessor {
             String name) throws SynBinderException
     {
         verifyRegularField(baseCls, name);
-        
+
         Field synFld = findSynField(baseCls, name);
         Class<?> type = synFld.getType();
-        
+
         LookupTermExpression expression;
         if (clsToSynFldMap.containsKey(type)) {
             expression = new LookupReferenceExpression(type, baseExpression, name);
         } else {
             expression = new LookupFieldExpression(type, baseExpression, synFld);
         }
-        
+
         return expression;
     }
 
@@ -295,7 +295,7 @@ class ExpressionProcessor {
             }
             curCls = curCls.getSuperclass();
         }
-        
+
         throw new SynBinderException(String.format(
                 "Cannot get field '%s' of class %s: no such %s field",
                 name, baseCls.getCanonicalName(), SynField.class.getSimpleName()));
@@ -303,7 +303,7 @@ class ExpressionProcessor {
 
     /**
      * Checks whether the Java field with the specified name can be used in a lookup expression.
-     * A field cannot be used, for instance, if it is annotated with {@link SynLookup}. 
+     * A field cannot be used, for instance, if it is annotated with {@link SynLookup}.
      */
     private void verifyRegularField(Class<?> baseCls, String name) throws SynBinderException {
         Class<?> curCls = baseCls;

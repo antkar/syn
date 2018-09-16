@@ -15,9 +15,10 @@
  */
 package org.antkar.syn.internal.ebnf;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
+
+import org.antkar.syn.internal.Checks;
+import org.antkar.syn.internal.CommonUtil;
 
 /**
  * EBNF grammar.
@@ -27,11 +28,11 @@ public final class EbnfGrammar {
     private final List<EbnfTerminalElement> terminals;
 
     public EbnfGrammar(List<EbnfNonterminal> startNonterminals, List<EbnfTerminalElement> terminals) {
-        assert startNonterminals != null;
-        assert !startNonterminals.isEmpty();
+        Checks.notNull(startNonterminals);
+        Checks.argument(!startNonterminals.isEmpty());
 
-        this.startNonterminals = Collections.unmodifiableList(new ArrayList<>(startNonterminals));
-        this.terminals = Collections.unmodifiableList(new ArrayList<>(terminals));
+        this.startNonterminals = CommonUtil.unmodifiableListCopy(startNonterminals);
+        this.terminals = CommonUtil.unmodifiableListCopy(terminals);
     }
 
     /**

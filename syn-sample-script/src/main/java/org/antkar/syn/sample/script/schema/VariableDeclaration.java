@@ -24,7 +24,7 @@ import org.antkar.syn.sample.script.rt.value.Value;
 /**
  * Script variable declaration syntax node.
  */
-public class VariableDeclaration extends Declaration {
+public final class VariableDeclaration extends Declaration {
     /** Initialization expression. Can be <code>null</code>. */
     @SynField
     private Expression synExpression;

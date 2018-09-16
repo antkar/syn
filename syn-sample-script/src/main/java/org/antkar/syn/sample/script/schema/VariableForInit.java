@@ -23,7 +23,7 @@ import org.antkar.syn.sample.script.util.MiscUtil;
 /**
  * New variable <code>for</code> initializer.
  */
-public class VariableForInit extends ForInit {
+public final class VariableForInit extends ForInit {
     /** List of variables. */
     @SynField
     private ForVariableDeclaration[] synVariables;

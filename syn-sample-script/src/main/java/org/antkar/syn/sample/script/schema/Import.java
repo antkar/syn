@@ -25,7 +25,7 @@ import org.antkar.syn.sample.script.rt.SynsException;
 /**
  * Import declaration syntax node.
  */
-public class Import {
+public final class Import {
     /** The chain of names to be imported. */
     @SynField
     private StringToken[] synNames;

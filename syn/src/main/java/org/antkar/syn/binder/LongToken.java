@@ -20,7 +20,7 @@ import org.antkar.syn.TextPos;
 /**
  * Token value of type <code>long</code>.
  */
-public class LongToken extends AbstractToken {
+public final class LongToken extends AbstractToken {
     private final long value;
 
     public LongToken(TextPos pos, long value) {

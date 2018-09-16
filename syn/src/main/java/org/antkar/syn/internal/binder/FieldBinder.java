@@ -4,9 +4,9 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -24,20 +24,20 @@ import org.antkar.syn.binder.SynBinderException;
 /**
  * Field binder. Knows how to bind the value of a grammar attribute to a Java field.
  */
-class FieldBinder {
+final class FieldBinder {
 
     /** Grammar attribute name. */
     private final String attribute;
-    
+
     /** Java field. */
     private final Field field;
-    
+
     /** <code>true</code> if the grammar attribute is embedded. */
     private final boolean embedded;
-    
+
     /** Bound type. */
     private final BoundType type;
-    
+
     FieldBinder(String attribute, Field field, boolean embedded, BoundType type) {
         this.attribute = attribute;
         this.field = field;
@@ -55,7 +55,7 @@ class FieldBinder {
             //attribute might have been defined in an optional element.
             throw new IllegalStateException(String.format("Attribute is not defined: %s", attribute));
         }
-        
+
         if (synNode != null) {
             Object value = convetNodeToValue(engine, bObj, synNode);
             setFieldValue(bObj, value);
@@ -83,14 +83,14 @@ class FieldBinder {
         Object obj = bObj.getJavaObject();
         BinderReflectionUtil.setFieldValue(field, obj, value);
     }
-    
+
     /**
      * Returns the Java field associated with this binder.
      */
     Field getField() {
         return field;
     }
-    
+
     /**
      * Returns the Java field name.
      */
@@ -110,7 +110,7 @@ class FieldBinder {
         boolean equals = class1.equals(class2);
         return equals;
     }
-    
+
     @Override
     public String toString() {
         return field + "(" + getClass().getSimpleName() + ")";

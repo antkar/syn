@@ -38,15 +38,13 @@ public abstract class ScriptTest extends Assert {
     /**
      * Executes the given script, redirecting the output to {@link #stdOut} and {@link #stdErr} fields.
      */
-    void execute(String script) throws Exception {
+    final void execute(String script) throws Exception {
         //Create stdout redirection stream.
         ByteArrayOutputStream bout = new ByteArrayOutputStream();
-        @SuppressWarnings("resource")
         PrintStream out = createPrintStream(bout);
 
         //Create stderr redirection stream.
         ByteArrayOutputStream berr = new ByteArrayOutputStream();
-        @SuppressWarnings("resource")
         PrintStream err = createPrintStream(berr);
 
         //Add test API to the root scope.
@@ -78,14 +76,14 @@ public abstract class ScriptTest extends Assert {
      * Checks if the standard output matches the specified value, and the standard error stream
      * is empty.
      */
-    void chkOut(String out) {
+    final void chkOut(String out) {
         chkOut(out, "");
     }
 
     /**
      * Checks standard output and standard error streams.
      */
-    void chkOut(String out, String err) {
+    final void chkOut(String out, String err) {
         assertEquals(out, stdOut);
         assertEquals(err, stdErr);
     }

@@ -38,7 +38,6 @@ import org.antkar.syn.binder.SynField;
 import org.antkar.syn.binder.SynLookup;
 import org.antkar.syn.internal.CommonUtil;
 import org.antkar.syn.internal.binder.CommonSuperclass;
-import org.antkar.syn.internal.binder.LookupBinder;
 
 /**
  * Creates a meta information necessary to initialize {@link SynLookup} fields.

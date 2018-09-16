@@ -27,7 +27,7 @@ import org.antkar.syn.sample.script.rt.value.Value;
 /**
  * Script <code>try</code>-<code>catch</code>-<code>finally</code> statement syntax node.
  */
-public class TryStatement extends Statement {
+public final class TryStatement extends Statement {
     /** The text position of the first token. */
     @SynField
     private TextPos synPos;

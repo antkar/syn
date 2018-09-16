@@ -25,11 +25,13 @@ import java.util.List;
 import java.util.Set;
 
 import org.antkar.syn.TokenDescriptor;
+import org.antkar.syn.internal.Checks;
+import org.antkar.syn.internal.CommonUtil;
 
 /**
  * BNF grammar.
  */
-public class BnfGrammar {
+public final class BnfGrammar {
     private final List<BnfNonterminal> startNonterminals;
     private final List<BnfNonterminal> nonterminals;
     private final List<TokenDescriptor> tokens;
@@ -47,8 +49,8 @@ public class BnfGrammar {
             Collection<BnfNonterminal> nonterminalsCol,
             Collection<BnfTerminal> terminalsCol)
     {
-        assert startNonterminals != null;
-        this.startNonterminals = Collections.unmodifiableList(new ArrayList<>(startNonterminals));
+        Checks.notNull(startNonterminals);
+        this.startNonterminals = CommonUtil.unmodifiableListCopy(startNonterminals);
         this.elements = calcElementsList(nonterminalsCol, terminalsCol);
 
         verifyElementIndicies();
@@ -130,7 +132,7 @@ public class BnfGrammar {
     {
         //Verify the index.
         int elIndex = element.getElementIndex();
-        assert element == elements.get(elIndex);
+        Checks.state(element == elements.get(elIndex));
 
         if (element instanceof BnfNonterminal) {
             //Add the nonterminal to the list.

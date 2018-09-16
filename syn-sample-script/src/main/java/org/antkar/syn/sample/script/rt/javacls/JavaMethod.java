@@ -4,9 +4,9 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -22,28 +22,28 @@ import java.lang.reflect.Modifier;
 /**
  * Wraps a Java {@link Method}.
  */
-class JavaMethod extends JavaAbstractMethod {
+final class JavaMethod extends JavaAbstractMethod {
     private final Method method;
-    
+
     JavaMethod(Method method) {
         this.method = method;
     }
-    
+
     @Override
     boolean isVarArgs() {
         return method.isVarArgs();
     }
-    
+
     @Override
     boolean isStatic() {
         return Modifier.isStatic(method.getModifiers());
     }
-    
+
     @Override
     boolean isVoid() {
         return void.class.equals(method.getReturnType());
     }
-    
+
     @Override
     Class<?>[] getParameterTypes() {
         return method.getParameterTypes();

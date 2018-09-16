@@ -28,7 +28,7 @@ import org.antkar.syn.sample.script.rt.value.Value;
  * Array value expression syntax node. Allows to define an array value in a script as a list of
  * elements.
  */
-public class ArrayExpression extends TerminalExpression {
+public final class ArrayExpression extends TerminalExpression {
     /** The text position of the first token of this array expression. */
     @SynField
     private TextPos synPos;

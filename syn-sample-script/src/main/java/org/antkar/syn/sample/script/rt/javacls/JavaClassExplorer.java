@@ -4,9 +4,9 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -27,24 +27,26 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.antkar.syn.internal.Checks;
+
 /**
  * Explores Java class structure.
  */
 final class JavaClassExplorer {
     private JavaClassExplorer(){}
-    
+
     /**
      * Returns a method set containing constructors of the specified Java class.
      */
     static JavaMethodSet discoverConstructors(Class<?> cls) {
         List<JavaConstructor> javaConstructors = new ArrayList<>();
-        
+
         for (Constructor<?> constructor : cls.getDeclaredConstructors()) {
             if (Modifier.isPublic(constructor.getModifiers())) {
                 javaConstructors.add(new JavaConstructor(constructor));
             }
         }
-        
+
         return new JavaMethodSet(cls.getCanonicalName(), javaConstructors);
     }
 
@@ -60,7 +62,7 @@ final class JavaClassExplorer {
 
         Map<String, JavaMethodSet> methodsMap = new HashMap<>();
         discoverMethods(cls, methodsMap);
-        
+
         return createMembersMap(classesMap, fieldsMap, methodsMap);
     }
 
@@ -81,10 +83,10 @@ final class JavaClassExplorer {
             JavaClass javaClass = classesMap.get(name);
             JavaField javaField = fieldsMap.get(name);
             JavaMethodSet javaMethods = methodsMap.get(name);
-            JavaMember member = createMember(name, javaClass, javaField, javaMethods);
+            JavaMember member = createMember(javaClass, javaField, javaMethods);
             map.put(name, member);
         }
-        
+
         return map;
     }
 
@@ -104,7 +106,7 @@ final class JavaClassExplorer {
      */
     private static Map<String, Class<?>> discoverInnerClassesMap(Class<?> cls) {
         Map<String, Class<?>> classes = new HashMap<>();
-        
+
         for (Class<?> innerClass : cls.getClasses()) {
             if (Modifier.isStatic(innerClass.getModifiers())) {
                 String name = innerClass.getSimpleName();
@@ -114,7 +116,7 @@ final class JavaClassExplorer {
                 }
             }
         }
-        
+
         return classes;
     }
 
@@ -134,7 +136,7 @@ final class JavaClassExplorer {
      */
     private static Map<String, Field> discoverFieldsMap(Class<?> cls) {
         Map<String, Field> fields = new HashMap<>();
-        
+
         for (Field field : cls.getFields()) {
             if (acceptJavaField(field)) {
                 String name = field.getName();
@@ -144,7 +146,7 @@ final class JavaClassExplorer {
                 }
             }
         }
-        
+
         return fields;
     }
 
@@ -154,7 +156,7 @@ final class JavaClassExplorer {
     private static void discoverMethods(Class<?> cls, Map<String, JavaMethodSet> wrappedMethods) {
         Map<MethodSignature, Method> methods = discoverMethodsMap(cls);
         Map<String, List<JavaMethod>> methodsByName = groupOverloadedMethods(methods);
-        
+
         for (String name : methodsByName.keySet()) {
             List<JavaMethod> list = methodsByName.get(name);
             wrappedMethods.put(name, new JavaMethodSet(name, list));
@@ -168,10 +170,10 @@ final class JavaClassExplorer {
             Map<MethodSignature, Method> methods)
     {
         Map<String, List<JavaMethod>> methodsByName = new HashMap<>();
-        
+
         for (MethodSignature sign : methods.keySet()) {
             Method method = methods.get(sign);
-            
+
             List<JavaMethod> list = methodsByName.get(sign.name);
             if (list == null) {
                 list = new ArrayList<>();
@@ -179,7 +181,7 @@ final class JavaClassExplorer {
             }
             list.add(new JavaMethod(method));
         }
-        
+
         return methodsByName;
     }
 
@@ -188,7 +190,7 @@ final class JavaClassExplorer {
      */
     private static Map<MethodSignature, Method> discoverMethodsMap(Class<?> cls) {
         Map<MethodSignature, Method> methods = new HashMap<>();
-        
+
         //Discover interface methods. This is necessary for the case when a non-public class
         //implements an interface, so the method defined in the class cannot be called on an
         //object and the corresponding method defined in the interface has to be used instead.
@@ -200,7 +202,7 @@ final class JavaClassExplorer {
             }
             curCls = curCls.getSuperclass();
         }
-        
+
         return methods;
     }
 
@@ -219,7 +221,7 @@ final class JavaClassExplorer {
             }
         }
     }
-    
+
     /**
      * Checks whether one inner class hides another one.
      */
@@ -228,7 +230,7 @@ final class JavaClassExplorer {
         Class<?> superclass = superinnerClass.getDeclaringClass();
         return isClassMoreSpecific(subclass, superclass);
     }
-    
+
     /**
      * Checks whether one field hides another one.
      */
@@ -237,7 +239,7 @@ final class JavaClassExplorer {
         Class<?> superclass = superfield.getDeclaringClass();
         return isClassMoreSpecific(subclass, superclass);
     }
-    
+
     /**
      * Checks whether one method hides another one.
      */
@@ -246,14 +248,14 @@ final class JavaClassExplorer {
         Class<?> superclass = supermethod.getDeclaringClass();
         return isClassMoreSpecific(subclass, superclass);
     }
-    
+
     /**
      * Checks whether one class is more specific than another one.
      */
     private static boolean isClassMoreSpecific(Class<?> subclass, Class<?> superclass) {
         return !subclass.equals(superclass) && superclass.isAssignableFrom(subclass);
     }
-    
+
     /**
      * Returns <code>true</code> if the specified Java field has to be taken into account.
      */
@@ -263,7 +265,7 @@ final class JavaClassExplorer {
         int modifiers = field.getModifiers();
         return Modifier.isPublic(classModifiers) && Modifier.isPublic(modifiers);
     }
-    
+
     /**
      * Returns <code>true</code> if the specified Java method has to be taken into account.
      */
@@ -281,7 +283,6 @@ final class JavaClassExplorer {
      * Creates a Java member instance.
      */
     private static JavaMember createMember(
-            String name,
             JavaClass javaClass,
             JavaField javaField,
             JavaMethodSet javaMethods)
@@ -289,17 +290,17 @@ final class JavaClassExplorer {
         //For simplicity, if there is a conflict, classes hide fields and methods, and methods hide
         //fields. It is possible to make all conflicting members accessible simultaneously, but such
         //cases seem to be rare, and supporting them is not worth the efforts (at the moment).
-        
+
         if (javaClass != null) {
             return new JavaInnerClass(javaClass);
         } else if (javaMethods != null) {
             return javaMethods;
         } else {
-            assert javaField != null;
+            Checks.notNull(javaField);
             return javaField;
         }
     }
-    
+
     /**
      * Java method signature. Contains method's name and parameter types.
      */
@@ -307,7 +308,7 @@ final class JavaClassExplorer {
         private final String name;
         private final Class<?>[] params;
         private final int hashCode;
-        
+
         MethodSignature(String name, Class<?>[] params) {
             this.name = name;
             this.params = params.clone();

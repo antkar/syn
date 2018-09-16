@@ -4,9 +4,9 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -21,10 +21,10 @@ import org.antkar.syn.internal.binder.BoundObject;
 /**
  * Lookup reference expression. Returns a referenced bound object by a reference name.
  */
-class LookupReferenceExpression extends LookupComplexTermExpression {
+final class LookupReferenceExpression extends LookupComplexTermExpression {
 
     private final String fieldName;
-    
+
     LookupReferenceExpression(
             Class<?> clsOfValue,
             LookupTermExpression baseExpression,
@@ -38,7 +38,7 @@ class LookupReferenceExpression extends LookupComplexTermExpression {
     Object eval(LookupEnv env) throws SynBinderException {
         LookupTermExpression baseExpression = getBaseExpression();
         Object eval = baseExpression.eval(env);
-        
+
         Object result;
         if (eval == null || eval == UNDEFINED) {
             result = UNDEFINED;
@@ -46,7 +46,7 @@ class LookupReferenceExpression extends LookupComplexTermExpression {
             BoundObject bEval = (BoundObject) eval;
             result = bEval.getReferencedObject(fieldName);
         }
-        
+
         return result;
     }
 

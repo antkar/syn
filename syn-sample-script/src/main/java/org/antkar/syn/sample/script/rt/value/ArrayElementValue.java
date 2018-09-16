@@ -18,7 +18,7 @@ package org.antkar.syn.sample.script.rt.value;
 /**
  * Array element value.
  */
-class ArrayElementValue extends LValue {
+final class ArrayElementValue extends LValue {
     private RValue rvalue;
 
     ArrayElementValue(RValue value) {

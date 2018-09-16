@@ -17,7 +17,7 @@ package org.antkar.syn.binder.schema.simpleunit;
 
 import org.antkar.syn.binder.SynField;
 
-public class SimpleUnit {
+public final class SimpleUnit {
     @SynField
     private SimpleEntity[] sfEntities;
 

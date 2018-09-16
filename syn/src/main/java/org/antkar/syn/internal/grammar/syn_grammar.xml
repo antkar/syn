@@ -117,7 +117,7 @@ limitations under the License.
             <nt key="value" name="NativeValue"/>
         </rule>
     </nonterminal>
-    
+
     <nonterminal name="NativeValue">
         <rule>
             <rep key="className" nullable="false">

@@ -4,9 +4,9 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -19,6 +19,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.antkar.syn.internal.Checks;
 import org.antkar.syn.sample.script.rt.SynsException;
 import org.antkar.syn.sample.script.rt.op.operand.Operand;
 import org.antkar.syn.sample.script.rt.op.operand.OperandType;
@@ -31,7 +32,7 @@ public abstract class BinaryOperator extends Operator {
     /** Maps arithmetical binary operator literals to corresponding {@link BinaryOperator}
      * instances. */
     private static final Map<String, BinaryOperator> OPERATORS;
-    
+
     static {
         Map<String, BinaryOperator> map = new HashMap<>();
         map.put("||", new OrBinaryOperator());
@@ -49,10 +50,10 @@ public abstract class BinaryOperator extends Operator {
         map.put("%", new ModBinaryOperator());
         OPERATORS = Collections.unmodifiableMap(map);
     }
-    
+
     /** Maps compound assignment operators literals to corresponding arithmetical operators. */
     private static final Map<String, BinaryOperator> ASSIGNMENT_OPERATORS;
-    
+
     static {
         Map<String, BinaryOperator> map = new HashMap<>();
         map.put("+=", new AddBinaryOperator());
@@ -64,7 +65,7 @@ public abstract class BinaryOperator extends Operator {
         map.put("|=", new OrBinaryOperator());
         ASSIGNMENT_OPERATORS = map;
     }
-    
+
     BinaryOperator(String opLiteral) {
         super(opLiteral);
     }
@@ -74,7 +75,7 @@ public abstract class BinaryOperator extends Operator {
      */
     public static BinaryOperator forLiteral(String literal) {
         BinaryOperator op = OPERATORS.get(literal);
-        assert op != null;
+        Checks.notNull(op);
         return op;
     }
 
@@ -83,7 +84,7 @@ public abstract class BinaryOperator extends Operator {
      */
     public static BinaryOperator forAssignmentLiteral(String literal) {
         BinaryOperator op = ASSIGNMENT_OPERATORS.get(literal);
-        assert op != null;
+        Checks.notNull(op);
         return op;
     }
 
@@ -91,20 +92,22 @@ public abstract class BinaryOperator extends Operator {
      * Tries to evaluate the result of the operator using only the left operand. Overridden by
      * AND and OR operators to provide a short-circuit evaluation. Returns <code>null</code> if
      * a short-circuit evaluation is not possible.
-     * 
-     * @throws SynsException on error. 
+     *
+     * @param left Left operand.
+     *
+     * @throws SynsException on error.
      */
     public RValue evaluate(Operand left) throws SynsException {
         return null;
     }
-    
+
     /**
      * Evaluates the result of the operator for given operands.
      */
     public RValue evaluate(Operand left, Operand right) throws SynsException {
         OperandType leftType = left.getType();
         OperandType rightType = right.getType();
-        
+
         //Numeric type promotion.
         if (leftType != rightType) {
             //If one of the operands is a floating-point while the other one is an integer, convert
@@ -117,7 +120,7 @@ public abstract class BinaryOperator extends Operator {
                 throw errOperandTypeMissmatch(leftType, rightType);
             }
         }
-        
+
         //At this point both operands considered to be of the same type.
         //Evaluate the result depending on that type.
         RValue result;
@@ -130,26 +133,35 @@ public abstract class BinaryOperator extends Operator {
         } else {
             throw errOperandTypeMissmatch(leftType);
         }
-        
+
         return result;
     }
-    
+
     /**
      * Evaluates the operator for boolean operands.
+     *
+     * @param left Left operand.
+     * @param right Right operand.
      */
     RValue evaluate(boolean left, boolean right) throws SynsException {
         throw errOperandTypeMissmatch(OperandType.BOOLEAN);
     }
-    
+
     /**
      * Evaluates the operator for integer operands.
+     *
+     * @param left Left operand.
+     * @param right Right operand.
      */
     RValue evaluate(long left, long right) throws SynsException {
         throw errOperandTypeMissmatch(OperandType.LONG);
     }
-    
+
     /**
      * Evaluates the operator for floating-point operands.
+     *
+     * @param left Left operand.
+     * @param right Right operand.
      */
     RValue evaluate(double left, double right) throws SynsException {
         throw errOperandTypeMissmatch(OperandType.DOUBLE);

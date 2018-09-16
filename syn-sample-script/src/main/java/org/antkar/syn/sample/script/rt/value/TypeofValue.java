@@ -4,9 +4,9 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -25,9 +25,9 @@ import org.antkar.syn.sample.script.rt.SynsException;
 /**
  * A value returned by the <code>typeof</code> expression.
  */
-class TypeofValue extends RValue {
+final class TypeofValue extends RValue {
     private static final Map<ValueType, TypeofValue> VALUES;
-    
+
     static {
         Map<ValueType, TypeofValue> values = new EnumMap<>(ValueType.class);
         for (ValueType valueType : ValueType.values()) {
@@ -38,12 +38,12 @@ class TypeofValue extends RValue {
 
     private final ValueType valueType;
     private final Value typeValue;
-    
+
     private TypeofValue(ValueType valueType) {
         this.valueType = valueType;
         typeValue = Value.forString(valueType.getTypeName());
     }
-    
+
     static Value forValueType(ValueType valueType) {
         TypeofValue value = VALUES.get(valueType);
         if (value == null) {
@@ -56,7 +56,7 @@ class TypeofValue extends RValue {
     public ValueType getValueType() {
         return ValueType.OBJECT;
     }
-    
+
     @Override
     public Value getMemberOpt(String name, ScriptScope readerScope) throws SynsException {
         switch (name) {
@@ -64,7 +64,7 @@ class TypeofValue extends RValue {
         default: return null;
         }
     }
-    
+
     @Override
     public String toString() {
         return valueType.getTypeName();

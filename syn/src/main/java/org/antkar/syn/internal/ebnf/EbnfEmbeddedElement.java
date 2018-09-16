@@ -35,7 +35,7 @@ public abstract class EbnfEmbeddedElement extends EbnfCompoundElement {
     }
 
     @Override
-    public boolean hasEmbeddedObject() {
+    public final boolean hasEmbeddedObject() {
         if (getAttribute() == null) {
             //If the attribute is specified, the element must return an independent value.
             //An element may have an embedded object only if the attribute name is not specified.
@@ -50,7 +50,7 @@ public abstract class EbnfEmbeddedElement extends EbnfCompoundElement {
     }
 
     @Override
-    public EbnfProductions getEmbeddedProductions() {
+    public final EbnfProductions getEmbeddedProductions() {
         EbnfProductions body = getBody();
         return body;
     }

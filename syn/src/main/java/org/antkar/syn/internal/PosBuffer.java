@@ -18,7 +18,6 @@ package org.antkar.syn.internal;
 import org.antkar.syn.SourceDescriptor;
 import org.antkar.syn.TerminalNode;
 import org.antkar.syn.TextPos;
-import org.antkar.syn.internal.scanner.CharPos;
 
 /**
  * Text position buffer - a mutable version of {@link TextPos}. Used to pass a text position to
@@ -36,12 +35,12 @@ public final class PosBuffer {
     public PosBuffer() {
     }
 
-    public void set(CharPos pos, SourceDescriptor sourceDescriptor, int endOffset) {
+    public void set(SourceDescriptor sourceDescriptor, int offset, int line, int column, int length) {
         source = sourceDescriptor;
-        offset = pos.offset();
-        line = pos.line() + 1;
-        column = pos.column() + 1;
-        length = endOffset - offset;
+        this.offset = offset;
+        this.line = line;
+        this.column = column;
+        this.length = length;
     }
 
     public SourceDescriptor getSource() {

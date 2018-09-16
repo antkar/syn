@@ -8,7 +8,7 @@ import org.antkar.syn.binder.SynField;
 /**
  * Function body defined via an expression.
  */
-public class ExpressionFunctionBody extends FunctionBody {
+public final class ExpressionFunctionBody extends FunctionBody {
     @SynField
     private Expression synExpression;
 

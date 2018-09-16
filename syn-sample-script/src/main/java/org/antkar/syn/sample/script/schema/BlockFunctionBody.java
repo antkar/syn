@@ -8,7 +8,7 @@ import org.antkar.syn.binder.SynField;
 /**
  * A function body defined via a block.
  */
-public class BlockFunctionBody extends FunctionBody {
+public final class BlockFunctionBody extends FunctionBody {
     @SynField
     private Block synBlock;
 

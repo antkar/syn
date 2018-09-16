@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.antkar.syn.TokenDescriptor;
+import org.antkar.syn.internal.Checks;
 import org.antkar.syn.internal.bnf.BnfElement;
 import org.antkar.syn.internal.bnf.BnfGrammar;
 import org.antkar.syn.internal.bnf.BnfNonterminal;
@@ -52,7 +53,6 @@ public final class ParserConfigurator {
     private final Map<String, ParserState> startStateMap = new HashMap<>();
     private final List<TokenDescriptor> tokenDescriptors;
 
-    private final Counter nonterminalCounter = new Counter();
     private final Counter itemCounter = new Counter();
 
     private ParserConfigurator(BnfGrammar grammar) {
@@ -91,8 +91,8 @@ public final class ParserConfigurator {
      * Adds a start nonterminal to the configuration, generates all derived LR states.
      */
     private void addStartNonterminal(BnfNonterminal nonterminal) {
-        assert nonterminal != null;
-        assert !startStateMap.containsKey(nonterminal.getName());
+        Checks.notNull(nonterminal);
+        Checks.state(!startStateMap.containsKey(nonterminal.getName()));
 
         List<ParserItem> itemList = new ArrayList<>();
         ParserItem extendedItem = calcExtendedItem(nonterminal);
@@ -301,9 +301,8 @@ public final class ParserConfigurator {
      * Creates an extended start nonterminal from the given nonterminal.
      */
     private ParserNonterminal createExtendedNonterminal(BnfNonterminal bNonterminal) {
-        int index = nonterminalCounter.next();
         String name = "@" + bNonterminal.getName();
-        ParserNonterminal result = new ParserNonterminal(index, name, true);
+        ParserNonterminal result = new ParserNonterminal(name, true);
         return result;
     }
 
@@ -314,8 +313,7 @@ public final class ParserConfigurator {
         ParserNonterminal result = nonterminalMap.get(bNonterminal);
 
         if (result == null) {
-            int index = nonterminalCounter.next();
-            result = new ParserNonterminal(index, bNonterminal.getName(), false);
+            result = new ParserNonterminal(bNonterminal.getName(), false);
             nonterminalMap.put(bNonterminal, result);
         }
 

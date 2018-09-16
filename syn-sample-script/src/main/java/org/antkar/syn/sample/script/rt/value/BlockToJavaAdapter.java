@@ -4,9 +4,9 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -72,7 +72,7 @@ final class BlockToJavaAdapter {
             Class<?> javaInterface) throws SynsException
     {
         Map<String, Method> methods = getInterfaceMethods(javaInterface);
-        
+
         if (methods.isEmpty()) {
             //No methods - return a special null invocation handler.
             return new NoMethodsInvocationHandler(adaptable);
@@ -85,25 +85,25 @@ final class BlockToJavaAdapter {
                 return new SingleMethodInvocationHandler(adaptable);
             }
         }
-        
+
         //Methods of the interface have to be redirected to corresponding functions defined
         //in the block.
         return new MultipleMehtodsInvocationHandler(adaptable);
     }
-    
+
     /**
      * Returns the map of interface methods.
      */
     private static Map<String, Method> getInterfaceMethods(Class<?> javaInterface) throws SynsException {
         Map<String, Method> map = new HashMap<>();
-        
+
         for (Method method : javaInterface.getMethods()) {
             if (method.isVarArgs()) {
                 throw SynsException.format(
                         "Cannot implement method %s: it has a variable number of arguments",
                         method);
             }
-            
+
             int modifiers = method.getModifiers();
             if (Modifier.isAbstract(modifiers)) {
                 //In Java 8, an interface can contain non-abstract methods: static methods and
@@ -114,7 +114,7 @@ final class BlockToJavaAdapter {
                 putMethodToMap(javaInterface, method, map);
             }
         }
-        
+
         return map;
     }
 
@@ -140,12 +140,12 @@ final class BlockToJavaAdapter {
             }
         }
     }
-    
+
     /**
      * Map of default return values for primitive types.
      */
     private static final Map<Class<?>, Object> PRIMITIVE_DEFAULT_VALUES;
-    
+
     static {
         Map<Class<?>, Object> map = new HashMap<>();
         map.put(byte.class, Byte.valueOf((byte)0));
@@ -158,7 +158,7 @@ final class BlockToJavaAdapter {
         map.put(boolean.class, Boolean.FALSE);
         PRIMITIVE_DEFAULT_VALUES = Collections.unmodifiableMap(map);
     }
-    
+
     /**
      * Returns the default return value for the specified method return type.
      */
@@ -169,13 +169,13 @@ final class BlockToJavaAdapter {
             return PRIMITIVE_DEFAULT_VALUES.get(type);
         }
     }
-    
+
     /**
      * Converts a {@link Value} returned by a Script Language block to a Java method return value.
      */
     private static Object getJavaReturnValue(Method method, Value value) throws SynsException {
         Class<?> returnType = method.getReturnType();
-        
+
         //Cannot return a non-void value from a void method.
         if (void.class.equals(returnType)) {
             if (!value.isVoid()) {
@@ -186,7 +186,7 @@ final class BlockToJavaAdapter {
             }
             return null;
         }
-        
+
         //Convert the value to Java.
         RValue rvalue = value.toRValue();
         Object jvalue = rvalue.toJava(returnType, TypeMatchPrecision.NULL);
@@ -194,16 +194,16 @@ final class BlockToJavaAdapter {
             throw SynsException.format(
                     "Invalid return value %s for method %s", rvalue.getTypeMessage(), method);
         }
-        
+
         return jvalue;
     }
-    
+
     /**
      * Block-based proxy invocation handler.
      */
     private static abstract class ScriptInvocationHandler implements InvocationHandler {
         final AdaptableToJavaInterface adaptable;
-        
+
         ScriptInvocationHandler(AdaptableToJavaInterface adaptable) {
             this.adaptable = adaptable;
         }
@@ -215,7 +215,7 @@ final class BlockToJavaAdapter {
                 //block Java object.
                 return invokeObjectMethod(method, args);
             }
-            
+
             return invoke0(proxy, method, args);
         }
 
@@ -238,13 +238,13 @@ final class BlockToJavaAdapter {
             }
             return method.invoke(adaptable, args);
         }
-        
+
         /**
          * Redirects the specified Java method to the block.
          */
         abstract Object invoke0(Object proxy, Method method, Object[] args) throws Throwable;
     }
-    
+
     /**
      * Invocation handler for an interface which defines no methods.
      */
@@ -259,7 +259,7 @@ final class BlockToJavaAdapter {
             throw new IllegalStateException();
         }
     }
-    
+
     /**
      * Invocation handler that redirects a interface method calls to the body of a Script Language
      * block.
@@ -272,20 +272,20 @@ final class BlockToJavaAdapter {
         @Override
         Object invoke0(Object proxy, Method method, Object[] args) throws Throwable {
             RValue[] scriptArgs = javaArgsToScript(args);
-            
+
             Value value;
             try {
                 value = adaptable.call(scriptArgs);
             } catch (ThrowSynsException e) {
                 throw e.getCause();
             }
-            
+
             return getJavaReturnValue(method, value);
         }
-        
+
         private RValue[] javaArgsToScript(Object[] args) throws SynsException {
             if (args == null || args.length == 0) return RValue.ARRAY0;
-            
+
             RValue[] result = new RValue[args.length];
             for (int i = 0; i < args.length; ++i) {
                 RValue value = Value.forJavaObject(args[i]);
@@ -294,7 +294,7 @@ final class BlockToJavaAdapter {
             return result;
         }
     }
-    
+
     /**
      * Invocation handler that redirects a interface method calls to functions defined in
      * a Script Language block.
@@ -315,10 +315,10 @@ final class BlockToJavaAdapter {
                 //has to be handled.
                 return getDefaultValue(method.getReturnType());
             }
-            
+
             //Convert Java argument values to Script Language values.
             RValue[] arguments = javaArgumentsToScriptArguments(args);
-            
+
             //Call the function.
             Value value;
             try {
@@ -326,7 +326,7 @@ final class BlockToJavaAdapter {
             } catch (ThrowSynsException e) {
                 throw e.getCause();
             }
-            
+
             //Convert the value returned by the function to Java.
             return getJavaReturnValue(method, value);
         }
@@ -338,13 +338,13 @@ final class BlockToJavaAdapter {
             if (args == null || args.length == 0) {
                 return RValue.ARRAY0;
             }
-            
+
             RValue[] arguments = new RValue[args.length];
             for (int i = 0; i < args.length; ++i) {
                 RValue value = Value.forJavaObject(args[i]);
                 arguments[i] = value;
             }
-            
+
             return arguments;
         }
     }

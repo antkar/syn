@@ -4,9 +4,9 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -21,7 +21,7 @@ import java.util.Comparator;
 /**
  * Set of LR items.
  */
-class ParserItemSet {
+final class ParserItemSet {
     /** Sorted array of items. */
     private final ParserItem[] items;
 
@@ -29,11 +29,11 @@ class ParserItemSet {
         this.items = items.clone();
         Arrays.sort(items, ITEM_COMPARATOR);
     }
-    
+
     ParserItem[] getItems() {
         return items;
     }
-    
+
     @Override
     public int hashCode() {
         int result = 0;
@@ -42,7 +42,7 @@ class ParserItemSet {
         }
         return result;
     }
-    
+
     @Override
     public boolean equals(Object obj) {
         if (obj instanceof ParserItemSet) {
@@ -56,15 +56,15 @@ class ParserItemSet {
                 return true;
             }
         }
-        
+
         return false;
     }
-    
+
     @Override
     public String toString() {
         return Arrays.toString(items);
     }
-    
+
     private static final Comparator<ParserItem> ITEM_COMPARATOR = new Comparator<ParserItem>() {
         @Override
         public int compare(ParserItem o1, ParserItem o2) {

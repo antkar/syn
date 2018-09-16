@@ -16,20 +16,22 @@
 package org.antkar.syn.internal.lrtables;
 
 import org.antkar.syn.TokenDescriptor;
+import org.antkar.syn.internal.Checks;
 
 /**
  * SHIFT transition - a transition by a terminal symbol.
  */
 public final class ParserShift {
-    public final TokenDescriptor tokenDescriptor;
+    final TokenDescriptor tokenDescriptor;
     final ParserState state;
 
     ParserShift(TokenDescriptor tokenDescriptor, ParserState state) {
-        assert tokenDescriptor != null;
-        assert state != null;
+        this.tokenDescriptor = Checks.notNull(tokenDescriptor);
+        this.state = Checks.notNull(state);
+    }
 
-        this.tokenDescriptor = tokenDescriptor;
-        this.state = state;
+    public TokenDescriptor getTokenDescriptor() {
+        return tokenDescriptor;
     }
 
     @Override

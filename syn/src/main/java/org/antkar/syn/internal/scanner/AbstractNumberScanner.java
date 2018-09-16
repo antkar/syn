@@ -4,9 +4,9 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -30,14 +30,14 @@ import org.antkar.syn.internal.PosBuffer;
 abstract class AbstractNumberScanner implements IPrimitiveScanner {
     private final IPrimitiveResult intPrimitiveResult;
     private long intValue;
-    
+
     AbstractNumberScanner() {
         intPrimitiveResult = new IntPrimitiveResult();
     }
-    
+
     /**
      * Scans a sequence of decimal digits. Appends them to the lexical analyzer's buffer.
-     * 
+     *
      * @param context the lexical analyzer context.
      * @param mandatory if <code>true</code>, an exception is thrown whenever there is no decimal digit
      * at the current position of the the input.
@@ -51,7 +51,7 @@ abstract class AbstractNumberScanner implements IPrimitiveScanner {
             context.append();
             context.next();
         }
-        
+
         while (isDigit(context.current)) {
             context.append();
             context.next();
@@ -60,11 +60,11 @@ abstract class AbstractNumberScanner implements IPrimitiveScanner {
 
     /**
      * Scans a sequence of hexadecimal digits. Appends them to the lexical analyzer's buffer.
-     * 
+     *
      * @param context the lexical analyzer context.
      * @param mandatory if <code>true</code>, an exception is thrown whenever there is no hexadecimal digit
      * at the current position of the the input.
-     * 
+     *
      * @return <code>true</code> if at least one hexadecimal digit was scanned.
      */
     static boolean scanHexadecimalPrimitive(PrimitiveContext context, boolean mandatory) throws SynException {
@@ -78,7 +78,7 @@ abstract class AbstractNumberScanner implements IPrimitiveScanner {
             context.next();
             result = true;
         }
-        
+
         while (isHexDigit(context.current)) {
             context.append();
             context.next();
@@ -86,7 +86,7 @@ abstract class AbstractNumberScanner implements IPrimitiveScanner {
         }
         return result;
     }
-    
+
     /**
      * Scans an integer literal suffix - "L" or "l".
      */
@@ -95,9 +95,9 @@ abstract class AbstractNumberScanner implements IPrimitiveScanner {
             context.next();
         }
     }
-    
+
     /**
-     * Initializes and returns a result containing an integer value (of type <code>long</code>). 
+     * Initializes and returns a result containing an integer value (of type <code>long</code>).
      * @param value the value.
      * @return the result.
      */
@@ -119,7 +119,7 @@ abstract class AbstractNumberScanner implements IPrimitiveScanner {
     private static boolean isHexDigit(int k) {
         return (k >= '0' && k <= '9') || (k >= 'A' && k <= 'F') || (k >= 'a' && k <= 'f');
     }
-    
+
     /**
      * Integer primitive result.
      */

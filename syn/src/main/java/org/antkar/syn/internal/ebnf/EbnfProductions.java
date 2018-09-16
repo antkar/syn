@@ -15,9 +15,10 @@
  */
 package org.antkar.syn.internal.ebnf;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
+
+import org.antkar.syn.internal.Checks;
+import org.antkar.syn.internal.CommonUtil;
 
 /**
  * A list of EBNF productions.
@@ -26,8 +27,8 @@ public final class EbnfProductions {
     private final List<EbnfProduction> productions;
 
     public EbnfProductions(List<EbnfProduction> productions) {
-        assert productions != null;
-        this.productions = Collections.unmodifiableList(new ArrayList<>(productions));
+        Checks.notNull(productions);
+        this.productions = CommonUtil.unmodifiableListCopy(productions);
     }
 
     /**

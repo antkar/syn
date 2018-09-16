@@ -24,7 +24,7 @@ import org.antkar.syn.sample.script.rt.value.Value;
 /**
  * Expression typeof(expression). Returns a type descriptor.
  */
-public class TypeofExpression extends Expression {
+public final class TypeofExpression extends Expression {
     @SynField
     private TextPos synPos;
 

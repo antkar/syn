@@ -25,6 +25,7 @@ import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Set;
 
+import org.antkar.syn.internal.Checks;
 import org.antkar.syn.internal.CommonUtil;
 
 /**
@@ -33,7 +34,7 @@ import org.antkar.syn.internal.CommonUtil;
  * Implements {@link java.util.Map Map&lt;String,SynNode&gt;} for reasons of convenience.
  * Modification attempts cause {@link UnsupportedOperationException}.
  */
-public class ObjectNode extends SynNode implements Map<String, SynNode> {
+public final class ObjectNode extends SynNode implements Map<String, SynNode> {
 
     /**
      * List of entries (key-value pairs). This solution seems optimal, since productions usually do not
@@ -42,8 +43,7 @@ public class ObjectNode extends SynNode implements Map<String, SynNode> {
     private final List<ObjectEntry> entries;
 
     public ObjectNode(List<ObjectEntry> entries) {
-        assert entries != null;
-        this.entries = entries;
+        this.entries = Checks.notNull(entries);
     }
 
     /**
@@ -271,8 +271,7 @@ public class ObjectNode extends SynNode implements Map<String, SynNode> {
         private final SynNode value;
 
         public ObjectEntry(String key, SynNode value) {
-            assert key != null;
-            this.key = key;
+            this.key = Checks.notNull(key);
             this.value = value;
         }
 

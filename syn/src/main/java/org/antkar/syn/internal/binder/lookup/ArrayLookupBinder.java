@@ -19,12 +19,10 @@ import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.util.Collection;
 
-import org.antkar.syn.internal.binder.LookupBinder;
-
 /**
  * Array lookup binder. Binds a collection of objects to a field of an array type.
  */
-class ArrayLookupBinder extends LookupBinder {
+final class ArrayLookupBinder extends LookupBinder {
 
     private final Class<?> clsOfObj;
 
@@ -34,7 +32,7 @@ class ArrayLookupBinder extends LookupBinder {
     }
 
     @Override
-    protected Object createValue(Collection<Object> oObjs) {
+    Object createValue(Collection<Object> oObjs) {
         Object[] array = (Object[]) Array.newInstance(clsOfObj, 0);
         Object[] result = oObjs.toArray(array);
         return result;

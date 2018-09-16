@@ -15,6 +15,7 @@
  */
 package org.antkar.syn;
 
+import org.antkar.syn.internal.Checks;
 import org.antkar.syn.internal.TokenTypeProcessor;
 
 /**
@@ -88,7 +89,7 @@ public enum TokenType {
     private final boolean custom;
 
     private TokenType(boolean literal, boolean custom) {
-        assert !literal || !custom;
+        Checks.argument(!literal || !custom);
         this.literal = literal;
         this.custom = custom;
     }
@@ -97,7 +98,7 @@ public enum TokenType {
      * Checks if this token type represents a literal token.
      * @return <code>true</code> for a literal token type.
      */
-    public boolean isLiteral() {
+    public final boolean isLiteral() {
         return literal;
     }
 
@@ -105,7 +106,7 @@ public enum TokenType {
      * Checks if this token type represents a custom token.
      * @return <code>true</code> for a custom token type.
      */
-    boolean isCustom() {
+    final boolean isCustom() {
         return custom;
     }
 

@@ -17,7 +17,7 @@ package org.antkar.syn.binder.schema.result_key;
 
 import org.antkar.syn.binder.SynField;
 
-public class ResultKeySchema {
+public final class ResultKeySchema {
     @SynField
     private ResultKeyObj obj;
 

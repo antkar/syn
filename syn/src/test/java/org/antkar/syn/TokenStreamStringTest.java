@@ -22,7 +22,7 @@ import org.junit.Test;
 /**
  * Unit tests for {@link TokenStream}: string literals.
  */
-public class TokenStreamStringTest extends Assert {
+public final class TokenStreamStringTest extends Assert {
     @Test
     public void testSimpleStringLiterals() throws SynException {
         checkString("\"Hello, World!\"", "Hello, World!");

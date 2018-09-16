@@ -26,6 +26,7 @@ import java.util.Set;
 
 import org.antkar.syn.TokenDescriptor;
 import org.antkar.syn.TokenType;
+import org.antkar.syn.internal.Checks;
 
 /**
  * This class is responsible for creating a {@link ScannerConfiguration scanner configuration} for a
@@ -41,7 +42,7 @@ public final class ScannerConfigurator {
      * @return the configuration.
      */
     public static ScannerConfiguration makeConfiguration(Collection<TokenDescriptor> tokens) {
-        assert tokens != null;
+        Checks.notNull(tokens);
 
         //Divide tokens into literal tokens, keywords and key-characters.
         Set<TokenType> literalTokens = new HashSet<>();

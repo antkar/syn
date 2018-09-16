@@ -25,7 +25,7 @@ import org.antkar.syn.internal.PosBuffer;
 /**
  * Identifier scanner.
  */
-class IdScanner implements IPrimitiveScanner {
+abstract class IdScanner implements IPrimitiveScanner {
     private static final int MAX_ID_LENGTH = 256;
 
     private final IPrimitiveResult primitiveResult;
@@ -36,7 +36,7 @@ class IdScanner implements IPrimitiveScanner {
     }
 
     @Override
-    public IPrimitiveResult scan(PrimitiveContext context) throws SynException {
+    public final IPrimitiveResult scan(PrimitiveContext context) throws SynException {
         if (!Character.isJavaIdentifierStart(context.current)) {
             //The current input character is not an identifier start. Return null.
             return null;

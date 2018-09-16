@@ -25,7 +25,7 @@ import org.antkar.syn.sample.script.rt.value.Value;
 /**
  * Integer literal expression syntax node.
  */
-public class IntegerLiteralExpression extends LiteralExpression {
+public final class IntegerLiteralExpression extends LiteralExpression {
     /** The value of the literal. */
     @SynField
     private LongToken synValue;

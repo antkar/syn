@@ -15,6 +15,8 @@
  */
 package org.antkar.syn.internal.ebnf;
 
+import org.antkar.syn.internal.Checks;
+
 /**
  * EBNF nonterminal.
  */
@@ -26,8 +28,8 @@ public final class EbnfNonterminal {
      * Constructs a nonterminal. Productions are undefined at this point.
      */
     public EbnfNonterminal(String name) {
-        assert name != null;
-        assert name.length() > 0;
+        Checks.notNull(name);
+        Checks.argument(!name.isEmpty());
         this.name = name;
 
         productions = null;
@@ -37,10 +39,8 @@ public final class EbnfNonterminal {
      * Sets productions of this nonterminal.
      */
     public void setProductions(EbnfProductions productions) {
-        assert productions != null;
-        assert this.productions == null;
-
-        this.productions = productions;
+        Checks.state(this.productions == null);
+        this.productions = Checks.notNull(productions);
         for (EbnfProduction production : productions.asList()) {
             production.setNonterminal(this);
         }
@@ -50,7 +50,7 @@ public final class EbnfNonterminal {
      * Returns productions of this nonterminal.
      */
     public EbnfProductions getProductions() {
-        assert productions != null : name;
+        Checks.notNull(productions);
         return productions;
     }
 

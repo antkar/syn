@@ -4,9 +4,9 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -24,18 +24,18 @@ import org.antkar.syn.sample.script.rt.op.operand.Operand;
 /**
  * A value of type {@link String}.
  */
-class StringValue extends RValue {
+final class StringValue extends RValue {
     private final String value;
 
     StringValue(String value) {
         this.value = value;
     }
-    
+
     @Override
     public Operand toOperand() throws SynsException {
         return Operand.forString(this, value);
     }
-    
+
     @Override
     public ValueType getValueType() {
         return ValueType.STRING;
@@ -45,7 +45,7 @@ class StringValue extends RValue {
     public Object toJava(Class<?> type, TypeMatchPrecision precision) {
         return type.isAssignableFrom(String.class) ? value : INVALID;
     }
-    
+
     @Override
     public Value getMemberOpt(String name, ScriptScope readerScope) {
         JavaClass javaClass = JavaClass.getInstance(String.class);

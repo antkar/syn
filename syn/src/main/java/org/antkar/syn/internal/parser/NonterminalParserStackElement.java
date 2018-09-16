@@ -17,6 +17,7 @@ package org.antkar.syn.internal.parser;
 
 import java.io.PrintStream;
 
+import org.antkar.syn.internal.Checks;
 import org.antkar.syn.internal.CommonUtil;
 import org.antkar.syn.internal.lrtables.ParserProduction;
 import org.antkar.syn.internal.lrtables.ParserState;
@@ -24,7 +25,7 @@ import org.antkar.syn.internal.lrtables.ParserState;
 /**
  * Nonterminal stack element. Contains sub-elements.
  */
-class NonterminalParserStackElement extends ParserStackElement {
+final class NonterminalParserStackElement extends ParserStackElement {
     private final ParserProduction production;
 
     /** The top of the stack of sub-elements. */
@@ -37,12 +38,8 @@ class NonterminalParserStackElement extends ParserStackElement {
             ParserStackElement subElements)
     {
         super(prev, state);
-
-        assert production != null;
-        assert subElements != null;
-
-        this.production = production;
-        this.subElements = subElements;
+        this.production = Checks.notNull(production);
+        this.subElements = Checks.notNull(subElements);
     }
 
     @Override

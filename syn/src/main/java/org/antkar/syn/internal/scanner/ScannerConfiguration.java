@@ -19,6 +19,7 @@ import java.util.Collections;
 import java.util.Map;
 
 import org.antkar.syn.TokenDescriptor;
+import org.antkar.syn.internal.Checks;
 
 /**
  * Scanner configuration. Defines what tokens have to be recognized by a lexical analyzer.
@@ -33,8 +34,8 @@ public final class ScannerConfiguration {
             Map<String, TokenDescriptor> keywordMap,
             KeycharTreeNode keycharTreeRoot)
     {
-        assert keywordMap != null;
-        assert keycharTreeRoot != null;
+        Checks.notNull(keywordMap);
+        Checks.notNull(keycharTreeRoot);
 
         //Initialize fields.
         this.floatingPoint = floatingPoint;
@@ -47,7 +48,7 @@ public final class ScannerConfiguration {
      * @return the keyword token descriptor, or <code>null</code>, if there is no such keyword.
      */
     TokenDescriptor getKeyword(String literal) {
-        assert literal != null;
+        Checks.notNull(literal);
         TokenDescriptor tokenDescriptor = keywordMap.get(literal);
         return tokenDescriptor;
     }

@@ -29,8 +29,7 @@ public final class TokenNode extends TerminalNode {
 
     public TokenNode(PosBuffer pos, TokenDescriptor tokenDescriptor) {
         super(pos);
-        assert tokenDescriptor != null;
-        this.tokenDescriptor = tokenDescriptor;
+        this.tokenDescriptor = Checks.notNull(tokenDescriptor);
     }
 
     @Override

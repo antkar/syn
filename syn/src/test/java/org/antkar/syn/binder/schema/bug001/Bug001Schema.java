@@ -17,7 +17,7 @@ package org.antkar.syn.binder.schema.bug001;
 
 import org.antkar.syn.binder.SynField;
 
-public class Bug001Schema {
+public final class Bug001Schema {
     @SynField
     private Bug001Foo foo;
 

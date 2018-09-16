@@ -16,6 +16,7 @@
 package org.antkar.syn.internal.ebnf;
 
 import org.antkar.syn.TextPos;
+import org.antkar.syn.internal.Checks;
 
 /**
  * Compound EBNF element. An element that contains a set of EBNF productions.
@@ -25,15 +26,14 @@ abstract class EbnfCompoundElement extends EbnfElement {
 
     EbnfCompoundElement(String key, TextPos keyPos, EbnfProductions body) {
         super(key, keyPos);
-        assert body != null;
-        this.body = body;
+        this.body = Checks.notNull(body);
     }
 
     /**
      * Returns the body productions. (Repetition element, a subclass of this class, has also separator
      * productions).
      */
-    public EbnfProductions getBody() {
+    public final EbnfProductions getBody() {
         return body;
     }
 }

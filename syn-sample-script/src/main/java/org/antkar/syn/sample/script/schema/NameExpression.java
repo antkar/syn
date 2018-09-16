@@ -26,7 +26,7 @@ import org.antkar.syn.sample.script.util.MiscUtil;
 /**
  * Name expression syntax node.
  */
-public class NameExpression extends TerminalExpression {
+public final class NameExpression extends TerminalExpression {
     /** The chain of names. */
     @SynField
     private StringToken[] synNames;

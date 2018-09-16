@@ -26,7 +26,7 @@ import org.antkar.syn.sample.script.rt.value.Value;
 /**
  * Script <code>while</code> statement syntax node.
  */
-public class WhileStatement extends Statement {
+public final class WhileStatement extends Statement {
     /** The text position of the first token. */
     @SynField
     private TextPos synPos;

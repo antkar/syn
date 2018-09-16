@@ -16,6 +16,7 @@
 package org.antkar.syn.sample.script.rt.value;
 
 import org.antkar.syn.binder.StringToken;
+import org.antkar.syn.internal.Checks;
 import org.antkar.syn.sample.script.rt.ScriptScope;
 import org.antkar.syn.sample.script.rt.SynsException;
 import org.antkar.syn.sample.script.rt.TextSynsException;
@@ -163,7 +164,7 @@ public abstract class Value {
      * Creates a new variable value with the specified initial value.
      */
     public static LValue newVariable(Value initialValue) throws SynsException {
-        assert initialValue != null;
+        Checks.notNull(initialValue);
         return new VariableValue(initialValue.toRValue());
     }
 
@@ -205,6 +206,9 @@ public abstract class Value {
     /**
      * Calls this value, considering it a function or another entity that can be called.
      * If the value cannot be called, an exception is thrown.
+     *
+     * @param arguments Actual arguments.
+     *
      * @throws SynsException if call fails.
      */
     public Value call(RValue[] arguments) throws SynsException {
@@ -227,6 +231,9 @@ public abstract class Value {
     /**
      * Returns the value of the member with the specified name, or <code>null</code> if there is
      * no such member. Throws an exception if the value does not support members at all.
+     *
+     * @param name Name of the member.
+     * @param readerScope Scope of the caller.
      */
     public Value getMemberOpt(String name, ScriptScope readerScope) throws SynsException {
         throw errInvalidOperation();
@@ -235,6 +242,9 @@ public abstract class Value {
     /**
      * Constructs a new object value from this value. This value must be a class value. Otherwise,
      * an exception is thrown.
+     *
+     * @param arguments Constructor arguments.
+     *
      * @throws SynsException - if construction fails.
      */
     public Value newObject(RValue[] arguments) throws SynsException {

@@ -19,7 +19,6 @@ import java.lang.reflect.Field;
 import java.util.Collection;
 
 import org.antkar.syn.binder.SynBinderException;
-import org.antkar.syn.internal.binder.LookupBinder;
 
 /**
  * Single object binder. Binds a single object to a field of a non-array type.
@@ -31,7 +30,7 @@ final class SingleObjectLookupBinder extends LookupBinder {
     }
 
     @Override
-    protected Object createValue(Collection<Object> oObjs) throws SynBinderException {
+    Object createValue(Collection<Object> oObjs) throws SynBinderException {
         Object result;
 
         if (oObjs.isEmpty()) {

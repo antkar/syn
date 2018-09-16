@@ -18,6 +18,7 @@ package org.antkar.syn.internal.ebnf;
 import org.antkar.syn.SynException;
 import org.antkar.syn.TextPos;
 import org.antkar.syn.TokenDescriptor;
+import org.antkar.syn.internal.Checks;
 import org.antkar.syn.internal.bnf.BnfElement;
 import org.antkar.syn.internal.bnf.BnfTerminal;
 import org.antkar.syn.internal.grammar.EbnfToBnfConverter;
@@ -32,8 +33,7 @@ public final class EbnfTerminalElement extends EbnfElement {
 
     public EbnfTerminalElement(String key, TextPos keyPos, TokenDescriptor descriptor) {
         super(key, keyPos);
-        assert descriptor != null;
-        tokenDescriptor = descriptor;
+        tokenDescriptor = Checks.notNull(descriptor);
     }
 
     /**

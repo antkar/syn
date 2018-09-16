@@ -4,9 +4,9 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -27,7 +27,7 @@ class LevelMap {
     public var wallMatrix;      // boolean[][]: wallMatrix[y][x] == true if the cell (x, y) is a wall.
     public var startLocation;   // Vector2D.
     public var startDirection;  // Vector2D: x, y = -1, 0 or 1, denoting position change on each step.
-    
+
     function LevelMap(wallMatrix, startLocation, startDirection) {
         this.wallMatrix = wallMatrix;
         this.startLocation = startLocation;
@@ -58,7 +58,7 @@ class Level_MapGenerator {
         this.level = level;
         field = Level_Field(mapSize);
     }
-    
+
     public function generate() {
         generateRandomField();
         var wallMatrix = fillWallMatrix();
@@ -66,33 +66,33 @@ class Level_MapGenerator {
         var startLocation = startPos.location.mul(blockSize).add(blockSize.div(2, 2));
         return LevelMap(wallMatrix, startLocation, startPos.direction);
     }
-    
+
     function generateRandomField() {
         generateBorderWalls();
         generateInnerWalls();
     }
-    
+
     function generateBorderWalls() {
         generateBorderWall(point(0, 0), WALL_RIGHT);
         generateBorderWall(point(0, mapSize.y), WALL_RIGHT);
         generateBorderWall(point(0, 0), WALL_DOWN);
         generateBorderWall(point(mapSize.x, 0), WALL_DOWN);
     }
-    
+
     function generateBorderWall(startPoint, direction) {
         var endPoint = mapSize.add(direction.reverse());
         for (var currentPoint : startPoint.range(endPoint, direction)) field.addLink(currentPoint, direction);
     }
-    
+
     function generateInnerWalls() {
         var mirror = chooseRandomMirror();
-        
+
         var wallCountGoal = level + 4;
         while (calculateCurrentWallCount() < wallCountGoal) {
             if (!generateWall(mirror)) break;
         }
     }
-    
+
     function chooseRandomMirror() {
         var mirrors = Level_MirrorGenerator(mapSize).createMirrors();
         return mirrors[LEVEL_RANDOM_NUMBER_GENERATOR.nextInt(mirrors.length)];
@@ -107,17 +107,17 @@ class Level_MapGenerator {
         }
         return count;
     }
-    
+
     // Returns true if a wall was generated, and false if there is no space for a wall.
     function generateWall(mirror) {
         var walls = generateAllPossibleWalls(mirror);
         if (walls.isEmpty()) return false;
-        
+
         var wall = selectRandomWall(walls);
         buildWall(mirror, wall);
         return true;
     }
-    
+
     function generateAllPossibleWalls(mirror) {
         var walls = ArrayList();
         for (var pos : point(0, 0).range2D(mirror.getSize().add(1))) {
@@ -130,11 +130,11 @@ class Level_MapGenerator {
     // Lists all possible walls that can be built at the given point and direction.
     // All the returned walls are located at the same point, but have different lengths.
     function generateWallsForDirection(mirror, pos, dir, walls) {
-    
+
         // If the specified origin node is linked to another node, no wall can be generated.
         if (field.isLink(pos, dir)) return;
         if (field.isLink(pos.sub(dir), dir)) return;
-        
+
         // Generate walls, increasing the length one by one, while possible.
         var endPos = mirror.getSize().add(1).sub(dir);
         for (var tpos : pos.range(endPos, dir)) {
@@ -144,7 +144,7 @@ class Level_MapGenerator {
             walls.add(wall);
         }
     }
-    
+
     function generateWallForPosition(mirror, pos, dir, len) {
         var priority = getWallPriority(pos, dir, len);
         var wall = Level_Wall(pos, dir, len, priority);
@@ -165,14 +165,14 @@ class Level_MapGenerator {
             var pos = wall.location.add(wall.direction.mul(i));
             var node1 = field.nodeAt(pos);
             var node2 = field.nodeAt(pos.add(wall.direction));
-            
+
             var set1 = componentDisjointSet.findSet(node1.getDisjointSetKey());
             var set2 = componentDisjointSet.findSet(node2.getDisjointSetKey());
             if (set1 == set2) return true;
-            
+
             componentDisjointSet.union(node1.getDisjointSetKey(), node2.getDisjointSetKey());
         }
-        
+
         return false;
     }
 
@@ -183,11 +183,11 @@ class Level_MapGenerator {
         var fieldCenterPos = mapSize.div(2, 2);
         var centerDistance = centerPos.sub(fieldCenterPos).length();
         var centerScore = Math.max(0, fieldCenterPos.length() - centerDistance);
-        
+
         var maxLen = mapSize.mul(dir).sum() + 1;
         var lenQuotient = Math.min(len, maxLen - len);
         var lenScore = Math.pow(2, Math.min(20, lenQuotient));
-        
+
         return (int)(centerScore + lenScore);
     }
 
@@ -198,7 +198,7 @@ class Level_MapGenerator {
 
         var r = LEVEL_RANDOM_NUMBER_GENERATOR.nextInt(prioritySum);
         var s = 0;
-        
+
         for (var wall : walls) {
             if (r >= s && r < s + wall.priority) {
                 walls.remove(wall);
@@ -206,7 +206,7 @@ class Level_MapGenerator {
             }
             s += wall.priority;
         }
-        
+
         return walls[walls.size() - 1];
     }
 
@@ -237,7 +237,7 @@ class Level_MapGenerator {
             }
         }
     }
-    
+
     function chooseBestStartPosition(startPosList) {
         var bestPosition = extList(startPosList).reduce((pos1, pos2) -> {
             var score1 = calculateStartPositionScore(pos1);
@@ -249,14 +249,14 @@ class Level_MapGenerator {
 
     function calculateStartPositionScore(position) {
         var emptySpaceScore = calculateEmptySpaceAhead(position.location, position.direction);
-        
+
         var centerLocation = mapSize.div(2, 2);
         var centerDistance = position.location.sub(centerLocation).length();
         var centerDistanceScore = Math.max(0, centerLocation.length() - centerDistance);
-        
+
         return emptySpaceScore + centerDistanceScore;
     }
-    
+
     function calculateEmptySpaceAhead(pos, dir) {
         var space = 0;
         for (var tpos : pos.range(mapSize, dir)) {
@@ -265,21 +265,21 @@ class Level_MapGenerator {
         }
         return space;
     }
-    
+
     // Fills level map cells according to links defined between field nodes.
     function fillWallMatrix() {
         var gridSize = mapSize.mul(blockSize).add(1);
-        
+
         // Fill all cells with false.
         var map = new [gridSize.y][gridSize.x];
         for (var pos : point(0, 0).range2D(gridSize)) map[pos.y][pos.x] = false;
-        
+
         // Fill cells occupied by walls with true.
         for (var pos : point(0, 0).range2D(gridSize)) {
             fillMapLink(map, pos, WALL_RIGHT);
             fillMapLink(map, pos, WALL_DOWN);
         }
-        
+
         return map;
     }
 
@@ -290,7 +290,7 @@ class Level_MapGenerator {
             for (var mpos : pos.mul(blockSize).range(endMPos, dir)) map[mpos.y][mpos.x] = true;
         }
     }
-    
+
     function point(x, y) = Vector2D(x, y);
 }
 
@@ -301,7 +301,7 @@ class Level_Node {
     var linkDown;              // true if this node (x, y) is linked with the node (x, y+1).
     var linkRight;             // true if this node (x, y) is linked with the node (x+1, y).
     var disjointSetKey;        // A string used to represent this node in a disjoint-set.
-    
+
     function Level_Node(pos) {
         linkDown = false;
         linkRight = false;
@@ -309,9 +309,9 @@ class Level_Node {
     }
 
     public function getDisjointSetKey() = disjointSetKey;
-    
+
     public function isLink(dir) = dir.x != 0 ? linkRight : linkDown;
-    
+
     public function setLink(dir) {
         if (dir.x != 0) {
             linkRight = true;
@@ -329,10 +329,10 @@ class Level_Field {
     // Disjoint-set for tracking connected components of the wall graph.
     // (Needed to avoid closed regions.)
     var componentDisjointSet = DisjointSet();
-    
+
     function Level_Field(size) {
         this.size = size;
-        
+
         // Create nodes table.
         nodesTable = new [size.y + 1][size.x + 1];
         for (var pos : Vector2D(0, 0).range2D(size.add(1))) {
@@ -341,15 +341,15 @@ class Level_Field {
     }
 
     public function getComponentDisjointSetCopy() = componentDisjointSet.clone();
-    
+
     public function nodeAt(pos) = nodesTable[pos.y][pos.x];
-    
+
     // Checks if there is a link between two adjacent nodes.
     public function isLink(pos, dir) {
         if (pos.x < 0 || pos.y < 0 || pos.x > size.x || pos.y > size.y) return false;
         return nodeAt(pos).isLink(dir);
     }
-    
+
     // Adds a link between two adjacent nodes.
     public function addLink(pos, dir) {
         var node = nodeAt(pos);
@@ -365,21 +365,21 @@ class Level_Wall {
     public var direction;   // Vector2D: (1, 0) or (0, 1).
     public var length;      // Length.
     public var priority;    // Priority: the probability of choosing a wall is proportional to its priority.
-    
+
     function Level_Wall(location, direction, length, priority) {
         this.location = location;
         this.direction = direction;
         this.length = length;
         this.priority = priority;
     }
-    
+
     public function equals(w) = location.equals(w.location) && direction.equals(w.direction);
 }
 
 class Level_StartPosition {
     public var location;
     public var direction;
-    
+
     function Level_StartPosition(location, direction) {
         this.location = location;
         this.direction = direction;
@@ -391,7 +391,7 @@ class Level_StartPosition {
 class Level_Reflection {
     public var location;
     public var inversion;
-    
+
     function Level_Reflection(location, inversion) {
         this.location = location;
         this.inversion = inversion;
@@ -403,15 +403,15 @@ class Level_Mirror {
     var mirrorSize;
     var fieldSize;
     var reflections;
-    
+
     function Level_Mirror(fieldSize, mirrorSize, reflections) {
         this.fieldSize = fieldSize;
         this.mirrorSize = mirrorSize;
         this.reflections = reflections;
     }
-    
+
     public function getSize() = mirrorSize;
-    
+
     public function allReflections(wall) {
         var walls = ArrayList();
         walls.add(wall);
@@ -424,9 +424,9 @@ class Level_Mirror {
         var newY = reflectWallByAxis(mirrorSize, reflection, wall, 1);
         var newLocation = Vector2D(newX, newY);
         if (!newLocation.isInRectangle(fieldSize)) return;
-        
+
         var newWall = Level_Wall(newLocation, wall.direction, wall.length, wall.priority);
-        
+
         if (extList(walls).exists(w -> w.equals(newWall))) return;
         walls.add(newWall);
     }
@@ -444,11 +444,11 @@ class Level_Mirror {
 
 class Level_MirrorGenerator {
     var fieldSize;
-    
+
     function Level_MirrorGenerator(fieldSize) {
         this.fieldSize = fieldSize;
     }
-    
+
     public function createMirrors() = [
         createNoneMirror(),
         createVMirror(1),
@@ -464,7 +464,7 @@ class Level_MirrorGenerator {
 
     // Mock mirror. Does not modify coordinates.
     function createNoneMirror() = Level_Mirror(fieldSize, fieldSize, []);
-    
+
     // Vertical mirror. Mirrors the left half of a field to its right half.
     function createVMirror(my) {
         var mirrorSize = fieldSize.div(2, 1);
@@ -482,15 +482,15 @@ class Level_MirrorGenerator {
     // Vertical and horizontal mirror. Mirrors the top left quarter of a field to all the other quarters.
     function createHVMirror(mx1, my1, mx2, my2) {
         var mirrorSize = fieldSize.div(2, 2);
-        
+
         var reflections = [
             Level_Reflection(mirrorSize.mul(0, 1), point(mx1, my1)),
             Level_Reflection(mirrorSize.mul(1, 0), point(mx2, my2)),
             Level_Reflection(mirrorSize, point(mx1 * mx2, my1 * my2))
         ];
-        
+
         return Level_Mirror(fieldSize, mirrorSize, reflections);
     }
-    
+
     function point(x, y) = Vector2D(x, y);
 }

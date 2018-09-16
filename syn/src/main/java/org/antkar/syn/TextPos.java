@@ -15,6 +15,8 @@
  */
 package org.antkar.syn;
 
+import org.antkar.syn.internal.Checks;
+
 /**
  * A position in an input text. Possible modes are:
  * <ol>
@@ -58,9 +60,7 @@ public final class TextPos {
      * @param source the descriptor of the input. Cannot be <code>null</code>.
      */
     public TextPos(SourceDescriptor source) {
-        assert source != null;
-
-        this.source = source;
+        this.source = Checks.notNull(source);
         offset = -1;
         line = -1;
         column = -1;
@@ -77,14 +77,13 @@ public final class TextPos {
      * @param length the segment length.
      */
     public TextPos(SourceDescriptor source, int offset, int line, int column, int length) {
-        assert source != null;
-        assert offset >= 0;
-        assert line >= 1;
-        assert column >= 1;
-        assert length >= 0;
+        Checks.argument(offset >= 0);
+        Checks.argument(line >= 1);
+        Checks.argument(column >= 1);
+        Checks.argument(length >= 0);
 
         this.offset = offset;
-        this.source = source;
+        this.source = Checks.notNull(source);
         this.line = line;
         this.column = column;
         this.length = length;

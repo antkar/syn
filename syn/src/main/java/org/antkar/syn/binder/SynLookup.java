@@ -4,9 +4,9 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -23,7 +23,7 @@ import java.lang.annotation.Target;
 /**
  * <p>Indicates that an object or a set of objects instantiated by {@link SynBinder} have to be bound to
  * the annotated field, if that objects satisfy the specified filter.</p>
- * 
+ *
  * <p>Example:
  * <pre>
  * public class SimpleEntity {
@@ -35,7 +35,7 @@ import java.lang.annotation.Target;
  * }</pre>
  * In each object of this class the field <code>entitiesWithSameName</code> will be initialized by an array
  * of other <code>SimpleEntity</code> objects whose <code>sfName</code> field has the same value.</p>
- * 
+ *
  * <p>A filter can include:
  * <ol>
  * <li>Predefined variable <code>this</code> - the object whose field if being initialized.</li>

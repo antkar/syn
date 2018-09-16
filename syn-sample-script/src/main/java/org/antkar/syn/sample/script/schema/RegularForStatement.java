@@ -25,7 +25,7 @@ import org.antkar.syn.sample.script.rt.value.Value;
 /**
  * Regular <code>for</code> statement syntax node.
  */
-public class RegularForStatement extends ForStatement {
+public final class RegularForStatement extends ForStatement {
     /** The initializer. */
     @SynField
     private ForInit synInit;

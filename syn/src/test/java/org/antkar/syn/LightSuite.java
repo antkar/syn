@@ -16,6 +16,7 @@
 package org.antkar.syn;
 
 import org.antkar.syn.binder.SynBinder;
+import org.antkar.syn.internal.grammar.XmlGrammarParserTest;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
@@ -36,6 +37,6 @@ import org.junit.runners.Suite.SuiteClasses;
     TokenStreamStringTest.class,
     BugsTest.class,
 })
-public class LightSuite {
+public final class LightSuite {
     private LightSuite(){}
 }

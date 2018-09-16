@@ -4,9 +4,9 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -28,46 +28,46 @@ abstract class JavaFieldValue extends LValue {
     JavaFieldValue(JavaField field) {
         this.field = field;
     }
-    
+
     /**
      * Returns the associated Java field.
      */
     final JavaField getField() {
         return field;
     }
-    
+
     @Override
-    public ValueType getValueType() {
+    public final ValueType getValueType() {
         return ValueType.JAVAFIELD;
     }
-    
+
     @Override
-    ValueType getTypeofValueType() throws SynsException {
+    final ValueType getTypeofValueType() throws SynsException {
         return toRValue().getTypeofValueType();
     }
-    
+
     @Override
-    public String getTypeMessage() {
+    public final String getTypeMessage() {
         return getCompoundTypeMessage(getField() + "");
     }
 
     @Override
-    public void assign(RValue value) throws SynsException {
+    public final void assign(RValue value) throws SynsException {
         Object object = value.toJava(field.getType(), TypeMatchPrecision.NULL);
         setFieldValue(object);
     }
 
     @Override
-    public RValue toRValue() throws SynsException {
+    public final RValue toRValue() throws SynsException {
         Object javaValue = getFieldValue();
         return Value.forJavaObject(javaValue);
     }
-    
+
     /**
      * Reads the value of the Java field.
      */
     abstract Object getFieldValue() throws SynsException;
-    
+
     /**
      * Writes the value of the Java field.
      */

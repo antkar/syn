@@ -16,20 +16,19 @@
 package org.antkar.syn.internal.lrtables;
 
 import java.io.PrintStream;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.antkar.syn.TokenDescriptor;
+import org.antkar.syn.internal.Checks;
+import org.antkar.syn.internal.CommonUtil;
 import org.antkar.syn.internal.parser.ParserEngine;
 
 /**
  * Parser configuration. Defines LR tables and other information used by {@link ParserEngine} to
  * parse a text.
  */
-public class ParserConfiguration {
+public final class ParserConfiguration {
     private final Map<String, ParserState> startStates;
     private final List<ParserState> states;
     private final List<TokenDescriptor> tokenDescriptors;
@@ -39,13 +38,13 @@ public class ParserConfiguration {
             List<ParserState> states,
             List<TokenDescriptor> tokenDescriptors)
     {
-        assert startStates != null;
-        assert states != null;
-        assert tokenDescriptors != null;
+        Checks.notNull(startStates);
+        Checks.notNull(states);
+        Checks.notNull(tokenDescriptors);
 
-        this.startStates = Collections.unmodifiableMap(new HashMap<>(startStates));
-        this.states = Collections.unmodifiableList(new ArrayList<>(states));
-        this.tokenDescriptors = Collections.unmodifiableList(new ArrayList<>(tokenDescriptors));
+        this.startStates = CommonUtil.unmodifiableMapCopy(startStates);
+        this.states = CommonUtil.unmodifiableListCopy(states);
+        this.tokenDescriptors = CommonUtil.unmodifiableListCopy(tokenDescriptors);
     }
 
     /**

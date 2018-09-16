@@ -23,7 +23,7 @@ import org.antkar.syn.sample.script.rt.value.Value;
 /**
  * Script <code>null</code> literal expression syntax node.
  */
-public class NullExpression extends LiteralExpression {
+public final class NullExpression extends LiteralExpression {
     /** The text position. */
     @SynField
     private TextPos synPos;

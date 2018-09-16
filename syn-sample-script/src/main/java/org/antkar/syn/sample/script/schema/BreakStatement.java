@@ -24,7 +24,7 @@ import org.antkar.syn.sample.script.rt.SynsException;
 /**
  * Script <code>break</code> statement syntax node.
  */
-public class BreakStatement extends Statement {
+public final class BreakStatement extends Statement {
     /** The text position. */
     @SynField
     private TextPos synPos;

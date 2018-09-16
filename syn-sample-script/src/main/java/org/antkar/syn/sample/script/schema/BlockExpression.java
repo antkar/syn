@@ -25,7 +25,7 @@ import org.antkar.syn.sample.script.schema.FunctionObject.Factory;
 /**
  * Block expression syntax node.
  */
-public class BlockExpression extends TerminalExpression {
+public final class BlockExpression extends TerminalExpression {
     /** The text position of the first token of the block. */
     @SynField
     private TextPos synPos;

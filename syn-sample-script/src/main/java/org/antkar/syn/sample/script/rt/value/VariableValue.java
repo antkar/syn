@@ -4,9 +4,9 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -18,33 +18,33 @@ package org.antkar.syn.sample.script.rt.value;
 /**
  * Variable value. Contains a mutable reference to an {@link RValue}.
  */
-class VariableValue extends LValue {
+final class VariableValue extends LValue {
     private RValue value;
-    
+
     VariableValue(RValue initialValue) {
         value = initialValue;
     }
-    
+
     @Override
     public ValueType getValueType() {
         return ValueType.VARIABLE;
     }
-    
+
     @Override
     public String getTypeMessage() {
         return getCompoundTypeMessage(value.getTypeMessage());
     }
-    
+
     @Override
     public RValue toRValue() {
         return value;
     }
-    
+
     @Override
     public void assign(RValue rvalue) {
         this.value = rvalue;
     }
-    
+
     @Override
     public String toString() {
         return "var[" + value + "]";

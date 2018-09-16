@@ -4,9 +4,9 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -35,10 +35,10 @@ import org.antkar.syn.sample.script.ScannerFactory;
 /**
  * Script IDE window. Contains a source code editor and a console output box.
  */
-class ScriptWindow {
-    
+final class ScriptWindow {
+
     private final IDE ide;
-    
+
     private final JFrame frame;
     private final SourceCodeEditor sourceCodeEditor;
     private final ConsoleComponent console;
@@ -47,26 +47,26 @@ class ScriptWindow {
 
     ScriptWindow(IDE ide, ScannerFactory scannerFactory) {
         this.ide = ide;
-        
+
         //Create components.
         frame = new JFrame("Script");
         sourceCodeEditor = new SourceCodeEditor(scannerFactory);
         console = new ConsoleComponent();
         btnExecute = new JButton("Execute");
         splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
-        
+
         JPanel panel = createMainPanel();
-        
+
         //Initialize listeners.
         initListeners();
-        
+
         //Setup frame.
         frame.setContentPane(panel);
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.setSize(1000, 600);
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
-        
+
         //Divide the space between source code editor and console.
         SwingUtilities.invokeLater(new Runnable() {
             @Override
@@ -75,7 +75,7 @@ class ScriptWindow {
             }
         });
     }
-    
+
     /**
      * Installs components' listeners.
      */
@@ -87,7 +87,7 @@ class ScriptWindow {
                 ide.saveScript(source);
             }
         });
-        
+
         btnExecute.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -102,14 +102,14 @@ class ScriptWindow {
     private JPanel createMainPanel() {
         JPanel buttonPanel = new JPanel();
         buttonPanel.add(btnExecute);
-        
+
         JPanel outputPanel = new JPanel(new BorderLayout());
         outputPanel.add(buttonPanel, BorderLayout.NORTH);
         outputPanel.add(console.getComponent(), BorderLayout.CENTER);
-        
+
         splitPane.add(sourceCodeEditor.getComponent());
         splitPane.add(outputPanel);
-        
+
         JPanel panel = new JPanel(new BorderLayout());
         panel.add(splitPane, BorderLayout.CENTER);
         return panel;
@@ -122,7 +122,7 @@ class ScriptWindow {
         final String source = sourceCodeEditor.getText();
         console.clear();
         btnExecute.setEnabled(false);
-        
+
         //Run script in a new thread.
         Thread thread = new Thread("ScriptThread") {
             @Override
@@ -139,18 +139,18 @@ class ScriptWindow {
         thread.setDaemon(true);
         thread.start();
     }
-    
+
     /**
      * Script execution failed.
      */
     private void executionFailed(Exception e) {
         e.printStackTrace(System.out);
-        
+
         final StringWriter writer = new StringWriter();
         PrintWriter pwriter = new PrintWriter(writer);
         e.printStackTrace(pwriter);
         pwriter.flush();
-        
+
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
@@ -158,7 +158,7 @@ class ScriptWindow {
             }
         });
     }
-    
+
     /**
      * Script execution finished (successfully or not).
      */
@@ -170,28 +170,28 @@ class ScriptWindow {
             }
         });
     }
-    
+
     /**
      * Sets the script source code.
      */
     void setScriptText(String text) {
         sourceCodeEditor.setText(text);
     }
-    
+
     /**
      * Returns the current script source code in the editor.
      */
     String getScriptText() {
         return sourceCodeEditor.getText();
     }
-    
+
     /**
      * Writes a string into the console box as a standard output.
      */
     void writeOut(String str) {
         console.stdOut(str);
     }
-    
+
     /**
      * Writes a string into the console box as a standard error.
      */

@@ -25,7 +25,7 @@ import org.junit.Test;
 /**
  * Unit tests for {@link SynParser}.
  */
-public class SynParserSimpleTest extends Assert {
+public final class SynParserSimpleTest extends Assert {
 
     @Test
     public void testConstructSuccess() throws Exception {

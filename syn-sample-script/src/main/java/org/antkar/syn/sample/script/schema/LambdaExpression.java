@@ -12,7 +12,7 @@ import org.antkar.syn.sample.script.rt.value.Value;
 /**
  * Lambda expression.
  */
-public class LambdaExpression extends Expression {
+public final class LambdaExpression extends Expression {
     @SynField
     private LambdaParameters synParameters;
 

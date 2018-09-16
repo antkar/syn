@@ -29,12 +29,12 @@ public abstract class ForStatement extends Statement {
     public ForStatement(){}
 
     @Override
-    TextPos getStartTextPos() {
+    final TextPos getStartTextPos() {
         return synPos;
     }
 
     @Override
-    public String toString() {
+    public final String toString() {
         return "for (...)";
     }
 }

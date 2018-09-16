@@ -30,11 +30,11 @@ import org.antkar.syn.TokenDescriptor;
 import org.antkar.syn.TokenType;
 import org.antkar.syn.ValueNode;
 import org.antkar.syn.internal.BooleanValueNode;
+import org.antkar.syn.internal.Checks;
 import org.antkar.syn.internal.FloatValueNode;
 import org.antkar.syn.internal.IntegerValueNode;
 import org.antkar.syn.internal.LongValueNode;
 import org.antkar.syn.internal.StringValueNode;
-import org.antkar.syn.internal.TokenTypeResolver;
 import org.antkar.syn.internal.ebnf.EbnfElement;
 import org.antkar.syn.internal.ebnf.EbnfGrammar;
 import org.antkar.syn.internal.ebnf.EbnfNonterminal;
@@ -50,7 +50,7 @@ import org.xml.sax.SAXException;
 /**
  * A parser for the Grammar of SYN Grammar. The Grammar of Grammar is written in XML.
  */
-public final class XmlGrammarParser {
+final class XmlGrammarParser {
 
     private final List<EbnfNonterminal> startNonterminals = new ArrayList<>();
     private final List<EbnfTerminalElement> terminals = new ArrayList<>();
@@ -63,7 +63,7 @@ public final class XmlGrammarParser {
     /**
      * Parses the specified resource and returns an EBNF grammar. The resource must be an XML file.
      */
-    public static EbnfGrammar parseGrammar(URL url) throws SAXException, IOException, ParserConfigurationException {
+    static EbnfGrammar parseGrammar(URL url) throws SAXException, IOException, ParserConfigurationException {
         XmlGrammarParser grammarParser = new XmlGrammarParser();
         EbnfGrammar result = grammarParser.parseGrammarPrivate(url);
         return result;
@@ -85,11 +85,11 @@ public final class XmlGrammarParser {
      * Converts an XML node to an EBNF grammar.
      */
     private EbnfGrammar xmlTreeToGrammar(XmlNode node) {
-        assert "grammar".equals(node.getName());
+        Checks.state("grammar".equals(node.getName()));
         for (XmlNode subNode : node.getNestedNodes()) {
             convertNonterminal(subNode);
         }
-        assert !startNonterminals.isEmpty();
+        Checks.state(!startNonterminals.isEmpty());
 
         EbnfGrammar ebnfGrammar = new EbnfGrammar(startNonterminals, terminals);
         for (EbnfNonterminal eNonterminal : nameToNonterminalMap.values()) {
@@ -103,15 +103,15 @@ public final class XmlGrammarParser {
      * Creates an EBNF nonterminal defined by the given XML node.
      */
     private void convertNonterminal(XmlNode node) {
-        assert "nonterminal".equals(node.getName());
+        Checks.state("nonterminal".equals(node.getName()));
         String name = node.getAttributes().get("name");
         String start = node.getAttributes().get("start");
-        assert name != null;
+        Checks.notNull(name);
 
         //Check if it is the start nonterminal.
         boolean isStart = false;
         if (start != null) {
-            assert "true".equals(start);
+            Checks.state("true".equals(start));
             isStart = true;
         }
 
@@ -175,11 +175,11 @@ public final class XmlGrammarParser {
      * Converts an XML node to an EBNF terminal element.
      */
     private EbnfElement convertTk(XmlNode node) {
-        assert "tk".equals(node.getName());
+        Checks.state("tk".equals(node.getName()));
         String key = node.getAttributes().get("key");
         String name = node.getAttributes().get("name");
         String literal = node.getAttributes().get("lex");
-        assert name == null || literal == null;
+        Checks.state(name == null || literal == null);
 
         TokenDescriptor tokenDescriptor;
         if (name != null) {
@@ -199,7 +199,7 @@ public final class XmlGrammarParser {
      * Converts an XML node to an EBNF nonterminal element.
      */
     private EbnfElement convertNt(XmlNode node) {
-        assert "nt".equals(node.getName());
+        Checks.state("nt".equals(node.getName()));
         String name = node.getAttributes().get("name");
         String key = node.getAttributes().get("key");
         EbnfNonterminal nonterminal = getNonterminalByName(name);
@@ -212,11 +212,11 @@ public final class XmlGrammarParser {
      * Converts an XML node to an EBNF value element.
      */
     private EbnfElement convertVl(XmlNode node) {
-        assert "vl".equals(node.getName());
+        Checks.state("vl".equals(node.getName()));
 
         String key = node.getAttributes().get("key");
         String valueStr = node.getAttributes().get("value");
-        assert valueStr != null;
+        Checks.notNull(valueStr);
         ValueNode valueNode = getValueNode(valueStr);
 
         EbnfElement element = new EbnfValueElement(key, null, valueNode);
@@ -227,7 +227,7 @@ public final class XmlGrammarParser {
      * Converts an XML node to an EBNF optional element.
      */
     private EbnfElement convertOpt(XmlNode node) {
-        assert "opt".equals(node.getName());
+        Checks.state("opt".equals(node.getName()));
 
         String key = node.getAttributes().get("key");
         EbnfProduction production = convertRule(node);
@@ -241,12 +241,12 @@ public final class XmlGrammarParser {
      * Converts an XML node to an EBNF repetition element.
      */
     private EbnfElement convertRep(XmlNode node) {
-        assert "rep".equals(node.getName());
+        Checks.state("rep".equals(node.getName()));
 
         //Find out properties.
         String key = node.getAttributes().get("key");
         String nullable = node.getAttributes().get("nullable");
-        assert "true".equals(nullable) || "false".equals(nullable);
+        Checks.state("true".equals(nullable) || "false".equals(nullable));
         boolean isNullable = "true".equals(nullable);
 
         //Convert sub-elements.
@@ -313,7 +313,7 @@ public final class XmlGrammarParser {
      * Returns an existing or a newly created custom token with the given literal.
      */
     private TokenDescriptor getTerminalByLiteral(String literal) {
-        assert literal.length() > 0;
+        Checks.state(!literal.isEmpty());
 
         TokenDescriptor terminal = literalToTerminalMap.get(literal);
         if (terminal == null) {

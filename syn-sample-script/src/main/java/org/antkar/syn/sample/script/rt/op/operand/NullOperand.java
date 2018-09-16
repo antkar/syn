@@ -4,9 +4,9 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -22,31 +22,31 @@ import org.antkar.syn.sample.script.rt.value.Value;
 /**
  * A <code>null</code> operand.
  */
-class NullOperand extends Operand {
+final class NullOperand extends Operand {
     static final Operand INSTANCE = new NullOperand();
-    
+
     private NullOperand() {}
 
     @Override
     public OperandType getType() {
         return OperandType.NULL;
     }
-    
+
     @Override
     public RValue toRValue() {
         return Value.forNull();
     }
-    
+
     @Override
     public boolean booleanValueImplicit() {
         return false;
     }
-    
+
     @Override
     public String stringValue() {
         return null + "";
     }
-    
+
     @Override
     public Object objectValue() {
         return null;

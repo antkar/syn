@@ -4,9 +4,9 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -19,29 +19,29 @@ package org.antkar.syn.sample.script.ide;
  * Dynamically resizable byte buffer. Bytes can be inserted into the buffer; the buffer is resized
  * automatically, if necessary.
  */
-class ByteBuffer {
+final class ByteBuffer {
     private byte[] array;
     private int size;
-    
+
     ByteBuffer() {
         array = new byte[16];
         size = 0;
     }
-    
+
     /**
      * Returns the byte at the given offset.
      */
     int get(int offset) {
         return array[offset];
     }
-    
+
     /**
      * Sets the byte value at the given offset. The offset must be less than the current buffer size.
      */
     void set(int offset, int value) {
         array[offset] = (byte)value;
     }
-    
+
     /**
      * Sets a range of bytes to the specified value. The range must not exceed the current buffer size.
      */
@@ -51,7 +51,7 @@ class ByteBuffer {
             array[start++] = bvalue;
         }
     }
-    
+
     /**
      * Inserts the specified value into the specified range of bytes. Existing bytes are moved
      * forward. The buffer is resized, if necessary.
@@ -64,15 +64,15 @@ class ByteBuffer {
         if (left > 0) {
             System.arraycopy(array, start, array, end, left);
         }
-        
+
         byte bvalue = (byte)value;
         for (int i = start; i < end; ++i) {
             array[i] = bvalue;
         }
-        
+
         size += count;
     }
-    
+
     /**
      * Removes the specified range of bytes.
      */
@@ -82,21 +82,21 @@ class ByteBuffer {
         }
         size -= end - start;
     }
-    
+
     /**
      * Clears the buffer.
      */
     void clear() {
         size = 0;
     }
-    
+
     /**
      * Returns the size of the buffer.
      */
     int size() {
         return size;
     }
-    
+
     /**
      * Reserves the specified number of bytes in the buffer. This method guarantees that at least
      * the specified number of bytes is allocated for the buffer.

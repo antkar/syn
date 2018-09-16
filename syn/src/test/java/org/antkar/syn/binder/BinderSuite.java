@@ -27,6 +27,6 @@ import org.junit.runners.Suite.SuiteClasses;
     SimpleUnitBindingTest.class,
     SynBinderTest.class,
 })
-public class BinderSuite {
+public final class BinderSuite {
     private BinderSuite(){}
 }

@@ -92,7 +92,7 @@ public abstract class TerminalNode extends SynNode {
     }
 
     @Override
-    void print(PrintStream out, int level) {
+    final void print(PrintStream out, int level) {
         out.println(this);
     }
 

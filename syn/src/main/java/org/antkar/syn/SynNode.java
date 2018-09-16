@@ -34,7 +34,7 @@ public abstract class SynNode {
      *
      * @param out the stream to print the tree to.
      */
-    public void print(PrintStream out) {
+    public final void print(PrintStream out) {
         if (out == null) {
             throw new NullPointerException("out");
         }

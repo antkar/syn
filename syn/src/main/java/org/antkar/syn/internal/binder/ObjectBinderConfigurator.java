@@ -4,9 +4,9 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -44,15 +44,15 @@ import org.antkar.syn.internal.ebnf.EbnfValueElement;
 /**
  * Creates an {@link ObjectBinder}.
  */
-class ObjectBinderConfigurator {
-    
+final class ObjectBinderConfigurator {
+
     private final Class<?> cls;
     private final String ntName;
-    
+
     private final Map<String, Class<?>> ntNameToNtClassMap;
     private final Map<String, List<Class<?>>> ntNameToAllowedClssMap;
     private final Map<Class<?>, Map<String, Class<?>>> ownerClsToOwnedClsMap;
-    
+
     ObjectBinderConfigurator(
             Class<?> cls,
             String ntName,
@@ -77,10 +77,10 @@ class ObjectBinderConfigurator {
         //Process elements of the production, collect field binders.
         List<FieldBinder> fieldBinders = new ArrayList<>();
         processProduction0(production, definedFields, false, fieldBinders);
-        
+
         //Ensure that there are no field binder conflicts.
         List<FieldBinder> uniqueFieldBinders = getUniqueFieldBindersList(fieldBinders);
-        
+
         //Create an object binder.
         ObjectBinder objectBinder = new ObjectBinder(cls, uniqueFieldBinders);
         return objectBinder;
@@ -96,11 +96,11 @@ class ObjectBinderConfigurator {
     {
         List<FieldBinder> uniqueFieldBinders = new ArrayList<>();
         Map<String, FieldBinder> fieldNameToFieldBinderMap = new HashMap<>();
-        
+
         for (FieldBinder fieldBinder : fieldBinders) {
             String fieldName = fieldBinder.getFieldName();
             FieldBinder otherFieldBinder = fieldNameToFieldBinderMap.get(fieldName);
-            
+
             if (otherFieldBinder == null) {
                 fieldNameToFieldBinderMap.put(fieldName, fieldBinder);
                 uniqueFieldBinders.add(fieldBinder);
@@ -112,10 +112,10 @@ class ObjectBinderConfigurator {
                 }
             }
         }
-        
+
         return uniqueFieldBinders;
     }
-    
+
     /**
      * Processes elements of a production, collects field binders.
      */
@@ -126,7 +126,7 @@ class ObjectBinderConfigurator {
             List<FieldBinder> fieldBinders) throws SynException
     {
         Map<String, Collection<Field>> fieldsMap = getFieldsMapForClass(cls);
-        
+
         for (EbnfElement element : production.getElements()) {
             String attribute = element.getAttribute();
             if (attribute != null) {
@@ -170,28 +170,28 @@ class ObjectBinderConfigurator {
             public Void processValueElement(EbnfValueElement element) {
                 return null;
             }
-            
+
             @Override
             public Void processTerminalElement(EbnfTerminalElement element) {
                 return null;
             }
-            
+
             @Override
             public Void processRepetitionElement(EbnfRepetitionElement element) {
                 return null;
             }
-            
+
             @Override
             public Void processOptionalElement(EbnfOptionalElement element) throws SynException {
                 processEmbeddedElement(element, definedKeys, fieldBinders);
                 return null;
             }
-            
+
             @Override
             public Void processNonterminalElement(EbnfNonterminalElement element) {
                 return null;
             }
-            
+
             @Override
             public Void processNestedElement(EbnfNestedElement element) throws SynException {
                 processEmbeddedElement(element, definedKeys, fieldBinders);
@@ -214,7 +214,7 @@ class ObjectBinderConfigurator {
             processProduction0(bodyProduction, definedKeys, true, fieldBinders);
         }
     }
-    
+
     /**
      * Creates a field binder for the specified Java field and the EBNF element.
      */
@@ -226,17 +226,15 @@ class ObjectBinderConfigurator {
     {
         EbnfElementProcessor<BoundType> processor = new FieldBindingEbnfElementProcessor(
                 ntName,
-                key,
                 field,
-                embedded,
                 ntNameToNtClassMap,
                 ntNameToAllowedClssMap,
                 ownerClsToOwnedClsMap);
-        
+
         BoundType boundType = element.invokeProcessor(processor);
         return new FieldBinder(key, field, embedded, boundType);
     }
-    
+
     /**
      * Returns the collection of Java fields that have to be bound to the specified grammar attribute.
      * More than one Java field can be bound to a single attribute.
@@ -248,16 +246,16 @@ class ObjectBinderConfigurator {
             String attribute) throws SynBinderException
     {
         Collection<Field> fields = keyToFieldMap.get(attribute);
-        
+
         if (fields == null || fields.isEmpty()) {
             throw new SynBinderException(String.format(
                     "Class %s does not have a field '%s'",
                     cls.getCanonicalName(), attribute));
         }
-        
+
         return fields;
     }
-    
+
     /**
      * Builds a map which maps a grammar attribute name to a collection of Java fields where that
      * attribute has to be bound to.
@@ -266,13 +264,13 @@ class ObjectBinderConfigurator {
             throws SynBinderException
     {
         Map<String, Collection<Field>> map = new HashMap<>();
-        
+
         Class<?> curCls = cls;
         while (curCls != null) {
             getFieldsForConcreteClass(curCls, cls, map);
             curCls = curCls.getSuperclass();
         }
-        
+
         return map;
     }
 
@@ -288,12 +286,12 @@ class ObjectBinderConfigurator {
             SynField synField = field.getAnnotation(SynField.class);
             if (synField != null) {
                 verifyBoundField(initialCls, field);
-                
+
                 String attribute = synField.value();
                 if (attribute.isEmpty()) {
                     attribute = field.getName();
                 }
-                
+
                 CommonUtil.addToCollectionMap(map, attribute, field);
             }
         }
@@ -304,13 +302,13 @@ class ObjectBinderConfigurator {
      */
     private static void verifyBoundField(Class<?> cls, Field field) throws SynBinderException {
         int modifiers = field.getModifiers();
-        
+
         if (Modifier.isStatic(modifiers)) {
             throw new SynBinderException(String.format(
                     "Field '%s' of class %s is static",
                     field.getName(), cls.getCanonicalName()));
         }
-        
+
         if (Modifier.isFinal(modifiers)) {
             throw new SynBinderException(String.format(
                     "Field '%s' of class %s is final",

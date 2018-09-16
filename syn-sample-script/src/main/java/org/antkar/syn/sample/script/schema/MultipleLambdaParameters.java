@@ -10,7 +10,7 @@ import org.antkar.syn.binder.SynField;
 /**
  * Lambda expression formal parameters in parentheses, e. g. (a, b, c) -> ? or () -> ?.
  */
-public class MultipleLambdaParameters extends LambdaParameters {
+public final class MultipleLambdaParameters extends LambdaParameters {
     @SynField
     private TextPos synPos;
 

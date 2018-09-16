@@ -34,7 +34,7 @@ import org.junit.Test;
 /**
  * Unit test that parser JDK source codes.
  */
-public class SynParserJdkTest extends Assert {
+public final class SynParserJdkTest extends Assert {
     private static final String JDK_SRC_FILE_NAME = "src.zip";
 
     static final File JDK_SRC_FILE;

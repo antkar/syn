@@ -11,7 +11,7 @@ import org.antkar.syn.sample.script.rt.value.Value;
 /**
  * Function object implemented by a block (used in standard-form functions).
  */
-class BlockFunctionObject extends FunctionObject {
+final class BlockFunctionObject extends FunctionObject {
     private final Block block;
 
     private BlockFunctionObject(String scopeName, List<StringToken> parameters, Block block) {

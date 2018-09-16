@@ -21,7 +21,7 @@ import org.antkar.syn.binder.SynInit;
 import org.antkar.syn.binder.SynLookup;
 
 
-public class SimpleMember {
+public final class SimpleMember {
     @SynField
     private String sfName;
 

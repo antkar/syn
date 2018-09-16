@@ -27,8 +27,7 @@ public final class ObjectValueNode extends ValueNode {
 
     public ObjectValueNode(Object value) {
         super(null);
-        assert value != null;
-        this.value = value;
+        this.value = Checks.notNull(value);
     }
 
     @Override

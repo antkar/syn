@@ -4,9 +4,9 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -26,26 +26,26 @@ import org.antkar.syn.internal.PosBuffer;
 /**
  * Floating-point number scanner. Supports decimal and hexadecimal numbers.
  */
-class NumberScanner extends AbstractNumberScanner {
+final class NumberScanner extends AbstractNumberScanner {
     /**
      * The maximum length of a numeric literal in characters, regardless of a radix. If a literal is longer
      * than this value, an exception is thrown in order to prevent out of memory error in case if there is a
-     * very long sequence of digits in the input. 
+     * very long sequence of digits in the input.
      */
     static final int MAX_NUMERIC_LITERAL_LENGTH = 64;
-    
+
     private final IPrimitiveResult floatPrimitiveResult;
     private double floatValue;
-    
+
     NumberScanner() {
         super();
         floatPrimitiveResult = new FloatPrimitiveResult();
     }
-    
+
     @Override
     public IPrimitiveResult scan(PrimitiveContext context) throws SynException {
         IPrimitiveResult result = null;
-        
+
         //Examine the first character of the input.
         if (context.current == '0') {
             context.setMaxBufferLength(MAX_NUMERIC_LITERAL_LENGTH);
@@ -72,16 +72,16 @@ class NumberScanner extends AbstractNumberScanner {
             context.append('.');
             result = scanFracDecNumber(context);
         }
-        
+
         return result;
     }
 
     /**
-     * Scans a hexadecimal floating-point number. 
+     * Scans a hexadecimal floating-point number.
      */
     private IPrimitiveResult scanHexNumber(PrimitiveContext context) throws SynException {
         boolean floatingPoint;
-        
+
         //Scan an optional integer part.
         boolean intPart = AbstractNumberScanner.scanHexadecimalPrimitive(context, false);
         if (intPart) {
@@ -126,7 +126,7 @@ class NumberScanner extends AbstractNumberScanner {
             long value = IntegerNumberScanner.strToIntHex(context, bld, 2);
             result = intResult(value);
         }
-        
+
         return result;
     }
 
@@ -135,9 +135,9 @@ class NumberScanner extends AbstractNumberScanner {
      */
     private IPrimitiveResult scanDecNumber(PrimitiveContext context) throws SynException {
         boolean floatingPoint = false;
-        
+
         //Scan the number.
-        
+
         AbstractNumberScanner.scanDecimalPrimitive(context, false);
         if (context.current == '.') {
             context.append();
@@ -154,9 +154,9 @@ class NumberScanner extends AbstractNumberScanner {
         if (!floatingPoint) {
             AbstractNumberScanner.scanIntegerSuffix(context);
         }
-        
+
         //Return the result.
-        
+
         IPrimitiveResult result;
         if (floatingPoint) {
             floatValue = strToFloat(context, context.getString());
@@ -165,10 +165,10 @@ class NumberScanner extends AbstractNumberScanner {
             long value = IntegerNumberScanner.strToInt(context);
             result = intResult(value);
         }
-        
+
         return result;
     }
-    
+
     /**
      * Scans a fractional part of a decimal number.
      */
@@ -176,11 +176,11 @@ class NumberScanner extends AbstractNumberScanner {
         AbstractNumberScanner.scanDecimalPrimitive(context, true);
         scanDecimalExponent(context, false);
         scanFloatingPointSuffix(context);
-        
+
         floatValue = strToFloat(context, context.getString());
         return floatPrimitiveResult;
     }
-    
+
     /**
      * Scans a hexadecimal exponent part, e. g. <code>P+12</code>.
      */
@@ -234,7 +234,7 @@ class NumberScanner extends AbstractNumberScanner {
         }
         return result;
     }
-    
+
     /**
      * Converts a string representation of a floating-point number to a numeric value.
      */
@@ -252,7 +252,7 @@ class NumberScanner extends AbstractNumberScanner {
         TextPos pos = context.getCurrentTokenPos();
         throw new SynLexicalException(pos, "Floating-point value out of range: " + s);
     }
-    
+
     private final class FloatPrimitiveResult implements IPrimitiveResult {
         FloatPrimitiveResult(){}
 

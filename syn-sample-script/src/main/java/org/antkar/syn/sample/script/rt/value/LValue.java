@@ -31,7 +31,7 @@ public abstract class LValue extends Value {
     }
 
     @Override
-    public Operand toOperand() throws SynsException {
+    public final Operand toOperand() throws SynsException {
         return toRValue().toOperand();
     }
 

@@ -25,7 +25,7 @@ import org.antkar.syn.sample.script.util.MiscUtil;
 /**
  * New array expression syntax node.
  */
-public class NewArrayExpression extends NewExpression {
+public final class NewArrayExpression extends NewExpression {
     /** The dimensions of the array being created. */
     @SynField
     private ArrayDimension[] synDimensions;

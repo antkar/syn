@@ -4,9 +4,9 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -27,7 +27,7 @@ import org.antkar.syn.sample.script.rt.value.Value;
  * A set of Java methods. Contains overloaded methods - methods with the same name, but different
  * signatures.
  */
-public class JavaMethodSet extends JavaMember {
+public final class JavaMethodSet extends JavaMember {
     private final String name;
     private final List<? extends JavaAbstractMethod> methods;
 
@@ -35,7 +35,7 @@ public class JavaMethodSet extends JavaMember {
         this.name = name;
         this.methods = methods;
     }
-    
+
     @Override
     public String toString() {
         return name;
@@ -47,14 +47,14 @@ public class JavaMethodSet extends JavaMember {
     public Value callStatic(RValue[] arguments) throws SynsException {
         return call(null, arguments);
     }
-    
+
     /**
      * Invokes an instance method.
      */
     public Value callInstance(Object obj, RValue[] arguments) throws SynsException {
         return call(obj, arguments);
     }
-    
+
     @Override
     Value getStaticValue() {
         return new JavaStaticMethodValue(this);
@@ -76,7 +76,7 @@ public class JavaMethodSet extends JavaMember {
         if (obj == null && !method.isStatic()) {
             throw new SynsException("Cannot statically call instance method " + name);
         }
-        
+
         Object result = method.invoke(obj, arguments);
         if (method.isVoid()) {
             return Value.forVoid();
@@ -91,7 +91,7 @@ public class JavaMethodSet extends JavaMember {
     private JavaAbstractMethod findMethod(RValue[] arguments) throws SynsException {
         JavaAbstractMethod bestMethod = null;
         int bestPrecision = 0;
-        
+
         for (JavaAbstractMethod method : methods) {
             int precision = method.matchArguments(arguments);
             if (precision != -1) {
@@ -101,10 +101,10 @@ public class JavaMethodSet extends JavaMember {
                 }
             }
         }
-        
+
         return bestMethod;
     }
-    
+
     /**
      * Determines which of two methods has to be preferred.
      */
@@ -118,7 +118,7 @@ public class JavaMethodSet extends JavaMember {
         //chooses the best method. The main difference is in the comparison of methods with variable
         //numbers of arguments, but such methods are not used very often, so the solution seems
         //to be suitable.
-        
+
         //If one method has a variable number of arguments, and the other one does not, the
         //method with the fixed number of arguments is preferred.
         boolean varArgs1 = method1.isVarArgs();
@@ -126,26 +126,26 @@ public class JavaMethodSet extends JavaMember {
         if (varArgs1 != varArgs2) {
             return varArgs2;
         }
-        
+
         //Otherwise - check parameter types.
         Class<?>[] params1 = method1.getParameterTypes();
         Class<?>[] params2 = method2.getParameterTypes();
         int len = Math.min(params1.length, params2.length);
-        
+
         for (int i = 0; i < len; ++i) {
             Class<?> type1 = params1[i];
             Class<?> type2 = params2[i];
-            
+
             if (!type1.equals(type2)) {
                 if (precision1 > precision2) {
                     return true;
                 }
-                
+
                 return isTypeBetter(type1, type2);
             }
-            
+
         }
-        
+
         return false;
     }
 
@@ -159,7 +159,7 @@ public class JavaMethodSet extends JavaMember {
         if (primitive1 != primitive2) {
             return primitive1;
         }
-        
+
         return type2.isAssignableFrom(type1);
     }
 }

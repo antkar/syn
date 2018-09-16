@@ -32,6 +32,6 @@ import org.junit.runners.Suite.SuiteClasses;
     SynSuite.class,
     BinderSuite.class,
 })
-public class FullSuite {
+public final class FullSuite {
     private FullSuite(){}
 }

@@ -4,9 +4,9 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -17,19 +17,20 @@ package org.antkar.syn.internal.scanner;
 
 import org.antkar.syn.TerminalNode;
 import org.antkar.syn.TokenDescriptor;
+import org.antkar.syn.internal.Checks;
 import org.antkar.syn.internal.PosBuffer;
 import org.antkar.syn.internal.TokenNode;
 
 /**
  * Primitive result describing a token which does not have an associated value.
  */
-class TokenNodePrimitiveResult implements IPrimitiveResult {
+final class TokenNodePrimitiveResult implements IPrimitiveResult {
     private TokenDescriptor tokenDescriptor;
-    
+
     TokenNodePrimitiveResult(TokenDescriptor tokenDescriptor) {
         this.tokenDescriptor = tokenDescriptor;
     }
-    
+
     void setTokenDescriptor(TokenDescriptor tokenDescriptor) {
         this.tokenDescriptor = tokenDescriptor;
     }
@@ -41,7 +42,7 @@ class TokenNodePrimitiveResult implements IPrimitiveResult {
 
     @Override
     public TerminalNode createTokenNode(PosBuffer pos) {
-        assert tokenDescriptor != null;
+        Checks.notNull(tokenDescriptor);
         return new TokenNode(pos, tokenDescriptor);
     }
 }

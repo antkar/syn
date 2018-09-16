@@ -4,9 +4,9 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -29,24 +29,23 @@ import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.StyledDocument;
 
-import org.antkar.syn.sample.script.ScannerFactory;
-
 import org.antkar.syn.SynException;
 import org.antkar.syn.SynLexicalException;
 import org.antkar.syn.TokenDescriptor;
 import org.antkar.syn.TokenStream;
 import org.antkar.syn.TokenType;
+import org.antkar.syn.sample.script.ScannerFactory;
 
 /**
  * Source Code Editor visual component. The main feature is highlighting of different types of tokens
  * with different text styles.
  */
-class SourceCodeEditor {
+final class SourceCodeEditor {
     private final ScannerFactory scannerFactory;
-    
+
     private final JTextPane textPane;
     private final JScrollPane scrollPane;
-    
+
     private final AttributeSet defaultAttributes;
     private final AttributeSet identifierAttributes;
     private final AttributeSet keywordAttributes;
@@ -54,9 +53,9 @@ class SourceCodeEditor {
     private final AttributeSet numberAttributes;
     private final AttributeSet stringAttributes;
     private final AttributeSet commentAttributes;
-    
+
     private boolean manualUpdating;
-    
+
     /**
      * A byte buffer used to support incremental highlighting. The size of the buffer is the same
      * as the size of the actual text, in characters. A byte at a particular offset in the buffer has
@@ -65,7 +64,7 @@ class SourceCodeEditor {
      * to determine which fragment of the text has to be highlighted from scratch.
      */
     private final ByteBuffer byteBuffer;
-    
+
     SourceCodeEditor(ScannerFactory scannerFactory) {
         this.scannerFactory = scannerFactory;
 
@@ -73,7 +72,7 @@ class SourceCodeEditor {
         scrollPane = UIUtil.createTextPaneScrollPane(textPane);
 
         initListener();
-        
+
         Color darkGreen = Color.GREEN.darker().darker();
 
         //Define text attributes for different types of tokens.
@@ -85,10 +84,10 @@ class SourceCodeEditor {
         numberAttributes = defaultAttributes;
         stringAttributes = UIUtil.createTextAttributes(font, Color.BLUE, false, false);
         commentAttributes = UIUtil.createTextAttributes(font, darkGreen, false, true);
-        
+
         byteBuffer = new ByteBuffer();
     }
-    
+
     /**
      * Installs components' listeners.
      */
@@ -101,7 +100,7 @@ class SourceCodeEditor {
                     handleInsert(offset, offset + e.getLength());
                 }
             }
-            
+
             @Override
             public void removeUpdate(DocumentEvent e) {
                 if (!manualUpdating) {
@@ -113,13 +112,12 @@ class SourceCodeEditor {
             @Override
             public void changedUpdate(DocumentEvent e) {
                 if (!manualUpdating) {
-                    int offset = e.getOffset();
-                    handleChange(offset, offset + e.getLength());
+                    handleChange();
                 }
             }
         });
     }
-    
+
     /**
      * Sets the text.
      */
@@ -130,7 +128,7 @@ class SourceCodeEditor {
             StyledDocument doc = textPane.getStyledDocument();
             doc.remove(0, doc.getLength());
             doc.insertString(0, text, defaultAttributes);
-            
+
             //Highlight the text.
             highlight();
         } catch (BadLocationException e) {
@@ -148,21 +146,21 @@ class SourceCodeEditor {
         StyledDocument doc = textPane.getStyledDocument();
         return getDocText(doc, 0, doc.getLength());
     }
-    
+
     /**
      * Returns the associated Swing component.
      */
     JComponent getComponent() {
         return scrollPane;
     }
-    
+
     /**
      * Highlights tokens in the current document.
      */
     private void highlight() throws BadLocationException {
         StyledDocument doc = textPane.getStyledDocument();
         String text = doc.getText(0, doc.getLength());
-        
+
         int length = text.length();
         byteBuffer.clear();
         byteBuffer.insert(0, length, 0);
@@ -199,9 +197,9 @@ class SourceCodeEditor {
      */
     private void highlight(StyledDocument doc, String text, int absTextStart, int absTextEnd) {
         TokenStream stream = scannerFactory.createTokenStream(text);
-        
+
         FragmentHighlighter highlighter = new FragmentHighlighter(doc, absTextStart);
-        
+
         //Highlight tokens one by one.
         int absLastTokenEnd = absTextStart;
         for (;;) {
@@ -224,33 +222,33 @@ class SourceCodeEditor {
                 //and ignored by the token stream, but they have to be highlighted by a corresponding
                 //text style.
                 highlightBlank(highlighter, text, absTextStart, absLastTokenEnd, absTokenStart);
-                
+
                 if (isTokenBoundary(absTextEnd, absTokenStart)) {
                     //Old token boundary reached - highlighting finished.
                     break;
                 }
             }
-            
+
             //Stop, if end of the input is reached.
             if (TokenType.END_OF_FILE == token) {
                 break;
             }
-            
+
             //Highlight the current token.
             highlightToken(highlighter, absTokenStart, absTokenEnd, token);
-            
+
             if (isTokenBoundary(absTextEnd, absTokenEnd)) {
                 //Old token boundary reached - highlighting finished.
                 break;
             }
-            
+
             absLastTokenEnd = absTokenEnd;
         }
 
         //Highlight the last fragment, since the highlighter defers text style modification.
         highlighter.finish();
     }
-    
+
     /**
      * Scans the next token from a token stream, returns the token's type.
      */
@@ -308,7 +306,7 @@ class SourceCodeEditor {
         if (token == null) {
             return defaultAttributes;
         }
-        
+
         switch (token) {
         case ID:
             return identifierAttributes;
@@ -340,7 +338,7 @@ class SourceCodeEditor {
         //Update the byte buffer.
         byteBuffer.set(absTokenStart, 1);
         byteBuffer.set(absTokenStart + 1, absTokenEnd, 0);
-        
+
         if (absTokenEnd - absTokenStart > 2) {
             //If the blank fragment contains non-white space characters, that characters must be
             //a comment and have to be highlighted correspondingly.
@@ -363,21 +361,21 @@ class SourceCodeEditor {
     {
         int relCommentStart = relStart;
         int relCommentEnd = relEnd;
-        
+
         //Find the start position of a non-white space sequence.
         while (relCommentStart < relCommentEnd
                 && Character.isWhitespace(text.charAt(relCommentStart)))
         {
             ++relCommentStart;
         }
-        
+
         //Find the end position of a non-white space sequence.
         while (relCommentStart < relCommentEnd
                 && Character.isWhitespace(text.charAt(relCommentEnd - 1)))
         {
             --relCommentEnd;
         }
-        
+
         //If the sequence is not empty, highlight it as a comment.
         if (relCommentStart < relCommentEnd) {
             if (relStart < relCommentStart) {
@@ -394,7 +392,7 @@ class SourceCodeEditor {
             highlighter.highlight(null, relEnd - relStart);
         }
     }
-    
+
     /**
      * Highlights changed text fragment after an insert operation.
      */
@@ -402,7 +400,7 @@ class SourceCodeEditor {
         byteBuffer.insert(start, end, 0);
         rehighlight(start, end);
     }
-    
+
     /**
      * Highlight changed text fragment after a remove operation.
      */
@@ -411,11 +409,11 @@ class SourceCodeEditor {
         //Passing 0-length range - the token which contains it must be rescanned.
         rehighlight(start, start);
     }
-    
-    private void handleChange(int start, int end) {
+
+    private void handleChange() {
         //Seems to not be called for typing events. Ignoring must not cause serious problems.
     }
-    
+
     /**
      * Find the start position of the first token, starting from the specified position.
      */
@@ -428,7 +426,7 @@ class SourceCodeEditor {
         }
         return pos;
     }
-    
+
     /**
      * Returns a fragment of the document's text.
      */

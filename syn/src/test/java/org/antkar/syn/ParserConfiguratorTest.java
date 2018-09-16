@@ -15,12 +15,10 @@
  */
 package org.antkar.syn;
 
-import java.net.URL;
-
 import org.antkar.syn.internal.bnf.BnfGrammar;
 import org.antkar.syn.internal.ebnf.EbnfGrammar;
 import org.antkar.syn.internal.grammar.EbnfToBnfConverter;
-import org.antkar.syn.internal.grammar.XmlGrammarParser;
+import org.antkar.syn.internal.grammar.XmlGrammarParserTest;
 import org.antkar.syn.internal.lrtables.ParserConfiguration;
 import org.antkar.syn.internal.lrtables.ParserConfigurator;
 import org.junit.Assert;
@@ -29,11 +27,10 @@ import org.junit.Test;
 /**
  * Unit tests for {@link ParserConfigurator}.
  */
-public class ParserConfiguratorTest extends Assert {
+public final class ParserConfiguratorTest extends Assert {
     @Test
     public void testSuccess() throws Exception {
-        URL url = XmlGrammarParser.class.getResource("syn_grammar.xml");
-        EbnfGrammar eGrammar = XmlGrammarParser.parseGrammar(url);
+        EbnfGrammar eGrammar = XmlGrammarParserTest.loadXmlGrammar();
         BnfGrammar bGrammar = EbnfToBnfConverter.convert(eGrammar);
 
         ParserConfiguration config = ParserConfigurator.makeConfiguration(bGrammar);

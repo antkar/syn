@@ -67,7 +67,7 @@ import org.antkar.syn.internal.grammar.SynGrammarParser;
  * @see SynField
  * @see SynInit
  */
-public class SynBinder<T> {
+public final class SynBinder<T> {
 
     private SynParser synParser;
     private String startNonterminal;

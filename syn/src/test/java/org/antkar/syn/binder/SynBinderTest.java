@@ -40,7 +40,7 @@ import org.junit.Test;
 /**
  * Unit tests for {@link SynBinder}.
  */
-public class SynBinderTest extends Assert {
+public final class SynBinderTest extends Assert {
 
     @Test
     public void testResultKeyPresentInGrammar() throws SynException, IOException {

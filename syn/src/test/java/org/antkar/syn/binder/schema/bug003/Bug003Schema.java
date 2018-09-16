@@ -17,7 +17,7 @@ package org.antkar.syn.binder.schema.bug003;
 
 import org.antkar.syn.binder.SynField;
 
-public class Bug003Schema {
+public final class Bug003Schema {
     @SynField
     private String name;
 

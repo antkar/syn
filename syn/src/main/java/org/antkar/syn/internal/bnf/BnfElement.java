@@ -15,6 +15,8 @@
  */
 package org.antkar.syn.internal.bnf;
 
+import org.antkar.syn.internal.Checks;
+
 /**
  * An element of a BNF grammar. Can be either a terminal or a nonterminal element.
  */
@@ -22,14 +24,14 @@ public abstract class BnfElement {
     private final int elementIndex;
 
     BnfElement(int elementIndex) {
-        assert elementIndex >= 0;
+        Checks.argument(elementIndex >= 0);
         this.elementIndex = elementIndex;
     }
 
     /**
      * Returns the index of this element in the grammar.
      */
-    public int getElementIndex() {
+    public final int getElementIndex() {
         return elementIndex;
     }
 }

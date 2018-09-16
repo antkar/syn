@@ -4,9 +4,9 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -15,16 +15,15 @@
  */
 package org.antkar.syn.sample.script.schema;
 
-import org.antkar.syn.sample.script.rt.op.UnaryOperator;
-
 import org.antkar.syn.TextPos;
+import org.antkar.syn.sample.script.rt.op.UnaryOperator;
 
 /**
  * Script postfix unary expression syntax node.
  */
-public class PostfixExpression extends UnaryExpression {
+public final class PostfixExpression extends UnaryExpression {
     public PostfixExpression(){}
-    
+
     @Override
     TextPos getStartTextPos() {
         return getExpression().getStartTextPos();
@@ -34,7 +33,7 @@ public class PostfixExpression extends UnaryExpression {
     UnaryOperator getOperator(String literal) {
         return UnaryOperator.forPostfixLiteral(literal);
     }
-    
+
     @Override
     public String toString() {
         return String.format("(%s%s)", getExpression(), getOp());

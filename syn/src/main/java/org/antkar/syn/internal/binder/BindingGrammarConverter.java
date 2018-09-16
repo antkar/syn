@@ -4,9 +4,9 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -49,25 +49,25 @@ final class BindingGrammarConverter {
 
     private final Map<String, EbnfNonterminal> genNtsMap = new HashMap<>();
     private final Map<String, BindingNonterminal> bindingNtsMap = new HashMap<>();
-    
+
     private EbnfGrammar genGrammar;
-    
+
     private BindingGrammarConverter(){}
-    
+
     /**
      * Returns the generated extended grammar.
      */
     EbnfGrammar getGenGrammar() {
         return genGrammar;
     }
-    
+
     /**
      * Returns the map of binding nonterminals.
      */
     Map<String, BindingNonterminal> getBindingNtsMap() {
         return bindingNtsMap;
     }
-    
+
     /**
      * Converts a grammar.
      */
@@ -109,11 +109,11 @@ final class BindingGrammarConverter {
     private void defineNonterminal(EbnfNonterminal orgNt, EbnfNonterminal genNt) throws SynException {
         Map<String, EbnfProduction> innerPrs = new HashMap<>();
         List<EbnfNonterminal> innerNts = new ArrayList<>();
-        
+
         EbnfProductions orgProductions = orgNt.getProductions();
         EbnfProductions genProductions = convertTopProductions(orgProductions, innerPrs, innerNts);
         genNt.setProductions(genProductions);
-        
+
         String ntName = orgNt.getName();
         BindingNonterminal bindingNt = new BindingNonterminal(ntName, innerPrs, innerNts);
         bindingNtsMap.put(ntName, bindingNt);
@@ -129,12 +129,12 @@ final class BindingGrammarConverter {
     {
         List<EbnfProduction> orgProductionsList = orgProductions.asList();
         List<EbnfProduction> genProductionsList = new ArrayList<>();
-        
+
         for (EbnfProduction orgProduction : orgProductionsList) {
             EbnfProduction genProduction = convertTopProduction(orgProduction, innerPrs, innerNts);
             genProductionsList.add(genProduction);
         }
-        
+
         EbnfProductions genProductions = new EbnfProductions(genProductionsList);
         return genProductions;
     }
@@ -154,7 +154,7 @@ final class BindingGrammarConverter {
 
         //Add semantics information used by Binder.
         defineTopProductionResult(orgProduction, orgElements, genElements, innerPrs, innerNts);
-        
+
         EbnfProduction genProduction = new EbnfProduction(genElements);
         return genProduction;
     }
@@ -178,12 +178,12 @@ final class BindingGrammarConverter {
             innerNts.add(orgNt);
         } else {
             //Otherwise, a production key constant is added to the production.
-            
+
             //Create a production key.
             String ntName = orgProduction.getNonterminal().getName();
             String productionKey = String.format("%s_%s", ntName, innerPrs.size());
             innerPrs.put(productionKey, orgProduction);
-            
+
             //Add the key to the production.
             ValueNode genClsNameNode = new StringValueNode(null, productionKey);
             EbnfElement genClsNameElement =
@@ -191,7 +191,7 @@ final class BindingGrammarConverter {
             genElements.add(genClsNameElement);
         }
     }
-    
+
     /**
      * Returns an EBNF nonterminal element either if the specified list contains only that element, or
      * if it contains a nonterminal element with a special "result" attribute. Otherwise, returns
@@ -205,7 +205,7 @@ final class BindingGrammarConverter {
                 return (EbnfNonterminalElement)orgElement;
             }
         }
-        
+
         //Check single nonterminal.
         if (orgElements.size() == 1) {
             EbnfElement orgElement = orgElements.get(0);
@@ -213,7 +213,7 @@ final class BindingGrammarConverter {
                 return (EbnfNonterminalElement)orgElement;
             }
         }
-        
+
         return null;
     }
 
@@ -239,95 +239,95 @@ final class BindingGrammarConverter {
             boolean isNestedElement) throws SynException
     {
         checkElementAttribute(orgElement0, isNestedElement);
-        
+
         EbnfElement genElement = orgElement0.invokeProcessor(new EbnfElementProcessor<EbnfElement>() {
             @Override
             public EbnfElement processValueElement(EbnfValueElement orgElement) {
                 return orgElement;
             }
-            
+
             @Override
             public EbnfElement processTerminalElement(EbnfTerminalElement orgElement) {
                 return orgElement;
             }
-            
+
             @Override
             public EbnfElement processRepetitionElement(EbnfRepetitionElement orgElement)
                     throws SynException
             {
                 return convertRepetitionElement(orgElement);
             }
-            
+
             @Override
             public EbnfElement processNonterminalElement(EbnfNonterminalElement orgElement)
                     throws SynException
             {
                 return convertNonterminalElement(orgElement);
             }
-            
+
             @Override
             public EbnfElement processNestedElement(EbnfNestedElement orgElement) throws SynException {
                 return convertNestedElement(orgElement);
             }
-            
+
             @Override
             public EbnfElement processOptionalElement(EbnfOptionalElement orgElement) throws SynException {
                 return convertOptionalElement(orgElement);
             }
         });
-        
+
         return genElement;
     }
-    
+
     /**
      * Converts a repetition element.
      */
     private EbnfElement convertRepetitionElement(EbnfRepetitionElement orgElement) throws SynException {
         EbnfProductions orgBodyProductions = orgElement.getBody();
         EbnfProductions genBodyProductions = convertNestedProductions(orgBodyProductions);
-        
+
         EbnfProductions orgSeparatorProductions = orgElement.getSeparator();
         EbnfProductions genSeparatorProductions = orgSeparatorProductions == null ? null
                 : convertNestedProductions(orgSeparatorProductions);
-        
+
         String key = orgElement.getAttribute();
         TextPos keyPos = orgElement.getAttributePos();
         boolean nullable = orgElement.isNullable();
-        
+
         return new EbnfRepetitionElement(key, keyPos, genBodyProductions, genSeparatorProductions, nullable);
     }
-    
+
     /**
      * Converts a nonterminal element.
      */
     private EbnfElement convertNonterminalElement(EbnfNonterminalElement orgElement) throws SynException {
         EbnfNonterminal orgNt = orgElement.getNonterminal();
         EbnfNonterminal genNt = processNonterminal(orgNt);
-        
+
         String key = orgElement.getAttribute();
         TextPos keyPos = orgElement.getAttributePos();
         return new EbnfNonterminalElement(key, keyPos, genNt);
     }
-    
+
     /**
      * Converts a nested element.
      */
     private EbnfElement convertNestedElement(EbnfNestedElement orgElement) throws SynException {
         EbnfProductions orgBodyProductions = orgElement.getBody();
         EbnfProductions genBodyProductions = convertNestedProductions(orgBodyProductions);
-        
+
         String key = orgElement.getAttribute();
         TextPos keyPos = orgElement.getAttributePos();
         return new EbnfNestedElement(key, keyPos, genBodyProductions);
     }
-    
+
     /**
      * Converts an optional element.
      */
     private EbnfElement convertOptionalElement(EbnfOptionalElement orgElement) throws SynException {
         EbnfProductions orgBodyProductions = orgElement.getBody();
         EbnfProductions genBodyProductions = convertNestedProductions(orgBodyProductions);
-        
+
         String key = orgElement.getAttribute();
         TextPos keyPos = orgElement.getAttributePos();
         return new EbnfOptionalElement(key, keyPos, genBodyProductions);
@@ -339,12 +339,12 @@ final class BindingGrammarConverter {
     private EbnfProductions convertNestedProductions(EbnfProductions orgProductions) throws SynException {
         List<EbnfProduction> orgProductionsList = orgProductions.asList();
         List<EbnfProduction> genProductionsList = new ArrayList<>();
-        
+
         for (EbnfProduction orgProduction : orgProductionsList) {
             EbnfProduction genProduction = convertNestedProduction(orgProduction);
             genProductionsList.add(genProduction);
         }
-        
+
         EbnfProductions genProductions = new EbnfProductions(genProductionsList);
         return genProductions;
     }
@@ -355,13 +355,13 @@ final class BindingGrammarConverter {
     private EbnfProduction convertNestedProduction(EbnfProduction orgProduction) throws SynException {
         List<EbnfElement> orgElements = orgProduction.getElements();
         List<EbnfElement> genElements = new ArrayList<>();
-        
+
         convertProduction(genElements, orgElements, true);
-        
+
         EbnfProduction genProduction = new EbnfProduction(genElements);
         return genProduction;
     }
-    
+
     /**
      * Checks if the attribute of the given EBNF element violates the Binder limitations.
      */
@@ -389,7 +389,7 @@ final class BindingGrammarConverter {
                 return orgNt;
             }
         }
-        
+
         throw new SynBinderException(
                 String.format("There is no nonterminal %s or it is not a start nonterminal", startNtName));
     }

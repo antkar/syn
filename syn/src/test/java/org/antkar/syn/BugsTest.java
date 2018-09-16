@@ -22,7 +22,7 @@ import org.junit.Test;
 /**
  * Unit tests for some found bugs.
  */
-public class BugsTest extends Assert {
+public final class BugsTest extends Assert {
     @Test
     public void testIdentifierAtEndOfFile() throws SynException {
         String source = "aaa";

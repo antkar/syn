@@ -4,9 +4,9 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -30,21 +30,21 @@ import org.antkar.syn.sample.script.rt.op.operand.Operand;
 /**
  * Array value.
  */
-class ArrayValue extends RValue {
+final class ArrayValue extends RValue {
     private final ArrayElementValue[] array;
-    
+
     ArrayValue(RValue[] array0) {
         array = new ArrayElementValue[array0.length];
         for (int i = 0, n = array.length; i < n; ++i) {
             array[i] = new ArrayElementValue(array0[i]);
         }
     }
-    
+
     @Override
     public Operand toOperand() throws SynsException {
         return Operand.forObject(this, this);
     }
-    
+
     @Override
     public Value getMemberOpt(String name, ScriptScope readerScope) {
         if ("length".equals(name)) {
@@ -52,7 +52,7 @@ class ArrayValue extends RValue {
         }
         return null;
     }
-    
+
     @Override
     public LValue getArrayElement(int index) throws SynsException {
         if (index < 0 || index >= array.length) {
@@ -60,12 +60,12 @@ class ArrayValue extends RValue {
         }
         return array[index];
     }
-    
+
     @Override
     public ValueType getValueType() {
         return ValueType.ARRAY;
     }
-    
+
     @Override
     public Object toJava(Class<?> type, TypeMatchPrecision precision) throws SynsException {
         if (type.isArray()) {
@@ -83,7 +83,7 @@ class ArrayValue extends RValue {
     private Object toJavaArray(Class<?> type, TypeMatchPrecision precision) throws SynsException {
         Class<?> componentType = type.getComponentType();
         Object result = Array.newInstance(componentType, array.length);
-        
+
         for (int i = 0, n = array.length; i < n; ++i) {
             Object value = array[i].toRValue().toJava(componentType, precision);
             if (value == INVALID) {
@@ -91,7 +91,7 @@ class ArrayValue extends RValue {
             }
             Array.set(result, i, value);
         }
-        
+
         return result;
     }
 
@@ -100,7 +100,7 @@ class ArrayValue extends RValue {
      */
     private Object toJavaCollection(TypeMatchPrecision precision) throws SynsException {
         List<Object> result = new ArrayList<>(array.length);
-        
+
         for (ArrayElementValue element : array) {
             Object javaElement = element.toRValue().toJava(Object.class, precision);
             if (javaElement == INVALID) {
@@ -108,15 +108,15 @@ class ArrayValue extends RValue {
             }
             result.add(javaElement);
         }
-        
+
         return result;
     }
-    
+
     @Override
     public Iterable<RValue> toIterable() {
         return new ArrayIterable();
     }
-    
+
     /**
      * {@link Iterable} interface implementation.
      */
@@ -128,29 +128,29 @@ class ArrayValue extends RValue {
             return new ArrayIterator();
         }
     }
-    
+
     @Override
     public String toString() {
         StringBuilder bld = new StringBuilder();
         bld.append("[");
-        
+
         String sep = "";
         for (ArrayElementValue value : array) {
             bld.append(sep);
             bld.append(value.toString());
             sep = ", ";
         }
-        
+
         bld.append("]");
         return bld.toString();
     }
-    
+
     /**
      * Iterator.
      */
     private class ArrayIterator implements Iterator<RValue> {
         private int index;
-        
+
         ArrayIterator(){}
 
         @Override

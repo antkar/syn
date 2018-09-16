@@ -25,7 +25,7 @@ import org.antkar.syn.sample.script.rt.value.Value;
 /**
  * Script <code>return</code> statement syntax node.
  */
-public class ReturnStatement extends Statement {
+public final class ReturnStatement extends Statement {
     /** The text position of the first token. */
     @SynField
     private TextPos synPos;

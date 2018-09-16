@@ -13,23 +13,31 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.antkar.syn;
-
-import java.net.URL;
-
-import org.antkar.syn.internal.ebnf.EbnfGrammar;
-import org.antkar.syn.internal.grammar.XmlGrammarParser;
-import org.junit.Assert;
-import org.junit.Test;
+package org.antkar.syn.internal;
 
 /**
- * Unit tests for {@link XmlGrammarParser}.
+ * Assertions helpers.
  */
-public class XmlGrammarParserTest extends Assert {
-    @Test
-    public void testParseGrammarSuccess() throws Exception {
-        URL url = XmlGrammarParser.class.getResource("syn_grammar.xml");
-        EbnfGrammar eGrammar = XmlGrammarParser.parseGrammar(url);
-        assertNotNull(eGrammar);
+public final class Checks {
+    private Checks() {
+    }
+
+    public static <T> T notNull(T value) {
+        if (value == null) {
+            throw new NullPointerException();
+        }
+        return value;
+    }
+
+    public static void argument(boolean condition) {
+        if (!condition) {
+            throw new IllegalArgumentException();
+        }
+    }
+
+    public static void state(boolean condition) {
+        if (!condition) {
+            throw new IllegalStateException();
+        }
     }
 }

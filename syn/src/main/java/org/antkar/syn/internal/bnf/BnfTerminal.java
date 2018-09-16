@@ -16,6 +16,7 @@
 package org.antkar.syn.internal.bnf;
 
 import org.antkar.syn.TokenDescriptor;
+import org.antkar.syn.internal.Checks;
 
 /**
  * Terminal BNF element.
@@ -25,8 +26,7 @@ public final class BnfTerminal extends BnfElement {
 
     public BnfTerminal(int elementIndex, TokenDescriptor descriptor) {
         super(elementIndex);
-        assert descriptor != null;
-        tokenDescriptor = descriptor;
+        tokenDescriptor = Checks.notNull(descriptor);
     }
 
     /**

@@ -24,7 +24,7 @@ import org.antkar.syn.sample.script.rt.SynsException;
 /**
  * Script <code>continue</code> statement syntax node.
  */
-public class ContinueStatement extends Statement {
+public final class ContinueStatement extends Statement {
     /** The text position. */
     @SynField
     private TextPos synPos;

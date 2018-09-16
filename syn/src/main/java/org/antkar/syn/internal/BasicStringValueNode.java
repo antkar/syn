@@ -4,9 +4,9 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -23,30 +23,29 @@ import org.antkar.syn.ValueNode;
  */
 abstract class BasicStringValueNode extends ValueNode {
     private final String value;
-    
+
     BasicStringValueNode(PosBuffer pos, String value) {
         super(pos);
-        assert value != null;
-        this.value = value;
+        this.value = Checks.notNull(value);
     }
 
     @Override
-    public SynValueType getValueType() {
+    public final SynValueType getValueType() {
         return SynValueType.STRING;
     }
-    
+
     @Override
-    public String getString() {
+    public final String getString() {
         return value;
     }
 
     @Override
-    public Object getValue() {
+    public final Object getValue() {
         return value;
     }
-    
+
     @Override
-    public String toString() {
+    public final String toString() {
         return getTokenDescriptor() + "(" + getString() + ")";
     }
 }

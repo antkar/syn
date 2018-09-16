@@ -29,7 +29,7 @@ import org.antkar.syn.sample.script.util.MiscUtil;
 /**
  * A scope. Contains a set of names visible in a particular point of a script.
  */
-public class ScriptScope {
+public final class ScriptScope {
 
     /** Parent scope. If a name is not found in this scope, it is looked for in the parent one. */
     private final ScriptScope parentScope;
@@ -299,12 +299,12 @@ public class ScriptScope {
         } else {
             //There is no value denoted by the name chain. Consider the chain a Java package name.
             //It is impossible to check whether the package exists by the means of Java reflection API.
-            String packagePrefix = nameChainToPackagePrefix(nameChain, nameChain.length);
+            String packagePrefix = nameChainToPackagePrefix(nameChain);
             return new JavaPackageOnDemandImport(packagePrefix);
         }
     }
 
-    private static String nameChainToPackagePrefix(StringToken[] nameChain, int end) {
+    private static String nameChainToPackagePrefix(StringToken[] nameChain) {
         StringBuilder bld = new StringBuilder();
         MiscUtil.appendArray(bld, nameChain, ".");
         bld.append(".");

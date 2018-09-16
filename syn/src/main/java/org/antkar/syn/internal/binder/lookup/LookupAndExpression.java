@@ -4,9 +4,9 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -23,7 +23,7 @@ import org.antkar.syn.binder.SynBinderException;
 /**
  * Lookup AND expression. Applies the logical AND operation to the set of sub-expressions.
  */
-class LookupAndExpression extends LookupExpression {
+final class LookupAndExpression extends LookupExpression {
     private final List<LookupRelExpression> relExpressions;
 
     LookupAndExpression(List<LookupRelExpression> relExpressions) {
@@ -40,13 +40,13 @@ class LookupAndExpression extends LookupExpression {
         }
         return true;
     }
-    
+
     @Override
     public String toString() {
         if (relExpressions.size() == 1) {
             return relExpressions.get(0) + "";
         }
-        
+
         StringBuilder bld = new StringBuilder();
         String sep = "";
         for (LookupRelExpression expr : relExpressions) {
@@ -54,7 +54,7 @@ class LookupAndExpression extends LookupExpression {
             bld.append(expr);
             sep = " && ";
         }
-        
+
         return bld.toString();
     }
 }

@@ -26,7 +26,7 @@ import org.antkar.syn.sample.script.util.MiscUtil;
 /**
  * New object instantiation expression syntax node.
  */
-public class NewClassExpression extends NewExpression {
+public final class NewClassExpression extends NewExpression {
     /** The name of the type of the object. */
     @SynField
     private StringToken[] synTypeName;

@@ -4,9 +4,9 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -54,21 +54,19 @@ import org.antkar.syn.internal.ebnf.EbnfValueElement;
 /**
  * EBNF element processor used to determine the {@link BoundType} of an {@link EbnfElement}.
  */
-class FieldBindingEbnfElementProcessor implements EbnfElementProcessor<BoundType> {
+final class FieldBindingEbnfElementProcessor implements EbnfElementProcessor<BoundType> {
 
     private final String ntName;
     private final Field field;
     private final Class<?> fieldType;
-    
+
     private final Map<String, Class<?>> ntNameToNtClassMap;
     private final Map<String, List<Class<?>>> ntNameToAllowedClssMap;
     private final Map<Class<?>, Map<String, Class<?>>> ownerClsToOwnedClsMap;
-    
+
     FieldBindingEbnfElementProcessor(
             String ntName,
-            String key,
             Field field,
-            boolean embedded,
             Map<String, Class<?>> ntNameToNtClassMap,
             Map<String, List<Class<?>>> ntNameToAllowedClssMap,
             Map<Class<?>, Map<String, Class<?>>> ownerClsToOwnedClsMap)
@@ -78,10 +76,10 @@ class FieldBindingEbnfElementProcessor implements EbnfElementProcessor<BoundType
         this.ntNameToNtClassMap = ntNameToNtClassMap;
         this.ntNameToAllowedClssMap = ntNameToAllowedClssMap;
         this.ownerClsToOwnedClsMap = ownerClsToOwnedClsMap;
-        
+
         fieldType = field.getType();
     }
-    
+
     @Override
     public BoundType processValueElement(EbnfValueElement element) throws SynException {
         final ValueNode valueNode = element.getValueNode();
@@ -89,7 +87,7 @@ class FieldBindingEbnfElementProcessor implements EbnfElementProcessor<BoundType
             //Null value.
             return bindNullValue();
         }
-        
+
         //Check the value type.
         SynValueType valueType = valueNode.getValueType();
         BoundType boundType = valueType.invokeProcessor(new ValueTypeProcessor<BoundType>() {
@@ -98,31 +96,31 @@ class FieldBindingEbnfElementProcessor implements EbnfElementProcessor<BoundType
                 checkType(fieldType, false, String.class);
                 return StringBoundType.INSTANCE;
             }
-            
+
             @Override
             public BoundType processObjectValue() throws SynException {
                 return getBoundTypeForObjectValue(valueNode);
             }
-            
+
             @Override
             public BoundType processIntegerValue() throws SynException {
                 return getBoundTypeForIntegerValue(valueNode);
             }
-            
+
             @Override
             public BoundType processFloatValue() throws SynException {
                 return getBoundTypeForFloatValue();
             }
-            
+
             @Override
             public BoundType processBooleanValue() throws SynException {
                 return getBoundTypeForBooleanValue();
             }
         });
-        
+
         return boundType;
     }
-    
+
     /**
      * Returns a bound type for an arbitrary object value.
      */
@@ -131,7 +129,7 @@ class FieldBindingEbnfElementProcessor implements EbnfElementProcessor<BoundType
         if (value == null) {
             return bindNullValue();
         }
-        
+
         Class<?> actualType = value.getClass();
         checkType(fieldType, false, actualType);
         return ObjectBoundType.INSTANCE;
@@ -176,36 +174,36 @@ class FieldBindingEbnfElementProcessor implements EbnfElementProcessor<BoundType
         checkType(fieldType, false, boolean.class, Boolean.class);
         return BooleanBoundType.INSTANCE;
     }
-    
+
     @Override
     public BoundType processTerminalElement(EbnfTerminalElement element) throws SynException {
         return getBoundTypeForTerminalElement(element, fieldType, false);
     }
-    
+
     @Override
     public BoundType processRepetitionElement(EbnfRepetitionElement element) throws SynException {
         EbnfProductions separatorProductions = element.getSeparator();
         if (separatorProductions != null) {
             verifyRepetitionElementSeparatorProductions(separatorProductions);
         }
-        
+
         BoundType boundType = null;
-        
+
         //Only a single terminal or nonterminal EBNF element must be defined in the repetition
         //element's body - a Binder limitation.
         EbnfProductions bodyProductions = element.getBody();
         EbnfElement bodyElement = getSingleElement(bodyProductions);
-        
+
         if (bodyElement != null && bodyElement.getAttribute() == null) {
             boundType = getBoundTypeForRepetitionElementBody(bodyElement);
         }
-        
+
         if (boundType == null) {
             throw new SynBinderException(String.format(
                     "Nonterminal %s: repetition element must contain a single terminal " +
                     "or nonterminal element without an attribute", ntName));
         }
-        
+
         return boundType;
     }
 
@@ -224,7 +222,7 @@ class FieldBindingEbnfElementProcessor implements EbnfElementProcessor<BoundType
             EbnfNonterminalElement ntElement = (EbnfNonterminalElement) bodyElement;
             return getBoundTypeForRepetitionElementNonterminalBody(ntElement);
         }
-        
+
         return null;
     }
 
@@ -246,7 +244,7 @@ class FieldBindingEbnfElementProcessor implements EbnfElementProcessor<BoundType
                     "Nonterminal %s: token of type %s cannot be used in a repetition element",
                     ntName, tokenType));
         }
-        
+
         //Choose the bound type depending on the type of the Java field.
         if (fieldType.isArray()) {
             Class<?> componentType = fieldType.getComponentType();
@@ -254,7 +252,7 @@ class FieldBindingEbnfElementProcessor implements EbnfElementProcessor<BoundType
             return boundType.getArrayType(field);
         } else if (fieldType.isAssignableFrom(Collection.class)) {
             BoundType boundType = getBoundTypeForTerminalElement(terminalElement, Object.class, true);
-            return boundType.getListType(field);
+            return boundType.getListType();
         } else {
             throw new SynBinderException(String.format(
                     "Nonterminal %s: cannot bind a repetition element to field %s",
@@ -275,7 +273,7 @@ class FieldBindingEbnfElementProcessor implements EbnfElementProcessor<BoundType
             return boundType.getArrayType(field);
         } else if (fieldType.isAssignableFrom(Collection.class)) {
             BoundType boundType = getBoundTypeForNonterminalElement(ntElement, Object.class, true);
-            return boundType.getListType(field);
+            return boundType.getListType();
         } else {
             throw new SynBinderException(String.format(
                     "Nonterminal %s: cannot bind a repetition element to field %s",
@@ -295,44 +293,44 @@ class FieldBindingEbnfElementProcessor implements EbnfElementProcessor<BoundType
                 return;
             }
         }
-        
+
         //Defining an attribute inside of a separator does not make sense - the result of the production
         //will not be linked with the parent node.
-        
+
         throw new SynBinderException(String.format(
                 "Nonterminal %s: separator in a repetition element must be " +
                 "a single terminal without an attribute", ntName));
     }
-    
+
     @Override
     public BoundType processNonterminalElement(EbnfNonterminalElement element) throws SynException {
         return getBoundTypeForNonterminalElement(element, fieldType, false);
     }
-    
+
     @Override
     public BoundType processNestedElement(EbnfNestedElement element) throws SynException {
         throw new SynBinderException(String.format(
                 "Nonterminal %s has a nested element in its production. " +
                 "Nested elements are not supported", ntName));
     }
-    
+
     @Override
     public BoundType processOptionalElement(EbnfOptionalElement element) throws SynException {
         BoundType boundType = null;
-        
+
         //Only a single EBNF element must be specified inside of an optional element - Binder limitation.
         EbnfProductions bodyProductions = element.getBody();
         EbnfElement bodyElement = getSingleElement(bodyProductions);
         if (bodyElement != null) {
             boundType = getBoundTypeForOptionalElementBody(bodyElement);
         }
-        
+
         if (boundType == null) {
             throw new SynBinderException(String.format(
                     "Nonterminal %s: only a single terminal or nonterminal element " +
                     "is supported inside of an optional element", ntName));
         }
-        
+
         return boundType;
     }
 
@@ -344,7 +342,7 @@ class FieldBindingEbnfElementProcessor implements EbnfElementProcessor<BoundType
             throw new SynBinderException(String.format(
                     "Nonterminal %s: an attribute is defined inside of an optional element", ntName));
         }
-        
+
         if (bodyElement instanceof EbnfTerminalElement) {
             EbnfTerminalElement terminalElement = (EbnfTerminalElement) bodyElement;
             return getBoundTypeForTerminalElement(terminalElement, fieldType, false);
@@ -352,7 +350,7 @@ class FieldBindingEbnfElementProcessor implements EbnfElementProcessor<BoundType
             EbnfNonterminalElement ntElement = (EbnfNonterminalElement) bodyElement;
             return getBoundTypeForNonterminalElement(ntElement, fieldType, false);
         }
-        
+
         return null;
     }
 
@@ -370,7 +368,7 @@ class FieldBindingEbnfElementProcessor implements EbnfElementProcessor<BoundType
         } else if (TerminalNode.class.equals(type)) {
             return TerminalNodeBoundType.INSTANCE;
         }
-        
+
         //Choose the bound type depending on the kind of the terminal element.
         return getBoundTypeForToken(terminalElement, type, array);
     }
@@ -385,38 +383,38 @@ class FieldBindingEbnfElementProcessor implements EbnfElementProcessor<BoundType
     {
         TokenDescriptor tokenDesc = terminalElement.getTokenDescriptor();
         final TokenType tokenType = tokenDesc.getType();
-        
+
         BoundType boundType = tokenType.invokeProcessor(new TokenTypeProcessor<BoundType>() {
             @Override
             public BoundType processStringLiteral() throws SynException {
                 return getBoundTypeForTerminalStringLiteral(type, array);
             }
-            
+
             @Override
             public BoundType processKeyword() throws SynException {
                 return getBoundTypeForTerminalKeyword(type, array);
             }
-            
+
             @Override
             public BoundType processKeyChar() throws SynException {
                 return getBoundTypeForTerminalKeyword(type, array);
             }
-            
+
             @Override
             public BoundType processIntegerLiteral() throws SynException {
                 return getBoundTypeForTerminalIntegerLiteral(type, array);
             }
-            
+
             @Override
             public BoundType processIdentifier() throws SynException {
                 return getBoundTypeForTerminalStringLiteral(type, array);
             }
-            
+
             @Override
             public BoundType processFloatingPointLiteral() throws SynException {
                 return getBoundTypeForTerminalFloatingPointLiteral(type, array);
             }
-            
+
             @Override
             public BoundType processEndOfFile() {
                 throw new IllegalStateException("End Of File is not expected here");
@@ -425,7 +423,7 @@ class FieldBindingEbnfElementProcessor implements EbnfElementProcessor<BoundType
 
         return boundType;
     }
-    
+
     /**
      * Returns a bound type for a string literal.
      */
@@ -433,14 +431,14 @@ class FieldBindingEbnfElementProcessor implements EbnfElementProcessor<BoundType
             throws SynException
     {
         checkType(type, array, String.class, StringToken.class);
-        
+
         if (type.isAssignableFrom(StringToken.class)) {
             return StringBoundType.STRING_TOKEN_INSTANCE;
         } else {
             return StringBoundType.INSTANCE;
         }
     }
-    
+
     /**
      * Returns a bound type for a keyword.
      */
@@ -448,14 +446,14 @@ class FieldBindingEbnfElementProcessor implements EbnfElementProcessor<BoundType
             throws SynException
     {
         checkType(type, array, String.class, StringToken.class);
-        
+
         if (type.isAssignableFrom(StringToken.class)) {
             return LiteralBoundType.STRING_TOKEN_INSTANCE;
         } else {
             return LiteralBoundType.INSTANCE;
         }
     }
-    
+
     /**
      * Returns a bound type for an integer literal.
      */
@@ -478,7 +476,7 @@ class FieldBindingEbnfElementProcessor implements EbnfElementProcessor<BoundType
             throw typeMissmatchFail(array, int.class, Integer.class);
         }
     }
-    
+
     /**
      * Returns a bound type for a floating-point literal.
      */
@@ -501,7 +499,7 @@ class FieldBindingEbnfElementProcessor implements EbnfElementProcessor<BoundType
             throw typeMissmatchFail(array, float.class, double.class, Float.class, Double.class);
         }
     }
-    
+
     /**
      * Returns a bound type for a nonterminal element.
      */
@@ -514,13 +512,13 @@ class FieldBindingEbnfElementProcessor implements EbnfElementProcessor<BoundType
         EbnfNonterminal subNt = nonterminalElement.getNonterminal();
         String subNtName = subNt.getName();
         Class<?> cls = getClassForNt(subNtName);
-        
+
         //Ensure that the Java class of the nonterminal is compatible with the Java field type.
         verifyNonterminalElementClass(subNtName, type, array, cls);
-        
+
         //Remember object owner information.
         putOwnerIntoMap(field.getDeclaringClass(), field.getName(), cls);
-        
+
         return new NonterminalBoundType(cls);
     }
 
@@ -542,7 +540,7 @@ class FieldBindingEbnfElementProcessor implements EbnfElementProcessor<BoundType
                 }
             }
             Collections.sort(wrongAllowedClsNames);
-            
+
             String message = String.format(
                     "Field %s has type %s%s, which is not compatible with %s%s",
                     field,
@@ -556,11 +554,11 @@ class FieldBindingEbnfElementProcessor implements EbnfElementProcessor<BoundType
                         type.getCanonicalName(),
                         wrongAllowedClsNames);
             }
-            
+
             throw new SynBinderException(message);
         }
     }
-    
+
     /**
      * Binds a <code>null</code> value to the field.
      */
@@ -569,14 +567,14 @@ class FieldBindingEbnfElementProcessor implements EbnfElementProcessor<BoundType
             throw new SynBinderException(String.format(
                     "Cannot bind null value to field %s", field));
         }
-        
+
         return ObjectBoundType.INSTANCE;
     }
 
     private void putOwnerIntoMap(Class<?> owner, String fieldName, Class<?> owned) {
         CommonUtil.putToMapMap(ownerClsToOwnedClsMap, owner, fieldName, owned);
     }
-    
+
     /**
      * Returns the Java class associated with the given nonterminal.
      */
@@ -588,11 +586,11 @@ class FieldBindingEbnfElementProcessor implements EbnfElementProcessor<BoundType
         }
         return cls;
     }
-    
+
     private List<Class<?>> getAllowedClassesForNt(String aNtName) {
         return ntNameToAllowedClssMap.get(aNtName);
     }
-    
+
     /**
      * Checks whether a Java class is compatible with one of the given classes.
      */
@@ -622,13 +620,13 @@ class FieldBindingEbnfElementProcessor implements EbnfElementProcessor<BoundType
                     expectedType.getCanonicalName(),
                     array ? "[]" : ""));
         }
-        
+
         //Many expected types.
         String[] names = new String[expectedTypes.length];
         for (int i = 0; i < expectedTypes.length; ++i) {
             names[i] = expectedTypes[i].getCanonicalName() + (array ? "[]" : "");
         }
-        
+
         throw new SynBinderException(String.format(
                 "Type of field %s must be one of the following: %s",
                 field, Arrays.toString(names)));
@@ -647,7 +645,7 @@ class FieldBindingEbnfElementProcessor implements EbnfElementProcessor<BoundType
                 return elements.get(0);
             }
         }
-        
+
         return null;
     }
 }

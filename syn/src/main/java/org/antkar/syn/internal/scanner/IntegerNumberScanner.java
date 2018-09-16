@@ -4,9 +4,9 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -20,24 +20,24 @@ import org.antkar.syn.SynLexicalException;
 import org.antkar.syn.TextPos;
 
 /**
- * Integer literal scanner. Scans a decimal, hexadecimal or octal integer literal. 
+ * Integer literal scanner. Scans a decimal, hexadecimal or octal integer literal.
  */
-class IntegerNumberScanner extends AbstractNumberScanner {
+final class IntegerNumberScanner extends AbstractNumberScanner {
 
     /** Maximum decimal integer literal. Used to check a value range. */
     private static final String MAX_DEC_LITERAL = Long.toString(Long.MIN_VALUE).substring(1);
-    
+
     /** The length of the maximum decimal literal in characters. */
     private static final int MAX_DEC_LITERAL_LEN = MAX_DEC_LITERAL.length();
 
     IntegerNumberScanner() {
         super();
     }
-    
+
     @Override
     public IPrimitiveResult scan(PrimitiveContext context) throws SynException {
         IPrimitiveResult result = null;
-        
+
         if (context.current == '0') {
             context.setMaxBufferLength(NumberScanner.MAX_NUMERIC_LITERAL_LENGTH);
             context.next();
@@ -57,7 +57,7 @@ class IntegerNumberScanner extends AbstractNumberScanner {
             context.setMaxBufferLength(NumberScanner.MAX_NUMERIC_LITERAL_LENGTH);
             result = scanDecNumber(context);
         }
-        
+
         return result;
     }
 
@@ -90,7 +90,7 @@ class IntegerNumberScanner extends AbstractNumberScanner {
         AbstractNumberScanner.scanDecimalPrimitive(context, false);
         //Scan optional suffix.
         AbstractNumberScanner.scanIntegerSuffix(context);
-        
+
         //Convert to a number.
         long value = strToInt(context);
         return intResult(value);
@@ -123,7 +123,7 @@ class IntegerNumberScanner extends AbstractNumberScanner {
         verifyOctRange(context, bld, ofs);
 
         long result = 0;
-        
+
         //Convert the value, digit by digit.
         int len = bld.length();
         while (ofs < len) {
@@ -132,23 +132,23 @@ class IntegerNumberScanner extends AbstractNumberScanner {
                 TextPos pos = context.getCurrentTokenPos();
                 throw new SynLexicalException(pos, "Invalid octal literal");
             }
-            
+
             int d = c - '0';
             result = (result << 3) | d;
             ++ofs;
         }
-        
+
         return result;
     }
-    
+
     /**
      * Checks whether a string octal representation of a number is out of range.
-     * If the value is out if range, an exception is thrown. 
+     * If the value is out if range, an exception is thrown.
      */
     private static void verifyOctRange(PrimitiveContext context, StringBuilder bld, int ofs) throws SynLexicalException {
         int size = bld.length();
         int len = size - ofs;
-        
+
         //Maximum octal number length is 22 characters (64/3 = 21.33333333, 22*3 = 66).
         //If the literal is 22 characters long, the highest digit must be 0 or 1.
         if (len > 22 || (len == 22 && bld.charAt(ofs) > '1')) {
@@ -166,9 +166,9 @@ class IntegerNumberScanner extends AbstractNumberScanner {
         //Check the range.
         ofs = skipLeadingZeros(bld, ofs);
         verifyHexRange(context, bld, ofs);
-        
+
         long result = 0;
-        
+
         //Convert digit by digit.
         int len = bld.length();
         while (ofs < len) {
@@ -186,18 +186,18 @@ class IntegerNumberScanner extends AbstractNumberScanner {
             result = (result << 4) | d;
             ++ofs;
         }
-        
+
         return result;
     }
 
     /**
      * Checks whether a string hexadecimal representation of a number is out of range.
-     * If the value is out if range, an exception is thrown. 
+     * If the value is out if range, an exception is thrown.
      */
     private static void verifyHexRange(PrimitiveContext context, StringBuilder bld, int ofs) throws SynLexicalException {
         int size = bld.length();
         int len = size - ofs;
-        
+
         //Maximum length of a hexadecimal literal is 16 characters (64/4 = 16).
         if (len > 16) {
             TextPos pos = context.getCurrentTokenPos();
@@ -211,22 +211,22 @@ class IntegerNumberScanner extends AbstractNumberScanner {
      */
     static long strToIntDec(PrimitiveContext context, StringBuilder bld) throws SynException {
         verifyDecRange(context, bld);
-        
+
         long result = 0;
-        
+
         int len = bld.length();
         for (int ofs = 0; ofs < len; ++ofs) {
             char c = bld.charAt(ofs);
             int d = c - '0';
             result = result * 10 + d;
         }
-        
+
         return result;
     }
-    
+
     /**
      * Checks whether a string decimal representation of a number is out of range.
-     * If the value is out if range, an exception is thrown. 
+     * If the value is out if range, an exception is thrown.
      */
     private static void verifyDecRange(PrimitiveContext context, StringBuilder bld) throws SynLexicalException {
         if (isDecOutOfRange(bld)) {
@@ -234,7 +234,7 @@ class IntegerNumberScanner extends AbstractNumberScanner {
             throw new SynLexicalException(pos, "Decimal value is out of range: " + bld);
         }
     }
-    
+
     private static boolean isDecOutOfRange(StringBuilder bld) {
         int len = bld.length();
         if (len < MAX_DEC_LITERAL_LEN) {
@@ -256,7 +256,7 @@ class IntegerNumberScanner extends AbstractNumberScanner {
             return false;
         }
     }
-    
+
     private static int skipLeadingZeros(StringBuilder bld, int ofs) {
         int len = bld.length();
         while (ofs < len - 1 && bld.charAt(ofs) == '0') {

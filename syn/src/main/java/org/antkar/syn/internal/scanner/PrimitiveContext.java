@@ -22,13 +22,14 @@ import org.antkar.syn.SynException;
 import org.antkar.syn.SynLexicalException;
 import org.antkar.syn.SynTextException;
 import org.antkar.syn.TextPos;
+import org.antkar.syn.internal.Checks;
 import org.antkar.syn.internal.PosBuffer;
 
 /**
  * A context of a primitive scanner execution. Contains the input stream, the current character,
  * a helper string buffer and other useful resources.
  */
-class PrimitiveContext {
+final class PrimitiveContext {
     private final SourceDescriptor sourceDescriptor;
     private final LookaheadCharStream charStream;
 
@@ -46,10 +47,8 @@ class PrimitiveContext {
     int current;
 
     PrimitiveContext(SourceDescriptor sourceDescriptor, LookaheadCharStream charStream) throws SynException {
-        assert sourceDescriptor != null;
-        assert charStream != null;
-        this.sourceDescriptor = sourceDescriptor;
-        this.charStream = charStream;
+        this.sourceDescriptor = Checks.notNull(sourceDescriptor);
+        this.charStream = Checks.notNull(charStream);
 
         startPos = new CharPos();
         currentPos = new CharPos();
@@ -135,7 +134,11 @@ class PrimitiveContext {
      * the class is always returned.
      */
     PosBuffer getStartPosBuffer() {
-        posBuffer.set(startPos, sourceDescriptor, currentPos.offset());
+        int offset = startPos.offset();
+        int line = startPos.line() + 1;
+        int column = startPos.column() + 1;
+        int length = currentPos.offset() - offset;
+        posBuffer.set(sourceDescriptor, offset, line, column, length);
         return posBuffer;
     }
 

@@ -29,7 +29,7 @@ import org.antkar.syn.sample.script.rt.value.Value;
 /**
  * Script syntax node. Is the start nonterminal for the the Script Language grammar.
  */
-public class Script {
+public final class Script {
     /** The root block. */
     @SynField
     private Block synBlock;

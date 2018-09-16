@@ -20,11 +20,12 @@ import java.util.Collections;
 import java.util.List;
 
 import org.antkar.syn.TokenDescriptor;
+import org.antkar.syn.internal.Checks;
 
 /**
  * Parser state. Contains an LR state.
  */
-public class ParserState {
+public final class ParserState {
 
     private final int index;
     private final List<ParserProduction> reduceProductions;
@@ -33,8 +34,8 @@ public class ParserState {
     private List<ParserGoto> gotos = null;
 
     ParserState(int index, List<ParserProduction> reduceProductions) {
-        assert index >= 0;
-        assert reduceProductions != null;
+        Checks.argument(index >= 0);
+        Checks.notNull(reduceProductions);
 
         this.index = index;
         this.reduceProductions = Collections.unmodifiableList(reduceProductions);
@@ -42,10 +43,10 @@ public class ParserState {
     }
 
     void setTransitions(List<ParserShift> shifts, List<ParserGoto> gotos) {
-        assert this.shifts == null;
-        assert this.gotos == null;
-        assert shifts != null;
-        assert gotos != null;
+        Checks.state(this.shifts == null);
+        Checks.state(this.gotos == null);
+        Checks.notNull(shifts);
+        Checks.notNull(gotos);
 
         this.shifts = Collections.unmodifiableList(shifts);
         this.gotos = Collections.unmodifiableList(gotos);
@@ -62,7 +63,8 @@ public class ParserState {
      * Returns the list of productions that can be reduced in this state.
      */
     public List<ParserProduction> getReduceProductions() {
-        assert shifts != null && gotos != null;
+        Checks.state(shifts != null);
+        Checks.state(gotos != null);
         return reduceProductions;
     }
 
@@ -77,7 +79,8 @@ public class ParserState {
      * Returns the LR state reachable from this one by a SHIFT transition.
      */
     public ParserState getShiftState(TokenDescriptor tokenDescriptor) {
-        assert shifts != null && gotos != null;
+        Checks.state(shifts != null);
+        Checks.state(gotos != null);
 
         ParserState result = null;
         for (int i = 0, n = shifts.size(); i < n; ++i) {
@@ -95,7 +98,8 @@ public class ParserState {
      * Returns the LR state reachable from this one by a GOTO transition.
      */
     public ParserState getGotoState(ParserNonterminal nonterminal) {
-        assert shifts != null && gotos != null;
+        Checks.state(shifts != null);
+        Checks.state(gotos != null);
 
         ParserState result = null;
         for (int i = 0, n = gotos.size(); i < n; ++i) {
@@ -113,7 +117,7 @@ public class ParserState {
      * Returns the list of SHIFTs.
      */
     public List<ParserShift> getShifts() {
-        assert shifts != null;
+        Checks.notNull(shifts);
         return shifts;
     }
 
@@ -121,7 +125,7 @@ public class ParserState {
      * Returns the list of GOTOs.
      */
     List<ParserGoto> getGotoList() {
-        assert gotos != null;
+        Checks.notNull(gotos);
         return gotos;
     }
 

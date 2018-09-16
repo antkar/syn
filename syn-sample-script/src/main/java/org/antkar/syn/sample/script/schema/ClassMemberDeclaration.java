@@ -20,7 +20,7 @@ import org.antkar.syn.binder.SynField;
 /**
  * Script class member declaration syntax node.
  */
-public class ClassMemberDeclaration {
+public final class ClassMemberDeclaration {
     @SynField
     private String synPublic;
 

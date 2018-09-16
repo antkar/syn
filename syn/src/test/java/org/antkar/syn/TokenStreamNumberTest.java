@@ -29,7 +29,7 @@ import org.junit.Test;
 /**
  * Unit tests for {@link TokenStream}: numeric literals.
  */
-public class TokenStreamNumberTest extends Assert {
+public final class TokenStreamNumberTest extends Assert {
     private static final Collection<TokenDescriptor> TOKEN_DESCRIPTORS;
 
     static {

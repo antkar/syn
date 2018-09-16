@@ -4,9 +4,9 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -19,6 +19,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.antkar.syn.internal.Checks;
 import org.antkar.syn.sample.script.rt.SynsException;
 import org.antkar.syn.sample.script.rt.value.Value;
 
@@ -26,10 +27,10 @@ import org.antkar.syn.sample.script.rt.value.Value;
  * Script Language unary operator.
  */
 public abstract class UnaryOperator extends Operator {
-    
+
     /** Maps prefix unary operator literals to corresponding {@link UnaryOperator} instances. */
     private static final Map<String, UnaryOperator> PREFIX_OPERATORS;
-    
+
     static {
         Map<String, UnaryOperator> map = new HashMap<>();
         map.put("++", new PrefixIncUnaryOperator());
@@ -39,39 +40,39 @@ public abstract class UnaryOperator extends Operator {
         map.put("!", new LogicalNotUnaryOperator());
         PREFIX_OPERATORS = Collections.unmodifiableMap(map);
     }
-    
+
     /** Maps postfix unary operator literals to corresponding {@link UnaryOperator} instances. */
     private static final Map<String, UnaryOperator> POSTFIX_OPERATORS;
-    
+
     static {
         Map<String, UnaryOperator> map = new HashMap<>();
         map.put("++", new PostfixIncUnaryOperator());
         map.put("--", new PostfixDecUnaryOperator());
         POSTFIX_OPERATORS = Collections.unmodifiableMap(map);
     }
-    
+
     UnaryOperator(String opLiteral) {
         super(opLiteral);
     }
-    
+
     /**
      * Returns a prefix unary operator for the specified literal.
      */
     public static UnaryOperator forPrefixLiteral(String literal) {
         UnaryOperator op = PREFIX_OPERATORS.get(literal);
-        assert op != null;
+        Checks.notNull(op);
         return op;
     }
-    
+
     /**
      * Returns a postfix unary operator for the specified literal.
      */
     public static UnaryOperator forPostfixLiteral(String literal) {
         UnaryOperator op = POSTFIX_OPERATORS.get(literal);
-        assert op != null;
+        Checks.notNull(op);
         return op;
     }
-    
+
     /**
      * Evaluates the operator for the given operand value.
      */

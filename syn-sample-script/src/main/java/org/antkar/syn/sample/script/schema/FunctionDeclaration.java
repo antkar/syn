@@ -28,7 +28,7 @@ import org.antkar.syn.sample.script.rt.value.Value;
 /**
  * Script function declaration syntax node.
  */
-public class FunctionDeclaration extends Declaration {
+public final class FunctionDeclaration extends Declaration {
     /** Formal parameters. */
     @SynField
     private StringToken[] synParameters;

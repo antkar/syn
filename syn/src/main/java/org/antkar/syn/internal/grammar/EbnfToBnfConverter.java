@@ -29,6 +29,7 @@ import org.antkar.syn.SynException;
 import org.antkar.syn.SynGrammarException;
 import org.antkar.syn.TextPos;
 import org.antkar.syn.TokenDescriptor;
+import org.antkar.syn.internal.Checks;
 import org.antkar.syn.internal.bnf.BnfElement;
 import org.antkar.syn.internal.bnf.BnfGrammar;
 import org.antkar.syn.internal.bnf.BnfNonterminal;
@@ -98,7 +99,7 @@ public final class EbnfToBnfConverter {
      * BNF nonterminal is returned.
      */
     public BnfNonterminal convertNonterminal(EbnfNonterminal eNonterminal) throws SynException {
-        assert eNonterminal != null;
+        Checks.notNull(eNonterminal);
 
         String name = eNonterminal.getName();
         BnfNonterminal bNonterminal = nameToNtMap.get(name);
@@ -123,7 +124,7 @@ public final class EbnfToBnfConverter {
      * existing BNF terminal is returned.
      */
     public BnfTerminal convertTerminal(TokenDescriptor tokenDescriptor) {
-        assert tokenDescriptor != null;
+        Checks.notNull(tokenDescriptor);
 
         BnfTerminal bTerminal = terminalMap.get(tokenDescriptor);
         if (bTerminal == null) {
@@ -149,7 +150,7 @@ public final class EbnfToBnfConverter {
      * Creates a new anonymous BNF nonterminal, defining its productions.
      */
     public BnfNonterminal createAnonymousNonterminal(String ownerNtName, List<BnfProduction> bProductions) {
-        assert bProductions != null;
+        Checks.notNull(bProductions);
 
         BnfNonterminal bNonterminal = createAnonymousNonterminal(ownerNtName);
         bNonterminal.setProductions(bProductions);
@@ -195,7 +196,7 @@ public final class EbnfToBnfConverter {
             List<EbnfProduction> eProductions,
             boolean forceObjectResult) throws SynException
     {
-        assert eProductions != null;
+        Checks.notNull(eProductions);
 
         List<BnfProduction> bProductions = new ArrayList<>();
         for (EbnfProduction eProduction : eProductions) {
@@ -259,7 +260,7 @@ public final class EbnfToBnfConverter {
             //Obtain a getter which may be needed by a parser action to read the value produced by
             //the BNF element from the stack.
             IParserGetter parserGetter = eElement.getGetter(offset);
-            assert parserGetter != null;
+            Checks.notNull(parserGetter);
 
             //Handle BNF element's return value.
             String attribute = eElement.getAttribute();
@@ -411,8 +412,8 @@ public final class EbnfToBnfConverter {
                 Map<String, Getter> getterMap,
                 Collection<Getter> embeddedGetters)
         {
-            assert elements != null;
-            assert getterMap != null;
+            Checks.notNull(elements);
+            Checks.notNull(getterMap);
 
             bElements = elements;
             this.defaultGetter = defaultGetter;

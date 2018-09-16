@@ -23,7 +23,7 @@ import org.antkar.syn.sample.script.rt.value.Value;
 /**
  * Array dimension syntax node. Used in a new array allocation expression.
  */
-public class ArrayDimension {
+public final class ArrayDimension {
     /** The length of the dimension. */
     @SynField
     private Expression synLength;

@@ -39,7 +39,7 @@ import org.antkar.syn.sample.script.rt.value.Value;
 /**
  * Class declaration syntax node.
  */
-public class ClassDeclaration extends Declaration {
+public final class ClassDeclaration extends Declaration {
     /** Member declarations. */
     @SynField
     private ClassMemberDeclaration[] synMembers;

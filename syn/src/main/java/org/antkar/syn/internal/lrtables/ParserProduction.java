@@ -15,24 +15,23 @@
  */
 package org.antkar.syn.internal.lrtables;
 
+import org.antkar.syn.internal.Checks;
 import org.antkar.syn.internal.parser.IParserAction;
 
 /**
  * Parser production descriptor.
  */
-public class ParserProduction {
+public final class ParserProduction {
     private final ParserNonterminal nonterminal;
     private final int length;
     private final IParserAction action;
 
     ParserProduction(ParserNonterminal nonterminal, int length, IParserAction action) {
-        assert nonterminal != null;
-        assert length >= 0;
-        assert action != null;
+        Checks.argument(length >= 0);
 
-        this.nonterminal = nonterminal;
+        this.nonterminal = Checks.notNull(nonterminal);
         this.length = length;
-        this.action = action;
+        this.action = Checks.notNull(action);
     }
 
     public ParserNonterminal getNonterminal() {

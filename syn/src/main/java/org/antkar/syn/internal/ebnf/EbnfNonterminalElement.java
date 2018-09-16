@@ -17,6 +17,7 @@ package org.antkar.syn.internal.ebnf;
 
 import org.antkar.syn.SynException;
 import org.antkar.syn.TextPos;
+import org.antkar.syn.internal.Checks;
 import org.antkar.syn.internal.bnf.BnfElement;
 import org.antkar.syn.internal.bnf.BnfNonterminal;
 import org.antkar.syn.internal.grammar.EbnfToBnfConverter;
@@ -29,8 +30,7 @@ public final class EbnfNonterminalElement extends EbnfElement {
 
     public EbnfNonterminalElement(String key, TextPos keyPos, EbnfNonterminal nonterminal) {
         super(key, keyPos);
-        assert nonterminal != null;
-        this.nonterminal = nonterminal;
+        this.nonterminal = Checks.notNull(nonterminal);
     }
 
     /**

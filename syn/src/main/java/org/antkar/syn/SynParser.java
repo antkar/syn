@@ -226,7 +226,7 @@ import org.antkar.syn.internal.scanner.ScannerConfigurator;
  * </tr>
  * </table>
  */
-public class SynParser {
+public final class SynParser {
 
     private ParserConfiguration parserConfig;
     private ScannerConfiguration scannerConfig;
@@ -457,7 +457,7 @@ public class SynParser {
 
         DefaultTokenStream tokenStream = createTokenStream(textReader, textDescriptor);
 
-        ParserEngine parserEngine = new ParserEngine(tokenStream, parserConfig, startState, failOnAmbiguity);
+        ParserEngine parserEngine = new ParserEngine(tokenStream, startState, failOnAmbiguity);
         SynResult result = parserEngine.parse();
         return result;
     }

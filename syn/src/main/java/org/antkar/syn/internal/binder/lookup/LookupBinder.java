@@ -13,34 +13,35 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.antkar.syn.internal.binder;
+package org.antkar.syn.internal.binder.lookup;
 
 import java.lang.reflect.Field;
 import java.util.Collection;
 
 import org.antkar.syn.binder.SynBinderException;
 import org.antkar.syn.binder.SynLookup;
+import org.antkar.syn.internal.binder.BinderReflectionUtil;
 
 /**
  * A binder for a {@link SynLookup} field.
  */
-public abstract class LookupBinder {
+abstract class LookupBinder {
 
     private final Field field;
 
-    protected LookupBinder(Field field) {
+    LookupBinder(Field field) {
         this.field = field;
     }
 
     /**
      * Creates a Java value from a collection of objects that satisfy the {@link SynLookup}'s filter.
      */
-    protected abstract Object createValue(Collection<Object> oObjs) throws SynBinderException;
+    abstract Object createValue(Collection<Object> oObjs) throws SynBinderException;
 
     /**
      * Binds the given collection of Java objects to the field.
      */
-    public void bind(Object oThis, Collection<Object> oObjs) throws SynBinderException {
+    final void bind(Object oThis, Collection<Object> oObjs) throws SynBinderException {
         Object value = createValue(oObjs);
         BinderReflectionUtil.setFieldValue(field, oThis, value);
     }
@@ -48,12 +49,12 @@ public abstract class LookupBinder {
     /**
      * Returns the associated Java field.
      */
-    protected final Field getField() {
+    final Field getField() {
         return field;
     }
 
     @Override
-    public String toString() {
+    public final String toString() {
         return field + "(" + getClass().getSimpleName() + ")";
     }
 }

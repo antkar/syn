@@ -4,9 +4,9 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -28,18 +28,18 @@ public abstract class EqNeBinaryOperator extends BinaryOperator {
     EqNeBinaryOperator(String opLiteral) {
         super(opLiteral);
     }
-    
+
     @Override
     public final RValue evaluate(Operand left, Operand right) throws SynsException {
         OperandType leftType = left.getType();
         OperandType rightType = right.getType();
-        
+
         //If one of the operands is null while the other one is not, return false independently
         //from the type of the other operand.
         if (leftType != rightType && (leftType == OperandType.NULL || rightType == OperandType.NULL)) {
             return makeResult(false);
         }
-        
+
         //If both operands are references (null, String, Object), compare references.
         if (isReference(leftType) && isReference(rightType)) {
             Object leftObj = left.objectValue();
@@ -47,7 +47,7 @@ public abstract class EqNeBinaryOperator extends BinaryOperator {
             boolean equal = leftObj == null ? rightObj == null : leftObj.equals(rightObj);
             return makeResult(equal);
         }
-        
+
         return super.evaluate(left, right);
     }
 
@@ -65,7 +65,7 @@ public abstract class EqNeBinaryOperator extends BinaryOperator {
     final RValue evaluate(double left, double right) {
         return makeResult(left == right);
     }
-    
+
     /**
      * Returns the result of the operator in the form of {@link RValue} depending on the equality
      * of the operands.
@@ -74,12 +74,12 @@ public abstract class EqNeBinaryOperator extends BinaryOperator {
         boolean result = evaluateResult(equal);
         return Value.forBoolean(result);
     }
-    
+
     /**
      * Evaluates the <code>boolean</code> result depending on the equality of operands.
      */
     abstract boolean evaluateResult(boolean equal);
-    
+
     private static boolean isReference(OperandType type) {
         return OperandType.NULL == type || OperandType.STRING == type || OperandType.OBJECT == type;
     }

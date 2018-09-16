@@ -65,7 +65,7 @@ public abstract class BinaryExpression extends Expression {
     }
 
     @Override
-    public String toString() {
+    public final String toString() {
         return String.format("(%s %s %s)", synLeft, getOp(), synRight);
     }
 }

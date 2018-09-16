@@ -4,9 +4,9 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -35,12 +35,12 @@ import org.antkar.syn.TokenDescriptor;
 import org.antkar.syn.TokenType;
 import org.antkar.syn.ValueNode;
 import org.antkar.syn.internal.BooleanValueNode;
+import org.antkar.syn.internal.Checks;
 import org.antkar.syn.internal.FloatValueNode;
 import org.antkar.syn.internal.IntegerValueNode;
 import org.antkar.syn.internal.LongValueNode;
 import org.antkar.syn.internal.ObjectValueNode;
 import org.antkar.syn.internal.StringValueNode;
-import org.antkar.syn.internal.TokenTypeResolver;
 import org.antkar.syn.internal.ebnf.EbnfElement;
 import org.antkar.syn.internal.ebnf.EbnfGrammar;
 import org.antkar.syn.internal.ebnf.EbnfNestedElement;
@@ -57,21 +57,21 @@ import org.antkar.syn.internal.ebnf.EbnfValueElement;
  * Converts a SYN Abstract Syntax Tree to an EBNF grammar.
  */
 final class SynTreeToEbnfGrammarConverter {
-    
+
     private final List<EbnfNonterminal> startNonterminals = new ArrayList<>();
     private final List<EbnfTerminalElement> terminals = new ArrayList<>();
     private final Map<String, EbnfNonterminal> definedNonterminalMap = new HashMap<>();
     private final Map<String, EbnfNonterminal> undefinedNonterminalMap = new HashMap<>();
     private final Map<String, TokenDescriptor> literalToTokenDescriptorMap = new HashMap<>();
     private final Map<TokenType, TokenDescriptor> tokenTypeToTokenDescriptorMap = new HashMap<>();
-    
+
     private SynTreeToEbnfGrammarConverter(){}
-    
+
     /**
      * Converts an AST to an EBNF grammar.
      */
     static EbnfGrammar convert(SourceDescriptor sourceDescriptor, SynNode grammar) throws SynException {
-        assert sourceDescriptor != null;
+        Checks.notNull(sourceDescriptor);
         SynTreeToEbnfGrammarConverter converter = new SynTreeToEbnfGrammarConverter();
         EbnfGrammar result = converter.convertGrammar(sourceDescriptor, grammar);
         return result;
@@ -86,10 +86,10 @@ final class SynTreeToEbnfGrammarConverter {
         for (SynNode nonterminalNode : array) {
             convertNonterminal(nonterminalNode);
         }
-        
+
         //Fail if there are undefined nonterminals referenced from grammar rules.
         checkUndefinedNonterminals(sourceDescriptor);
-        
+
         EbnfGrammar result = new EbnfGrammar(startNonterminals, terminals);
         return result;
     }
@@ -102,7 +102,7 @@ final class SynTreeToEbnfGrammarConverter {
             throw new SynGrammarException(pos, "Undefined nonterminals are referenced in the grammar: " + list);
         }
     }
-    
+
     /**
      * Converts an AST node to an EBNF nonterminal definition.
      */
@@ -113,16 +113,16 @@ final class SynTreeToEbnfGrammarConverter {
         SynNode start = object.get("start");
         SynNode rules = object.get("rules");
 
-        TokenType tokenType = TokenTypeResolver.getTokenType(name);  
+        TokenType tokenType = TokenTypeResolver.getTokenType(name);
         if (tokenType != null) {
-            throw new SynGrammarException(namePos, 
+            throw new SynGrammarException(namePos,
                     "Token name is used as a nonterminal name: " + tokenType);
         }
 
         if (definedNonterminalMap.containsKey(name)) {
             throw new SynGrammarException(namePos, "Nonterminal is already defined: " + name);
         }
-        
+
         //Get or create an EBNF nonterminal.
         EbnfNonterminal nonterminal = undefinedNonterminalMap.remove(name);
         if (nonterminal == null) {
@@ -135,45 +135,45 @@ final class SynTreeToEbnfGrammarConverter {
         //Convert productions.
         EbnfProductions productions = convertRules(rules);
         nonterminal.setProductions(productions);
-        
+
         //Track start nonterminal.
         if (start != null) {
             startNonterminals.add(nonterminal);
         }
     }
-    
+
     /**
      * Converts AST nodes to EBNF productions.
      */
     private EbnfProductions convertRules(SynNode rulesNode) throws SynException {
         List<EbnfProduction> productionList = new ArrayList<>();
-        
+
         ArrayNode arrayNode = (ArrayNode) rulesNode;
         for (SynNode ruleNode : arrayNode) {
             EbnfProduction production = convertRule(ruleNode);
             productionList.add(production);
         }
-        
+
         EbnfProductions result = new EbnfProductions(productionList);
         return result;
     }
-    
+
     /**
      * Converts an AST node to an EBNF production.
      */
     private EbnfProduction convertRule(SynNode ruleNode) throws SynException {
         List<EbnfElement> elementList = new ArrayList<>();
-        
+
         ArrayNode arrayNode = (ArrayNode) ruleNode;
         for (SynNode elementNode : arrayNode) {
             EbnfElement element = convertElement(elementNode);
             elementList.add(element);
         }
-        
+
         EbnfProduction result = new EbnfProduction(elementList);
         return result;
     }
-    
+
     /**
      * Converts an AST node to an EBNF element.
      */
@@ -183,7 +183,7 @@ final class SynTreeToEbnfGrammarConverter {
         String key = objectNode.getString("key");
         ObjectNode subElement = (ObjectNode) objectNode.get("element");
         String type = subElement.getString("type");
-        
+
         EbnfElement result;
         if ("value".equals(type)) {
             result = convertValueElement(subElement, key, keyPos);
@@ -200,15 +200,15 @@ final class SynTreeToEbnfGrammarConverter {
         } else {
             throw new IllegalStateException("Invalid SubElement type: " + type);
         }
-        
+
         return result;
     }
-    
+
     /**
      * Converts an AST node to an EBNF value element.
      */
     private static EbnfElement convertValueElement(ObjectNode subElement, String key, TextPos keyPos)
-            throws SynGrammarException 
+            throws SynGrammarException
     {
         SynNode elementValue = subElement.get("value");
         ValueNode userNode = createValueNode(elementValue);
@@ -236,14 +236,14 @@ final class SynTreeToEbnfGrammarConverter {
             return convertNativeValue(valueObjectNode);
         }
     }
-    
+
     /**
      * Converts an AST node to a simple SYN value node.
      */
     private static ValueNode convertSimpleValueNode(ObjectNode objectNode, ValueNode valueNode) {
         //For numeric values, a minus sign can be specified.
         boolean negative = objectNode.get("minus") != null;
-        
+
         if (valueNode == null) {
             //Null.
             return null;
@@ -256,7 +256,7 @@ final class SynTreeToEbnfGrammarConverter {
             if (negative) {
                 x = -x;
             }
-            return makeBasicIntegerNode(x); 
+            return makeBasicIntegerNode(x);
         } else if (valueNode.getValueType() == SynValueType.FLOAT) {
             //Floating-point.
             double x = valueNode.getFloat();
@@ -271,10 +271,10 @@ final class SynTreeToEbnfGrammarConverter {
             //Arbitrary object.
             return new ObjectValueNode(valueNode.getValue());
         }
-        
+
         throw new IllegalStateException("Invalid value type: " + valueNode.getValueType());
     }
-    
+
     /**
      * Converts an AST node to a native SYN value node.
      */
@@ -282,7 +282,7 @@ final class SynTreeToEbnfGrammarConverter {
         ArrayNode classNameNode = (ArrayNode) nativeValueNode.get("className");
         String className = arrayToClassName(classNameNode);
         String fieldName = nativeValueNode.getString("fieldName");
-        
+
         Object value = getNativeFieldValue(nativeValueNode, classNameNode, className, fieldName);
         ValueNode result = nativeValueToValueNode(nativeValueNode, fieldName, value);
         return result;
@@ -300,14 +300,14 @@ final class SynTreeToEbnfGrammarConverter {
         try {
             Class<?> clazz = Class.forName(className);
             Field field = clazz.getField(fieldName);
-            
+
             int modifiers = field.getModifiers();
             if (!Modifier.isStatic(modifiers) || !Modifier.isFinal(modifiers)) {
                 TextPos fieldNamePos = nativeValueNode.getPos("fieldName");
                 throw new SynGrammarException(fieldNamePos,
                         String.format("Field %s is not a static final field", fieldName));
             }
-            
+
             Object value = field.get(clazz);
             return value;
         } catch (IllegalAccessException | SecurityException | NoSuchFieldException e) {
@@ -330,7 +330,7 @@ final class SynTreeToEbnfGrammarConverter {
                 || value instanceof Short
                 || value instanceof Character
                 || value instanceof Integer
-                || value instanceof Long) 
+                || value instanceof Long)
         {
             //Integer.
             long longValue = ((Number) value).longValue();
@@ -349,7 +349,7 @@ final class SynTreeToEbnfGrammarConverter {
             //Arbitrary object.
             return new ObjectValueNode(value);
         }
-        
+
         //Null value is not supported.
         TextPos fieldNamePos = nativeValueNode.getPos("fieldName");
         throw new SynGrammarException(fieldNamePos,
@@ -374,7 +374,7 @@ final class SynTreeToEbnfGrammarConverter {
             terminals.add(element);
             return element;
         }
-        
+
         //Must be a nonterminal otherwise.
         EbnfNonterminal nonterminal = definedNonterminalMap.get(name);
         if (nonterminal == null) {
@@ -386,16 +386,16 @@ final class SynTreeToEbnfGrammarConverter {
         }
         return new EbnfNonterminalElement(key, keyPos, nonterminal);
     }
-    
+
     /**
-     * Converts a string literal to an EBNF terminal element. 
+     * Converts a string literal to an EBNF terminal element.
      */
-    private EbnfElement convertLiteralElement(ObjectNode subElement, String key, TextPos keyPos) 
-            throws SynException 
+    private EbnfElement convertLiteralElement(ObjectNode subElement, String key, TextPos keyPos)
+            throws SynException
     {
         TextPos literalPos = subElement.getPos("value");
         String literal = subElement.getString("value");
-        
+
         TokenDescriptor tokenDescriptor = literalToTokenDescriptorMap.get(literal);
         if (tokenDescriptor == null) {
             //This literal has not been seen before.
@@ -408,35 +408,35 @@ final class SynTreeToEbnfGrammarConverter {
             tokenDescriptor = TokenDescriptor.forLiteral(literal);
             literalToTokenDescriptorMap.put(literal, tokenDescriptor);
         }
-        
+
         EbnfTerminalElement element = new EbnfTerminalElement(key, keyPos, tokenDescriptor);
         terminals.add(element);
         return element;
     }
-    
+
     /**
      * Converts an AST node to an optional EBNF element.
      */
     private EbnfElement convertOptionalElement(ObjectNode subElement, String key, TextPos keyPos)
-            throws SynException 
+            throws SynException
     {
         SynNode rules = subElement.get("rules");
         EbnfProductions productions = convertRules(rules);
         EbnfElement result = new EbnfOptionalElement(key, keyPos, productions);
         return result;
     }
-    
+
     /**
      * Converts an AST node to a repetition EBNF element.
      */
-    private EbnfElement convertRepetitionElement(ObjectNode subElement, String key, TextPos keyPos) 
-            throws SynException 
+    private EbnfElement convertRepetitionElement(ObjectNode subElement, String key, TextPos keyPos)
+            throws SynException
     {
         boolean nullable = subElement.getBoolean("nullable");
         SynNode body = subElement.get("body");
         EbnfProductions bodyProductions = convertRules(body);
         SynNode separator = subElement.get("separator");
-        
+
         EbnfProductions separatorProductions = null;
         if (separator != null) {
             separatorProductions = convertRules(separator);
@@ -446,7 +446,7 @@ final class SynTreeToEbnfGrammarConverter {
                 new EbnfRepetitionElement(key, keyPos, bodyProductions, separatorProductions, nullable);
         return result;
     }
-    
+
     /**
      * Converts an AST node to a nested EBNF element.
      */
@@ -458,7 +458,7 @@ final class SynTreeToEbnfGrammarConverter {
         EbnfElement result = new EbnfNestedElement(key, keyPos, productions);
         return result;
     }
-    
+
     /**
      * Converts an AST array node to a Java canonical class name.
      */
@@ -474,7 +474,7 @@ final class SynTreeToEbnfGrammarConverter {
         String result = bld.toString();
         return result;
     }
-    
+
     /**
      * Returns the text position associated with the given AST node array.
      */
@@ -490,7 +490,7 @@ final class SynTreeToEbnfGrammarConverter {
         }
         return result;
     }
-    
+
     /**
      * Creates a SYN value node for the specified <code>long</code> value.
      */

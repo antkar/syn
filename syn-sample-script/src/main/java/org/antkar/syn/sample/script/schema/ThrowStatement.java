@@ -26,7 +26,7 @@ import org.antkar.syn.sample.script.rt.value.Value;
 /**
  * Script <code>throw</code> statement syntax node.
  */
-public class ThrowStatement extends Statement {
+public final class ThrowStatement extends Statement {
     /** The text position of the first token. */
     @SynField
     private TextPos synPos;

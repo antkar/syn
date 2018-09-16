@@ -31,7 +31,7 @@ import org.antkar.syn.sample.script.rt.value.Value;
 /**
  * Block syntax node.
  */
-public class Block {
+public final class Block {
     /** Import declarations. */
     @SynField
     private Import[] synImports;
@@ -128,7 +128,7 @@ public class Block {
     /**
      * Calls this block as a function in the specified scope.
      */
-    public Value call(ScriptScope scope, RValue[] arguments) throws SynsException {
+    public Value call(ScriptScope scope) throws SynsException {
         ScriptScope declarationsScope = scope.nestedFunctionScope("block");
         StatementResult result = execute(declarationsScope);
         return result.isReturn() ? result.getReturnValue() : Value.forVoid();

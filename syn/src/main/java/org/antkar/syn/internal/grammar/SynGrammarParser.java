@@ -28,6 +28,7 @@ import org.antkar.syn.SynException;
 import org.antkar.syn.SynNode;
 import org.antkar.syn.SynResult;
 import org.antkar.syn.TokenDescriptor;
+import org.antkar.syn.internal.Checks;
 import org.antkar.syn.internal.bnf.BnfGrammar;
 import org.antkar.syn.internal.ebnf.EbnfGrammar;
 import org.antkar.syn.internal.lrtables.ParserConfiguration;
@@ -57,7 +58,7 @@ public final class SynGrammarParser {
     public static EbnfGrammar parseGrammar(Reader grammarReader, SourceDescriptor grammarDescriptor)
             throws SynException
     {
-        assert grammarDescriptor != null;
+        Checks.notNull(grammarDescriptor);
 
         //Get parser configuration for the grammar of grammar.
         ParserConfiguration parserConfig = getSynGrammarParserConfiguration();
@@ -73,7 +74,7 @@ public final class SynGrammarParser {
         DefaultTokenStream tokenStream = new DefaultTokenStream(grammarDescriptor, scannerConfig, grammarReader);
 
         //Create a parser engine.
-        ParserEngine engine = new ParserEngine(tokenStream, parserConfig, startState, false);
+        ParserEngine engine = new ParserEngine(tokenStream, startState, false);
 
         //Parse the grammar input.
         SynResult sGrammar = engine.parse();

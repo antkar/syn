@@ -27,7 +27,7 @@ import org.antkar.syn.sample.script.rt.value.Value;
 /**
  * Explicit type cast expression syntax node.
  */
-public class ExplicitCastExpression extends Expression {
+public final class ExplicitCastExpression extends Expression {
     /** The position of the first token. */
     @SynField
     private TextPos synPos;

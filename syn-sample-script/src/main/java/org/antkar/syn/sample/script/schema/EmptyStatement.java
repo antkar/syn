@@ -23,7 +23,7 @@ import org.antkar.syn.sample.script.rt.StatementResult;
 /**
  * Empty statement syntax node.
  */
-public class EmptyStatement extends Statement {
+public final class EmptyStatement extends Statement {
     /** The text position. */
     @SynField
     private TextPos synPos;

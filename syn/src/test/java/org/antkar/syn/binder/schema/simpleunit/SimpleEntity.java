@@ -19,7 +19,7 @@ import org.antkar.syn.binder.SynField;
 import org.antkar.syn.binder.SynInit;
 import org.antkar.syn.binder.SynLookup;
 
-public class SimpleEntity {
+public final class SimpleEntity {
     @SynField
     private String sfName;
 

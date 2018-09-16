@@ -4,9 +4,9 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -51,29 +51,33 @@ abstract class AssignmentUnaryOperator extends UnaryOperator {
         } else {
             throw errOperandTypeMissmatch(operandType);
         }
-        
+
         //Assign the new value to the variable.
         lvalue.assign(nextValue);
-        
+
         //Return either the new or the old value, depending on the operator type - prefix or postfix.
         Value result = resultValue(rOldValue, lvalue);
         return result;
     }
-    
+
     /**
      * Evaluates the result for an integer operand.
+     *
+     * @param value Operand value.
      */
     long evaluate(long value) throws SynsException {
         throw errOperandTypeMissmatch(OperandType.LONG);
     }
-    
+
     /**
      * Evaluates the result for a floating-point operand.
+     *
+     * @param value Operand value.
      */
     double evaluate(double value) throws SynsException {
         throw errOperandTypeMissmatch(OperandType.DOUBLE);
     }
-    
+
     /**
      * Chooses the result value for the operator - either the old value of the variable, or the
      * new value.

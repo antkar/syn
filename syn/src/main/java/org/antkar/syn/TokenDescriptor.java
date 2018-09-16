@@ -22,7 +22,7 @@ package org.antkar.syn;
  * Token descriptors for custom terminals (keywords, key-characters) are created when a {@link SynParser}
  * instance is created.
  */
-public class TokenDescriptor {
+public final class TokenDescriptor {
     private static final TokenDescriptor[] FOR_TYPE;
 
     static {

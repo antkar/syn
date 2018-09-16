@@ -22,7 +22,7 @@ import org.antkar.syn.TextPos;
  * Character position. A mutable object containing a line and a column number and an offset from the beginning
  * of the input.
  */
-public final class CharPos {
+final class CharPos {
     private int line;
     private int column;
     private int offset;
@@ -30,15 +30,15 @@ public final class CharPos {
     CharPos() {
     }
 
-    public int line() {
+    int line() {
         return line;
     }
 
-    public int column() {
+    int column() {
         return column;
     }
 
-    public int offset() {
+    int offset() {
         return offset;
     }
 

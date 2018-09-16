@@ -4,9 +4,9 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -25,20 +25,20 @@ import org.antkar.syn.sample.script.rt.value.Value;
 /**
  * A wrapper for a Java class which provides an access to the class' members as to {@link Value}s.
  */
-public class JavaClass {
+public final class JavaClass {
     private static final Map<Class<?>, JavaClass> CLASSES_MAP = new HashMap<>();
-    
+
     private final Class<?> javaCls;
     private final JavaMethodSet constructors;
     private final Map<String, JavaMember> membersMap;
-    
+
     private JavaClass(Class<?> cls) {
         synchronized (CLASSES_MAP) {
             CLASSES_MAP.put(cls, this);
         }
-        
+
         javaCls = cls;
-        
+
         constructors = JavaClassExplorer.discoverConstructors(cls);
         membersMap = JavaClassExplorer.discoverFieldsAndMethods(cls);
     }
@@ -55,14 +55,14 @@ public class JavaClass {
             return javaClass;
         }
     }
-    
+
     /**
      * Returns the associated Java class.
      */
     public Class<?> getJavaClass() {
         return javaCls;
     }
-    
+
     /**
      * Returns the value of the specified static member, or <code>null</code>.
      */
@@ -71,10 +71,10 @@ public class JavaClass {
         if (member == null) {
             return null;
         }
-        
+
         return member.getStaticValue();
     }
-    
+
     /**
      * Returns the value of the specified instance member, or <code>null</code>.
      */
@@ -83,7 +83,7 @@ public class JavaClass {
         if (member == null) {
             return null;
         }
-        
+
         return member.getInstanceValue(obj);
     }
 
@@ -93,7 +93,7 @@ public class JavaClass {
     public Value newInstance(RValue[] arguments) throws SynsException {
         return constructors.callStatic(arguments);
     }
-    
+
     @Override
     public String toString() {
         return javaCls.toString();

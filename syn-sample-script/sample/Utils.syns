@@ -4,9 +4,9 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -21,15 +21,15 @@
 class Vector2D {
     public var x;
     public var y;
-    
+
     function Vector2D(x, y) {
         this.x = x;
         this.y = y;
     }
-    
+
     public function get(axis) = axis == 0 ? x : y;
     public function isInRectangle(v) = x < v.x && y < v.y;
-    
+
     public function add(x, y) = vectorOp(x, y, (a, b) -> a + b);
     public function sub(x, y) = vectorOp(x, y, (a, b) -> a - b);
     public function mul(x, y) = vectorOp(x, y, (a, b) -> a * b);
@@ -38,7 +38,7 @@ class Vector2D {
     public function max(x, y) = vectorOp(x, y, (a, b) -> Math.max(a, b));
     public function sum() = x + y;
     public function neg() = Vector2D(-x, -y);
-    
+
     public function reverse() = Vector2D(y, x);
     public function length() = Math.sqrt(x * x + y * y);
     public function toInt() = Vector2D((int)x, (int)y);
@@ -48,7 +48,7 @@ class Vector2D {
         var v = valueOf(x, y);
         return Vector2D(lambda(this.x, v.x), lambda(this.y, v.y));
     }
-    
+
     public function range(end, step) {
         var list = ArrayList();
         for (var ty = y, tx = x; ty < end.y && tx < end.x; ty += step.y, tx += step.x) {
@@ -56,7 +56,7 @@ class Vector2D {
         }
         return list;
     }
-    
+
     public function range2D(end) {
         var list = ArrayList();
         for (var ty = y; ty < end.y; ++ty) {
@@ -64,18 +64,18 @@ class Vector2D {
         }
         return list;
     }
-    
+
     public function equals(v) {
         return x == v.x && y == v.y;
     }
-    
+
     public function toString() = "(" + x + ", " + y + ")";
 
     public const valueOf = (x, y) -> {
         if (y != null) {
             return Vector2D(x, y);
         }
-        
+
         var type = typeof(x).type;
         if (type == "object") {
             return x;
@@ -90,7 +90,7 @@ class Vector2D {
 // Disjoint-set (a simple disjoint-set forest without optimizations).
 class DisjointSet {
     var parentMap = java.util.HashMap();
-    
+
     public function findSet(element) {
         for (;;) {
             var parent = parentMap.get(element);
@@ -98,13 +98,13 @@ class DisjointSet {
             element = parent;
         }
     }
-    
+
     public function union(element1, element2) {
         var head1 = findSet(element1);
         var head2 = findSet(element2);
         if (head1 != head2) parentMap.put(head2, head1);
     }
-    
+
     public function clone() {
         var result = DisjointSet();
         result.parentMap.putAll(parentMap);
@@ -115,39 +115,39 @@ class DisjointSet {
 // Wraps an array adding functional-style operations, e. g. map, filter, reduce.
 class ExtendedList {
     var array;
-    
+
     function ExtendedList(array) {
         this.array = array;
     }
-    
+
     public function filter(predicate) {
         var list2 = java.util.ArrayList();
         for (var v : array) if (predicate(v)) list2.add(v);
         return ExtendedList(list2.toArray());
     }
-    
+
     public function exists(predicate) {
         for (var v : array) if (predicate(v)) return true;
         return false;
     }
-    
+
     public function map(mapper) {
         var list2 = java.util.ArrayList();
         for (var v : array) list2.add(mapper(v));
         return ExtendedList(list2.toArray());
     }
-    
+
     public function reduce(reducer) {
         if (array.length == 0) return null;
         var v = array[0];
         for (var i = 1; i < array.length; ++i) v = reducer(v, array[i]);
         return v;
     }
-    
+
     public function foreach(func) {
         for (var v : array) func(v);
     }
-    
+
     public function get(i) = array[i];
     public function size() = array.length;
 }

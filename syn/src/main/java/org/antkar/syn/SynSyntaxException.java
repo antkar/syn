@@ -21,6 +21,8 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import org.antkar.syn.internal.Checks;
+
 /**
  * Thrown to indicate a syntax error - a situation when the input does not match the grammar.
  */
@@ -39,8 +41,9 @@ public final class SynSyntaxException extends SynTextException {
      */
     public SynSyntaxException(TextPos textPos, TerminalNode actualToken, Collection<TokenDescriptor> expectedTokens) {
         super(textPos, constructMessage(actualToken, expectedTokens));
-        assert actualToken != null;
-        assert expectedTokens != null;
+
+        Checks.notNull(actualToken);
+        Checks.notNull(expectedTokens);
 
         this.actualToken = actualToken;
         List<TokenDescriptor> expectedTokenList = new ArrayList<>(expectedTokens);
@@ -83,8 +86,8 @@ public final class SynSyntaxException extends SynTextException {
             TerminalNode actualToken,
             Collection<TokenDescriptor> expectedTokens)
     {
-        assert actualToken != null;
-        assert expectedTokens != null;
+        Checks.notNull(actualToken);
+        Checks.notNull(expectedTokens);
         return "Syntax error on token " + actualToken;
     }
 }

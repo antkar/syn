@@ -4,9 +4,9 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -30,27 +30,27 @@ import java.util.Set;
  */
 class EbnfToBnfConverter {
     static final String RESULT_KEY = "result";
-    
+
     private final Map<String, BnfNonterminal> nameToNtMap = new HashMap<>();
     private final Map<String, int[]> nameToAnonymousNtCountMap = new HashMap<>();
     private final Map<TokenDescriptor, BnfTerminal> terminalMap = new HashMap<>();
     private final List<BnfNonterminal> nonterminals = new ArrayList<>();
-    
+
     private int prCount = 0;
     private int elCount = 0;
-    
+
     private EbnfToBnfConverter(){}
 
     /**
      * Converts an EBNF grammar into a BNF grammar.
-     * 
+     *
      * @param eGrammar the EBNF grammar.
      * @return the BNF grammar.
      * @throws SynException if conversion fails.
      */
     static BnfGrammar convert(EbnfGrammar eGrammar) throws SynException {
         EbnfToBnfConverter converter = new EbnfToBnfConverter();
-        
+
         //Convert all terminal symbols. This fragment ensures that all terminal symbols defined
         //in the EBNF grammar will be converted to BNF. Otherwise, only terminals used in
         //productions reachable from start nonterminals would be converted.
@@ -58,27 +58,27 @@ class EbnfToBnfConverter {
             TokenDescriptor tokenDescriptor = eTerminal.getTokenDescriptor();
             converter.convertTerminal(tokenDescriptor);
         }
-        
+
         //Convert start nonterminals and all related nonterminals.
         List<BnfNonterminal> bStartNonterminals = new ArrayList<>();
         for (EbnfNonterminal eNonterminal : eGrammar.getStartNonterminals()) {
             BnfNonterminal bNonterminal = converter.convertNonterminal(eNonterminal);
             bStartNonterminals.add(bNonterminal);
         }
-        
+
         //Create and return a BNF grammar instance.
         Collection<BnfTerminal> terminals = converter.terminalMap.values();
         BnfGrammar bGrammar = new BnfGrammar(bStartNonterminals, converter.nonterminals, terminals);
         return bGrammar;
     }
-    
+
     /**
      * Converts an EBNF nonterminal to BNF. If the nonterminal has already been converted, an existing
      * BNF nonterminal is returned.
      */
     BnfNonterminal convertNonterminal(EbnfNonterminal eNonterminal) throws SynException {
         assert eNonterminal != null;
-        
+
         String name = eNonterminal.getName();
         BnfNonterminal bNonterminal = nameToNtMap.get(name);
         if (bNonterminal == null) {
@@ -87,55 +87,55 @@ class EbnfToBnfConverter {
             //Put the new BNF nonterminal into the map now - before converting productions - in order
             //to handle recursive nonterminals correctly.
             nameToNtMap.put(name, bNonterminal);
-            
+
             //Convert productions.
             List<EbnfProduction> eProductions = eNonterminal.getProductions().asList();
             List<BnfProduction> bProductions = convertProductions(name, eProductions, false);
             bNonterminal.setProductions(bProductions);
         }
-        
+
         return bNonterminal;
     }
-    
+
     /**
      * Converts an EBNF terminal to a BNF terminal. If the terminal has already been converted, the
      * existing BNF terminal is returned.
      */
     BnfTerminal convertTerminal(TokenDescriptor tokenDescriptor) {
         assert tokenDescriptor != null;
-        
+
         BnfTerminal bTerminal = terminalMap.get(tokenDescriptor);
         if (bTerminal == null) {
             bTerminal = new BnfTerminal(elCount, tokenDescriptor);
             ++elCount;
             terminalMap.put(tokenDescriptor, bTerminal);
         }
-        
+
         return bTerminal;
     }
-    
+
     /**
      * Creates a new anonymous BNF nonterminal. An anonymous BNF nonterminal does not have a corresponding
-     * EBNF nonterminal.  
+     * EBNF nonterminal.
      */
     BnfNonterminal createAnonymousNonterminal(String ownerNtName) {
         String name = ownerNtName + "@" + getNextAnonymousNonterminalIndex(ownerNtName);
         BnfNonterminal bNonterminal = newNonterminal(name);
         return bNonterminal;
     }
-    
+
     /**
      * Creates a new anonymous BNF nonterminal, defining its productions.
      */
     BnfNonterminal createAnonymousNonterminal(String ownerNtName, List<BnfProduction> bProductions) {
         assert bProductions != null;
-        
+
         BnfNonterminal bNonterminal = createAnonymousNonterminal(ownerNtName);
         bNonterminal.setProductions(bProductions);
-        
+
         return bNonterminal;
     }
-    
+
     /**
      * Returns the next free anonymous nonterminal index for the specified name.
      */
@@ -145,12 +145,12 @@ class EbnfToBnfConverter {
             cnt = new int[1];
             nameToAnonymousNtCountMap.put(name, cnt);
         }
-        
+
         int result = cnt[0];
         ++cnt[0];
         return result;
     }
-    
+
     /**
      * Creates a BNF production from the specified elements. Maintains production index.
      */
@@ -163,7 +163,7 @@ class EbnfToBnfConverter {
 
     /**
      * Converts a list of EBNF productions to a list of BNF productions.
-     * 
+     *
      * @param currentNt the name of the EBNF nonterminal which the EBNF productions belong to.
      * @param eProductions EBNF productions.
      * @param forceObjectResult <code>true</code> if the created BNF productions must return an
@@ -175,16 +175,16 @@ class EbnfToBnfConverter {
             boolean forceObjectResult) throws SynException
     {
         assert eProductions != null;
-        
+
         List<BnfProduction> bProductions = new ArrayList<>();
         for (EbnfProduction eProduction : eProductions) {
             BnfProduction bProduction = convertProduction(currentNt, eProduction, forceObjectResult);
             bProductions.add(bProduction);
         }
-        
+
         return bProductions;
     }
-    
+
     /**
      * Converts a list of EBNF productions to an anonymous BNF nonterminal.
      */
@@ -197,7 +197,7 @@ class EbnfToBnfConverter {
         BnfNonterminal bNonterminal = createAnonymousNonterminal(currentNt, bProductions);
         return bNonterminal;
     }
-    
+
     /**
      * Converts an EBNF production to a BNF production.
      */
@@ -212,11 +212,11 @@ class EbnfToBnfConverter {
         ++prCount;
         return bProduction;
     }
-    
+
     /**
      * Converts a list of EBNF elements to a list of BNF elements.
      */
-    private ConvertedElements convertElements(String currentNt, List<EbnfElement> eElements) throws SynException 
+    private ConvertedElements convertElements(String currentNt, List<EbnfElement> eElements) throws SynException
     {
         //Ensure that there are no attribute conflicts.
         checkAttributeDuplications(eElements);
@@ -231,7 +231,7 @@ class EbnfToBnfConverter {
         for (int i = 0, n = eElements.size(); i < n; ++i) {
             //The elements are processed in a reverse order, because this allows to track the stack
             //offset of a BNF element related to the end of the list of BNF elements.
-            
+
             EbnfElement eElement = eElements.get(n - 1 - i);
             int offset = bElements.size();
 
@@ -239,7 +239,7 @@ class EbnfToBnfConverter {
             //the BNF element from the stack.
             IParserGetter parserGetter = eElement.getGetter(offset);
             assert parserGetter != null;
-            
+
             //Handle BNF element's return value.
             String attribute = eElement.getAttribute();
             if (attribute != null) {
@@ -266,38 +266,38 @@ class EbnfToBnfConverter {
                 bElements.add(bElement);
             }
         }
-        
+
         //Reverse the list of elements, since it was build in a reverse order.
         Collections.reverse(bElements);
-        
+
         //Create and return a result object.
         IParserGetter defaultGetter =
                 defaultValuableGetter != null ? defaultValuableGetter : defaultNonValuableGetter;
-        
+
         ConvertedElements result = new ConvertedElements(
                 bElements,
                 defaultGetter,
                 getterMap,
                 embeddedGetters);
-        
+
         return result;
     }
-    
+
     /**
      * Checks whether all attributes, including ones used in embedded elements, are unique.
-     * 
+     *
      * @param eElements the list of elements.
-     * @throws SynGrammarException 
+     * @throws SynGrammarException
      */
     private static void checkAttributeDuplications(List<EbnfElement> eElements) throws SynGrammarException {
         Set<String> outerAttrs = new HashSet<>();
         Set<String> innerAttrs = new HashSet<>();
         checkConflictingAttributes(outerAttrs, innerAttrs, eElements);
     }
-    
+
     /**
      * Checks if there are conflicting attributes.
-     * @param outerAttrs attributes defined in outer productions, but that belong to the same scope.  
+     * @param outerAttrs attributes defined in outer productions, but that belong to the same scope.
      * @param innerAttrs attributes defined in the passed elements will be added to this set.
      * @param eElements the list of elements to be checked.
      * @throws SynGrammarException if attributes conflict is detected.
@@ -309,7 +309,7 @@ class EbnfToBnfConverter {
     {
         //Set of attributes defined in passed elements.
         Set<String> attrs = new HashSet<>();
-        
+
         for (EbnfElement eElement : eElements) {
             String attr = eElement.getAttribute();
             if (attr != null) {
@@ -322,15 +322,15 @@ class EbnfToBnfConverter {
                 checkConflictingAttributesForEmbeddedProductions(outerAttrs, attrs, eProductions);
             }
         }
-        
+
         //Add attributes defined in the passed elements to the passed set.
         innerAttrs.addAll(attrs);
     }
 
     /**
      * Checks for conflicting attributes in embedded productions.
-     * 
-     * @param outerAttrs attributes, defined in outer productions, but in the same scope. 
+     *
+     * @param outerAttrs attributes, defined in outer productions, but in the same scope.
      * @param innerAttrs new attributes will be added there.
      * @param eProductions
      * @throws SynGrammarException
@@ -344,16 +344,16 @@ class EbnfToBnfConverter {
         Set<String> subOuterAttrs = new HashSet<>();
         subOuterAttrs.addAll(outerAttrs);
         subOuterAttrs.addAll(innerAttrs);
-        
+
         //Attributes, defined in embedded productions.
         Set<String> subInnerAttrs = new HashSet<>();
-        
+
         List<EbnfProduction> eProductionsList = eProductions.asList();
         for (EbnfProduction eProduction : eProductionsList) {
             List<EbnfElement> eSubElements = eProduction.getElements();
             checkConflictingAttributes(subOuterAttrs, subInnerAttrs, eSubElements);
         }
-        
+
         innerAttrs.addAll(subInnerAttrs);
     }
 
@@ -367,20 +367,20 @@ class EbnfToBnfConverter {
         ++elCount;
         return result;
     }
-    
+
     /**
      * BNF elements with additional information about their semantics.
      */
     private static class ConvertedElements {
         /** BNF elements. */
         final List<BnfElement> bElements;
-        
+
         /** Default result value getter. */
         final IParserGetter defaultGetter;
-        
+
         /** Map of object field getters (can be empty). */
         final Map<String, Getter> getterMap;
-        
+
         /** Collection of embedded object getters (can be empty). */
         final Collection<Getter> embeddedGetters;
 
@@ -388,20 +388,20 @@ class EbnfToBnfConverter {
                 List<BnfElement> elements,
                 IParserGetter defaultGetter,
                 Map<String, Getter> getterMap,
-                Collection<Getter> embeddedGetters) 
+                Collection<Getter> embeddedGetters)
         {
             assert elements != null;
             assert getterMap != null;
-            
+
             bElements = elements;
             this.defaultGetter = defaultGetter;
             this.getterMap = getterMap;
             this.embeddedGetters = embeddedGetters;
         }
-        
+
         /**
          * Creates a parser action for the list of BNF elements represented by this object.
-         * 
+         *
          * @param forceObjectResult <code>true</code> if the action must return an object even if
          * no attributes are defined.
          * @return action.
@@ -410,15 +410,15 @@ class EbnfToBnfConverter {
             if (!getterMap.isEmpty() || !embeddedGetters.isEmpty()) {
                 return createActionWithGetters(forceObjectResult);
             }
-            
+
             if (forceObjectResult) {
                 return ParserObjectAction.NULL;
             }
-            
+
             if (defaultGetter != null) {
                 return new ParserResultAction(defaultGetter);
             }
-            
+
             return ParserNullAction.INSTANCE;
         }
 
@@ -431,7 +431,7 @@ class EbnfToBnfConverter {
                 //Special result attribute specified.
                 return createResultAction(forceObjectResult, resultGetter);
             }
-            
+
             //Create a normal object action.
             Map<String, IParserGetter> map = convertGetterMap(getterMap);
             Collection<IParserGetter> emGetters = convertEmbeddedGetters(embeddedGetters);
@@ -449,16 +449,16 @@ class EbnfToBnfConverter {
                         "Special attribute '%s' is specified together with regular attributes",
                         RESULT_KEY));
             }
-            
+
             if (forceObjectResult) {
                 throw new SynGrammarException(resultGetter.attributePos, String.format(
                         "Special attribute '%s' cannot be used in nested productions",
                         RESULT_KEY));
             }
-            
+
             return new ParserResultAction(resultGetter.getter);
         }
-        
+
         private static Map<String, IParserGetter> convertGetterMap(Map<String, Getter> map) {
             Map<String, IParserGetter> result = new HashMap<>();
             for (Map.Entry<String, Getter> entry : map.entrySet()) {
@@ -466,7 +466,7 @@ class EbnfToBnfConverter {
             }
             return result;
         }
-        
+
         private static Collection<IParserGetter> convertEmbeddedGetters(Collection<Getter> embeddedGetters) {
             Collection<IParserGetter> result = new ArrayList<>();
             for (Getter getter : embeddedGetters) {
@@ -475,7 +475,7 @@ class EbnfToBnfConverter {
             return result;
         }
     }
-    
+
     /**
      * Internal getter representation. Contains also the text position where the attribute was defined
      * in the grammar.

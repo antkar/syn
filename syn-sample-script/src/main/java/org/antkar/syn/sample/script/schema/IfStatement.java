@@ -25,7 +25,7 @@ import org.antkar.syn.sample.script.rt.value.Value;
 /**
  * Script <code>if</code> statement syntax node.
  */
-public class IfStatement extends Statement {
+public final class IfStatement extends Statement {
     /** The text position of the first token. */
     @SynField
     private TextPos synPos;

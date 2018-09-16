@@ -25,6 +25,7 @@ import org.antkar.syn.TerminalNode;
 import org.antkar.syn.TextPos;
 import org.antkar.syn.TokenDescriptor;
 import org.antkar.syn.TokenStream;
+import org.antkar.syn.internal.Checks;
 import org.antkar.syn.internal.PosBuffer;
 
 /**
@@ -49,9 +50,9 @@ public final class DefaultTokenStream implements TokenStream {
     public DefaultTokenStream(SourceDescriptor sourceDescriptor, ScannerConfiguration config, Reader reader)
             throws SynException
     {
-        assert config != null;
-        assert sourceDescriptor != null;
-        assert reader != null;
+        Checks.notNull(config);
+        Checks.notNull(sourceDescriptor);
+        Checks.notNull(reader);
 
         CharStream charStream = new CharStream(reader);
 
@@ -89,13 +90,13 @@ public final class DefaultTokenStream implements TokenStream {
 
         //Scan successful.
         tokenDescriptor = tokenResult.getTokenDescriptor();
-        assert tokenDescriptor != null;
+        Checks.notNull(tokenDescriptor);
         token = null;
     }
 
     @Override
     public TokenDescriptor getTokenDescriptor() {
-        assert tokenDescriptor != null;
+        Checks.state(tokenDescriptor != null);
         return tokenDescriptor;
     }
 
@@ -105,10 +106,10 @@ public final class DefaultTokenStream implements TokenStream {
     public TerminalNode getTokenNode() {
         if (token == null) {
             //Has not been created yet for the current token. Create.
-            assert tokenResult != null;
+            Checks.notNull(tokenResult);
             PosBuffer pos = primitiveContext.getStartPosBuffer();
             token = tokenResult.createTokenNode(pos);
-            assert token != null;
+            Checks.notNull(token);
         }
         return token;
     }

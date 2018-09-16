@@ -4,9 +4,9 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -25,7 +25,7 @@ abstract class LookupRelExpression extends LookupExpression {
     private final LookupEqualityChecker equalityChecker;
     private final LookupTermExpression left;
     private final LookupTermExpression right;
-    
+
     LookupRelExpression(
             LookupEqualityChecker equalityChecker,
             LookupTermExpression left,
@@ -35,22 +35,22 @@ abstract class LookupRelExpression extends LookupExpression {
         this.left = left;
         this.right = right;
     }
-    
-    LookupTermExpression getLeft() {
+
+    final LookupTermExpression getLeft() {
         return left;
     }
-    
-    LookupTermExpression getRight() {
+
+    final LookupTermExpression getRight() {
         return right;
     }
 
     abstract boolean calcResult(boolean equal);
 
     @Override
-    boolean eval(LookupEnv env) throws SynBinderException {
+    final boolean eval(LookupEnv env) throws SynBinderException {
         Object leftObj = left.eval(env);
         Object rightObj = right.eval(env);
-        
+
         boolean result;
         if (leftObj == LookupTermExpression.UNDEFINED || rightObj == LookupTermExpression.UNDEFINED) {
             result = false;
@@ -58,7 +58,7 @@ abstract class LookupRelExpression extends LookupExpression {
             boolean equal = equalityChecker.equal(leftObj, rightObj);
             result = calcResult(equal);
         }
-        
+
         return result;
     }
 }

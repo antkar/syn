@@ -26,7 +26,7 @@ import org.antkar.syn.sample.script.rt.value.Value;
 /**
  * Array access expression syntax node.
  */
-public class SubscriptExpression extends TerminalExpression {
+public final class SubscriptExpression extends TerminalExpression {
     /** The expression to be used as an array. */
     @SynField
     private Expression synArray;

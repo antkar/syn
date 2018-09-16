@@ -15,6 +15,8 @@
  */
 package org.antkar.syn.internal.parser;
 
+import org.antkar.syn.internal.Checks;
+
 /**
  * Result parser action. Returns the value associated with the special <code>result</code> attribute.
  */
@@ -22,8 +24,7 @@ public final class ParserResultAction implements IParserAction {
     private final IParserGetter getter;
 
     public ParserResultAction(IParserGetter getter) {
-        assert getter != null;
-        this.getter = getter;
+        this.getter = Checks.notNull(getter);
     }
 
     @Override

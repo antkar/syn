@@ -24,7 +24,7 @@ import org.antkar.syn.sample.script.rt.SynsException;
 /**
  * Variable declaration statement syntax node.
  */
-public class VariableDeclarationStatement extends Statement {
+public final class VariableDeclarationStatement extends Statement {
     /** The underlying declaration. Can be either a constant, or a variable declaration. */
     @SynField
     private Declaration synDeclaration;

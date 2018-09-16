@@ -29,7 +29,7 @@ public abstract class NewExpression extends Expression {
     public NewExpression(){}
 
     @Override
-    TextPos getStartTextPos() {
+    final TextPos getStartTextPos() {
         return synPos;
     }
 }

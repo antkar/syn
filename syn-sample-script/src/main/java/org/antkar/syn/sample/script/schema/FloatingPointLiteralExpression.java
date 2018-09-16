@@ -25,7 +25,7 @@ import org.antkar.syn.sample.script.rt.value.Value;
 /**
  * Floating-point literal expression syntax node.
  */
-public class FloatingPointLiteralExpression extends LiteralExpression {
+public final class FloatingPointLiteralExpression extends LiteralExpression {
     /** The value of the literal. */
     @SynField
     private DoubleToken synValue;

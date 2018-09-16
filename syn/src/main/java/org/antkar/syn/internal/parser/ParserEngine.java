@@ -29,7 +29,7 @@ import org.antkar.syn.TerminalNode;
 import org.antkar.syn.TextPos;
 import org.antkar.syn.TokenDescriptor;
 import org.antkar.syn.TokenType;
-import org.antkar.syn.internal.lrtables.ParserConfiguration;
+import org.antkar.syn.internal.Checks;
 import org.antkar.syn.internal.lrtables.ParserProduction;
 import org.antkar.syn.internal.lrtables.ParserState;
 import org.antkar.syn.internal.scanner.DefaultTokenStream;
@@ -46,16 +46,11 @@ public final class ParserEngine {
 
     public ParserEngine(
             DefaultTokenStream tokenStream,
-            ParserConfiguration config,
             ParserState startState,
             boolean failOnAmbiguity)
     {
-        assert tokenStream != null;
-        assert config != null;
-        assert startState != null;
-
-        this.tokenStream = tokenStream;
-        this.startState = startState;
+        this.tokenStream = Checks.notNull(tokenStream);
+        this.startState = Checks.notNull(startState);
         this.failOnAmbiguity = failOnAmbiguity;
 
         stacksList = new StacksList();
@@ -91,7 +86,7 @@ public final class ParserEngine {
             shiftToNextState(token, node);
         }
 
-        assert resultElement != null;
+        Checks.notNull(resultElement);
         SynResult result = makeResult(resultElement);
 
         return result;
@@ -101,7 +96,7 @@ public final class ParserEngine {
      * Creates a parser result from a parser stack.
      */
     private SynResult makeResult(ParserStackElement resultElement) {
-        assert resultElement != null;
+        Checks.notNull(resultElement);
 
         //Create the root SynNode.
         IParserNode resultNode = resultElement.createParserNode();
@@ -220,7 +215,7 @@ public final class ParserEngine {
         ParserStackElement stackTop = stack.getTop();
         ParserStackElement element = stackTop.getDeep(length);
         ParserStackElement nextElement = element.nextNt(production, stackTop);
-        assert nextElement != null;
+        Checks.notNull(nextElement);
         return nextElement;
     }
 

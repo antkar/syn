@@ -4,9 +4,9 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -75,7 +75,7 @@ public class SynParserSimpleTest extends TestCase {
                     "Token name is used as a nonterminal name: INTEGER"));
         }
     }
-    
+
     @Test
     public void testParseSuccess() throws Exception {
         SynParser synParser = createParser("SynParserSimpleTest_ParseSuccess_grammar.txt");
@@ -191,15 +191,15 @@ public class SynParserSimpleTest extends TestCase {
                 "call : name=ID ;" +
                 "if : 'if' cond=ID true_stmt=stmt 'else' false_stmt=stmt | " +
                 "'if' cond=ID true_stmt=stmt ;";
-        
+
         checkResolveDanglingElseAmbiguity(grammar);
     }
-    
+
     private void checkResolveDanglingElseAmbiguity(String grammar) throws SynException {
         SynParser synParser = createParserStr(grammar);
         SynNode tree = parseStr(synParser, "if a if b func1 else func2", "file");
         ArrayNode file = (ArrayNode) tree;
-        
+
         ObjectNode if1 = (ObjectNode) file.get(0);
         ObjectNode if1true = (ObjectNode) if1.get("true_stmt");
         ObjectNode if1false = (ObjectNode) if1.get("false_stmt");
@@ -208,17 +208,17 @@ public class SynParserSimpleTest extends TestCase {
         assertNotNull(f2false);
         assertEquals("func2", f2false.getString("name"));
     }
-    
+
     @Test
     public void testParseResolveExpressionAmbiguity() throws Exception {
         SynParser synParser = createParserStr("@expr : left=expr '+' right=expr | result=ID ;");
         SynNode tree = parseStr(synParser, "a + b + c", "expr");
-        
+
         ObjectNode exprABC = (ObjectNode)tree;
-        
+
         ObjectNode exprAB = (ObjectNode)exprABC.get("left");
         assertNotNull(exprAB);
-        
+
         ValueNode exprA = (ValueNode)exprAB.get("left");
         assertNotNull(exprA);
         assertEquals("a", exprA.getString());
@@ -226,7 +226,7 @@ public class SynParserSimpleTest extends TestCase {
         ValueNode exprB = (ValueNode)exprAB.get("right");
         assertNotNull(exprB);
         assertEquals("b", exprB.getString());
-        
+
         ValueNode exprC = (ValueNode)exprABC.get("right");
         assertNotNull(exprC);
         assertEquals("c", exprC.getString());
@@ -235,7 +235,7 @@ public class SynParserSimpleTest extends TestCase {
     @Test
     public void testParseReduceCycle() throws Exception {
         SynParser synParser = createParserStr("@file : A ; A : B | 'a' ; B : C | 'b' ; C : A | 'c' ;");
-        
+
         // Parser should not fail because reduce cycle should not be considered to be ambiguity.
         synParser.setFailOnAmbiguity(true);
         parseStr(synParser, "a", "file");
@@ -247,13 +247,13 @@ public class SynParserSimpleTest extends TestCase {
         synParser.setFailOnAmbiguity(false);
         parseStr(synParser, "l n", "file");
     }
-    
+
     public enum Colors {
         RED,
         GREEN,
         BLUE
     }
-    
+
     public static final boolean TRUE = true;
     public static final boolean FALSE = false;
     public static final int INT = Integer.MAX_VALUE;
@@ -280,7 +280,7 @@ public class SynParserSimpleTest extends TestCase {
 
         SynNode tree = parseStr(synParser, "red green blue true false int long double string object", "file");
         ArrayNode arrayNode = (ArrayNode) tree;
-        
+
         checkObjectValue(arrayNode, 0, Colors.RED);
         checkObjectValue(arrayNode, 1, Colors.GREEN);
         checkObjectValue(arrayNode, 2, Colors.BLUE);
@@ -291,7 +291,7 @@ public class SynParserSimpleTest extends TestCase {
         checkSimpleValue(arrayNode, 7, SynValueType.FLOAT, DOUBLE);
         checkSimpleValue(arrayNode, 8, SynValueType.STRING, STRING);
         checkObjectValue(arrayNode, 9, OBJECT);
-        
+
     }
 
     private static void checkObjectValue(ArrayNode arrayNode, int index, Object value) {
@@ -300,14 +300,14 @@ public class SynParserSimpleTest extends TestCase {
         Object actualValue = valueNode.getValue();
         assertTrue(String.valueOf(actualValue), actualValue == value);
     }
-    
+
     private static void checkSimpleValue(ArrayNode arrayNode, int index, SynValueType valueType, Object value) {
         ValueNode valueNode = (ValueNode) arrayNode.get(index);
         assertEquals(valueType, valueNode.getValueType());
         Object actualValue = valueNode.getValue();
         assertEquals(value, actualValue);
     }
-    
+
     @Test
     public void testValuesInNestedElement() throws Exception {
         SynParser synParser = createParser("SynParserSimpleTest_ValuesInNestedElement_grammar.txt");
@@ -320,7 +320,7 @@ public class SynParserSimpleTest extends TestCase {
                 "assert fff < ggg;", "Unit");
         ArrayNode unitNode = (ArrayNode) tree;
         assertEquals(6, unitNode.size());
-        
+
         ObjectNode field0 = (ObjectNode) unitNode.get(0);
         assertEquals("order", field0.getString("name"));
         assertEquals("string", field0.getString("type"));
@@ -369,10 +369,10 @@ public class SynParserSimpleTest extends TestCase {
                 "assert aaa;" +
                 "assert !bbb;" +
                 "assert -ccc;", "Unit");
-        
+
         ArrayNode unitNode = (ArrayNode) tree;
         assertEquals(7, unitNode.size());
-        
+
         ObjectNode field0 = (ObjectNode) unitNode.get(0);
         assertEquals("order", field0.getString("name"));
         assertEquals("string", field0.getString("type"));
@@ -413,10 +413,10 @@ public class SynParserSimpleTest extends TestCase {
         assertEquals("-", field6.getString("op"));
         assertEquals("ccc", field6.getString("name"));
     }
-    
+
     @Test
     public void testComplexEmbeddedElements() throws Exception {
-        
+
         final Object[][] testData = {
                 { "x a Hello c e y" }, { "str", "Hello", "param", 5},
                 { "x a FFF c f y" }, { "str", "FFF" },
@@ -449,7 +449,7 @@ public class SynParserSimpleTest extends TestCase {
                 { "x b d y" }, { },
                 { "x b y" }, { },
         };
-        
+
         SynParser synParser = createParser("SynParserSimpleTest_ComplexEmbeddedElements_grammar.txt");
         for (int pos = 0; pos < testData.length; pos += 2) {
             Object[] textArray = testData[pos];
@@ -464,7 +464,7 @@ public class SynParserSimpleTest extends TestCase {
     {
         SynNode tree = parseStr(synParser, text, "file");
         ObjectNode objectNode = (ObjectNode) tree;
-        
+
         int valuesCount = valuesArray.length / 2;
         assertEquals(valuesCount, objectNode.size());
         for (int i = 0; i < valuesCount; ++i) {
@@ -481,7 +481,7 @@ public class SynParserSimpleTest extends TestCase {
             }
         }
     }
-    
+
     @Test
     public void testResultInNestedElement() throws SynException {
         try {
@@ -492,7 +492,7 @@ public class SynParserSimpleTest extends TestCase {
                     "Special attribute 'result' cannot be used in nested productions"));
         }
     }
-    
+
     @Test
     public void testResultInOptionalElement() throws SynException {
         try {
@@ -503,7 +503,7 @@ public class SynParserSimpleTest extends TestCase {
                     "Special attribute 'result' cannot be used in nested productions"));
         }
     }
-    
+
     @Test
     public void testDuplicatedKeysInParallelEmbeddedProductions() throws SynException {
         String[] grammars = {
@@ -530,7 +530,7 @@ public class SynParserSimpleTest extends TestCase {
                 "@A : ('x' | 'a' ('b' foo=<0> | 'c' val=<2>) val=<1>);",
                 "@A : ('x' | 'a' val=<1> ('b' foo=<0> | 'c' val=<2>)?);",
                 "@A : ('x' | 'a' ('b' foo=<0> | 'c' val=<2>)? val=<1>);",
-                
+
                 "@A : 'a' ('b' foo=<1> | 'c' bar=<2>)? ('d' foo=<3> | 'e' val=<4>);",
         };
         for (String grammar : grammars) {
@@ -566,7 +566,7 @@ public class SynParserSimpleTest extends TestCase {
             assertEquals(TokenType.INTEGER, valueNode.getTokenDescriptor().getType());
         }
     }
-    
+
     @Test
     public void testNegativeIntegerValueInGrammar() throws SynException {
         SynParser parser = createParserStr("@A : name=ID value=<-5>;");
@@ -574,31 +574,31 @@ public class SynParserSimpleTest extends TestCase {
         ObjectNode objectNode = (ObjectNode) node;
         assertEquals(-5, objectNode.getInt("value"));
     }
-    
+
     @Test
     public void testInvlaidRecursiveGrammar() throws SynException {
         SynParser parser = createParserStr("@A : (B : '|')+; B : (C)+; C : ID | (B : '|')+ ;");
         parseStr(parser, "a | b | c", "A");
     }
-    
+
     static SynParser createParser(String grammarPath) throws SynException {
         return new SynParser(SynParserSimpleTest.class, grammarPath);
     }
-    
+
     static SynNode parse(SynParser parser, String textPath, String startNt) throws SynException {
         SynResult synResult = parser.parse(startNt, SynParserSimpleTest.class, textPath);
         return synResult.getRootNode();
     }
-    
+
     static SynParser createParserStr(String grammarStr) throws SynException {
         return new SynParser(grammarStr);
     }
-    
+
     static SynNode parseStr(SynParser parser, String str, String startNt) throws SynException {
         SynResult synResult = parser.parse(startNt, str);
         return synResult.getRootNode();
     }
-    
+
     static Reader openResource(String name) throws IOException {
         return CommonUtil.openResourceReader(SynParserSimpleTest.class, name);
     }

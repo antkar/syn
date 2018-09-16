@@ -24,7 +24,7 @@ import org.antkar.syn.sample.script.rt.value.Value;
 /**
  * Conditional (ternary) expression syntax node.
  */
-public class ConditionalExpression extends Expression {
+public final class ConditionalExpression extends Expression {
     /** The condition sub-expression. */
     @SynField
     private Expression synCondition;

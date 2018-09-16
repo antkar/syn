@@ -23,7 +23,6 @@ import org.antkar.syn.binder.SynBinderException;
 import org.antkar.syn.binder.SynLookup;
 import org.antkar.syn.internal.binder.BinderEngine;
 import org.antkar.syn.internal.binder.BoundObject;
-import org.antkar.syn.internal.binder.LookupBinder;
 
 /**
  * Contains all necessary information to bind a {@link SynLookup} field.

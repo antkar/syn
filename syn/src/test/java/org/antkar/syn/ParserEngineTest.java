@@ -19,12 +19,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
-import java.net.URL;
 
 import org.antkar.syn.internal.bnf.BnfGrammar;
 import org.antkar.syn.internal.ebnf.EbnfGrammar;
 import org.antkar.syn.internal.grammar.EbnfToBnfConverter;
-import org.antkar.syn.internal.grammar.XmlGrammarParser;
+import org.antkar.syn.internal.grammar.XmlGrammarParserTest;
 import org.antkar.syn.internal.lrtables.ParserConfiguration;
 import org.antkar.syn.internal.lrtables.ParserConfigurator;
 import org.antkar.syn.internal.lrtables.ParserState;
@@ -38,7 +37,7 @@ import org.junit.Test;
 /**
  * Unit tests for {@link ParserEngine}.
  */
-public class ParserEngineTest extends Assert {
+public final class ParserEngineTest extends Assert {
 
     @Test
     public void testSuccess() throws Exception {
@@ -97,8 +96,7 @@ public class ParserEngineTest extends Assert {
     }
 
     private SynNode parseText(String fileName) throws Exception {
-        URL url = XmlGrammarParser.class.getResource("syn_grammar.xml");
-        EbnfGrammar eGrammar = XmlGrammarParser.parseGrammar(url);
+        EbnfGrammar eGrammar = XmlGrammarParserTest.loadXmlGrammar();
         BnfGrammar bGrammar = EbnfToBnfConverter.convert(eGrammar);
         ParserConfiguration parserConfig = ParserConfigurator.makeConfiguration(bGrammar);
         ScannerConfiguration scannerConfig = ScannerConfigurator.makeConfiguration(bGrammar.getTokens());
@@ -117,7 +115,7 @@ public class ParserEngineTest extends Assert {
             Reader reader = new InputStreamReader(in);
             DefaultTokenStream tokenStream = new DefaultTokenStream(sourceDescriptor, scannerConfig, reader);
             ParserState startState = parserConfig.getStartState("Grammar");
-            ParserEngine engine = new ParserEngine(tokenStream, parserConfig, startState, false);
+            ParserEngine engine = new ParserEngine(tokenStream, startState, false);
             SynNode result = engine.parse().getRootNode();
             return result;
         } finally {

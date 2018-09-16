@@ -48,14 +48,14 @@ public abstract class UnaryExpression extends Expression {
     /**
      * Returns the literal of the operator.
      */
-    StringToken getOp() {
+    final StringToken getOp() {
         return synOp;
     }
 
     /**
      * Returns the expression.
      */
-    Expression getExpression() {
+    final Expression getExpression() {
         return synExpression;
     }
 

@@ -4,9 +4,9 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -29,33 +29,33 @@ import org.antkar.syn.sample.script.rt.value.RValue;
  */
 abstract class JavaAbstractMethod {
     JavaAbstractMethod(){}
-    
+
     /**
      * Returns <code>true</code> if the method/constructor is variadic.
      */
     abstract boolean isVarArgs();
-    
+
     /**
      * Returns <code>true</code> if the method is static. Always <code>true</code> for a constructor.
      */
     abstract boolean isStatic();
-    
+
     /**
      * Returns <code>true</code> if the return type of the method is <code>void</code>.
      */
     abstract boolean isVoid();
-    
+
     /**
      * Returns the method's/constructor's parameter types.
      */
     abstract Class<?>[] getParameterTypes();
-    
+
     /**
      * Invokes the method/constructor directly.
      */
     abstract Object invokeJava(Object obj, Object[] arguments)
             throws IllegalAccessException, InvocationTargetException, InstantiationException;
-    
+
     /**
      * Invokes the method/constructor. Wraps Java reflection exceptions.
      * Converts arguments from {@link RValue}s to Java {@link Object}s.
@@ -66,12 +66,12 @@ abstract class JavaAbstractMethod {
         Class<?>[] parameterTypes = getParameterTypes();
         Object[] arguments = new Object[parameterTypes.length];
         convertFixedArguments(rArguments, parameterTypes, arguments);
-        
+
         //Convert variable arguments.
         if (isVarArgs()) {
             convertVariableArguments(rArguments, parameterTypes, arguments);
         }
-        
+
         //Invoke Java method/constructor.
         try {
             try {
@@ -88,7 +88,7 @@ abstract class JavaAbstractMethod {
             throw new SynsException(e);
         }
     }
-    
+
     /**
      * Converts fixed method/constructor arguments from {@link RValue}s to Java {@link Object}s.
      */
@@ -141,7 +141,7 @@ abstract class JavaAbstractMethod {
      * Checks whether the specified arguments are acceptable for this method.
      * If arguments are acceptable, the precision is returned. Otherwise, <code>-1</code> is returned.
      */
-    int matchArguments(RValue[] arguments) throws SynsException {
+    final int matchArguments(RValue[] arguments) throws SynsException {
         Class<?>[] types = getParameterTypes();
         if (!isVarArgs()) {
             //Fixed number of arguments.
@@ -150,7 +150,7 @@ abstract class JavaAbstractMethod {
             }
             return matchTypes(types, arguments, types.length);
         }
-        
+
         //Variable number of arguments.
         if (arguments.length < types.length - 1) {
             return -1;
@@ -158,7 +158,7 @@ abstract class JavaAbstractMethod {
         if (matchTypes(types, arguments, types.length - 1) == -1) {
             return -1;
         }
-        
+
         return matchVarArguments(arguments, types);
     }
 
@@ -168,32 +168,32 @@ abstract class JavaAbstractMethod {
     private int matchVarArguments(RValue[] arguments, Class<?>[] types) throws SynsException {
         Class<?> varArrayType = types[types.length - 1];
         Class<?> varType = varArrayType.getComponentType();
-        
+
         DefaultTypeMatchPrecision precision = new DefaultTypeMatchPrecision();
-        
+
         for (int i = types.length - 1; i < arguments.length; ++i) {
             Object object = arguments[i].toJava(varType, precision);
             if (object == RValue.INVALID) {
                 return -1;
             }
         }
-        
+
         return precision.getPrecision();
     }
-    
+
     /**
      * Checks types of the specified arguments.
      */
     private static int matchTypes(Class<?>[] types, RValue[] arguments, int end) throws SynsException {
         DefaultTypeMatchPrecision precision = new DefaultTypeMatchPrecision();
-        
+
         for (int i = 0; i < end; ++i) {
             Object object = arguments[i].toJava(types[i], precision);
             if (object == RValue.INVALID) {
                 return -1;
             }
         }
-        
+
         return precision.getPrecision();
     }
 }

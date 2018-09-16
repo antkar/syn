@@ -20,7 +20,7 @@ import org.antkar.syn.TextPos;
 /**
  * Token value of type <code>int</code>.
  */
-public class IntToken extends AbstractToken {
+public final class IntToken extends AbstractToken {
     private final int value;
 
     public IntToken(TextPos pos, int value) {

@@ -4,9 +4,9 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -33,7 +33,7 @@ abstract class ArithmeticalUnaryOperator extends UnaryOperator {
     public final RValue evaluate(Value value) throws SynsException {
         Operand operand = value.toOperand();
         OperandType operandType = operand.getType();
-        
+
         //Evaluate the result depending on the operand type.
         RValue result;
         if (operandType == OperandType.BOOLEAN) {
@@ -51,26 +51,32 @@ abstract class ArithmeticalUnaryOperator extends UnaryOperator {
         } else {
             throw errOperandTypeMissmatch(operandType);
         }
-        
+
         return result;
     }
-    
+
     /**
      * Evaluates the result for a boolean operand.
+     *
+     * @param value Operand value.
      */
     boolean evaluate(boolean value) throws SynsException {
         throw errOperandTypeMissmatch(OperandType.BOOLEAN);
     }
-    
+
     /**
      * Evaluates the result for an integer operand.
+     *
+     * @param value Operand value.
      */
     long evaluate(long value) throws SynsException {
         throw errOperandTypeMissmatch(OperandType.LONG);
     }
-    
+
     /**
      * Evaluates the result for a floating-point operand.
+     *
+     * @param value Operand value.
      */
     double evaluate(double value) throws SynsException {
         throw errOperandTypeMissmatch(OperandType.DOUBLE);

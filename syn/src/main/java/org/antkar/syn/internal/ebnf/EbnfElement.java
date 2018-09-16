@@ -37,14 +37,14 @@ public abstract class EbnfElement {
     /**
      * Returns the attribute of this element. Can be <code>null</code>.
      */
-    public String getAttribute() {
+    public final String getAttribute() {
         return attribute;
     }
 
     /**
      * Returns the text position of the attribute in the grammar input. Can be <code>null</code>.
      */
-    public TextPos getAttributePos() {
+    public final TextPos getAttributePos() {
         return attributePos;
     }
 

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.antkar.syn.internal;
+package org.antkar.syn.internal.grammar;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -24,7 +24,7 @@ import org.antkar.syn.TokenType;
 /**
  * Maps an identifier (used in a grammar) to the corresponding literal token's type.
  */
-public final class TokenTypeResolver {
+final class TokenTypeResolver {
     private static final Map<String, TokenType> TOKEN_TYPE_MAP;
 
     static {
@@ -39,7 +39,7 @@ public final class TokenTypeResolver {
     private TokenTypeResolver() {
     }
 
-    public static TokenType getTokenType(String name) {
+    static TokenType getTokenType(String name) {
         TokenType tokenType = TOKEN_TYPE_MAP.get(name);
         return tokenType;
     }

@@ -4,16 +4,16 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
- 
+
 //
 // Script Language grammar for SynBinder.
 //
@@ -46,7 +46,7 @@ Declaration
 VariableDeclaration
     :   synPos="var" synName=ID ("=" synExpression=Expression)? ";"
     ;
-    
+
 ConstantDeclaration
     :   synPos="const" synName=ID "=" synExpression=Expression ";"
     ;
@@ -54,24 +54,24 @@ ConstantDeclaration
 FunctionDeclaration
     :   synPos="function" synName=ID "(" synParameters=(ID : ",")* ")" synBody=FunctionBody
     ;
-    
+
 FunctionBody
     :   BlockFunctionBody
     |   ExpressionFunctionBody
     ;
-    
+
 BlockFunctionBody
     :   "{" synBlock=Block "}"
     ;
-    
+
 ExpressionFunctionBody
     :   "=" synExpression=Expression ";"
     ;
-    
+
 ClassDeclaration
     :   synPos="class" synName=ID "{" synMembers=(ClassMemberDeclaration)* "}"
     ;
-    
+
 ClassMemberDeclaration
     :   synPublic=("public")? synDeclaration=Declaration
     ;
@@ -84,7 +84,7 @@ Statement
     :   VariableDeclarationStatement
     |   LimitedStatement
     ;
-    
+
 LimitedStatement
     :   EmptyStatement
     |   ExpressionStatement
@@ -111,7 +111,7 @@ VariableDeclarationStatement
 ExpressionStatement
     :   synExpression=Expression ";"
     ;
-    
+
 IfStatement
     :   synPos="if" "(" synExpression=Expression ")" synTrueStatement=LimitedStatement
         ("else" synFalseStatement=LimitedStatement)?
@@ -120,17 +120,17 @@ IfStatement
 WhileStatement
     :   synPos="while" "(" synExpression=Expression ")" synStatement=LimitedStatement
     ;
-    
+
 ForStatement
     :   RegularForStatement
     |   ForEachStatement
     ;
-    
+
 RegularForStatement
     :   synPos="for" "(" synInit=(ForInit)? ";" synExpression=(Expression)? ";"
         synUpdate=(Expression : ",")* ")" synStatement=LimitedStatement
     ;
-    
+
 ForEachStatement
     :   synPos="for" "(" synNewVariable=("var")? synVariable=ID ":" synExpression=Expression ")"
         synStatement=LimitedStatement
@@ -140,15 +140,15 @@ ForInit
     :   VariableForInit
     |   ExpressionForInit
     ;
-    
+
 VariableForInit
     :   "var" synVariables=(ForVariableDeclaration : ",")+
     ;
-    
+
 ForVariableDeclaration
     :   synName=ID "=" synExpression=Expression
     ;
-    
+
 ExpressionForInit
     :   synExpressions=(Expression : ",")+
     ;
@@ -160,15 +160,15 @@ BlockStatement
 ContinueStatement
     :   synPos="continue" ";"
     ;
-    
+
 BreakStatement
     :   synPos="break" ";"
     ;
-    
+
 ReturnStatement
     :   synPos="return" synReturnValue=(Expression)? ";"
     ;
-    
+
 TryStatement
     :   synPos="try" synTryStatement=BlockStatement
         "catch" "(" synCatchVariable=ID ")" synCatchStatement=BlockStatement
@@ -176,7 +176,7 @@ TryStatement
     |   synPos="try" synTryStatement=BlockStatement
         "finally" synFinallyStatement=BlockStatement
     ;
-    
+
 ThrowStatement
     :   synPos="throw" synExpression=Expression ";"
     ;
@@ -188,7 +188,7 @@ ThrowStatement
 Expression
     :   AssignmentExpression
     ;
-    
+
 AssignmentExpression
     :   ConditionalExpression
     |   synLeft=TerminalExpression synOp="=" synRight=AssignmentExpression
@@ -200,7 +200,7 @@ AssignmentExpression
     |   synLeft=TerminalExpression synOp="&=" synRight=AssignmentExpression
     |   synLeft=TerminalExpression synOp="|=" synRight=AssignmentExpression
     ;
-    
+
 
 ConditionalExpression
     :   OrExpression
@@ -208,7 +208,7 @@ ConditionalExpression
         "?" synTrueExpression=Expression
         ":" synFalseExpression=ConditionalExpression
     ;
-    
+
 OrExpression
     :   AndExpression
     |   synLeft=OrExpression synOp="||" synRight=AndExpression
@@ -245,7 +245,7 @@ MulExpression
     |   synLeft=MulExpression synOp="/" synRight=PrefixExpression
     |   synLeft=MulExpression synOp="%" synRight=PrefixExpression
     ;
-    
+
 PrefixExpression
     :   PostfixExpression
     |   ExplicitCastExpression
@@ -255,11 +255,11 @@ PrefixExpression
     |   synOp="--" synExpression=PostfixExpression
     |   synOp="!" synExpression=PostfixExpression
     ;
-    
+
 ExplicitCastExpression
     :   synPos="(" synType=PrimitiveType ")" synExpression=PostfixExpression
-    ; 
-    
+    ;
+
 PrimitiveType
     :   synType="int"
     |   synType="long"
@@ -271,12 +271,12 @@ PostfixExpression
     |   synExpression=TerminalExpression synOp="++"
     |   synExpression=TerminalExpression synOp="--"
     ;
-    
+
 TerminalExpression
     :   NameExpression
     |   SubTerminalExpression
     ;
-    
+
 SubTerminalExpression
     :   "(" result=Expression ")"
     |   MemberExpression
@@ -291,40 +291,40 @@ SubTerminalExpression
     |   ThisExpression
     |   LiteralExpression
     ;
-    
+
 MemberExpression
     :   synObject=SubTerminalExpression "." synName=ID
     ;
-    
+
 FunctionExpression
     :   synFunction=TerminalExpression "(" synArguments=(Expression : ",")* ")"
     ;
-    
+
 LambdaExpression
     :   synParameters=LambdaParameters "->" synExpression=Expression
     ;
-    
+
 LambdaParameters
     :   SingleLambdaParameter
     |   MultipleLambdaParameters
     ;
-    
+
 SingleLambdaParameter
     :   synName=ID
     ;
-    
+
 MultipleLambdaParameters
     :   synPos="(" synNames=(ID : ",")* ")"
     ;
-    
+
 NewClassExpression
     :   synPos="new" synTypeName=(ID : ".")+ "(" synArguments=(Expression : ",")* ")"
     ;
-    
+
 NewArrayExpression
     :   synPos="new" synDimensions=(ArrayDimension)+
     ;
-    
+
 ArrayDimension
     :   "[" synLength=Expression "]"
     ;
@@ -336,7 +336,7 @@ ArrayExpression
 BlockExpression
     :   synPos="{" synBlock=Block "}"
     ;
-    
+
 SubscriptExpression
     :   synArray=TerminalExpression "[" synIndex=Expression "]"
     ;
@@ -348,11 +348,11 @@ NameExpression
 TypeofExpression
     :   synPos="typeof" "(" synExpression=Expression ")"
     ;
-     
+
 ThisExpression
     :   synPos="this"
     ;
-    
+
 LiteralExpression
     :   IntegerLiteralExpression
     |   FloatingPointLiteralExpression
@@ -360,11 +360,11 @@ LiteralExpression
     |   NullExpression
     |   BooleanLiteralExpression
     ;
-    
+
 IntegerLiteralExpression
     :   synValue=INTEGER
     ;
-    
+
 FloatingPointLiteralExpression
     :   synValue=FLOAT
     ;
@@ -376,7 +376,7 @@ StringLiteralExpression
 NullExpression
     :   synPos="null"
     ;
-    
+
 BooleanLiteralExpression
     :   synPos="true" synValue=<true>
     |   synPos="false" synValue=<false>

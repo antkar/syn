@@ -23,7 +23,7 @@ import org.antkar.syn.sample.script.rt.value.Value;
 /**
  * Script constant declaration syntax node.
  */
-public class ConstantDeclaration extends Declaration {
+public final class ConstantDeclaration extends Declaration {
     /** The value of the constant. */
     @SynField
     private Expression synExpression;

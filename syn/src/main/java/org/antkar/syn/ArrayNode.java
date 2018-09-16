@@ -21,6 +21,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 
+import org.antkar.syn.internal.Checks;
 import org.antkar.syn.internal.CommonUtil;
 
 /**
@@ -33,8 +34,7 @@ public final class ArrayNode extends SynNode implements List<SynNode> {
     private final List<SynNode> list;
 
     public ArrayNode(List<SynNode> list) {
-        assert list != null;
-        this.list = list;
+        this.list = Checks.notNull(list);
     }
 
     /**

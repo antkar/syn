@@ -15,9 +15,10 @@
  */
 package org.antkar.syn.internal.ebnf;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
+
+import org.antkar.syn.internal.Checks;
+import org.antkar.syn.internal.CommonUtil;
 
 /**
  * EBNF production.
@@ -27,8 +28,8 @@ public final class EbnfProduction {
     private final List<EbnfElement> elements;
 
     public EbnfProduction(List<EbnfElement> elements) {
-        assert elements != null;
-        this.elements = Collections.unmodifiableList(new ArrayList<>(elements));
+        Checks.notNull(elements != null);
+        this.elements = CommonUtil.unmodifiableListCopy(elements);
     }
 
     /**
@@ -36,16 +37,15 @@ public final class EbnfProduction {
      * there may be recursive dependencies between nonterminals.
      */
     void setNonterminal(EbnfNonterminal nonterminal) {
-        assert nonterminal != null;
-        assert this.nonterminal == null;
-        this.nonterminal = nonterminal;
+        Checks.state(this.nonterminal == null);
+        this.nonterminal = Checks.notNull(nonterminal);
     }
 
     /**
      * Returns the nonterminal which this production belongs to.
      */
     public EbnfNonterminal getNonterminal() {
-        assert nonterminal != null;
+        Checks.state(nonterminal != null);
         return nonterminal;
     }
 

@@ -24,7 +24,7 @@ import org.antkar.syn.sample.script.rt.SynsException;
 /**
  * Block statement syntax node.
  */
-public class BlockStatement extends Statement {
+public final class BlockStatement extends Statement {
     /** The text position of the first token of the block. */
     @SynField
     private TextPos synPos;

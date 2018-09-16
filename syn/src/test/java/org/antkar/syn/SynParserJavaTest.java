@@ -21,7 +21,7 @@ import org.junit.Test;
 /**
  * Unit tests for using {@link SynParser} with Java Language grammar.
  */
-public class SynParserJavaTest extends Assert {
+public final class SynParserJavaTest extends Assert {
     @Test
     public void testConstructSuccess() throws Exception {
         SynParserSimpleTest.createParser("SynParserJavaTest_grammar.txt");

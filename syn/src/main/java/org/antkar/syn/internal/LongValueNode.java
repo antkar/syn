@@ -27,7 +27,7 @@ public final class LongValueNode extends ValueNode {
 
     public LongValueNode(PosBuffer pos, long value) {
         super(pos);
-        assert value > Integer.MAX_VALUE || value < Integer.MIN_VALUE : value;
+        Checks.argument(value > Integer.MAX_VALUE || value < Integer.MIN_VALUE);
         this.value = value;
     }
 

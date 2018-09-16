@@ -26,8 +26,10 @@ import java.io.Reader;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -207,5 +209,15 @@ public final class CommonUtil {
     public static <K1, K2, V> V getFromMapMap(Map<K1, Map<K2, V>> map1, K1 key1, K2 key2) {
         Map<K2, V> map2 = map1.get(key1);
         return map2 == null ? null : map2.get(key2);
+    }
+
+    public static <T> List<T> unmodifiableListCopy(List<T> list) {
+        Checks.notNull(list);
+        return Collections.unmodifiableList(new ArrayList<>(list));
+    }
+
+    public static <K, V> Map<K, V> unmodifiableMapCopy(Map<K, V> map) {
+        Checks.notNull(map);
+        return Collections.unmodifiableMap(new LinkedHashMap<>(map));
     }
 }

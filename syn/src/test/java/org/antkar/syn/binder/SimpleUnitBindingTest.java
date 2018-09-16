@@ -28,7 +28,7 @@ import org.junit.Test;
 /**
  * Unit tests for {@link SynBinder} used to bind {@link SimpleUnit} class.
  */
-public class SimpleUnitBindingTest extends Assert {
+public final class SimpleUnitBindingTest extends Assert {
 
     @Test
     public void testCorrectText() throws SynException, IOException {

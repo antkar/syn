@@ -4,9 +4,9 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -22,7 +22,7 @@ import org.antkar.syn.sample.script.rt.value.RValue;
 /**
  * Script Language <code>||</code> operator.
  */
-class OrBinaryOperator extends BinaryOperator {
+final class OrBinaryOperator extends BinaryOperator {
     OrBinaryOperator() {
         super("||");
     }
@@ -32,7 +32,7 @@ class OrBinaryOperator extends BinaryOperator {
         boolean b = left.booleanValueImplicit();
         return b ? left.toRValue() : null;
     }
-    
+
     @Override
     public RValue evaluate(Operand left, Operand right) throws SynsException {
         boolean b = left.booleanValueImplicit();

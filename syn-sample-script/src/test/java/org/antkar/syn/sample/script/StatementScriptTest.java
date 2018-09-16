@@ -4,9 +4,9 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -22,7 +22,7 @@ import org.junit.Test;
 /**
  * JUnit tests for different types of Script Language statements.
  */
-public class StatementScriptTest extends ScriptTest {
+public final class StatementScriptTest extends ScriptTest {
     @Test
     public void testEmpty() throws Exception, SynsException {
         execute(";;;");
@@ -156,14 +156,14 @@ public class StatementScriptTest extends ScriptTest {
         execute("for (var x : ['A','B','C']) print(x);");
         chkOut("A B C ");
     }
-    
+
     @Test
     public void testForEachList() throws Exception {
         execute("var a = new java.util.ArrayList(); for(var i=0; i<5;++i) a.add(i); " +
                 "for(var x : a) print(x);");
         chkOut("0 1 2 3 4 ");
     }
-    
+
     @Test
     public void testForEachBreak() throws Exception, SynsException {
         execute("print('Begin'); " +
@@ -197,13 +197,13 @@ public class StatementScriptTest extends ScriptTest {
         execute("function fn() { print('fn-Begin'); return 123; print('fn-End'); } print(fn());");
         chkOut("fn-Begin 123 ");
     }
-    
+
     @Test
     public void testReturnInBlockValue() throws Exception {
         execute("var b = { print('InBlock'); return 123; }; print(b());");
         chkOut("InBlock 123 ");
     }
-    
+
     @Test
     public void testThrow() throws Exception {
         try {
@@ -215,14 +215,14 @@ public class StatementScriptTest extends ScriptTest {
         }
         chkOut("start ");
     }
-    
+
     /*
      * Tests for try-catch-finally block.
      * Not all possible combinations are tested. Every part (try, catch, finally) can result in one
      * of five ways: (1) normally; (2) exception; (3) return; (4) break; (5) continue.
      * This gives 125 combinations.
      */
-    
+
     @Test
     public void testTryCatch() throws Exception {
         execute("print('start');" +
@@ -230,7 +230,7 @@ public class StatementScriptTest extends ScriptTest {
                 "print('end');");
         chkOut("start try end ");
     }
-    
+
     @Test
     public void testTryCatchFinally() throws Exception {
         execute("print('start');" +
@@ -239,7 +239,7 @@ public class StatementScriptTest extends ScriptTest {
                 "print('end');");
         chkOut("start try finally end ");
     }
-    
+
     @Test
     public void testTryCatchFinallyBreak() throws Exception {
         execute("print('start');" +
@@ -252,7 +252,7 @@ public class StatementScriptTest extends ScriptTest {
                 "print('end');");
         chkOut("start for-start 0 try finally-start end ");
     }
-    
+
     @Test
     public void testTryCatchFinallyContinue() throws Exception {
         execute("print('start');" +
@@ -266,7 +266,7 @@ public class StatementScriptTest extends ScriptTest {
         chkOut("start for-start 0 try finally-start for-start 1 try finally-start " +
                 "for-start 2 try finally-start end ");
     }
-    
+
     @Test
     public void testTryCatchFinallyReturn() throws Exception {
         execute("function fn() {" +
@@ -278,7 +278,7 @@ public class StatementScriptTest extends ScriptTest {
                 "print(fn());");
         chkOut("fn-start try finally-start 123 ");
     }
-    
+
     @Test
     public void testTryExceptionCatch() throws Exception {
         execute("print('start');" +
@@ -287,7 +287,7 @@ public class StatementScriptTest extends ScriptTest {
                 "print('end');");
         chkOut("start try-start catch(java.lang.RuntimeException: FromScript) end ");
     }
-    
+
     @Test
     public void testTryExceptionCatchFinally() throws Exception {
         execute("print('start');" +
@@ -297,7 +297,7 @@ public class StatementScriptTest extends ScriptTest {
                 "print('end');");
         chkOut("start try-start catch(java.lang.RuntimeException: FromScript) finally end ");
     }
-    
+
     @Test
     public void testTryExceptionCatchFinallyBreak() throws Exception {
         execute("print('start');" +
@@ -312,7 +312,7 @@ public class StatementScriptTest extends ScriptTest {
         chkOut("start for-start 0 try-start catch(java.lang.RuntimeException: FromScript) " +
                 "finally-start end ");
     }
-    
+
     @Test
     public void testTryExceptionCatchFinallyContinue() throws Exception {
         execute("print('start');" +
@@ -328,7 +328,7 @@ public class StatementScriptTest extends ScriptTest {
                 "for-start 1 try-start catch(java.lang.RuntimeException: FromScript) finally-start " +
                 "for-start 2 try-start catch(java.lang.RuntimeException: FromScript) finally-start end ");
     }
-    
+
     @Test
     public void testTryExceptionCatchFinallyReturn() throws Exception {
         execute("function fn() {" +
@@ -341,7 +341,7 @@ public class StatementScriptTest extends ScriptTest {
                 "print(fn());");
         chkOut("fn-start try-start catch(java.lang.RuntimeException: FromScript) finally-start 123 ");
     }
-    
+
     @Test
     public void testTryFinally() throws Exception {
         execute("print('start');" +
@@ -350,7 +350,7 @@ public class StatementScriptTest extends ScriptTest {
                 "print('end');");
         chkOut("start try finally end ");
     }
-    
+
     @Test
     public void testTryFinallyBreak() throws Exception {
         execute("print('start');" +
@@ -363,7 +363,7 @@ public class StatementScriptTest extends ScriptTest {
                 "print('end');");
         chkOut("start for-start 0 try finally-start end ");
     }
-    
+
     @Test
     public void testTryFinallyContinue() throws Exception {
         execute("print('start');" +
@@ -378,7 +378,7 @@ public class StatementScriptTest extends ScriptTest {
                 "for-start 1 try finally-start " +
                 "for-start 2 try finally-start end ");
     }
-    
+
     @Test
     public void testTryFinallyReturn() throws Exception {
         execute("function fn() {" +
@@ -403,7 +403,7 @@ public class StatementScriptTest extends ScriptTest {
                 "print('end');");
         chkOut("start for-start 0 try-start finally end ");
     }
-    
+
     @Test
     public void testTryBreakFinallyBreak() throws Exception {
         execute("print('start');" +
@@ -416,7 +416,7 @@ public class StatementScriptTest extends ScriptTest {
                 "print('end');");
         chkOut("start for-start 0 try-start finally-start end ");
     }
-    
+
     @Test
     public void testTryBreakFinallyContinue() throws Exception {
         execute("print('start');" +
@@ -431,7 +431,7 @@ public class StatementScriptTest extends ScriptTest {
                 "for-start 1 try-start finally-start " +
                 "for-start 2 try-start finally-start end ");
     }
-    
+
     @Test
     public void testTryBreakFinallyReturn() throws Exception {
         execute("function fn() {" +
@@ -447,7 +447,7 @@ public class StatementScriptTest extends ScriptTest {
                 "print(fn());");
         chkOut("fn-start for-start 0 try-start finally-start 123 ");
     }
-    
+
     @Test
     public void testTryContinueFinally() throws Exception {
         execute("print('start');" +
@@ -462,7 +462,7 @@ public class StatementScriptTest extends ScriptTest {
                 "for-start 1 try-start finally " +
                 "for-start 2 try-start finally end ");
     }
-    
+
     @Test
     public void testTryContinueFinallyBreak() throws Exception {
         execute("print('start');" +
@@ -475,7 +475,7 @@ public class StatementScriptTest extends ScriptTest {
                 "print('end');");
         chkOut("start for-start 0 try-start finally-start end ");
     }
-    
+
     @Test
     public void testTryContinueFinallyContinue() throws Exception {
         execute("print('start');" +
@@ -490,7 +490,7 @@ public class StatementScriptTest extends ScriptTest {
                 "for-start 1 try-start finally-start " +
                 "for-start 2 try-start finally-start end ");
     }
-    
+
     @Test
     public void testTryContinueFinallyReturn() throws Exception {
         execute("function fn() {" +
@@ -506,7 +506,7 @@ public class StatementScriptTest extends ScriptTest {
                 "print(fn());");
         chkOut("fn-start for-start 0 try-start finally-start 123 ");
     }
-    
+
     @Test
     public void testTryReturnFinally() throws Exception {
         execute("function fn() {" +
@@ -522,7 +522,7 @@ public class StatementScriptTest extends ScriptTest {
                 "print(fn());");
         chkOut("fn-start for-start 0 try-start finally 987 ");
     }
-    
+
     @Test
     public void testTryReturnFinallyBreak() throws Exception {
         execute("function fn() {" +
@@ -539,7 +539,7 @@ public class StatementScriptTest extends ScriptTest {
                 "print(fn());");
         chkOut("fn-start for-start 0 try-start finally-start fn-end 555 ");
     }
-    
+
     @Test
     public void testTryReturnFinallyContinue() throws Exception {
         execute("function fn() {" +
@@ -558,7 +558,7 @@ public class StatementScriptTest extends ScriptTest {
                 "for-start 1 try-start finally-start " +
                 "for-start 2 try-start finally-start fn-end 555 ");
     }
-    
+
     @Test
     public void testTryReturnFinallyReturn() throws Exception {
         execute("function fn() {" +

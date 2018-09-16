@@ -10,7 +10,7 @@ import org.antkar.syn.binder.SynField;
 /**
  * A single lambda expression formal parameter without parentheses: x -> ?.
  */
-public class SingleLambdaParameter extends LambdaParameters {
+public final class SingleLambdaParameter extends LambdaParameters {
     @SynField
     private StringToken synName;
 

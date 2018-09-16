@@ -15,11 +15,13 @@
  */
 package org.antkar.syn;
 
+import org.antkar.syn.internal.Checks;
+
 /**
  * The result returned by a {@link SynParser}. Contains an Abstract Syntax Tree and some statistics information,
  * such as total line and character count.
  */
-public class SynResult {
+public final class SynResult {
     private final SourceDescriptor sourceDescriptor;
     private final int lineCount;
     private final int charCount;
@@ -29,11 +31,10 @@ public class SynResult {
      * Initializing constructor.
      */
     public SynResult(SourceDescriptor sourceDescriptor, SynNode rootNode, int lineCount, int charCount) {
-        assert sourceDescriptor != null;
-        assert lineCount >= 0;
-        assert charCount >= 0;
+        Checks.argument(lineCount >= 0);
+        Checks.argument(charCount >= 0);
 
-        this.sourceDescriptor = sourceDescriptor;
+        this.sourceDescriptor = Checks.notNull(sourceDescriptor);
         this.rootNode = rootNode;
         this.lineCount = lineCount;
         this.charCount = charCount;

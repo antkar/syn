@@ -180,7 +180,7 @@ public final class BinderReflectionUtil {
     /**
      * Sets a Java field value. Handles private fields. Wraps exceptions.
      */
-    static void setFieldValue(Field field, Object obj, Object value) throws SynBinderException {
+    public static void setFieldValue(Field field, Object obj, Object value) throws SynBinderException {
         boolean accessible = field.isAccessible();
         field.setAccessible(true);
         try {

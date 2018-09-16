@@ -26,6 +26,7 @@ import java.util.Map;
 import org.antkar.syn.ObjectNode;
 import org.antkar.syn.ObjectNode.ObjectEntry;
 import org.antkar.syn.SynNode;
+import org.antkar.syn.internal.Checks;
 
 /**
  * Object parser action. Produces an {@link ObjectNode}.
@@ -52,8 +53,8 @@ public final class ParserObjectAction implements IParserAction {
      * (attributes are defined in embedded productions).
      */
     public ParserObjectAction(Map<String, IParserGetter> getterMap, Collection<IParserGetter> embeddedGetters) {
-        assert getterMap != null;
-        assert embeddedGetters != null;
+        Checks.notNull(getterMap);
+        Checks.notNull(embeddedGetters);
 
         fields = createFields(getterMap, embeddedGetters);
     }
@@ -131,7 +132,7 @@ public final class ParserObjectAction implements IParserAction {
      * Adds entries from embedded objects.
      */
     private void getEmbeddedField(SynNode value, List<ObjectEntry> entries) {
-        assert value != null;
+        Checks.notNull(value);
         ObjectNode objectValue = (ObjectNode) value;
 
         List<ObjectEntry> embeddedEntries = objectValue.entryList();

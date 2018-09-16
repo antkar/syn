@@ -24,7 +24,7 @@ import org.antkar.syn.sample.script.rt.value.Value;
 /**
  * Script <code>for</code> statement variable declaration syntax node.
  */
-public class ForVariableDeclaration {
+public final class ForVariableDeclaration {
     /** The name of the variable. */
     @SynField
     private StringToken synName;

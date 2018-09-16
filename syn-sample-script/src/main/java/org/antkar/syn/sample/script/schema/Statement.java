@@ -4,9 +4,9 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -15,19 +15,18 @@
  */
 package org.antkar.syn.sample.script.schema;
 
+import org.antkar.syn.TextPos;
 import org.antkar.syn.sample.script.rt.ScriptScope;
 import org.antkar.syn.sample.script.rt.StatementResult;
 import org.antkar.syn.sample.script.rt.SynsException;
 import org.antkar.syn.sample.script.rt.TextSynsException;
-
-import org.antkar.syn.TextPos;
 
 /**
  * Script statement syntax node.
  */
 public abstract class Statement {
     public Statement(){}
-    
+
     /**
      * Returns the text position of the first token of the statement. Used for errors reporting.
      */
@@ -48,7 +47,7 @@ public abstract class Statement {
             throw new TextSynsException(e, getStartTextPos());
         }
     }
-    
+
     /**
      * Executes the statement in the specified scope. Must not be called directly.
      */

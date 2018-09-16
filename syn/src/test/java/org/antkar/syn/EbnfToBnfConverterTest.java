@@ -17,25 +17,23 @@ package org.antkar.syn;
 
 import java.io.Reader;
 import java.io.StringReader;
-import java.net.URL;
 import java.util.List;
 
 import org.antkar.syn.internal.bnf.BnfGrammar;
 import org.antkar.syn.internal.ebnf.EbnfGrammar;
 import org.antkar.syn.internal.grammar.EbnfToBnfConverter;
 import org.antkar.syn.internal.grammar.SynGrammarParser;
-import org.antkar.syn.internal.grammar.XmlGrammarParser;
+import org.antkar.syn.internal.grammar.XmlGrammarParserTest;
 import org.junit.Assert;
 import org.junit.Test;
 
 /**
  * Unit test for {@link EbnfToBnfConverter}.
  */
-public class EbnfToBnfConverterTest extends Assert {
+public final class EbnfToBnfConverterTest extends Assert {
     @Test
     public void testConvertSuccess() throws Exception {
-        URL url = XmlGrammarParser.class.getResource("syn_grammar.xml");
-        EbnfGrammar eGrammar = XmlGrammarParser.parseGrammar(url);
+        EbnfGrammar eGrammar = XmlGrammarParserTest.loadXmlGrammar();
         BnfGrammar bGrammar = EbnfToBnfConverter.convert(eGrammar);
         assertNotNull(bGrammar);
     }

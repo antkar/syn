@@ -24,7 +24,7 @@ import org.antkar.syn.binder.SynLookup;
  * Describes a Java object bound to a SYN node, along with the information about other such objects
  * referenced by this one. Used by {@link SynLookup} functionality.
  */
-public class BoundObject {
+public final class BoundObject {
 
     private final Object javaObject;
     private BoundObject owner;

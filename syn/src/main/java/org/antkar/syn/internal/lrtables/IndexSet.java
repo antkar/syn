@@ -4,9 +4,9 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -18,15 +18,17 @@ package org.antkar.syn.internal.lrtables;
 import java.lang.reflect.Array;
 import java.util.Arrays;
 
+import org.antkar.syn.internal.Checks;
+
 /**
  * An indexed set. Similar to an {@link IndexMap}.
  *
  * @param <T> the type of an element.
  */
-class IndexSet<T> {
-    
+final class IndexSet<T> {
+
     private final IIndexProvider<T> indexProvider;
-    
+
     private final int maxSize;
     private final int[] indexToPos;
     private final int[] posToIndex;
@@ -35,31 +37,30 @@ class IndexSet<T> {
 
     /**
      * Constructs an indexed set.
-     * 
+     *
      * @param indexProvider an index provider.
      * @param maxSize the maximum size of the set, being the maximum element index plus one.
      */
     IndexSet(IIndexProvider<T> indexProvider, int maxSize) {
-        assert indexProvider != null;
-        assert maxSize >= 0;
-        
-        this.indexProvider = indexProvider;
+        Checks.argument(maxSize >= 0);
+
+        this.indexProvider = Checks.notNull(indexProvider);
         indexToPos = new int[maxSize];
         posToIndex = new int[maxSize];
         posToValue = IndexMap.createTypedArray(maxSize);
         this.maxSize = maxSize;
         size = 0;
-        
+
         Arrays.fill(indexToPos, -1);
     }
-    
+
     /**
      * Returns <code>true</code> if the set contains the specified value.
      */
     boolean contains(T t) {
-        assert t != null;
+        Checks.notNull(t);
         int index = indexProvider.getIndex(t);
-        assert index < maxSize;
+        Checks.state(index < maxSize);
         int pos = indexToPos[index];
         return pos != -1;
     }
@@ -68,10 +69,10 @@ class IndexSet<T> {
      * Adds the specified value to the set.
      */
     void add(T t) {
-        assert t != null;
+        Checks.notNull(t);
         int index = indexProvider.getIndex(t);
-        assert index < maxSize;
-        
+        Checks.state(index < maxSize);
+
         if (indexToPos[index] == -1) {
             posToIndex[size] = index;
             posToValue[size] = t;
@@ -79,16 +80,16 @@ class IndexSet<T> {
             ++size;
         }
     }
-    
+
     /**
      * Removes the specified value from the set.
      */
     void remove(T t) {
-        assert t != null;
+        Checks.notNull(t);
         int index = indexProvider.getIndex(t);
-        assert index < maxSize;
+        Checks.state(index < maxSize);
         int pos = indexToPos[index];
-        
+
         if (pos != -1) {
             if (pos < size - 1) {
                 posToIndex[pos] = posToIndex[size - 1];
@@ -99,7 +100,7 @@ class IndexSet<T> {
             --size;
         }
     }
-    
+
     /**
      * Clears the set.
      */
@@ -111,14 +112,14 @@ class IndexSet<T> {
         }
         size = 0;
     }
-    
+
     /**
      * Returns the size of the set.
      */
     int size() {
         return size;
     }
-    
+
     /**
      * Returns the value at the given position.
      */
@@ -133,18 +134,18 @@ class IndexSet<T> {
     /**
      * Creates a typed array of elements.
      */
-    @SuppressWarnings("unchecked") 
+    @SuppressWarnings("unchecked")
     T[] asArray(Class<? extends T> clazz) {
         T[] array = (T[]) Array.newInstance(clazz, size);
         System.arraycopy(posToValue, 0, array, 0, size);
         return array;
     }
-    
+
     @Override
     public String toString() {
         StringBuilder bld = new StringBuilder();
         bld.append("{");
-        
+
         String sep = "";
         for (int pos : indexToPos) {
             if (pos != -1) {
@@ -153,7 +154,7 @@ class IndexSet<T> {
                 sep = ", ";
             }
         }
-        
+
         bld.append("}");
         return bld.toString();
     }

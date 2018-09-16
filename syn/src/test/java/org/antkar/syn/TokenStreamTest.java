@@ -30,7 +30,7 @@ import org.junit.Test;
 /**
  * Unit tests for {@link TokenStream}.
  */
-public class TokenStreamTest extends Assert {
+public final class TokenStreamTest extends Assert {
     private static final Collection<TokenDescriptor> TOKEN_DESCRIPTORS;
 
     static {

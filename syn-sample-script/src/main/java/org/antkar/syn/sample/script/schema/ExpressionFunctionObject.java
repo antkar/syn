@@ -10,7 +10,7 @@ import org.antkar.syn.sample.script.rt.value.Value;
 /**
  * Function object implemented by an expression (used in short-form functions, lambda expressions).
  */
-class ExpressionFunctionObject extends FunctionObject {
+final class ExpressionFunctionObject extends FunctionObject {
     private final Expression expression;
 
     private ExpressionFunctionObject(String scopeName, List<StringToken> parameters, Expression expression) {

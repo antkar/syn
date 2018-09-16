@@ -24,7 +24,7 @@ import org.antkar.syn.sample.script.rt.value.Value;
 /**
  * Boolean literal expression syntax node.
  */
-public class BooleanLiteralExpression extends LiteralExpression {
+public final class BooleanLiteralExpression extends LiteralExpression {
     /** The text position of the boolean literal. */
     @SynField
     private TextPos synPos;

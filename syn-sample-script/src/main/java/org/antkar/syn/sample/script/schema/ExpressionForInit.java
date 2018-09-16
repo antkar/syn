@@ -24,7 +24,7 @@ import org.antkar.syn.sample.script.rt.SynsException;
 /**
  * Syntax node for an arbitrary expression initializer for a <code>for</code> statement.
  */
-public class ExpressionForInit extends ForInit {
+public final class ExpressionForInit extends ForInit {
     /** The list of expressions. */
     @SynField
     private Expression[] synExpressions;

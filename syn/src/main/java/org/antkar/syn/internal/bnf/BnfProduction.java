@@ -15,29 +15,28 @@
  */
 package org.antkar.syn.internal.bnf;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
+import org.antkar.syn.internal.Checks;
+import org.antkar.syn.internal.CommonUtil;
 import org.antkar.syn.internal.parser.IParserAction;
 
 /**
  * BNF production.
  */
-public class BnfProduction {
+public final class BnfProduction {
     private final int index;
     private BnfNonterminal nonterminal;
     private final List<BnfElement> elements;
     private final IParserAction parserAction;
 
     public BnfProduction(int index, List<BnfElement> elements, IParserAction parserAction) {
-        assert index >= 0;
-        assert elements != null;
-        assert parserAction != null;
+        Checks.argument(index >= 0);
+        Checks.notNull(elements);
 
         this.index = index;
-        this.elements = Collections.unmodifiableList(new ArrayList<>(elements));
-        this.parserAction = parserAction;
+        this.elements = CommonUtil.unmodifiableListCopy(elements);
+        this.parserAction = Checks.notNull(parserAction);
 
         nonterminal = null;
     }
@@ -47,9 +46,8 @@ public class BnfProduction {
      * there can be circular dependencies between nonterminals.
      */
     void setNonterminal(BnfNonterminal nonterminal) {
-        assert nonterminal != null;
-        assert this.nonterminal == null;
-        this.nonterminal = nonterminal;
+        Checks.state(this.nonterminal == null);
+        this.nonterminal = Checks.notNull(nonterminal);
     }
 
     /**
@@ -63,7 +61,7 @@ public class BnfProduction {
      * Returns the nonterminal which this production belongs to.
      */
     public BnfNonterminal getNonterminal() {
-        assert nonterminal != null;
+        Checks.notNull(nonterminal);
         return nonterminal;
     }
 

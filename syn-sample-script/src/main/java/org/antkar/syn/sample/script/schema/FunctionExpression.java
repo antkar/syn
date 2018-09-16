@@ -26,7 +26,7 @@ import org.antkar.syn.sample.script.util.MiscUtil;
 /**
  * Script function expression syntax node.
  */
-public class FunctionExpression extends TerminalExpression {
+public final class FunctionExpression extends TerminalExpression {
     /** The expression which has to be treated as a function. */
     @SynField
     private Expression synFunction;

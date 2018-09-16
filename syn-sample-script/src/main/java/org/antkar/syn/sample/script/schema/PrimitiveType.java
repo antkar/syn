@@ -25,7 +25,7 @@ import org.antkar.syn.sample.script.rt.PrimitiveTypeDescriptor;
 /**
  * Primitive type name syntax node. Used in an explicit type cast expression.
  */
-public class PrimitiveType {
+public final class PrimitiveType {
     /** The name of the primitive type. */
     @SynField
     private String synType;

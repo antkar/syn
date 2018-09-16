@@ -25,7 +25,7 @@ import org.antkar.syn.sample.script.rt.value.Value;
 /**
  * Expression "this".
  */
-public class ThisExpression extends TerminalExpression {
+public final class ThisExpression extends TerminalExpression {
     @SynField
     private TextPos synPos;
 
