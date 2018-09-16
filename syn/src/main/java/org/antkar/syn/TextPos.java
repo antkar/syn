@@ -70,7 +70,7 @@ public final class TextPos {
     /**
      * Constructs a position with all the parameters known.
      *
-     * @param the source source descriptor. Cannot be <code>null</code>.
+     * @param source the source descriptor. Cannot be <code>null</code>.
      * @param offset the input offset.
      * @param line the line number.
      * @param column the column number.

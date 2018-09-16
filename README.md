@@ -54,7 +54,7 @@ Statement statement = binder.parse(text);
 statement.execute();
 ```
 
-See [SynBinder](http://antkar.github.io/syn/javadoc/org/antkar/syn/SynBinder.html)
+See [SynBinder](http://antkar.github.io/syn/javadoc/org/antkar/syn/binder/SynBinder.html)
 and [SynParser](http://antkar.github.io/syn/javadoc/org/antkar/syn/SynParser.html) classes documentation
 for more details.
 

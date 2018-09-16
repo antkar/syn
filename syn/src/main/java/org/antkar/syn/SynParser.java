@@ -40,33 +40,29 @@ import org.antkar.syn.internal.scanner.ScannerConfigurator;
  * The parser uses the GLR algorithm and thus supports any context-free grammars. However, it may fail
  * to parse some ambiguous grammars.</p>
  *
- * <p>Example:
+ * <p>Example:</p>
  * <pre>
  * SynParser parser = new SynParser("@E : E '+' T | T; T : INTEGER;");
- * SynResult result = parser.parse("E", "1 + 2 + 3");</pre></p>
+ * SynResult result = parser.parse("E", "1 + 2 + 3");</pre>
  *
  * <h2>Grammar Structure</h2>
  *
- * <p>The grammar is specified in an adapted EBNF format. It contains a set of <i>nonterminal definitions</i>:
- * <pre>
- * &#64;Foo : <i>SyntaxExpression1</i> ;
- * Bar : <i>SyntaxExpression2</i> ;</pre></p>
+ * <p>The grammar is specified in an adapted EBNF format. It contains a set of <i>nonterminal definitions</i>:</p>
+ * <pre>&#64;Foo : <i>SyntaxExpression1</i> ;
+ * Bar : <i>SyntaxExpression2</i> ;</pre>
  *
  * <p>A nonterminal definition consists of a nonterminal name and a <i>syntax expression</i>.
  * If "<code>@</code>" character precedes the nonterminal name, that nonterminal is considered a start
  * nonterminal symbol. More than one start nonterminal symbol can be defined in a single grammar.</p>
  *
- * <p>Syntax expression consists of one or more alternative productions separated by "<code>|</code>" character:
- * <pre>
- * Foo : <i>Production1</i> | <i>Production2</i> | <i>Production3</i> ;</pre></p>
+ * <p>Syntax expression consists of one or more alternative productions separated by "<code>|</code>" character:</p>
+ * <pre>Foo : <i>Production1</i> | <i>Production2</i> | <i>Production3</i> ;</pre>
  *
- * <p>Production is a sequence of <i>syntax elements</i>:
- * <pre>
- * Foo : <i>Element1</i> <i>Element2</i> <i>Element3</i> ;</pre>
+ * <p>Production is a sequence of <i>syntax elements</i>:</p>
+ * <pre>Foo : <i>Element1</i> <i>Element2</i> <i>Element3</i> ;</pre>
  *
  * Each element may be associated with an attribute:
- * <pre>
- * Foo : attr1=<i>Element1</i> attr2=<i>Element2</i> attr3=<i>Element3</i> ;</pre></p>
+ * <pre>Foo : attr1=<i>Element1</i> attr2=<i>Element2</i> attr3=<i>Element3</i> ;</pre>
  *
  * <h2>Return Value</h2>
  *
@@ -74,7 +70,7 @@ import org.antkar.syn.internal.scanner.ScannerConfigurator;
  * the parser is the value returned by the start nonterminal. The return value of a nonterminal
  * is the value returned by the production of that nonterminal which matched the input.</p>
  *
- * <p>The return value of a production is defined in the following way:
+ * <p>The return value of a production is defined in the following way:</p>
  * <ol>
  * <li>If the production contains no elements, it returns <code>null</code>.</li>
  * <li>If the production contains one or more elements, and if one of the elements is assigned
@@ -86,7 +82,6 @@ import org.antkar.syn.internal.scanner.ScannerConfigurator;
  * <i>String literal element</i> (see below), the value of that element is returned.</li>
  * <li>Otherwise, the return value of the production is undefined.</li>
  * </ol>
- * </p>
  *
  * <h2>Syntax Elements</h2>
  *
@@ -101,7 +96,7 @@ import org.antkar.syn.internal.scanner.ScannerConfigurator;
  * The Java Language Specification, Third Edition</a>. The return value is a {@link ValueNode}
  * of a corresponding type. Literal terminal symbols are:</p>
  *
- * <table border="1">
+ * <table border="1" summary="Name elements">
  * <tr><th>Name</th><th>Description</th><th>Text Example</th></tr>
  *
  * <tr>
@@ -114,8 +109,8 @@ import org.antkar.syn.internal.scanner.ScannerConfigurator;
  * <td><code>INTEGER</code></td>
  * <td>Integer number. Can be decimal, hexadecimal or octal.</td>
  * <td><code>
- * 12345<br/>
- * 0x12EF<br/>
+ * 12345<br>
+ * 0x12EF<br>
  * 0765
  * </code></td>
  * </tr>
@@ -124,8 +119,8 @@ import org.antkar.syn.internal.scanner.ScannerConfigurator;
  * <td><code>FLOAT</code></td>
  * <td>Floating-point number. Can be decimal or hexadecimal.</td>
  * <td><code>
- * 123.456<br/>
- * 123.4e10<br/>
+ * 123.456<br>
+ * 123.4e10<br>
  * 0xABC.DEFp5
  * </code></td>
  * </tr>
@@ -134,7 +129,7 @@ import org.antkar.syn.internal.scanner.ScannerConfigurator;
  * <td><code>STRING</code></td>
  * <td>String literal enclosed in single or double quotes. Can contain escape sequences.</td>
  * <td><code>
- * 'Hello World!'<br/>
+ * 'Hello World!'<br>
  * "Hello World!\n"
  * </code></td>
  * </tr>
@@ -145,7 +140,7 @@ import org.antkar.syn.internal.scanner.ScannerConfigurator;
  * <p>A sequence of characters enclosed in single or double quotes. Defines either a custom keyword or
  * a key-character:</p>
  *
- * <table border="1">
+ * <table border="1" summary="String literal elements">
  * <tr><th>Grammar Example</th><th>Meaning</th></tr>
  *
  * <tr><td><code>"return"</code></td><td>Defines a keyword <code>return</code>.</td></tr>
@@ -160,9 +155,8 @@ import org.antkar.syn.internal.scanner.ScannerConfigurator;
  * <p>Syntax: <code>(</code> <i>syntax_expression</i> <code>)</code></p>
  *
  * <p>Has the same effect as the inner expression. Useful for placing a set of alternative productions inside
- * of a single element:
- * <pre>
- * Nt : 'aaa' ( Foo | Bar ) 'bbb';</pre></p>
+ * of a single element:</p>
+ * <pre>Nt : 'aaa' ( Foo | Bar ) 'bbb';</pre>
  *
  * <h3><i>Optional element</i></h3>
  *
@@ -184,14 +178,14 @@ import org.antkar.syn.internal.scanner.ScannerConfigurator;
  * <p>An optional separator expression may be specified. In this case the element matches zero or more
  * occurrences of <i>syntax_expression</i> separated by <i>separator_expression</i>. Examples:</p>
  *
- * <table border="1">
+ * <table border="1" summary="Repetition elements">
  * <tr><th>Grammar Example</th><th>Text Example</th></tr>
  *
  * <tr><td><code>(INTEGER)*</code></td><td><code>123 456 789</code></td></tr>
  * <tr><td><code>(ID : ",")*</code></td><td><code>aaa , bbb , ccc</code></td></tr>
  * </table>
  *
- * <p>Syntax: <code>(</code> <i>syntax_expression</i> <code>)+</code><br/>
+ * <p>Syntax: <code>(</code> <i>syntax_expression</i> <code>)+</code><br>
  * Syntax: <code>(</code> <i>syntax_expression</i> <code>:</code> <i>separator_expression</i> <code>)+</code></p>
  *
  * <p>If "<code>+</code>" is used instead of "<code>*</code>" in a repetition element, the element requires
@@ -204,7 +198,7 @@ import org.antkar.syn.internal.scanner.ScannerConfigurator;
  * <p>The element matches nothing in the text, but returns a value that can be associated with a syntax tree
  * attribute. Possible values are:</p>
  *
- * <table border="1">
+ * <table border="1" summary="Constant elements">
  * <tr><th>Example</th><th>Description</th><th>Returns</th></tr>
  * <tr><td><code>&lt;12345&gt;</code></td><td>Integer value</td><td>{@link ValueNode} of integer type</td></tr>
  * <tr>
