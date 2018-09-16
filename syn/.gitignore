@@ -1,2 +1,6 @@
+/.settings
 /bin
-/bld
+/target
+/.classpath
+/.project
+

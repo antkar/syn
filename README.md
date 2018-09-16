@@ -23,19 +23,19 @@ IfStatement : "if" "(" expr=Expression ")" tStmt=Statement ("else" fStmt=Stateme
 And Java classes:
 ```Java
 public abstract class Statement {
-	public abstract void execute(); 
+	public abstract void execute();
 }
 
 public class IfStatement extends Statement {
 	@SynField
 	private Expression expr;
-	
+
 	@SynField
 	private Statement tStmt;
-	
+
 	@SynField
 	private Statement fStmt;
-	
+
 	@Override
 	public void execute() {
 		if (expr.evaluate()) {
@@ -43,7 +43,7 @@ public class IfStatement extends Statement {
 		} else if (fStmt != null) {
 			fStmt.execute();
 		}
-	}	
+	}
 }
 ```
 
@@ -69,7 +69,7 @@ Features:
 * Access to Java library classes.
 * Possibility to implement Java interfaces.
 
-See the [Syn grammar of the language](https://github.com/antkar/syn/blob/master/syn-sample-script/src/org/antkar/syn/sample/script/schema/Script_grammar.txt).
+See the [Syn grammar of the language](https://github.com/antkar/syn/blob/master/syn-sample-script/src/main/java/org/antkar/syn/sample/script/schema/Script_grammar.txt).
 
 ### Code Examples
 
@@ -134,15 +134,15 @@ SwingUtilities.invokeLater({
 
 frame.addMouseListener({
     //Implements java.awt.event.MouseListener interface.
-    
+
     function mousePressed(e) {
         System.out.println("Mouse pressed.");
     }
-    
+
     function mouseReleased(e) {
         System.out.println("Mouse released.");
     }
-    
+
     //Other methods will have default empty implementations.
 });
 ```
@@ -158,11 +158,11 @@ class Foo {
         this.x = x;
         this.y = y;
     }
-    
+
     public function print() {
         System.out.println("Foo(" + mx + ", " + my + ")");
     }
-    
+
     public function getX() = x;  // Short function notation.
     public function getY() = y;
 }
@@ -193,8 +193,17 @@ See the source code: [Snake.syns](https://github.com/antkar/syn/blob/master/syn-
 
 ![Screenshot](https://antkar.github.io/syn/img/snake/snakec.png)
 
-### How to Run?
+### How to Build and Run?
 
-Download the binary distribution: [syn-sample-1.1.zip](https://github.com/antkar/syn/releases/download/v1.1/syn-sample-1.1.zip) or [syn-sample-1.1.tgz](https://github.com/antkar/syn/releases/download/v1.1/syn-sample-1.1.tgz). Java 7 or later is required.
+To build, clone the repository and execute in the root directory (needs Maven 3):
 
-To execute an arbitrary script, run `script.cmd` or `script.sh`, passing the script file name in the command line.
+```
+mvn package
+```
+
+To run, use `.sh` / `.cmd` scripts in the `syn-sample-script` directory:
+
+* `script.sh` / `script.cmd` - command-line interpreter
+* `console.sh` / `console.cmd` - GUI interpreter
+* `snake.sh` / `snake.cmd` - sample game
+
